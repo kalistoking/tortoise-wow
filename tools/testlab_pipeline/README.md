@@ -178,6 +178,8 @@ branch — every environment-specific value is a parameter.
 | `-RandomBotMinLevel` / `-RandomBotMaxLevel` | `1` / `20` | Bot level range. |
 | `-RandomBotAccountsCount` | `10` | Number of bot accounts. |
 | `-SkipBotRegen` | off | Keeps existing characters/accounts: dumps `tw_char` + `tw_logon` first and restores them at the end. Also leaves `server\pdump` and `server\honor` in place. |
+| `-EnableSqlLog` | off | Writes every SQL statement to a log file (`LogSQL` in `mangosd.conf`). Off by default — on, it's 94% of a normal run's log, mostly per-connection `SET NAMES`/`SET CHARACTER SET` noise. |
+| `-LogLevel` | `0` | Console/log verbosity for mangosd and realmd: `0` Minimum, `1` Basic & Error, `2` Detail, `3` Full/Debug. The shipped templates default to `1`. |
 | `-applyPatches` | — | Semicolon-separated commit hashes to cherry-pick, e.g. `-applyPatches "0ee0748;abc1234"`. |
 
 ```powershell
