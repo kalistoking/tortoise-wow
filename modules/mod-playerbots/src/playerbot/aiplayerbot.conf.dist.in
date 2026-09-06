@@ -429,8 +429,7 @@ AiPlayerbot.AutoPickTalents = full
 
 # Bots automatically learn trainable spells on levelup
 # Default: 0 (disabled)
-AiPlayerbot.AutoLearnTrainerSpells = 0
-
+AiPlayerbot.AutoLearnTrainerSpells = 1
 # Bots automatically learn classquest reward spells on levelup
 # Default: 0 (disabled)
 AiPlayerbot.AutoLearnQuestSpells = 0
