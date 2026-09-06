@@ -47,6 +47,11 @@
         -RandomBotMinLevel  -RandomBotMaxLevel            (default: 1 / 20)
         -RandomBotAccountsCount                           (default: 10)
 
+      Server logging
+        -EnableSqlLog             every SQL query to file (default: off)
+        -LogLevel                 0 Minimum | 1 Basic&Error
+                                  | 2 Detail | 3 Full/Debug (default: 0)
+
     Use "Get-Help .\Setup-Testlab.ps1 -Parameter <name>" for the detail on any one of them,
     or -Examples for the common combinations.
 .PARAMETER SkipBotRegen
@@ -139,6 +144,18 @@
     Highest level random bots are generated at.
 .PARAMETER RandomBotAccountsCount
     Number of bot accounts to create.
+.PARAMETER EnableSqlLog
+    Writes every SQL statement mangosd sends to a log file (LogSQL in mangosd.conf). Off by
+    default: at LogSQL = 1 it is 94% of a normal run's console log, most of it the
+    per-connection 'SET NAMES' / 'SET CHARACTER SET' every pooled database connection issues
+    on open - not an error, just noise that buries the handful of lines that matter. Turn it
+    on when you are chasing a specific query, e.g. a deadlock.
+.PARAMETER LogLevel
+    Console/log verbosity for mangosd and realmd: 0 Minimum, 1 Basic & Error, 2 Detail,
+    3 Full/Debug. Defaults to 0; the shipped templates default to 1. This does not affect
+    the DB content warnings step 01 and mangosd's table loader print on startup (missing
+    creature_movement paths and the like) - those come from the world database's own
+    content, not from this setting, and stay visible at every level.
 .EXAMPLE
     .\Run-Testlab.bat
     The normal run: builds everything and rebuilds every database from scratch. Use the .bat
@@ -289,7 +306,14 @@ param (
     [int]$MaxRandomBots          = 10,
     [int]$RandomBotMinLevel      = 1,
     [int]$RandomBotMaxLevel      = 20,
-    [int]$RandomBotAccountsCount = 10
+    [int]$RandomBotAccountsCount = 10,
+
+    # Off by default - see the parameter help for why. -LogLevel matches what the shipped
+    # config templates document as "0 = Minimum" and is intentionally lower than their own
+    # default of 1, because a testlab is rebuilt often and a quiet log makes that faster to
+    # read.
+    [switch]$EnableSqlLog,
+    [int]$LogLevel = 0
 )
 
 # StrictMode turns a typo'd or never-assigned variable into a hard error instead of an
@@ -2252,6 +2276,9 @@ if (Test-Path $MangosdConf) {
     $OldHonorDirPattern = '^HonorDir\s*=\s*".*"'
     $OldPDumpDirPattern  = '^PDumpDir\s*=\s*".*"'
 	$OldLuaDirPattern  = '^Eluna\.ScriptPath\s*=\s*".*"'
+    $OldLogSqlPattern   = '^LogSQL\s*=\s*.*'
+    $OldLogLevelPattern = '^LogLevel\s*=\s*.*'
+    $OldVisibilityBgPattern = '^Visibility\.Distance\.BG\s*=\s*.*'
 
     # 3. Targeted system directories replacement values
     $NewDataDirSetting  = "DataDir = `"$MangosDataDir`""
@@ -2259,6 +2286,20 @@ if (Test-Path $MangosdConf) {
     $NewHonorDirSetting = "HonorDir = `"$MangosHonorDir`""
     $NewPDumpDirSetting  = "PDumpDir = `"$MangosPDumpDir`""
     $NewLuaDirSetting   = "Eluna.ScriptPath = `"$MangosLuaDir`""
+
+    # -EnableSqlLog / -LogLevel: see the parameter help for why these default lower than the
+    # shipped templates (LogSQL = 1, LogLevel = 1). Both are plain integers, never touched by
+    # the -replace $ hazard the connection strings below are guarded against.
+    $NewLogSqlSetting   = "LogSQL = " + $(if ($EnableSqlLog) { 1 } else { 0 })
+    $NewLogLevelSetting = "LogLevel = $LogLevel"
+
+    # The shipped 533 trips World.cpp's own clamp: it is read into m_MaxVisibleDistanceInBG,
+    # and "m_MaxVisibleDistanceInBG + m_VisibleUnitGreyDistance > MAX_VISIBILITY_DISTANCE"
+    # is true at 533, so the server logs "Visibility.Distance.BG can't be greater 532.333313"
+    # and clamps it to that value anyway on every single start. 532 sits under the clamp, so
+    # the server keeps the value as given and the line never fires - same effective distance,
+    # one less ERROR line at every startup.
+    $NewVisibilityBgSetting = "Visibility.Distance.BG = 532"
 
     # 4. Database connection strings, in the "host;port;user;password;database" form the
     #    server parses.
@@ -2293,13 +2334,16 @@ if (Test-Path $MangosdConf) {
         -replace $OldHonorDirPattern, (ConvertTo-ReplacementLiteral $NewHonorDirSetting) `
         -replace $OldPDumpDirPattern, (ConvertTo-ReplacementLiteral $NewPDumpDirSetting) `
         -replace $OldLuaDirPattern, (ConvertTo-ReplacementLiteral $NewLuaDirSetting) `
+        -replace $OldLogSqlPattern, $NewLogSqlSetting `
+        -replace $OldLogLevelPattern, $NewLogLevelSetting `
+        -replace $OldVisibilityBgPattern, $NewVisibilityBgSetting `
         -replace $OldLoginInfoPattern, (ConvertTo-ReplacementLiteral $NewLoginInfoSetting) `
         -replace $OldWorldInfoPattern, (ConvertTo-ReplacementLiteral $NewWorldInfoSetting) `
         -replace $OldCharacterInfoPattern, (ConvertTo-ReplacementLiteral $NewCharacterInfoSetting) `
         -replace $OldLogsInfoPattern, (ConvertTo-ReplacementLiteral $NewLogsInfoSetting) `
         | Set-Content $MangosdConf
 
-    Write-Host "[OK] mangosd.conf updated: directories, and all four database connections." -ForegroundColor Green
+    Write-Host "[OK] mangosd.conf updated: directories, all four database connections, and logging (LogSQL=$(if ($EnableSqlLog) { 1 } else { 0 }), LogLevel=$LogLevel)." -ForegroundColor Green
 } else {
     Stop-Pipeline -Message "Configuration injection failed: Could not locate mangosd.conf inside $MangosEtcDir"
 }
@@ -2315,9 +2359,10 @@ if (Test-Path $RealmdConf) {
 
     (Get-Content $RealmdConf) `
         -replace '^LoginDatabaseInfo\s*=\s*".*"', (ConvertTo-ReplacementLiteral $NewRealmdLoginInfoSetting) `
+        -replace '^LogLevel\s*=\s*.*', "LogLevel = $LogLevel" `
         | Set-Content $RealmdConf
 
-    Write-Host "[OK] realmd.conf updated with the login database connection." -ForegroundColor Green
+    Write-Host "[OK] realmd.conf updated with the login database connection and logging (LogLevel=$LogLevel)." -ForegroundColor Green
 } else {
     Stop-Pipeline -Message "Configuration injection failed: Could not locate realmd.conf inside $MangosEtcDir"
 }
