@@ -2278,6 +2278,7 @@ if (Test-Path $MangosdConf) {
 	$OldLuaDirPattern  = '^Eluna\.ScriptPath\s*=\s*".*"'
     $OldLogSqlPattern   = '^LogSQL\s*=\s*.*'
     $OldLogLevelPattern = '^LogLevel\s*=\s*.*'
+    $OldVisibilityBgPattern = '^Visibility\.Distance\.BG\s*=\s*.*'
 
     # 3. Targeted system directories replacement values
     $NewDataDirSetting  = "DataDir = `"$MangosDataDir`""
@@ -2291,6 +2292,14 @@ if (Test-Path $MangosdConf) {
     # the -replace $ hazard the connection strings below are guarded against.
     $NewLogSqlSetting   = "LogSQL = " + $(if ($EnableSqlLog) { 1 } else { 0 })
     $NewLogLevelSetting = "LogLevel = $LogLevel"
+
+    # The shipped 533 trips World.cpp's own clamp: it is read into m_MaxVisibleDistanceInBG,
+    # and "m_MaxVisibleDistanceInBG + m_VisibleUnitGreyDistance > MAX_VISIBILITY_DISTANCE"
+    # is true at 533, so the server logs "Visibility.Distance.BG can't be greater 532.333313"
+    # and clamps it to that value anyway on every single start. 532 sits under the clamp, so
+    # the server keeps the value as given and the line never fires - same effective distance,
+    # one less ERROR line at every startup.
+    $NewVisibilityBgSetting = "Visibility.Distance.BG = 532"
 
     # 4. Database connection strings, in the "host;port;user;password;database" form the
     #    server parses.
@@ -2327,6 +2336,7 @@ if (Test-Path $MangosdConf) {
         -replace $OldLuaDirPattern, (ConvertTo-ReplacementLiteral $NewLuaDirSetting) `
         -replace $OldLogSqlPattern, $NewLogSqlSetting `
         -replace $OldLogLevelPattern, $NewLogLevelSetting `
+        -replace $OldVisibilityBgPattern, $NewVisibilityBgSetting `
         -replace $OldLoginInfoPattern, (ConvertTo-ReplacementLiteral $NewLoginInfoSetting) `
         -replace $OldWorldInfoPattern, (ConvertTo-ReplacementLiteral $NewWorldInfoSetting) `
         -replace $OldCharacterInfoPattern, (ConvertTo-ReplacementLiteral $NewCharacterInfoSetting) `
