@@ -1201,15 +1201,38 @@ bool DcLeaderSignal::GetLeaderScoutTrailPoint(Player* bot, float lag, Position& 
     // the join is progress) and let the glide take over from that point.
     if (bot->GetExactDist(leader) > 60.0f)
     {
+        // Same floor first: Sunken Temple 2026-09-05 had stragglers 30-47 yd
+        // ABOVE the tank on the upper ring; the 3D-nearest crumb was the one
+        // right below them on the lower level (unreachable), while the trail
+        // also crossed their own floor a little farther away. A crumb within
+        // kSameFloorDz of the bot's own height wins inside a wider 2D radius;
+        // only when there is none does the plain 3D-nearest crumb get its turn.
+        constexpr float kSameFloorDz = 8.0f;
+        constexpr float kSameFloorRadius2d = 60.0f;
         std::size_t nearestIdx = crumbs.size();
-        float nearest = 40.0f;   // join radius
+        float nearest = kSameFloorRadius2d;
         for (std::size_t i = 0; i < crumbs.size(); ++i)
         {
-            float const d = bot->GetExactDist(&crumbs[i]);
+            if (std::fabs(crumbs[i].GetPositionZ() - bot->GetPositionZ()) > kSameFloorDz)
+                continue;
+            float const d = bot->GetExactDist2d(&crumbs[i]);
             if (d < nearest)
             {
                 nearest = d;
                 nearestIdx = i;
+            }
+        }
+        if (nearestIdx == crumbs.size())
+        {
+            nearest = 40.0f;   // join radius, 3D
+            for (std::size_t i = 0; i < crumbs.size(); ++i)
+            {
+                float const d = bot->GetExactDist(&crumbs[i]);
+                if (d < nearest)
+                {
+                    nearest = d;
+                    nearestIdx = i;
+                }
             }
         }
         if (nearestIdx < crumbs.size())
@@ -1300,9 +1323,14 @@ bool DcLeaderSignal::GetLeaderScoutTrailPoint(Player* bot, float lag, Position& 
             }
             LOG_INFO("playerbots.dungeonclear",
                      "[DC:{}] trail join failed: {}yd behind the tank, nearest crumb "
-                     "{}yd away (#{} of {})",
+                     "{}yd away (#{} of {}, {}yd {} the bot) at {:.0f},{:.0f},{:.0f}",
                      bot->GetName(), int(bot->GetExactDist(leader)), int(nearest),
-                     int(nearestIdx), int(crumbs.size()));
+                     int(nearestIdx), int(crumbs.size()),
+                     nearestIdx < crumbs.size()
+                         ? int(std::fabs(crumbs[nearestIdx].GetPositionZ() - bot->GetPositionZ())) : 0,
+                     nearestIdx < crumbs.size() &&
+                             crumbs[nearestIdx].GetPositionZ() < bot->GetPositionZ() ? "below" : "above",
+                     bot->GetPositionX(), bot->GetPositionY(), bot->GetPositionZ());
         }
     }
     return false;
