@@ -56,7 +56,10 @@ namespace
             RegisterSteamvaultRoster(t);
             RegisterArcatrazRoster(t);
             RegisterSethekkHallsRoster(t);
+#ifndef MANGOSBOT_ZERO   // TBC Black Morass (map 269); Turtle WoW has its own
+                         // level-60 dungeon on that map id (token black-morass-tw)
             RegisterBlackMorassRoster(t);
+#endif
             RegisterMaraudonRoster(t);
             RegisterBlackfathomDeepsRoster(t);
             RegisterUtgardeKeepRoster(t);

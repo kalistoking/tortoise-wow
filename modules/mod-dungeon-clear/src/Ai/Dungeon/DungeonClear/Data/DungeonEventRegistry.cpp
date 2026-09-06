@@ -437,7 +437,10 @@ namespace
             RegisterSteamvaultEvents(t);
             RegisterArcatrazEvents(t);
             RegisterSethekkHallsEvents(t);
+#ifndef MANGOSBOT_ZERO   // TBC Black Morass (map 269); Turtle WoW has its own
+                         // level-60 dungeon on that map id (token black-morass-tw)
             RegisterBlackMorassEvents(t);
+#endif
             RegisterUtgardeKeepEvents(t);
             RegisterNexusEvents(t);
             RegisterAzjolNerubEvents(t);
