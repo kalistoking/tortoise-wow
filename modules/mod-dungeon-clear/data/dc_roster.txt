@@ -374,9 +374,11 @@ order 230 9033 5      # General Angerforge           lvl 57   652,21,-60    (Eas
 order 230 9016 6      # Bael'Gar                     lvl 54   702,184,-72   (north, Molten Core side)
 #                     9 = Shadowforge Lock (compiled objective, lever 614,-47)
 order 230 8983 10     # Golem Lord Argelmach         lvl 57   847,16,-54    (Manufactory)
-order 230 9543 11     # Ribbly Screwspigot           lvl 53   867,-174,-50  (Grim Guzzler)
-order 230 9499 12     # Plugger Spazzring            lvl 55   888,-178,-43  (Grim Guzzler; Phalanx turns hostile)
-order 230 9502 13     # Phalanx                      lvl 55   848,-230,-44  (Grim Guzzler)
+# Grim Guzzler: NOT ordered. On this realm Ribbly Screwspigot (9543) is faction
+# 35 with vendor/gossip flags, Plugger (9499) faction 674 (bartender), Phalanx
+# (9502) faction 35 until the Plugger brawl - all friendly, and a boss anchor
+# on a friendly NPC parks the tank in front of it until the run dies
+# (2026-09-06: 13,728 first-contact lines on Ribbly, 3 runs no_progress 7/19).
 order 230 9056 14     # Fineous Darkvire             lvl 54   963,-344,-72
 order 230 9017 15     # Lord Incendius               lvl 55   894,-267,-72  (Black Anvil)
 order 230 9156 16     # Ambassador Flamelash         lvl 57   1010,-239,-61
