@@ -355,3 +355,34 @@ order 820 62785 5     # Champion Rotag             lvl 27  -7640,-3636
 order 820 62784 6     # Walgan Bloodcaller         lvl 27  -7743,-3397
 order 820 62781 7     # Prophet Stormhoof          lvl 28  -7626,-3681
 order 820 62782 8     # Chieftain Shalk Blackwind  lvl 29  -7511,-3798 (end boss)
+
+# --- Blackrock Depths (map 230) ----------------------------------------------
+# The compiled rows gave nine anchors in bit order: Lord Incendius first (deep
+# inside Shadowforge City), no Gerstahn, no Grebmar, no Emperor. Full clear in
+# walking order (turtle_world positions 2026-09-06), provisional until the
+# owner confirms. Objectives keep their compiled keys: Ring of Law 3 (after
+# Grebmar), Shadowforge Lock 9 (the Giant Door lever at 614,-47, before the
+# doors at 723,-106 into Shadowforge City).
+# Rares (rank 2) are NOT objectives: Pyromancer Loregrain, Lord Roccor, Warder
+# Stilgiss/Verek, Panzor. The Seven (Doom'rel gossip) and the Lyceum braziers
+# are module events (Tomb of the Seven at key 16, the two braziers at key 17,
+# BlackrockDepthsEvents.cpp); Magmus/Moira/Emperor follow at keys 17-19.
+order 230 9018 1      # High Interrogator Gerstahn   lvl 52   311,-146,-70  (Detention Block)
+order 230 9319 2      # Houndmaster Grebmar          lvl 52   608,-175,-84  (kennels under the arena)
+#                     3 = Ring of Law (compiled objective, arena centre)
+order 230 9033 5      # General Angerforge           lvl 57   652,21,-60    (East Garrison)
+order 230 9016 6      # Bael'Gar                     lvl 54   702,184,-72   (north, Molten Core side)
+#                     9 = Shadowforge Lock (compiled objective, lever 614,-47)
+order 230 8983 10     # Golem Lord Argelmach         lvl 57   847,16,-54    (Manufactory)
+order 230 9543 11     # Ribbly Screwspigot           lvl 53   867,-174,-50  (Grim Guzzler)
+order 230 9499 12     # Plugger Spazzring            lvl 55   888,-178,-43  (Grim Guzzler; Phalanx turns hostile)
+order 230 9502 13     # Phalanx                      lvl 55   848,-230,-44  (Grim Guzzler)
+order 230 9056 14     # Fineous Darkvire             lvl 54   963,-344,-72
+order 230 9017 15     # Lord Incendius               lvl 55   894,-267,-72  (Black Anvil)
+order 230 9156 16     # Ambassador Flamelash         lvl 57   1010,-239,-61
+order 230 9938 18     # Magmus                       lvl 57   1381,-659,-92 (key 17, after the two brazier objectives)
+order 230 8929 19     # Princess Moira Bronzebeard   lvl 58   1385,-831,-88 (Imperial Seat)
+order 230 9019 20     # Emperor Dagran Thaurissan    lvl 59   1380,-832,-88 (end boss)
+# BRD rares (rank 2) are credited in the compiled list and would otherwise be
+# numbered past the authored block (Loregrain showed up at key 19): drop them.
+drop 9024 9025 9041 10264 8923   # Pyromancer Loregrain, Lord Roccor, Warder Stilgiss, Verek, Panzor
