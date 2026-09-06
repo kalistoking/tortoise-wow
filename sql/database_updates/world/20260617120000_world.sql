@@ -2,36 +2,29 @@
 -- These rows were lost when 20260508064255_world.sql dropped and recreated the
 -- npc_trainer table without including these entries.  The intent (per
 -- 20260504194945_world.sql) is starter-only: reqlevel <= 6.
-INSERT IGNORE INTO `npc_trainer` (`entry`, `spell`, `spellcost`, `reqskill`, `reqskillvalue`, `reqlevel`) VALUES
--- Warrior (80104)
-(80104, 6674, 10, 0, 0, 1),
-(80104, 1738, 100, 0, 0, 4),
-(80104, 1423, 100, 0, 0, 4),
-(80104, 1343, 100, 0, 0, 6),
-(80104, 1229, 100, 0, 0, 6),
-(80104, 3128, 100, 0, 0, 6),
--- Hunter (80105)
-(80105, 1547, 10, 0, 0, 1),
-(80105, 2003, 100, 0, 0, 4),
-(80105, 13164, 100, 0, 0, 4),
-(80105, 3048, 100, 0, 0, 6),
-(80105, 5298, 100, 0, 0, 6),
--- Rogue (80106)
-(80106, 1789, 10, 0, 0, 1),
-(80106, 5167, 100, 0, 0, 4),
-(80106, 2592, 100, 0, 0, 4),
-(80106, 1780, 100, 0, 0, 6),
-(80106, 1762, 100, 0, 0, 6),
--- Warlock (80107)
-(80107, 1374, 10, 0, 0, 1),
-(80107, 6221, 100, 0, 0, 4),
-(80107, 1393, 100, 0, 0, 4),
-(80107, 1476, 100, 0, 0, 6),
-(80107, 1381, 100, 0, 0, 6),
--- Mage (80108)
-(80108, 1472, 10, 0, 0, 1),
-(80108, 5507, 100, 0, 0, 4),
-(80108, 1142, 100, 0, 0, 4),
-(80108, 2141, 100, 0, 0, 6),
-(80108, 1249, 100, 0, 0, 6),
-(80108, 1173, 100, 0, 0, 6);
+--
+-- Superseded by 20260718150344_world.sql, which runs after this file and owns the
+-- same six trainers in full. All 27 rows this file inserted are an exact match -
+-- same entry, spell, and every other column - for a subset of that file's 604.
+-- Two migrations inserting the same keys is what broke a fresh AutoUpdate:
+--
+--     [1062] Duplicate entry '80106-1780' for key 'entry_spell'
+--     [DB Auto-Updater] Migration 20260718150344_world ... failed to apply.
+--
+-- This file lands its 27 rows first (INSERT IGNORE, so it never fails itself),
+-- and 20260718150344_world.sql then collides on them with a plain INSERT.
+-- Removing sql/base's own copies does not help: base is not the source here,
+-- this file is.
+--
+-- The newer file wins, and this older one is emptied rather than touching
+-- 20260718150344_world.sql, for two reasons:
+--   * That file's hash must stay E5D12764158FF0B0E797D6D583A7DDCB84831738. Any
+--     database that already recorded it as applied depends on that hash matching;
+--     changing it would make every such server's AutoUpdate re-run the migration
+--     against data it already has.
+--   * This file was one of the 27 stranded outside sql/database_updates/world/
+--     until recently, so no AutoUpdate has ever scanned, run or recorded it -
+--     changing its hash disturbs nothing.
+--
+-- Left as a comment-only file rather than deleted, so the auto-updater still
+-- records its name as applied.
