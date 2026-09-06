@@ -52,6 +52,10 @@
         -LogLevel                 0 Minimum | 1 Basic&Error
                                   | 2 Detail | 3 Full/Debug (default: 0)
 
+      Database-only mode
+        -DatabaseOnly             skip git/build/folders/config, touch only
+                                  the databases (default: off)
+
     Use "Get-Help .\Setup-Testlab.ps1 -Parameter <name>" for the detail on any one of them,
     or -Examples for the common combinations.
 .PARAMETER SkipBotRegen
@@ -59,6 +63,18 @@
     are dumped before the run and restored at the end; the dump is verified before anything
     destructive happens, so a failed backup stops the pipeline with the data still intact.
     Without it every database is dropped and rebuilt from scratch.
+.PARAMETER DatabaseOnly
+    Touches only the databases: no git update, no compilation, no folder cleanup, no
+    config file changes. Everything that already exists - the server binaries, etc\,
+    the launcher .bat files - is left exactly as it is. Use it to re-test a change to
+    sql/base or a new migration against a genuine first boot, without waiting for a
+    full rebuild. Combine with -SkipBotRegen to reset only 'tw_world' (tw_char and
+    tw_logon are backed up and restored, untouched in effect) - the "tw_world
+    First-Boot Reset" case; without -SkipBotRegen all four databases are dropped and
+    rebuilt, same as a full run's database step. Start the server yourself afterwards
+    (the existing launcher .bat files) - that boot is the actual test: an empty
+    'migrations' table means the DB Auto-Updater applies every migration exactly as
+    it would on a brand-new install.
 .PARAMETER applyPatches
     Semicolon-separated git commit hashes to cherry-pick onto the branch before building,
     fetched from -PatchRemoteUrl. Example: "0ee0748;abc1234". Uncommitted local changes are
@@ -184,6 +200,14 @@
 
     Everything printed is also written to 'pipeline_console.log' in the workspace root, and
     the compiler output additionally to 'server_build.log'. No shell redirection needed.
+
+    A wrap-point gotcha in this comment block, for whoever next reformats a paragraph here:
+    Get-Help's comment-based-help parser treats any line that starts with a bare period
+    (after leading whitespace) as a new section keyword, whether or not it recognises the
+    word after the dot. Wrapping -DatabaseOnly's description once put ".bat files ..." at
+    the start of a line, and every parameter after it in Get-Help silently vanished - the
+    script still ran fine, only its own documentation broke. Keep a non-period word first
+    on every wrapped line.
 .LINK
     https://github.com/Shyalya/tortoise-wow
 .LINK
@@ -313,7 +337,13 @@ param (
     # default of 1, because a testlab is rebuilt often and a quiet log makes that faster to
     # read.
     [switch]$EnableSqlLog,
-    [int]$LogLevel = 0
+    [int]$LogLevel = 0,
+
+    # Orthogonal to -SkipBotRegen, not a replacement for it: this one decides whether git,
+    # the compiler, the server folders and the config files are touched at all; SkipBotRegen
+    # (already respected by every database step below, unchanged) decides which databases
+    # survive the run. Combined, they are the "tw_world First-Boot Reset" case.
+    [switch]$DatabaseOnly
 )
 
 # StrictMode turns a typo'd or never-assigned variable into a hard error instead of an
@@ -1356,6 +1386,11 @@ foreach ($StockName in $DatabaseNameMap.Keys) {
 
 Write-Host "Databases: $WorldDatabaseName, $CharacterDatabaseName, $LoginDatabaseName, $LogsDatabaseName (user '$DbUser')"
 
+if ($DatabaseOnly) {
+    Write-Host ("-> -DatabaseOnly: only the databases are touched this run - no git update, no compilation, " +
+               "no folder cleanup, no config file changes.") -ForegroundColor Yellow
+}
+
 # Singleton first (the authoritative machine-wide guard), then the descriptive lock file.
 Assert-SingleInstance
 $script:LockFile = Join-Path $ScriptDirectory "pipeline_running.lock"
@@ -1419,10 +1454,20 @@ $script:RootDefaultsFile = New-MySqlDefaultsFile -User "root"   -Password $RootP
 $script:DbDefaultsFile   = New-MySqlDefaultsFile -User $DbUser -Password $DbPassword
 
 # Locate vcpkg (see Resolve-VcpkgDirectory) and derive the installed-packages path from it.
-$VcpkgDirectory     = Resolve-VcpkgDirectory -Explicit $VcpkgDirectory
-$VcpkgExecutable    = Join-Path $VcpkgDirectory "vcpkg.exe"
-$VcpkgInstalledPath = Join-Path $VcpkgDirectory "installed\$VcpkgTriplet"
-Write-Host "vcpkg: $VcpkgDirectory (triplet $VcpkgTriplet)"
+# Skipped entirely under -DatabaseOnly: nothing in that mode compiles anything, and
+# Resolve-VcpkgDirectory aborts the whole run if vcpkg cannot be found anywhere at all -
+# a needless requirement on a machine set up only to reset a database.
+if ($DatabaseOnly) {
+    $VcpkgDirectory     = ""
+    $VcpkgExecutable    = ""
+    $VcpkgInstalledPath = ""
+    Write-Host "vcpkg: skipped (-DatabaseOnly)."
+} else {
+    $VcpkgDirectory     = Resolve-VcpkgDirectory -Explicit $VcpkgDirectory
+    $VcpkgExecutable    = Join-Path $VcpkgDirectory "vcpkg.exe"
+    $VcpkgInstalledPath = Join-Path $VcpkgDirectory "installed\$VcpkgTriplet"
+    Write-Host "vcpkg: $VcpkgDirectory (triplet $VcpkgTriplet)"
+}
 
 Write-Host "[OK] Variables were set up."  -ForegroundColor Green
 
@@ -1438,6 +1483,9 @@ Write-Host "[OK] Variables were set up."  -ForegroundColor Green
 Write-PipelineHeader -StepName "00b: Preflight"
 Write-Host "Verifying the tools and services this run depends on..."
 
+if ($DatabaseOnly) {
+    Write-Host " -> git/cmake/vcpkg: skipped (-DatabaseOnly touches only the databases)."
+} else {
 foreach ($Requirement in @(
         @{ Name = "git";   Hint = "install Git for Windows and make sure it is on PATH" },
         @{ Name = "cmake"; Hint = "install CMake 3.16 or newer and tick 'add to PATH' in its installer" })) {
@@ -1453,6 +1501,7 @@ if (-not (Test-Path -LiteralPath $VcpkgExecutable)) {
     Stop-Pipeline -Message "Critical component missing: could not locate vcpkg executable at $VcpkgExecutable"
 }
 Write-Host " -> vcpkg: $VcpkgExecutable"
+}
 
 Write-Host " -> client: $MariaDBPath"
 
@@ -1477,13 +1526,16 @@ Write-Host " -> connected: $ServerIdentity"
 
 # Best effort only: no Visual Studio means CMake has no generator, but vswhere is not
 # guaranteed to be present and its absence proves nothing either way.
-$VsWhere = Join-Path ${env:ProgramFiles(x86)} "Microsoft Visual Studio\Installer\vswhere.exe"
-if (Test-Path -LiteralPath $VsWhere) {
-    $VsInstall = & $VsWhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath 2>$null
-    if ($VsInstall) {
-        Write-Host " -> Visual Studio C++ toolset: $VsInstall"
-    } else {
-        Write-Warning "No Visual Studio installation with the C++ toolset found. The build in step 08 will fail without it."
+# Irrelevant under -DatabaseOnly - nothing compiles, so nothing needs a generator.
+if (-not $DatabaseOnly) {
+    $VsWhere = Join-Path ${env:ProgramFiles(x86)} "Microsoft Visual Studio\Installer\vswhere.exe"
+    if (Test-Path -LiteralPath $VsWhere) {
+        $VsInstall = & $VsWhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath 2>$null
+        if ($VsInstall) {
+            Write-Host " -> Visual Studio C++ toolset: $VsInstall"
+        } else {
+            Write-Warning "No Visual Studio installation with the C++ toolset found. The build in step 08 will fail without it."
+        }
     }
 }
 
@@ -1492,6 +1544,9 @@ Write-Host "[OK] Preflight passed - the run has everything it needs." -Foregroun
 # ==============================================================================
 # PIPELINE STEP 01: CLIENT DATA INTEGRITY & DBC HASH VERIFICATION
 # ==============================================================================
+if ($DatabaseOnly) {
+    Write-Host "01: Client Data Verification - skipped (-DatabaseOnly touches only the databases)." -ForegroundColor DarkGray
+} else {
 Write-PipelineHeader -StepName "01: Client Data Verification"
 Write-Host "Initializing client data integrity verification..."
 
@@ -1623,10 +1678,14 @@ if (-not $HashVerificationPassed) {
     Stop-Pipeline -Message "DBC integrity verification failed. Version mismatch detected against build requirements."
 }
 Write-Host "[OK] All $($DbcManifestEntries.Count) DBC file signatures successfully verified against SHA256 blueprint." -ForegroundColor Green
+}
 
 # ==============================================================================
 # PIPELINE STEP 02: VCPKG DEPENDENCY CHECK
 # ==============================================================================
+if ($DatabaseOnly) {
+    Write-Host "02+03: Vcpkg install and git source management - skipped (-DatabaseOnly touches only the databases)." -ForegroundColor DarkGray
+} else {
 Write-PipelineHeader -StepName "02: Vcpkg Dependency Check"
 Write-Host "Verifying external C++ library environments via vcpkg toolchain..."
 
@@ -1825,6 +1884,7 @@ if (-not [string]::IsNullOrEmpty($applyPatches)) {
     # 6. Safely return back to the root pipeline workspace
     Pop-Location
 }
+}
 # ==============================================================================
 # PIPELINE STEP (OPTIONAL): CONDITIONAL BACKUP SECTION: EXPORT ENTIRE DATABASE STRUCTURES
 # ==============================================================================
@@ -1913,19 +1973,26 @@ Start-Sleep -Seconds 2
 # and step 14 only recreates them empty. Wiping them on the one run whose stated purpose
 # is preserving existing accounts, GM characters and playerbot data was silent and
 # unrecoverable data loss.
-Write-Host "Clearing previously generated server directories..."
-$GeneratedFolders = @($BinDir, $EtcDir, $LibDir, $LogsDir, $ToolsDir, $LuaDir)
-
-if ($SkipBotRegen) {
-    Write-Host " -> Keeping pdump and honor (-SkipBotRegen preserves existing data)."
+#
+# Skipped entirely under -DatabaseOnly: nothing gets rebuilt by cmake --install this run,
+# so there is nothing to clear a path for - bin/etc/lib would simply stay gone.
+if ($DatabaseOnly) {
+    Write-Host " -> Keeping the server folders as they are (-DatabaseOnly)."
 } else {
-    $GeneratedFolders += @($PdumpDir, $HonorDir)
-}
-foreach ($Folder in $GeneratedFolders) {
-    if (Test-Path $Folder) {
-        # Recursively remove all contents and the folder itself
-        Remove-Item -Path $Folder -Recurse -Force -ErrorAction SilentlyContinue
-        Write-Host " -> Removed directory: $Folder"
+    Write-Host "Clearing previously generated server directories..."
+    $GeneratedFolders = @($BinDir, $EtcDir, $LibDir, $LogsDir, $ToolsDir, $LuaDir)
+
+    if ($SkipBotRegen) {
+        Write-Host " -> Keeping pdump and honor (-SkipBotRegen preserves existing data)."
+    } else {
+        $GeneratedFolders += @($PdumpDir, $HonorDir)
+    }
+    foreach ($Folder in $GeneratedFolders) {
+        if (Test-Path $Folder) {
+            # Recursively remove all contents and the folder itself
+            Remove-Item -Path $Folder -Recurse -Force -ErrorAction SilentlyContinue
+            Write-Host " -> Removed directory: $Folder"
+        }
     }
 }
 
@@ -2101,6 +2168,9 @@ Write-Host "[OK] Honor maintenance hotfix table 'character_inventory_copy' succe
 # ==============================================================================
 # PIPELINE STEP 08: CMAKE CONFIGURATION AND COMPILATION
 # ==============================================================================
+if ($DatabaseOnly) {
+    Write-Host "08: Compilation and Build - skipped (-DatabaseOnly touches only the databases)." -ForegroundColor DarkGray
+} else {
 Write-PipelineHeader -StepName "08: Compilation and Build"
 Write-Host "Initializing project build and compilation sequence..."
 
@@ -2153,10 +2223,14 @@ if ($LASTEXITCODE -ne 0) {
     Stop-Pipeline -Message "Compilation step failed. Check $BuildLogPath for detailed compiler error codes." -ExitCode $LASTEXITCODE
 }
 Write-Host "[OK] Binary compilation successfully completed." -ForegroundColor Green
+}
 
 # ==============================================================================
 # PIPELINE STEP 09: INSTALLATION AND DIRECTORY RESTRUCTURING
 # ==============================================================================
+if ($DatabaseOnly) {
+    Write-Host "09: Installation and directory restructuring - skipped (-DatabaseOnly touches only the databases)." -ForegroundColor DarkGray
+} else {
 Write-PipelineHeader -StepName "09: Installation and directory restructuring"
 Write-Host "Installing compiled modules into production environment..."
 
@@ -2254,10 +2328,14 @@ foreach ($DependencyPattern in @("ACE.dll", "boost_*.dll")) {
 
 Write-Host "[OK] Run-time dependency environments fully deployed to $MangosInstalationDir/$MangosLibDir." -ForegroundColor Green
 Write-Host "[OK] Files were set up." -ForegroundColor Green
+}
 
 # ==============================================================================
 # PIPELINE STEP 10: CONFIGURATION INJECTION & TUNING
 # ==============================================================================
+if ($DatabaseOnly) {
+    Write-Host "10: CONFIGURATION INJECTION & TUNING - skipped (-DatabaseOnly touches only the databases)." -ForegroundColor DarkGray
+} else {
 Write-PipelineHeader -StepName "10: CONFIGURATION INJECTION & TUNING"
 Write-Host "Applying automated modifications to configuration files..."
 
@@ -2366,6 +2444,7 @@ if (Test-Path $RealmdConf) {
 } else {
     Stop-Pipeline -Message "Configuration injection failed: Could not locate realmd.conf inside $MangosEtcDir"
 }
+}
 
 # ==============================================================================
 # PIPELINE STEP 11: PLAYERBOTS MODULE DATA IMPORT
@@ -2403,6 +2482,9 @@ if ($SkipBotRegen) {
 # ==============================================================================
 # PIPELINE STEP 12: PLAYERBOT CONFIGURATION TUNING
 # ==============================================================================
+if ($DatabaseOnly) {
+    Write-Host "12: PLAYERBOT CONFIGURATION TUNING - skipped (-DatabaseOnly touches only the databases)." -ForegroundColor DarkGray
+} else {
 $AiPlayerbotConf = Join-Path $EtcDir "aiplayerbot.conf"
 Write-PipelineHeader -StepName "12: PLAYERBOT CONFIGURATION TUNING"
 if (Test-Path $AiPlayerbotConf) {
@@ -2438,6 +2520,7 @@ if (Test-Path $AiPlayerbotConf) {
     Write-Host "[OK] aiplayerbot.conf successfully downscaled using global variables." -ForegroundColor Green
 } else {
     Stop-Pipeline -Message "Configuration injection failed: Could not locate aiplayerbot.conf inside $EtcDir"
+}
 }
 
 
@@ -2495,6 +2578,9 @@ foreach ($Folder in $RequiredRuntimeFolders) {
 #
 # The realm/world launchers put "%~dp0lib" on PATH first: the executables are in bin/ while
 # their runtime DLLs are in lib/ (step 09), and Windows would not find them otherwise.
+if ($DatabaseOnly) {
+    Write-Host "15: SERVER LAUNCHER SCRIPTS - skipped (-DatabaseOnly touches only the databases)." -ForegroundColor DarkGray
+} else {
 Write-PipelineHeader -StepName "15: SERVER LAUNCHER SCRIPTS"
 Write-Host "Verifying server launcher scripts..."
 
@@ -2568,6 +2654,7 @@ New-ServerLauncherScript -Path (Join-Path $InstallDir "2.Realm server.bat") -Con
 New-ServerLauncherScript -Path (Join-Path $InstallDir "3.World server.bat") -Content $WorldLauncherContent
 
 Write-Host "[OK] Server launcher scripts are in place." -ForegroundColor Green
+}
 
 # Release the run lock and singleton, drop the temporary credential files and close the
 # transcript on the success path too.

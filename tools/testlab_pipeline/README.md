@@ -180,12 +180,14 @@ branch — every environment-specific value is a parameter.
 | `-SkipBotRegen` | off | Keeps existing characters/accounts: dumps `tw_char` + `tw_logon` first and restores them at the end. Also leaves `server\pdump` and `server\honor` in place. |
 | `-EnableSqlLog` | off | Writes every SQL statement to a log file (`LogSQL` in `mangosd.conf`). Off by default — on, it's 94% of a normal run's log, mostly per-connection `SET NAMES`/`SET CHARACTER SET` noise. |
 | `-LogLevel` | `0` | Console/log verbosity for mangosd and realmd: `0` Minimum, `1` Basic & Error, `2` Detail, `3` Full/Debug. The shipped templates default to `1`. |
+| `-DatabaseOnly` | off | Touches only the databases — no git update, no compilation, no folder cleanup, no config file changes. Combine with `-SkipBotRegen` to reset only `tw_world` (a "first-boot" test of a new migration); without it, all four databases are dropped and rebuilt. |
 | `-applyPatches` | — | Semicolon-separated commit hashes to cherry-pick, e.g. `-applyPatches "0ee0748;abc1234"`. |
 
 ```powershell
 .\Run-Testlab.bat -VcpkgDirectory D:\vcpkg -RootPassword "hunter2" -SkipBotRegen
 .\Run-Testlab.bat -RepoUrl https://github.com/me/tortoise-wow.git -BranchName my-fix
 .\Run-Testlab.bat -DbFlavor MySQL -DbPort 3307
+.\Run-Testlab.bat -DatabaseOnly -SkipBotRegen
 ```
 
 Full help, including every parameter and more examples:
@@ -279,6 +281,11 @@ sees this machine arriving from its own address and never as `localhost`. Narrow
 
 Afterwards: `server\1.Start mysql.bat`, then `2.Realm server.bat`, then
 `3.World server.bat`. Create your account from the mangosd console with `account create`.
+
+`-DatabaseOnly` skips steps 01, 02, 03, 08, 09, 10, 12 and 15 outright, and the folder-wipe
+half of step 04 (the database-drop half still runs) — everything that isn't a database
+operation. Steps 00b, 05, 06, 07, 11, 13, 14 and the `-SkipBotRegen` backup/restore run
+exactly as they would in a full build.
 
 ### Build flags it passes
 
