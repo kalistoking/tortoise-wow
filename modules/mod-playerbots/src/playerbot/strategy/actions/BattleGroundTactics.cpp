@@ -4534,11 +4534,29 @@ bool BGTactics::atFlag(std::vector<BattleBotPath*> const& vPaths, std::vector<ui
                          sServerFacade.isSpawned(go) ? 1u : 0u, go->IsInUse() ? 1u : 0u, uint32(go->GetGoState()),
                          bot->IsInCombat() ? 1u : 0u);
         };
-        if (!sServerFacade.isSpawned(go) || go->IsInUse() || go->GetGoState() != GO_STATE_READY)
+        // Arathi Basin: skip only an UNSPAWNED banner. A controlled or contested
+        // assault banner (180058-180061, GO type BUTTON) can read IsInUse or a
+        // non-READY GoState yet still be capturable - the capture runs through
+        // SPELL_CAPTURE_BANNER -> EventPlayerClickedOnFlag(go), which the core
+        // validates on its own (status, node event index, ownership). Skipping it
+        // here on the client-interaction gate is what left Horde bots clustering at
+        // an Alliance node without ever re-taking it (tester 2026-09-06). Neutral
+        // GOOBER banners already pass, so this only ADDS attempts on assault
+        // banners; the core rejects a truly invalid one harmlessly. Other BGs keep
+        // the full gate.
+        bool const abBanner = (bgType == BATTLEGROUND_AB);
+        if (!sServerFacade.isSpawned(go))
         {
-            abSay("skipped: not spawned / in use / not READY");
+            abSay("skipped: not spawned");
             continue;
         }
+        if (!abBanner && (go->IsInUse() || go->GetGoState() != GO_STATE_READY))
+        {
+            abSay("skipped: in use / not READY");
+            continue;
+        }
+        if (abBanner && (go->IsInUse() || go->GetGoState() != GO_STATE_READY))
+            abSay("assault banner in use / not READY -> attempting capture anyway");
 
         // Test the cheap side first: CanInteract logs a core error when the bot
         // is out of range, so with the operands the other way round every
