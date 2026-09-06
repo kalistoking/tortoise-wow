@@ -11,6 +11,7 @@
 #include "DungeonClearUtil.h"   // DC_PULL_* log macros
 #include "Ai/Dungeon/DungeonClear/Settings/DcSettings.h"
 #include <algorithm>
+#include <cstdio>
 #include <cmath>
 #include <cstdint>
 #include <limits>
@@ -590,7 +591,20 @@ std::string DcPartyState::DescribePartyNotReady(Player* bot,
             ((spreadAnchor ? member->GetDistance(*spreadAnchor)
                            : bot->GetDistance(member)) > maxSpread ||
              (maxTankGap > 0.0f && bot->GetDistance(member) > maxTankGap)))
-            reason = "out of range";
+        {
+            // Say how far and WHERE. Sunken Temple 2026-09-05: a run died after
+            // eight minutes of "Waiting on X (out of range)" with no other line
+            // about X anywhere - the stranded recovery never fired and nobody
+            // knew whether X stood 61 yd away on another floor or 600 yd away at
+            // the entrance. Map id included: a member on another map is "out of
+            // range" too, and looks the same without it.
+            char where[96];
+            snprintf(where, sizeof(where), "out of range %dyd at %d,%d,%d map %u",
+                     int(bot->GetDistance(member)),
+                     int(member->GetPositionX()), int(member->GetPositionY()),
+                     int(member->GetPositionZ()), member->GetMapId());
+            reason = where;
+        }
         else if (member->GetHealthPct() < minHpPct)
             reason = "low HP";
         else if (member->getPowerType() == POWER_MANA)
