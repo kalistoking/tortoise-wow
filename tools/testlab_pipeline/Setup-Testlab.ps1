@@ -59,6 +59,10 @@
         -LogLevel                 0 Minimum | 1 Basic&Error
                                   | 2 Detail | 3 Full/Debug (default: 0)
 
+      Server access
+        -ForcePinAccountRank      lowest GM rank forced to a
+                                  login PIN/2FA prompt      (default: 6)
+
       Database-only mode
         -DatabaseOnly             skip git/build/folders/config, touch only
                                   the databases (default: off)
@@ -242,6 +246,15 @@
     the DB content warnings step 01 and mangosd's table loader print on startup (missing
     creature_movement paths and the like) - those come from the world database's own
     content, not from this setting, and stay visible at every level.
+.PARAMETER ForcePinAccountRank
+    Lowest GM security rank realmd forces a login PIN/2FA prompt onto - the comparison in
+    AuthSocket.cpp is securityRank >= this value, so a lower number catches more accounts.
+    realmd.conf ships this at 1, which reaches every rank above a plain player
+    (SEC_MODERATOR = 2 and up, including SEC_ADMINISTRATOR = 4 - src/shared/Common.h).
+    Defaults here to 6 (SEC_CONSOLE, the highest rank this core defines) instead, so a
+    testlab's own GM/Admin account is not stopped by a PIN prompt it never set up on a
+    machine nobody else can reach. Set it to 1 to restore the shipped default, or to
+    whatever rank should actually be gated.
 .EXAMPLE
     .\Run-Testlab.bat
     The normal run: builds everything and rebuilds every database from scratch. Use the .bat
@@ -436,6 +449,15 @@ param (
     # read.
     [switch]$EnableSqlLog,
     [int]$LogLevel = 0,
+
+    # realmd.conf ships this at 1 (SEC_MODERATOR and up all get a forced PIN/2FA prompt on
+    # login, since the comparison is securityRank >= this value - see AuthSocket.cpp). A
+    # testlab's own GM/Admin account (SEC_ADMINISTRATOR = 4) gets caught by that default,
+    # which is a poor fit for a machine nobody else can reach. 6 (SEC_CONSOLE, the highest
+    # rank this core defines - src/shared/Common.h) is the new default: high enough that no
+    # account below Console tier is forced into a PIN it never asked for, while leaving the
+    # feature itself intact rather than disabling it outright.
+    [int]$ForcePinAccountRank = 6,
 
     # Orthogonal to -SkipBotRegen, not a replacement for it: this one decides whether git,
     # the compiler, the server folders and the config files are touched at all; SkipBotRegen
@@ -3035,9 +3057,10 @@ if (Test-Path $RealmdConf) {
     (Get-Content $RealmdConf) `
         -replace '^LoginDatabaseInfo\s*=\s*".*"', (ConvertTo-ReplacementLiteral $NewRealmdLoginInfoSetting) `
         -replace '^LogLevel\s*=\s*.*', "LogLevel = $LogLevel" `
+        -replace '^ForcePinAccountRank\s*=\s*.*', "ForcePinAccountRank = $ForcePinAccountRank" `
         | Set-Content $RealmdConf
 
-    Write-Host "[OK] realmd.conf updated with the login database connection and logging (LogLevel=$LogLevel)." -ForegroundColor Green
+    Write-Host "[OK] realmd.conf updated with the login database connection, logging (LogLevel=$LogLevel), and ForcePinAccountRank=$ForcePinAccountRank." -ForegroundColor Green
 } else {
     Stop-Pipeline -Message "Configuration injection failed: Could not locate realmd.conf inside $MangosEtcDir"
 }
