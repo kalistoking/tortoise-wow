@@ -2284,7 +2284,15 @@ if (-not [string]::IsNullOrEmpty($applyPatches)) {
                                     "exists on $TargetRemoteUrl or in the local checkout.")
         }
 
-        $RefCommits = @(git log "HEAD..$ResolvedRef" --format="%H" --reverse 2>$null)
+        # --no-merges: a ref that is on a differently-merged branch than the one being built
+        # (a patch cut from 1181dev, say, applied while building bot-helpers) can carry one of
+        # that branch's own sync merges in this range even though it is not part of the patch
+        # at all - "Merge bot-helpers into 1181dev" showed up this way once, and git cherry-pick
+        # refuses any merge commit outright ("is a merge but no -m option was given") long
+        # before it would get anywhere near a real conflict. Dropping merges here is safe: the
+        # actual content of a patch always arrives as ordinary commits, never as the commit
+        # that stitches two branches back together.
+        $RefCommits = @(git log "HEAD..$ResolvedRef" --no-merges --format="%H" --reverse 2>$null)
 
         if ($RefCommits.Count -eq 0) {
             Write-Host " -> [SKIP] '$PatchEntry' ($ResolvedRef) carries nothing this checkout does not already have."
@@ -2331,6 +2339,20 @@ if (-not [string]::IsNullOrEmpty($applyPatches)) {
         $CommitInLog = git log -n 100 --format="%H" | Where-Object { $_ -eq $CommitHash }
 
         if (-not $IsAlreadyInTree -and -not $CommitInLog) {
+            # A merge commit named directly by hash skips the --no-merges filter above (that
+            # only screens what a branch/tag name expands to), and git cherry-pick rejects one
+            # outright rather than producing a conflict to resolve - "is a merge but no -m
+            # option was given" - which the generic failure message below would otherwise
+            # report as a content collision it never was. -m would only be a guess at which
+            # parent's diff was meant, so this stops and asks for a real commit instead of
+            # picking one silently.
+            $ParentCount = @(git rev-list --parents -n 1 $CommitHash 2>$null | ForEach-Object { $_ -split ' ' } | Select-Object -Skip 1).Count
+            if ($ParentCount -gt 1) {
+                Pop-Location
+                Stop-Pipeline -Message ("-applyPatches entry '$CommitHash' is a merge commit ($ParentCount parents), " +
+                                        "not a change to cherry-pick. Name the real commit(s) it merged in instead.")
+            }
+
             Write-Host "Applying runtime custom code patch ($CommitHash) via automated cherry-pick stream..." -ForegroundColor Yellow
 
             # 3. Trigger the code injection stitching
@@ -2344,7 +2366,7 @@ if (-not [string]::IsNullOrEmpty($applyPatches)) {
                     git cherry-pick --skip 2>$null
                     Write-Host " -> [OK] Custom patch $CommitHash was already integrated into the active layout tree." -ForegroundColor Green
                 } else {
-                    git cherry-pick --abort
+                    git cherry-pick --abort 2>$null
                     Pop-Location
                     Stop-Pipeline -Message "CRITICAL: Cherry-pick collision conflict detected on hash $CommitHash. Patch dropped and pipeline stopped - resolve it manually before rebuilding."
                 }
