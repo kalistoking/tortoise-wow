@@ -2466,6 +2466,83 @@ if (-not [string]::IsNullOrEmpty($applyPatches)) {
 }
 }
 # ==============================================================================
+# PIPELINE STEP 03b: PROMOTE sql/wip_updates INTO A DATABASE_UPDATES MIGRATION
+# ==============================================================================
+# sql/wip_updates holds small or incomplete SQL fixes that have not earned a proper
+# numbered migration yet (see sql/wip_updates/what-are-these.txt) - normally someone runs
+# create_update.sh by hand once enough of them pile up. Step 10 already points
+# mangosd.conf's Database.AutoUpdate.Path straight at this checkout's sql/database_updates,
+# so anything sitting in sql/database_updates/world by the server's next boot gets applied
+# automatically - this step keeps that fed on every run instead of waiting on a manual
+# promotion.
+#
+# It cannot just reuse create_update.sh's own output format: that script stamps a live
+# wall-clock timestamp into the generated file's body, so two runs over identical wip
+# content produce byte-different files - and the DB Auto-Updater tracks what it already
+# applied by hashing file CONTENT, not by filename. Under -SkipDatabase (a database that
+# persists across runs), that would re-apply the same wip fixes as a "new" migration every
+# single run. Leaving the timestamp out of the body instead means identical wip content
+# always produces an identical generated file, which the Auto-Updater correctly recognizes
+# as already applied - only an actual edit to something under wip_updates changes the
+# generated file's hash and lands as a fresh migration.
+if ($SkipDatabase) {
+    Write-Host "03b: Promoting sql/wip_updates - skipped (-SkipDatabase touches everything except the databases)." -ForegroundColor DarkGray
+} else {
+Write-PipelineHeader -StepName "03b: Promoting sql/wip_updates"
+
+$WipUpdatesDir   = Join-Path $SourceDir "sql/wip_updates"
+$WorldUpdatesDir = Join-Path $SourceDir "sql/database_updates/world"
+
+# A sentinel-high numeric prefix sorts after every real, date-stamped migration under
+# Database.AutoUpdate.SortByName - this always reflects the current tip of wip_updates, so
+# it belongs applied last, layered on top of everything else.
+$WipMigrationPrefix = "99999999999999_wip_"
+
+# Whatever this step generated on a previous run is superseded the moment it runs again -
+# the Auto-Updater already has any of it that was actually applied recorded by content
+# hash in its own migrations table, so removing the file here does not "unapply" anything.
+if (Test-Path -LiteralPath $WorldUpdatesDir) {
+    Get-ChildItem -LiteralPath $WorldUpdatesDir -Filter "$($WipMigrationPrefix)*.sql" -ErrorAction SilentlyContinue |
+        Remove-Item -Force
+}
+
+$WipFiles = @()
+if (Test-Path -LiteralPath $WipUpdatesDir) {
+    $WipFiles = @(Get-ChildItem -LiteralPath $WipUpdatesDir -Filter "*.sql" -ErrorAction SilentlyContinue | Sort-Object Name)
+}
+
+if ($WipFiles.Count -eq 0) {
+    Write-Host " -> No pending fixes in sql/wip_updates." -ForegroundColor DarkGray
+} else {
+    $Sections = foreach ($WipFile in $WipFiles) {
+        ("-- ==============================================`n" +
+         "-- FILE: $($WipFile.Name)`n" +
+         "-- SOURCE: sql/wip_updates (testlab pipeline auto-promotion)`n" +
+         "-- ==============================================`n") + (Get-Content -LiteralPath $WipFile.FullName -Raw)
+    }
+    $GeneratedContent = ($Sections -join "`n`n") + "`n"
+
+    # Named after a hash of its own content, not the clock - see the comment above this step.
+    $Sha256 = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        $ContentHashBytes = $Sha256.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($GeneratedContent))
+    } finally {
+        $Sha256.Dispose()
+    }
+    $ContentHash = (-join ($ContentHashBytes | ForEach-Object { $_.ToString("x2") })).Substring(0, 12)
+
+    New-Item -ItemType Directory -Path $WorldUpdatesDir -Force | Out-Null
+    $GeneratedFile = Join-Path $WorldUpdatesDir "${WipMigrationPrefix}${ContentHash}_world.sql"
+
+    # BOM-less UTF-8: every other file in sql/database_updates is plain UTF-8, and a leading
+    # BOM would land in front of the first SQL statement the server reads at boot.
+    [System.IO.File]::WriteAllText($GeneratedFile, $GeneratedContent, (New-Object System.Text.UTF8Encoding($false)))
+
+    Write-Host " -> Promoted $($WipFiles.Count) file(s) from sql/wip_updates -> $(Split-Path -Leaf $GeneratedFile)" -ForegroundColor Green
+    Write-Host "    Applied automatically on the server's next boot, same as any other migration." -ForegroundColor DarkGray
+}
+}
+# ==============================================================================
 # PIPELINE STEP (OPTIONAL): CONDITIONAL BACKUP SECTION: EXPORT ENTIRE DATABASE STRUCTURES
 # ==============================================================================
 # IMPORTANT: this is the pipeline's only protection for the character data. Step 05 imports

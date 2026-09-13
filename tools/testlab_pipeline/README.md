@@ -433,19 +433,41 @@ Afterwards: `server\1.Start mysql.bat`, then `2.Realm server.bat`, then
 
 `-DatabaseOnly` skips steps 01, 02, 03, 08, 09, 10, 12 and 15 outright, and the folder-wipe
 half of step 04 (the database-drop half still runs) — everything that isn't a database
-operation. Steps 00b, 05, 06, 07, 11, 13, 14 and the `-SkipBotRegen` backup/restore run
+operation. Steps 00b, 03b, 05, 06, 07, 11, 13, 14 and the `-SkipBotRegen` backup/restore run
 exactly as they would in a full build.
 
 `-SkipDatabase` is the exact opposite set: it skips the database-drop half of step 04, steps
-05, 06, 07, 11 and 13 outright, and the `-SkipBotRegen` backup/restore pair (nothing drops
-`tw_char` this run, so there is nothing for it to guard). Preflight's wait for the database
-server to be up is skipped too. Everything else — 00b's tool checks, 01 through 03, the
-folder-wipe half of 04, 08 through 10, 12, 14 and 15 — runs exactly as it would in a full
+03b, 05, 06, 07, 11 and 13 outright, and the `-SkipBotRegen` backup/restore pair (nothing
+drops `tw_char` this run, so there is nothing for it to guard). Preflight's wait for the
+database server to be up is skipped too. Everything else — 00b's tool checks, 01 through 03,
+the folder-wipe half of 04, 08 through 10, 12, 14 and 15 — runs exactly as it would in a full
 build.
 
 Preflight also makes one best-effort, non-blocking check under `-SkipDatabase`: if the
 database server answers and the world database isn't there, it prints a single warning line
 and keeps going; if the server can't be reached at all, it says nothing rather than guessing.
+
+### Step 03b: promoting `sql/wip_updates`
+
+`sql/wip_updates` holds small or incomplete SQL fixes that have not earned a proper numbered
+migration yet (see `sql/wip_updates/what-are-these.txt`) — normally someone runs
+`create_update.sh` by hand once enough of them pile up. Step 10 already points
+`mangosd.conf`'s `Database.AutoUpdate.Path` straight at this checkout's
+`sql/database_updates`, so anything sitting in `sql/database_updates/world` by the server's
+next boot is applied automatically. Every run, step 03b regenerates a single
+`99999999999999_wip_<hash>_world.sql` in there from whatever is currently in
+`sql/wip_updates`, replacing whatever it generated last time.
+
+Unlike `create_update.sh`, it never stamps a live timestamp into the generated file's body:
+the DB Auto-Updater tracks what it already applied by hashing file *content*, not filename,
+so a timestamp baked into the body would make every run's output byte-different and get the
+same wip fixes re-applied as a "new" migration every single time — a real problem under
+`-SkipDatabase`; where a database persists across runs. Naming the file after a hash of its
+own content instead means unchanged wip content always regenerates the same file, which the
+Auto-Updater correctly recognizes as already applied; only an actual edit under
+`sql/wip_updates` produces a new hash and a fresh migration. It runs on every build except
+under `-SkipDatabase` (skipped, like every other database step) — including in a
+`-DatabaseOnly` run.
 
 ### Build flags it passes
 
