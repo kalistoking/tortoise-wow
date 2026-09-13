@@ -1,0 +1,15 @@
+-- One pickpocketing_loot_template row references an item that does not exist,
+-- so every startup logs:
+--
+--     Table 'pickpocketing_loot_template' entry 988079 item 1709: item entry not listed in `item_template` - skipped
+--
+-- Item 1709 is a hole in an otherwise contiguous run - 1707 (Stormwind Brie),
+-- 1708 (Sweet Nectar), 1710 (Greater Healing Potion) and 1711 (Scroll of
+-- Stamina II) are all present, 1709 is not, and it is absent from the community
+-- databases too. The remaining 14 rows of this table are exactly what those
+-- databases list for its users (Anvilrage Overseer, Anvilrage Warden and four
+-- quest objective triggers).
+--
+-- LootStore::LoadLootTable already skips the row, so removing it changes nothing
+-- beyond the warning.
+DELETE FROM `pickpocketing_loot_template` WHERE `entry` = 988079 AND `item` = 1709;
