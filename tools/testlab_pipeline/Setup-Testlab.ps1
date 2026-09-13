@@ -2041,6 +2041,38 @@ if (-not (Test-Path $SourceDir)) {
     }
 
     if ($BranchIsOnRemote) {
+        # -applyPatches commits its cherry-picks onto this branch, and nothing removes them
+        # afterwards - by design, so a run that fails partway through still leaves a checkout
+        # someone can inspect. That means a second run against a branch the remote has since
+        # moved on from finds those commits still sitting there, diverged. A pull cannot be
+        # trusted to sort that out on its own: if the remote's own history now carries the
+        # same fix - the ordinary result of a patch actually getting merged - it is only ever
+        # identical byte-for-byte to what was cherry-picked here when nothing about it changed
+        # in review, which is the exception rather than the rule (a comment trimmed, wording
+        # changed - the fix this same script's own patches went through). Anything short of
+        # that produces the exact conflict this is guarding against: verified by reproducing
+        # it with `git pull --rebase` in place of a plain pull, which still conflicted the
+        # moment the two sides' text differed at all, despite carrying the same fix.
+        #
+        # So this stops rather than guesses. A workspace built entirely by this script never
+        # hits it - each run's checkout starts from the remote as of that run - it only
+        # happens when $SourceDir is reused across runs whose upstream moved in the meantime.
+        $AheadCount = [int](git rev-list --count "$SourceRemote/$BranchName..HEAD" 2>$null)
+        if ($AheadCount -gt 0) {
+            Pop-Location
+            Stop-Pipeline -Message (
+                "'$BranchName' in $SourceDir has $AheadCount commit(s) that $SourceRemote/$BranchName does not - " +
+                "most likely -applyPatches commits left over from an earlier run, now that the branch has moved on " +
+                "upstream. Pulling from here is liable to conflict, sometimes confusingly, on the very files those " +
+                "patches touched.`n`n" +
+                "If that is what these are (check with: git -C `"$SourceDir`" log ${SourceRemote}/${BranchName}..HEAD), " +
+                "the safe fix is to drop them and let this run's -applyPatches, if any, re-apply fresh:`n" +
+                "  git -C `"$SourceDir`" reset --hard $SourceRemote/$BranchName`n`n" +
+                "If they are your own work you want to keep, commit or push them somewhere else first - this script " +
+                "always treats a branch that exists on -RepoUrl as tracking that remote, not as a place to accumulate " +
+                "local history.")
+        }
+
         # Pull the remote and branch by name rather than relying on tracking configuration.
         # A bare "git pull" needs an upstream, and a branch created locally - or checked out
         # from a different remote - has none: "There is no tracking information for the
