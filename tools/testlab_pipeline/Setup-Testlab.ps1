@@ -3259,6 +3259,23 @@ function Get-ModuleSqlFiles {
     return @($Files | Sort-Object Name)
 }
 
+# Every module's character SQL seen so far opens each table with a plain
+# "CREATE TABLE IF NOT EXISTS `name`", so that alone is enough to name the tables
+# -SkipBotRegen is about to hold back - this does not need to (and does not try to) parse
+# the SQL beyond that.
+function Get-SqlCreateTableNames {
+    param ([Parameter(Mandatory = $true)][string[]]$FilePaths)
+    $Names = New-Object System.Collections.Generic.List[string]
+    foreach ($FilePath in $FilePaths) {
+        $Content = Get-Content -LiteralPath $FilePath -Raw -ErrorAction SilentlyContinue
+        if (-not $Content) { continue }
+        foreach ($Match in [regex]::Matches($Content, '(?im)^\s*CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?(\w+)`?')) {
+            $Names.Add($Match.Groups[1].Value)
+        }
+    }
+    return @($Names | Select-Object -Unique)
+}
+
 $AnySqlFound = $false
 
 foreach ($Module in $script:SyncedModules) {
@@ -3274,7 +3291,31 @@ foreach ($Module in $script:SyncedModules) {
     $CharFiles = Get-ModuleSqlFiles -ModuleRoot $ModuleRoot -Subdirectories $CharSqlSubdirectories
     if ($CharFiles.Count -gt 0) { $AnySqlFound = $true }
     if ($SkipBotRegen -and $CharFiles.Count -gt 0) {
-        Write-Host (" -> [SKIP] " + $Module.Name + " character SQL held back by -SkipBotRegen.") -ForegroundColor Yellow
+        # -SkipBotRegen holding this back assumes $CharacterDatabaseName already has it from
+        # an earlier -WithPlayerBots run. A best-effort, non-blocking check here: if NONE of
+        # the tables this module's character SQL creates actually exist yet, that assumption
+        # is false, and the compiled server will crash at boot the moment it queries the
+        # first missing one - a plain silent skip would leave that failure to be discovered
+        # only there. If the check itself cannot run for any reason, stay silent and fall
+        # back to the plain skip message rather than risk a false alarm.
+        $CandidateTables = Get-SqlCreateTableNames -FilePaths $CharFiles.FullName
+        $ExistingTableCount = -1
+        if ($CandidateTables.Count -gt 0) {
+            $InClause = ($CandidateTables | ForEach-Object { "'" + ($_ -replace "'", "''") + "'" }) -join ","
+            $ExistingTableCountRaw = & $MariaDBPath "--defaults-extra-file=$($script:RootDefaultsFile)" -N -B `
+                                                     -e "SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$CharacterDatabaseName' AND TABLE_NAME IN ($InClause);" 2>$null
+            if ($LASTEXITCODE -eq 0) { $ExistingTableCount = [int]("$ExistingTableCountRaw".Trim()) }
+        }
+
+        if ($ExistingTableCount -eq 0) {
+            Write-Warning ($Module.Name + " character SQL held back by -SkipBotRegen, but none of its tables " +
+                           "(e.g. ``$($CandidateTables[0])``) exist yet in $CharacterDatabaseName - this looks " +
+                           "like the first time this module has touched this database, and the server will " +
+                           "likely crash at boot on the first missing table. Run once WITHOUT -SkipBotRegen to " +
+                           "seed it, then -SkipBotRegen is safe to combine with -WithPlayerBots again.")
+        } else {
+            Write-Host (" -> [SKIP] " + $Module.Name + " character SQL held back by -SkipBotRegen.") -ForegroundColor Yellow
+        }
     } else {
         foreach ($SqlFile in $CharFiles) {
             Write-Host (" -> characters: " + $Module.Name + "/" + $SqlFile.Name)

@@ -268,7 +268,7 @@ branch — every environment-specific value is a parameter.
 | `-MinRandomBots` / `-MaxRandomBots` | `5` / `10` | Bot population written into `aiplayerbot.conf`. |
 | `-RandomBotMinLevel` / `-RandomBotMaxLevel` | `1` / `20` | Bot level range. |
 | `-RandomBotAccountsCount` | `10` | Number of bot accounts. |
-| `-SkipBotRegen` | off | Keeps existing characters/accounts: dumps `tw_char` + `tw_logon` first and restores them at the end. Also leaves `server\pdump` in place — the only copy of an exported character. `server\honor` is cleared either way; nothing in it survives the server restart it was written for. |
+| `-SkipBotRegen` | off | Keeps existing characters/accounts: dumps `tw_char` + `tw_logon` first and restores them at the end. Also leaves `server\pdump` in place — the only copy of an exported character. `server\honor` is cleared either way; nothing in it survives the server restart it was written for. With `-WithPlayerBots`, it also holds back the bot module's character-side SQL — safe once `tw_char` already carries it from an earlier run, but the first time a module touches a given `tw_char`, its tables do not exist yet; step 11 checks for that and warns instead of silently skipping, since the server otherwise crashes at boot on the first missing table. |
 | `-EnableSqlLog` | off | Writes every SQL statement to a log file (`LogSQL` in `mangosd.conf`). Off by default — on, it's 94% of a normal run's log, mostly per-connection `SET NAMES`/`SET CHARACTER SET` noise. |
 | `-LogLevel` | `0` | Console/log verbosity for mangosd and realmd: `0` Minimum, `1` Basic & Error, `2` Detail, `3` Full/Debug. The shipped templates default to `1`. |
 | `-DatabaseOnly` | off | Touches only the databases — no git update, no compilation, no folder cleanup, no config file changes. Combine with `-SkipBotRegen` to reset only `tw_world` (a "first-boot" test of a new migration); without it, all four databases are dropped and rebuilt. |
@@ -413,6 +413,7 @@ sees this machine arriving from its own address and never as `localhost`. Narrow
 | 02 | `vcpkg install` for ACE and Boost |
 | 03 | Clone or pull the source, update submodules |
 | — | *(`-WithPlayerBots`)* sync the bot module from `-PlayerBotsRepoUrl`; optional cherry-picks |
+| 03b | Regenerate a migration in `sql\database_updates\world` from `sql\wip_updates` |
 | — | *(`-SkipBotRegen`)* verified `mysqldump` of `tw_char` + `tw_logon` |
 | 04 | Stop running servers, wipe generated server dirs, drop databases |
 | 05 | `create_databases.sql`, then all 186 world files from `sql\base` |
@@ -422,7 +423,7 @@ sees this machine arriving from its own address and never as `localhost`. Narrow
 | 08 | CMake configure + Release build → `server_build.log` |
 | 09 | Install, sort binaries into `bin\`/`tools\`, DLLs into `lib\`, configs into `etc\` |
 | 10 | Rewrite paths in `mangosd.conf` |
-| 11 | *(`-WithPlayerBots`)* import the bot module's SQL |
+| 11 | *(`-WithPlayerBots`)* import the bot module's SQL — `-SkipBotRegen` holds back the character-side half, unless a best-effort check finds none of its tables exist in `tw_char` yet, in which case it warns instead of silently skipping |
 | 12 | *(`mod-playerbots` only)* scale the bot population down in `aiplayerbot.conf` |
 | 13 | Insert the local realm into `tw_logon.realmlist` |
 | 14 | Create `logs\`, `honor\`, `pdump\`, `lua_scripts\` |
