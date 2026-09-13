@@ -3110,14 +3110,14 @@ if (-not $AnySqlFound) {
 # ==============================================================================
 # PIPELINE STEP 12: PLAYERBOT CONFIGURATION TUNING
 # ==============================================================================
-# aiplayerbot.conf is mod-playerbots' own configuration file, so this step is about that one
-# module rather than about bots in general - another bot module has its own conf and is left
-# to the .dist file the build installs.
-$Step12HasPlayerbots = @($script:SyncedModules | Where-Object { $_.Name -eq "mod-playerbots" }).Count -gt 0
-if ($DatabaseOnly -or (-not $WithPlayerBots) -or (-not $Step12HasPlayerbots)) {
-    $Step12SkipReason = if ($DatabaseOnly) { "-DatabaseOnly touches only the databases" }
-                        elseif (-not $WithPlayerBots) { "no -WithPlayerBots" }
-                        else { "this run's bot module is not mod-playerbots" }
+# aiplayerbot.conf is a config schema, not a single module's property - Sagiroth/TortoiseBots
+# installs a file by that exact name (ai/playerbot/aiplayerbot.conf.dist.in), reusing the
+# AiPlayerbot.* keys mod-playerbots established, alongside ones of its own. So the gate here
+# is the file actually being there, not which module's name matched - a module that ships a
+# differently-shaped conf has nothing for this step to do, which Test-Path below reports as a
+# skip rather than an error.
+if ($DatabaseOnly -or (-not $WithPlayerBots)) {
+    $Step12SkipReason = if ($DatabaseOnly) { "-DatabaseOnly touches only the databases" } else { "no -WithPlayerBots" }
     Write-Host "12: PLAYERBOT CONFIGURATION TUNING - skipped ($Step12SkipReason)." -ForegroundColor DarkGray
 } else {
 $AiPlayerbotConf = Join-Path $EtcDir "aiplayerbot.conf"
@@ -3130,11 +3130,26 @@ if (Test-Path $AiPlayerbotConf) {
     #    ones are RandomBotAccountPrefix and RandomBotAccountCount - so the replacement that
     #    used to target it (with an undefined $NewBotAccSetting) was removed rather than
     #    given a value: the prefix is left at whatever the shipped template defines.
+    #
+    #    RandomBotMinLevel does not exist in Sagiroth/TortoiseBots' template at all - only
+    #    RandomBotMaxLevel - so that -replace is a harmless no-op there; mod-playerbots'
+    #    template has both.
     $OldMinBotsPattern = '^AiPlayerbot\.MinRandomBots\s*=\s*.*'
     $OldMaxBotsPattern = '^AiPlayerbot\.MaxRandomBots\s*=\s*.*'
 	$OldRandomBotMinLevelPattern = '^AiPlayerbot\.RandomBotMinLevel\s*=\s*.*'
 	$OldRandomBotMaxLevelPattern = '^AiPlayerbot\.RandomBotMaxLevel\s*=\s*.*'
 	$OldRandomBotAccountCountPattern  = '^AiPlayerbot\.RandomBotAccountCount\s*=\s*.*'
+
+    # Every module shipping this schema ships these four switched off, since a config
+    # template has to default to inert - flipping them is the whole reason -WithPlayerBots
+    # syncs and imports a bot module's own SQL in the first place; without this a build with
+    # bots compiled in and their tables filled would still run with the bots dormant.
+    # BotAutologin (a different key, for logging a player's own alts in as bots) is left
+    # alone - nothing here asked for that, and it is not part of "turn the random bots on".
+    $OldEnabledPattern                 = '^AiPlayerbot\.Enabled\s*=\s*.*'
+    $OldRandomBotAutologinPattern      = '^AiPlayerbot\.RandomBotAutologin\s*=\s*.*'
+    $OldRandomBotLoginAtStartupPattern = '^AiPlayerbot\.RandomBotLoginAtStartup\s*=\s*.*'
+    $OldRandomBotAutoCreatePattern     = '^AiPlayerbot\.RandomBotAutoCreate\s*=\s*.*'
 
     # 2. Define the new optimized target settings for fast testbed scaling
     $NewMinBotsSetting = "AiPlayerbot.MinRandomBots = $MinRandomBots"
@@ -3142,6 +3157,10 @@ if (Test-Path $AiPlayerbotConf) {
 	$NewRandomBotMinLevelSetting = "AiPlayerbot.RandomBotMinLevel = $RandomBotMinLevel"
 	$NewRandomBotMaxLevelSetting = "AiPlayerbot.RandomBotMaxLevel = $RandomBotMaxLevel"
 	$NewRandomBotAccountCountSetting  = "AiPlayerbot.RandomBotAccountCount = $RandomBotAccountsCount"
+    $NewEnabledSetting                 = "AiPlayerbot.Enabled = 1"
+    $NewRandomBotAutologinSetting      = "AiPlayerbot.RandomBotAutologin = 1"
+    $NewRandomBotLoginAtStartupSetting = "AiPlayerbot.RandomBotLoginAtStartup = 1"
+    $NewRandomBotAutoCreateSetting     = "AiPlayerbot.RandomBotAutoCreate = 1"
 
     # 3. Read content, execute chained text replacements, and save back to file
     (Get-Content $AiPlayerbotConf) `
@@ -3150,11 +3169,15 @@ if (Test-Path $AiPlayerbotConf) {
 		-replace $OldRandomBotMinLevelPattern,  $NewRandomBotMinLevelSetting  `
 		-replace $OldRandomBotMaxLevelPattern,  $NewRandomBotMaxLevelSetting  `
 		-replace $OldRandomBotAccountCountPattern,  $NewRandomBotAccountCountSetting  `
+        -replace $OldEnabledPattern, $NewEnabledSetting `
+        -replace $OldRandomBotAutologinPattern, $NewRandomBotAutologinSetting `
+        -replace $OldRandomBotLoginAtStartupPattern, $NewRandomBotLoginAtStartupSetting `
+        -replace $OldRandomBotAutoCreatePattern, $NewRandomBotAutoCreateSetting `
         | Set-Content $AiPlayerbotConf
 
-    Write-Host "[OK] aiplayerbot.conf successfully downscaled using global variables." -ForegroundColor Green
+    Write-Host "[OK] aiplayerbot.conf successfully downscaled and enabled using global variables." -ForegroundColor Green
 } else {
-    Stop-Pipeline -Message "Configuration injection failed: Could not locate aiplayerbot.conf inside $EtcDir"
+    Write-Host "12: PLAYERBOT CONFIGURATION TUNING - skipped (this run's bot module does not use the AiPlayerbot config schema)." -ForegroundColor DarkGray
 }
 }
 
