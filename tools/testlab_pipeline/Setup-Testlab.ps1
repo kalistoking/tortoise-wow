@@ -66,6 +66,8 @@
       Database-only mode
         -DatabaseOnly             skip git/build/folders/config, touch only
                                   the databases (default: off)
+        -SkipDatabase             the mirror image: touch everything except
+                                  the databases (default: off)
 
       Modules
         -WithPlayerBots           add the bot module from
@@ -92,6 +94,20 @@
     (the existing launcher .bat files) - that boot is the actual test: an empty
     'migrations' table means the DB Auto-Updater applies every migration exactly as
     it would on a brand-new install.
+.PARAMETER SkipDatabase
+    The mirror image of -DatabaseOnly: git, the compiler, the server folders and the
+    config files are touched exactly as normal, and every database step is skipped
+    instead - no CREATE/DROP DATABASE, no SQL import, no CREATE USER/GRANT, no
+    realmlist write, no mysqldump backup/restore. Combining it with -DatabaseOnly is a
+    contradiction the preflight refuses outright.
+    For iterating on a code or config change without disturbing a database that
+    already has real data in it. This assumes that database, its schema, and the
+    'mangos' user already exist from an earlier run - step 10 writes a connection
+    string that has to already work, since nothing here (re)creates the account it
+    names. Using it on a workspace that has never had a database at all does not break
+    anything - every skipped step just does not run - it only means mangosd/realmd
+    will fail to connect when started, the same as pointing any config at a database
+    that is not there.
 .PARAMETER applyPatches
     Semicolon-separated list of things to cherry-pick onto the branch before building,
     fetched from -PatchRemoteUrl. Each entry is either a commit hash or the name of a branch
@@ -464,6 +480,20 @@ param (
     # (already respected by every database step below, unchanged) decides which databases
     # survive the run. Combined, they are the "tw_world First-Boot Reset" case.
     [switch]$DatabaseOnly,
+
+    # The mirror image of -DatabaseOnly: git, the compiler, the server folders and the config
+    # files are touched exactly as normal, and every database step is skipped instead - no
+    # CREATE/DROP DATABASE, no SQL import, no CREATE USER/GRANT, no realmlist write, no
+    # mysqldump backup/restore. For iterating on a code or config change without disturbing a
+    # database that already has real data in it.
+    #
+    # This assumes that database, its schema, and the 'mangos' user already exist from an
+    # earlier run - step 10 writes a connection string that has to already work, since
+    # nothing here creates the account it names. Using this on a workspace that has never had
+    # a database at all does not break anything - every skipped step just does not run - it
+    # only means mangosd/realmd will fail to connect when started, same as pointing any
+    # config at a database that is not there.
+    [switch]$SkipDatabase,
 
     # Adds the bot module from -PlayerBotsRepoUrl on top of the engine. Off by default
     # because the default -RepoUrl carries no modules at all; see the parameter help.
@@ -1730,6 +1760,11 @@ Write-Host "[OK] Variables were set up."  -ForegroundColor Green
 Write-PipelineHeader -StepName "00b: Preflight"
 Write-Host "Verifying the tools and services this run depends on..."
 
+# A run cannot both touch only the databases and touch everything except them.
+if ($DatabaseOnly -and $SkipDatabase) {
+    Stop-Pipeline -Message "-DatabaseOnly and -SkipDatabase contradict each other - pick one."
+}
+
 if ($DatabaseOnly) {
     Write-Host " -> git/cmake/vcpkg: skipped (-DatabaseOnly touches only the databases)."
 } else {
@@ -1752,9 +1787,11 @@ Write-Host " -> vcpkg: $VcpkgExecutable"
 
 Write-Host " -> client: $MariaDBPath"
 
-# The dump tool is only reached on the -SkipBotRegen path, but finding out it is missing
-# after the backup was supposed to happen would be far too late.
-if ($SkipBotRegen) {
+# The dump tool is only reached on the -SkipBotRegen path - and not even then under
+# -SkipDatabase, which skips the backup/restore pair along with everything else database-
+# shaped - but finding out it is missing after the backup was supposed to happen would be
+# far too late.
+if ($SkipBotRegen -and -not $SkipDatabase) {
     if (-not $MySQLDumpPath -or -not (Test-Path -LiteralPath $MySQLDumpPath)) {
         Stop-Pipeline -Message ("-SkipBotRegen needs mysqldump.exe / mariadb-dump.exe to back your data up first, " +
                                 "and neither is next to $MariaDBPath.")
@@ -1762,14 +1799,18 @@ if ($SkipBotRegen) {
     Write-Host " -> dump tool: $MySQLDumpPath"
 }
 
-# The server has to be running, not merely installed - and it may still be starting.
-Wait-ForMariaDb -TimeoutSeconds $DbStartupTimeoutSeconds
+if ($SkipDatabase) {
+    Write-Host " -> database server: skipped (-SkipDatabase touches everything except the databases)."
+} else {
+    # The server has to be running, not merely installed - and it may still be starting.
+    Wait-ForMariaDb -TimeoutSeconds $DbStartupTimeoutSeconds
 
-# Say which server this actually is. The pipeline is about to drop four databases on it, so
-# "which instance am I pointed at" is worth one line in the log.
-$ServerIdentity = & $MariaDBPath "--defaults-extra-file=$($script:RootDefaultsFile)" -N -B `
-                                 -e "SELECT CONCAT(VERSION(), ' on ', @@hostname, ':', @@port);" 2>$null
-Write-Host " -> connected: $ServerIdentity"
+    # Say which server this actually is. The pipeline is about to drop four databases on it,
+    # so "which instance am I pointed at" is worth one line in the log.
+    $ServerIdentity = & $MariaDBPath "--defaults-extra-file=$($script:RootDefaultsFile)" -N -B `
+                                     -e "SELECT CONCAT(VERSION(), ' on ', @@hostname, ':', @@port);" 2>$null
+    Write-Host " -> connected: $ServerIdentity"
+}
 
 # Best effort only: no Visual Studio means CMake has no generator, but vswhere is not
 # guaranteed to be present and its absence proves nothing either way.
@@ -2419,7 +2460,14 @@ if (-not [string]::IsNullOrEmpty($applyPatches)) {
 # so tw_char IS wiped further down even with -SkipBotRegen, and only the restore below puts
 # it back. An unnoticed bad dump here therefore means permanent data loss, which is why the
 # result is verified before the pipeline is allowed to touch anything.
-if ($SkipBotRegen) {
+#
+# Under -SkipDatabase this pair (backup here, restore further down) has nothing to guard:
+# step 05 is what wipes tw_char, and step 05 does not run either, so there is no drop for a
+# restore to undo.
+if ($SkipBotRegen -and $SkipDatabase) {
+    Write-Host "(OPTIONAL) database backup - skipped (-SkipDatabase touches everything except the databases)." -ForegroundColor DarkGray
+}
+if ($SkipBotRegen -and -not $SkipDatabase) {
     Write-PipelineHeader -StepName "(OPTIONAL): Conditional step: export entire database structure and data"
 	Write-Host "Parameter -SkipBotRegen is active. Generating full database dumps..."
 
@@ -2537,8 +2585,12 @@ if ($DatabaseOnly) {
 }
 
 # Drop existing test databases based on the pipeline arguments.
-# The client was resolved and the server proved reachable in the preflight, so there is
-# nothing left to test for here.
+# The client was resolved and the server proved reachable in the preflight - except under
+# -SkipDatabase, where neither happened, and dropping anything here is exactly what that
+# parameter promises not to do.
+if ($SkipDatabase) {
+    Write-Host "Dropping previous testbed databases - skipped (-SkipDatabase touches everything except the databases)." -ForegroundColor DarkGray
+} else {
 Write-Host "Dropping previous testbed databases..."
 
 # Core infrastructure databases that are ALWAYS dropped and rebuilt
@@ -2552,7 +2604,11 @@ if (-not $SkipBotRegen) {
     Write-Host " -> [SKIP] Parameter -SkipBotRegen is active. Retaining existing character and playerbot data." -ForegroundColor Green
 }
 Write-Host "[OK] Target databases cleanup sequence completed." -ForegroundColor Green
+}
 
+if ($SkipDatabase) {
+    Write-Host "05+06: Database generation and user configuration - skipped (-SkipDatabase touches everything except the databases)." -ForegroundColor DarkGray
+} else {
 # ==============================================================================
 # PIPELINE STEP 05: DATABASE GENERATION AND IMPORTS
 # ==============================================================================
@@ -2630,11 +2686,15 @@ FLUSH PRIVILEGES;
 "@
 
 Invoke-MySqlQuery -Query $UserQuery -FailureMessage "Could not configure the 'mangos' database user"
+}
 
 # ==============================================================================
 # PIPELINE STEP (OPTIONAL): CONDITIONAL RESTORE SECTION (IMPORT FULL DATABASE DUMPS)
 # ==============================================================================
-if ($SkipBotRegen) {
+if ($SkipBotRegen -and $SkipDatabase) {
+    Write-Host "(OPTIONAL) database restore - skipped (-SkipDatabase touches everything except the databases)." -ForegroundColor DarkGray
+}
+if ($SkipBotRegen -and -not $SkipDatabase) {
     Write-PipelineHeader -StepName "(OPTIONAL): Restoring original character and logon datasets"
     Write-Host "Restoring preserved production databases from mysqldump files..."
 
@@ -2693,6 +2753,9 @@ if ($SkipBotRegen) {
 # ==============================================================================
 # PIPELINE STEP 07: INJECT MISSING HONOR MAINTENANCE TABLES
 # ==============================================================================
+if ($SkipDatabase) {
+    Write-Host "07: PIPELINE HOTFIX: inject missing honor maintenance tables - skipped (-SkipDatabase touches everything except the databases)." -ForegroundColor DarkGray
+} else {
 Write-PipelineHeader -StepName "07: PIPELINE HOTFIX: inject missing honor maintenance tables"
 Write-Host "Applying database hotfixes for Honor Maintenance system..."
 # We dynamically clone the structure of character_inventory to ensure compatibility
@@ -2704,6 +2767,7 @@ $HonorHotfixQuery = @"
 
 Invoke-MySqlQuery -Query $HonorHotfixQuery -FailureMessage "Could not create the character_inventory_copy hotfix table"
 Write-Host "[OK] Honor maintenance hotfix table 'character_inventory_copy' successfully deployed." -ForegroundColor Green
+}
 
 # ==============================================================================
 # PIPELINE STEP 08: CMAKE CONFIGURATION AND COMPILATION
@@ -3076,8 +3140,9 @@ if (Test-Path $RealmdConf) {
 # ==============================================================================
 # PIPELINE STEP 11: PLAYERBOTS MODULE DATA IMPORT
 # ==============================================================================
-if (-not $WithPlayerBots) {
-    Write-Host "11: Bot module SQL import - skipped (no -WithPlayerBots)." -ForegroundColor DarkGray
+if ($SkipDatabase -or (-not $WithPlayerBots)) {
+    $Step11SkipReason = if ($SkipDatabase) { "-SkipDatabase touches everything except the databases" } else { "no -WithPlayerBots" }
+    Write-Host "11: Bot module SQL import - skipped ($Step11SkipReason)." -ForegroundColor DarkGray
 } else {
 Write-PipelineHeader -StepName "11: Importing bot module SQL data..."
 
@@ -3215,6 +3280,9 @@ if (Test-Path $AiPlayerbotConf) {
 # ==============================================================================
 # PIPELINE STEP 13: REALMLIST AND CONFIGURATION SETUP
 # ==============================================================================
+if ($SkipDatabase) {
+    Write-Host "13: Configuring local realmlist DB options - skipped (-SkipDatabase touches everything except the databases)." -ForegroundColor DarkGray
+} else {
 Write-PipelineHeader -StepName "13: Configuring local realmlist DB options..."
 Write-Host "Configuring local realmlist options..."
 
@@ -3231,6 +3299,7 @@ Invoke-MySqlQuery -Query $RealmlistQuery `
                   -FailureMessage "Could not register the local realm in $LoginDatabaseName.realmlist"
 
 Write-Host "[OK] Realmlist points at ${RealmlistIPAddress}:$RealmlistPort." -ForegroundColor Green
+}
 
 # ==============================================================================
 # PIPELINE STEP 14: RUNTIME APPLICATION DIRECTORY FACTORY

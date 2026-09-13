@@ -272,6 +272,7 @@ branch — every environment-specific value is a parameter.
 | `-EnableSqlLog` | off | Writes every SQL statement to a log file (`LogSQL` in `mangosd.conf`). Off by default — on, it's 94% of a normal run's log, mostly per-connection `SET NAMES`/`SET CHARACTER SET` noise. |
 | `-LogLevel` | `0` | Console/log verbosity for mangosd and realmd: `0` Minimum, `1` Basic & Error, `2` Detail, `3` Full/Debug. The shipped templates default to `1`. |
 | `-DatabaseOnly` | off | Touches only the databases — no git update, no compilation, no folder cleanup, no config file changes. Combine with `-SkipBotRegen` to reset only `tw_world` (a "first-boot" test of a new migration); without it, all four databases are dropped and rebuilt. |
+| `-SkipDatabase` | off | The mirror image: touches everything except the databases — no database drop/create, no SQL import, no `CREATE USER`/`GRANT`, no realmlist write, no `-SkipBotRegen` backup/restore. Assumes the database, its schema and the `mangos` user already exist from an earlier run; using it before they ever have does not break anything, it just means the resulting server cannot connect until a normal run creates them. Contradicts `-DatabaseOnly` outright — passing both stops the run. |
 | `-WithPlayerBots` | off | Adds the bot module from `-PlayerBotsRepoUrl` on top of the engine: syncs it into `modules/`, imports whatever SQL it ships, and configures CMake to build it. Without it the run builds the engine alone, which is what the default `-RepoUrl` carries. `-WithBots` is the old spelling. |
 | `-UsePch` | off | Builds with precompiled headers instead of the force-include fallback. Needed by a module whose headers assume the precompiled set is in scope; see below. |
 | `-applyPatches` | — | Semicolon-separated commit hashes **or branch/tag names** to cherry-pick, e.g. `-applyPatches "0ee0748;abc1234"` or `-applyPatches "my-fix-branch"`. A branch expands to the commits it has and the checkout does not, oldest first. |
@@ -434,6 +435,13 @@ Afterwards: `server\1.Start mysql.bat`, then `2.Realm server.bat`, then
 half of step 04 (the database-drop half still runs) — everything that isn't a database
 operation. Steps 00b, 05, 06, 07, 11, 13, 14 and the `-SkipBotRegen` backup/restore run
 exactly as they would in a full build.
+
+`-SkipDatabase` is the exact opposite set: it skips the database-drop half of step 04, steps
+05, 06, 07, 11 and 13 outright, and the `-SkipBotRegen` backup/restore pair (nothing drops
+`tw_char` this run, so there is nothing for it to guard). Preflight's wait for the database
+server to be up is skipped too. Everything else — 00b's tool checks, 01 through 03, the
+folder-wipe half of 04, 08 through 10, 12, 14 and 15 — runs exactly as it would in a full
+build.
 
 ### Build flags it passes
 
