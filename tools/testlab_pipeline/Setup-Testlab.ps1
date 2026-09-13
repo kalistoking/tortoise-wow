@@ -1551,6 +1551,32 @@ $MangosPipelineBackupDir = "pipeline_backups"
 
 # STEP variable definitions
 Write-PipelineHeader -StepName "00: Starting variable definitions"
+
+# The single most useful line in a log someone pastes without its own command line: exactly
+# what ran and with what. Not $MyInvocation.Line - that reflects how PowerShell itself was
+# launched (Run-Testlab.bat calls it as "-File ... %*"), not the parameters this script
+# actually bound - so this is rebuilt from $PSBoundParameters instead. That also means an old
+# alias (-WithBots, -ModulesRepoUrl, ...) always prints under its current canonical name,
+# never the spelling that was actually typed, which is what the rest of a log full of that
+# name would otherwise expect. Passwords are masked - this line lands in
+# pipeline_console.log permanently (Start-Transcript above already started it), which is
+# exactly the file someone shares back for help with a failure.
+$InvocationParts = @($PSCommandPath)
+foreach ($ParamName in $PSBoundParameters.Keys) {
+    $ParamValue = $PSBoundParameters[$ParamName]
+    if ($ParamValue -is [switch]) {
+        if ($ParamValue.IsPresent) { $InvocationParts += "-$ParamName" }
+    } elseif ($ParamName -match "Password") {
+        $InvocationParts += "-$ParamName", "***"
+    } elseif ($ParamValue -is [string] -and $ParamValue -match '\s') {
+        $InvocationParts += "-$ParamName", "`"$ParamValue`""
+    } else {
+        $InvocationParts += "-$ParamName", "$ParamValue"
+    }
+}
+Write-Host "Invoked as: $($InvocationParts -join ' ')" -ForegroundColor DarkGray
+Write-Host ""
+
 Write-Host "Setting up variables"
 
 # The workspace root is the single anchor everything else is derived from, so it has to be
