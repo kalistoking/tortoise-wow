@@ -107,7 +107,10 @@
     names. Using it on a workspace that has never had a database at all does not break
     anything - every skipped step just does not run - it only means mangosd/realmd
     will fail to connect when started, the same as pointing any config at a database
-    that is not there.
+    that is not there. Preflight makes a best-effort, non-blocking check for this: if the
+    database server answers and $WorldDatabaseName isn't there, it prints one warning line
+    and continues; if the server can't be reached at all, it stays silent rather than
+    guessing.
 .PARAMETER applyPatches
     Semicolon-separated list of things to cherry-pick onto the branch before building,
     fetched from -PatchRemoteUrl. Each entry is either a commit hash or the name of a branch
@@ -1801,6 +1804,16 @@ if ($SkipBotRegen -and -not $SkipDatabase) {
 
 if ($SkipDatabase) {
     Write-Host " -> database server: skipped (-SkipDatabase touches everything except the databases)."
+
+    # Purely informational: best-effort, never blocking. If the server is down or the
+    # credentials in $script:RootDefaultsFile don't work, $LASTEXITCODE is non-zero and this
+    # stays silent - -SkipDatabase is designed to work without any database connectivity at
+    # all, so a failed probe here must never become a warning of its own.
+    $WorldDbProbe = & $MariaDBPath "--defaults-extra-file=$($script:RootDefaultsFile)" --connect-timeout=3 -N -B `
+                                    -e "SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME='$WorldDatabaseName';" 2>$null
+    if ($LASTEXITCODE -eq 0 -and [string]::IsNullOrWhiteSpace($WorldDbProbe)) {
+        Write-Warning "$WorldDatabaseName does not exist yet - the compiled server will have nothing to connect to until a run without -SkipDatabase creates it."
+    }
 } else {
     # The server has to be running, not merely installed - and it may still be starting.
     Wait-ForMariaDb -TimeoutSeconds $DbStartupTimeoutSeconds

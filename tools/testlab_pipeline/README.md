@@ -443,6 +443,10 @@ server to be up is skipped too. Everything else — 00b's tool checks, 01 throug
 folder-wipe half of 04, 08 through 10, 12, 14 and 15 — runs exactly as it would in a full
 build.
 
+Preflight also makes one best-effort, non-blocking check under `-SkipDatabase`: if the
+database server answers and the world database isn't there, it prints a single warning line
+and keeps going; if the server can't be reached at all, it says nothing rather than guessing.
+
 ### Build flags it passes
 
 Two of these are easy to get wrong by hand and are the reason a manual Windows build
