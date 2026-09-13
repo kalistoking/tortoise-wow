@@ -34,3 +34,19 @@ UPDATE `creature_template` SET `skinning_loot_id` = 0 WHERE `entry` = 61393 AND 
 UPDATE `creature_template` SET `pickpocket_loot_id` = 0 WHERE `entry` = 61763 AND `pickpocket_loot_id` = 1183; -- Dean LeGuin
 UPDATE `creature_template` SET `pickpocket_loot_id` = 0 WHERE `entry` = 61764 AND `pickpocket_loot_id` = 1183; -- High Widow Arania
 UPDATE `creature_template` SET `pickpocket_loot_id` = 0 WHERE `entry` = 61765 AND `pickpocket_loot_id` = 1183; -- Gunther
+
+-- Livia Strongarm, Luke Agamand, Blackthorn Footpad and Greta Longpike had
+-- exactly one creature_loot_template row each - the dangling reference removed
+-- in creature_loot_template.sql. With it gone their loot_id points at an entry
+-- that holds no rows, which just moves the warning to a different table:
+--
+--     Table 'creature_loot_template' entry 61376 (creature entry) not exist but used as loot id in DB.
+--
+-- They have no loot to lose: the community databases report no drops for any of
+-- the four, and all four have gold_min = gold_max = 0. loot_id = 0 is the
+-- established convention for a creature with no loot table and is what the rest
+-- of this database uses.
+UPDATE `creature_template` SET `loot_id` = 0 WHERE `entry` = 61376 AND `loot_id` = 61376; -- Livia Strongarm
+UPDATE `creature_template` SET `loot_id` = 0 WHERE `entry` = 61377 AND `loot_id` = 61377; -- Luke Agamand
+UPDATE `creature_template` SET `loot_id` = 0 WHERE `entry` = 61378 AND `loot_id` = 61378; -- Blackthorn Footpad
+UPDATE `creature_template` SET `loot_id` = 0 WHERE `entry` = 61379 AND `loot_id` = 61379; -- Greta Longpike
