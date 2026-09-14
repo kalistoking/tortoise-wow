@@ -2036,15 +2036,51 @@ $VcpkgPackages = @(
     "boost-stacktrace"
 )
 
-$VcpkgArguments = @("install") + ($VcpkgPackages | ForEach-Object { "${_}:$VcpkgTriplet" })
+$DesiredVcpkgNames = @($VcpkgPackages | ForEach-Object { "${_}:$VcpkgTriplet" })
 
-# vcpkg wants to run from its own directory. Push-Location rather than Start-Process
-# -WorkingDirectory on purpose: a Start-Process child writes straight to the console and
-# its output never reaches the transcript, and vcpkg's output is exactly what you want in
-# the log when a dependency fails to build.
+# vcpkg install only ever adds - it never removes a package an earlier run's $VcpkgPackages
+# asked for and this one no longer does, so trimming the list above does not by itself clean
+# up anything already sitting in $VcpkgInstalledPath from before. Left alone, every ace/boost
+# package this pipeline has EVER wanted keeps accumulating there forever, and step 09's
+# best-effort DLL copy has no way to tell "still wanted" apart from "leftover from 2026" -
+# it just copies whatever boost_*.dll physically exists.
+#
+# The fix is to sweep every ace/boost package installed, every run, and let the install below
+# reinstall exactly $VcpkgPackages (plus whatever it transitively pulls in) fresh - not to try
+# to detect drift first and only sweep when something looks stale. That was the first version
+# of this, and it does not work: comparing what is installed against $VcpkgPackages itself
+# flags nearly everything as "stale", because $VcpkgPackages only ever lists the handful of
+# top-level packages this pipeline asks for, never the much larger set of transitive
+# dependencies vcpkg pulls in to satisfy them (boost-algorithm alone pulls in a dozen more
+# boost-* packages that will never appear in this list) - there is no way to tell "no longer
+# wanted" apart from "a legitimate dependency of something still wanted" from the package name
+# alone. Removing only the ones that look stale is not safe either: vcpkg's own dependency
+# graph means asking to remove something like boost-asio can demand boost-algorithm or
+# boost-bimap go with it too, since they happen to share lower-level transitive dependencies -
+# tested this by hand and it is a real trap, not a hypothetical one. Always sweeping
+# everything and reinstalling fresh sidesteps both problems, and is not the expensive
+# operation it sounds like: vcpkg's own build cache means a full reinstall of a handful of
+# small, mostly header-only packages measured in single-digit seconds, not minutes.
 Push-Location $VcpkgDirectory
 try {
-    Invoke-NativeLogged -Executable $VcpkgExecutable -Arguments $VcpkgArguments
+    $InstalledAceBoostNames = @(
+        & $VcpkgExecutable list 2>$null |
+            Where-Object { $_ -match "^(ace|boost-[a-z0-9-]+|vcpkg-boost):$([regex]::Escape($VcpkgTriplet))(\s|$)" } |
+            ForEach-Object { ($_ -split '\s+')[0] }
+    )
+
+    if ($InstalledAceBoostNames.Count -gt 0) {
+        Write-Host (" -> Clearing $($InstalledAceBoostNames.Count) previously-installed ace/boost package(s) before " +
+                     "reinstalling exactly what -VcpkgPackages asks for now.") -ForegroundColor DarkGray
+        Invoke-NativeLogged -Executable $VcpkgExecutable -Arguments (@("remove") + $InstalledAceBoostNames + @("--recurse"))
+        Assert-LastExitCode -Message "Vcpkg cleanup of previously-installed ace/boost packages failed"
+    }
+
+    # vcpkg wants to run from its own directory. Push-Location rather than Start-Process
+    # -WorkingDirectory on purpose: a Start-Process child writes straight to the console and
+    # its output never reaches the transcript, and vcpkg's output is exactly what you want in
+    # the log when a dependency fails to build.
+    Invoke-NativeLogged -Executable $VcpkgExecutable -Arguments (@("install") + $DesiredVcpkgNames)
 } finally {
     Pop-Location
 }
