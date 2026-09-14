@@ -3150,16 +3150,23 @@ if (-not (Test-Path -LiteralPath $AceDllPath)) {
 }
 Copy-Item -Path $AceDllPath -Destination $LibDir -Force
 
-# libcrypto-3-x64.dll/libssl-3-x64.dll: best-effort, not required. A core checkout can go
-# either way here depending on whether it carries the include-order fix from
-# tortoise-wow/tortoise-wow#496 - unfixed, mangosd.exe needs this pair alongside the
-# libcrypto-1_1-x64.dll/libssl-1_1-x64.dll pair the install step already deploys (confirmed
-# with dumpbin /dependents: both DLL families imported at once, not either/or); fixed,
-# neither is needed at all (dumpbin /dependents against a build with #496 applied shows
-# neither DLL in mangosd.exe's or realmd.exe's import table). Copy them when the vcpkg
-# toolchain has them - which it always will, ACE's own vcpkg dependency chain pulls in
-# OpenSSL 3 regardless of whether this core checkout still needs it - but never fail the run
-# over it, since a fixed core genuinely has no use for either file.
+# libcrypto-3-x64.dll/libssl-3-x64.dll: best-effort, not required. Whether mangosd.exe
+# actually needs this pair alongside the libcrypto-1_1-x64.dll/libssl-1_1-x64.dll pair the
+# install step already deploys depends on two separate fixes landing, not one:
+#   - the engine's own include-order issue, tortoise-wow/tortoise-wow#496 - unfixed,
+#     mangosd.exe needs this pair unconditionally (confirmed with dumpbin /dependents: both
+#     DLL families imported at once, not either/or), fixed, a core-only build needs neither
+#     file at all;
+#   - for a -WithPlayerBots build specifically, that alone is not enough - #496 was traced
+#     down to the exact remaining symbol with dumpbin /imports, and it turned out to be
+#     RAND_bytes, called from TortoiseBots' own RandomBotService.cpp, fixed on the module
+#     side in Sagiroth/TortoiseBots#170, not in the engine.
+# Only with both applied does a bot-enabled build need neither file either (confirmed the
+# same way: dumpbin /imports against a real -WithPlayerBots build with both fixes shows
+# neither DLL in mangosd.exe's import table). Copy them when the vcpkg toolchain has them -
+# which it always will, ACE's own vcpkg dependency chain pulls in OpenSSL 3 regardless of
+# whether this checkout still needs it - but never fail the run over it, since a fully fixed
+# checkout genuinely has no use for either file.
 foreach ($OpensslDllName in @("libcrypto-3-x64.dll", "libssl-3-x64.dll")) {
     $OpensslDllPath = Join-Path $VcpkgBinDir $OpensslDllName
     if (Test-Path -LiteralPath $OpensslDllPath) {
