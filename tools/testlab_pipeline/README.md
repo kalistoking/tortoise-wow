@@ -545,3 +545,9 @@ often fails where Linux succeeds:
 - **Full rebuild every run.** Step 08 deletes `build\` before configuring, so every run is
   a cold build of the whole tree. That is deliberate — it is what makes the result
   reproducible — but it costs the usual half hour or more.
+- **`mangosd.conf`/`realmd.conf` are reset from their `.dist` template on every full run**
+  (step 09), with no merge and no backup — by design, since step 10 re-injects every
+  pipeline-known setting into the fresh copy a moment later. A setting hand-edited straight
+  into the deployed `.conf` instead does not survive the next run; step 09 prints a note when
+  it is about to reset a file that differs from its template, but the fix is to put the
+  setting in the module/engine's `.dist(.in)` template so it regenerates every time.

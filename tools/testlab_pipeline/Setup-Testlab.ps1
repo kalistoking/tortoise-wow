@@ -3021,6 +3021,24 @@ Get-ChildItem -Path $EtcDir -Filter "*.conf.dist" | ForEach-Object {
     $TargetConfigName = $_.Name -replace '\.dist$', ''
     $DestinationPath  = Join-Path $EtcDir $TargetConfigName
 
+    # This is the only warning that a customised file is about to be reset - there is no
+    # merge and no backup, by design (a deterministic testlab from a known template), but a
+    # setting hand-edited straight into the deployed .conf is silently gone the moment this
+    # -Force copy runs, with nothing else in the console output to say so. A setting meant to
+    # survive a rebuild belongs in the module/engine's .dist(.in) template instead, so this
+    # same step regenerates it every time.
+    #
+    # -and does not short-circuit in PowerShell, so this has to be two nested checks rather
+    # than one combined condition - Compare-Object against a Get-Content of a file that does
+    # not exist yet would otherwise run anyway and report every template line as a
+    # "difference".
+    if (Test-Path -LiteralPath $DestinationPath) {
+        if (Compare-Object (Get-Content -LiteralPath $_.FullName) (Get-Content -LiteralPath $DestinationPath) -SyncWindow 0) {
+            Write-Host (" -> Note: existing $TargetConfigName differs from the template and is being reset by this " +
+                         "step - anything in it beyond what step 10 re-injects a moment from now does not survive.") -ForegroundColor DarkYellow
+        }
+    }
+
     # Copy template to the final configuration file
     Copy-Item -Path $_.FullName -Destination $DestinationPath -Force
     Write-Host " -> Generated: $TargetConfigName"
