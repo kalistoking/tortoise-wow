@@ -2310,8 +2310,8 @@ if (-not (Test-Path $ModulesSourceDir)) {
 
     # Same reasoning as the -RepoUrl checkout above: make -PlayerBotsRepoUrl authoritative
     # for an existing checkout too, fetch and check out -PlayerBotsBranch by name (creating a local
-    # tracking branch if this is the first time), then pull by name rather than relying on
-    # tracking configuration a locally-created branch would not have.
+    # tracking branch if this is the first time), then reset to it by name rather than relying
+    # on tracking configuration a locally-created branch would not have.
     #
     # This one does drive 'origin' directly, unlike the source checkout. The reason the
     # source needs a remote of its own is that people work in it - they have their own
@@ -2335,8 +2335,18 @@ if (-not (Test-Path $ModulesSourceDir)) {
         Assert-LastExitCode -Message "git checkout of the module source branch '$PlayerBotsBranch' failed"
     }
 
-    Invoke-NativeLogged -Executable "git" -Arguments @("-c", "core.longpaths=true", "pull", "origin", $PlayerBotsBranch)
-    Assert-LastExitCode -Message "git pull of the module source branch '$PlayerBotsBranch' from $PlayerBotsRepoUrl failed"
+    # Reset rather than pull, unconditionally - not just when this happens to already match.
+    # Same fix, same reasoning, as the -RepoUrl/-BranchName checkout above (see its own
+    # comment) - this side of the sync used to just "pull", and that assumes local and origin
+    # never diverge. Caught live: modules-source's local 'main' sat 35 commits away from
+    # origin/main (an old local branch nobody had revisited since well before a since-merged
+    # PR landed there), and "git pull" on that divergence did not bring the fix in - the next
+    # build failed on a header the remote fix had already removed, silently, with no git error
+    # of its own to point at. A hard reset by name has no such failure mode: modules-source is
+    # created by this script, exists for this script, and nobody commits in it (see above), so
+    # there is nothing local ever worth reconciling with a merge or rebase.
+    Invoke-NativeLogged -Executable "git" -Arguments @("-c", "core.longpaths=true", "reset", "--hard", "origin/$PlayerBotsBranch")
+    Assert-LastExitCode -Message "git reset of the module source branch '$PlayerBotsBranch' to origin/$PlayerBotsBranch failed"
 
     Pop-Location
 }
