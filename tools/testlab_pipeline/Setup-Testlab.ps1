@@ -552,6 +552,15 @@ $script:LockOwned = $false
 # "who and since when".
 $script:SingletonMutex = $null
 
+# Timing. $script:PipelineStopwatch covers the whole run, started here so it is already
+# running for anything that fails before step 00. $script:CurrentStep{Name,Stopwatch} track
+# whichever step is in progress right now - both start out unset (no step has run yet) and
+# Set-StrictMode requires them to exist before Stop-Pipeline's null-check on them can run, so
+# they are declared here rather than only assigned inside Write-PipelineHeader.
+$script:PipelineStopwatch    = [System.Diagnostics.Stopwatch]::StartNew()
+$script:CurrentStepName      = $null
+$script:CurrentStepStopwatch = $null
+
 # Start recording everything that appears in the PowerShell console window
 Start-Transcript -Path (Join-Path $WorkspaceRoot "pipeline_console.log") -Append -ErrorAction SilentlyContinue
 
@@ -559,16 +568,40 @@ Start-Transcript -Path (Join-Path $WorkspaceRoot "pipeline_console.log") -Append
 # ==============================================================================
 # FUNCTIONS DEFINITION
 # ==============================================================================
+
+# Formats a TimeSpan the way every duration in this pipeline's log is written: seconds with
+# one decimal under a minute (matches vcpkg's own "x.xs" install summary so the two don't
+# look like different units side by side), "Xm Ys" at or above it.
+function Format-Duration {
+    param (
+        [Parameter(Mandatory = $true)][TimeSpan]$Duration
+    )
+    if ($Duration.TotalMinutes -ge 1) {
+        return "{0}m {1}s" -f [int]$Duration.TotalMinutes, $Duration.Seconds
+    }
+    # Invariant culture rather than -f's current-culture default: this machine's locale
+    # renders N1 with a comma ("0,3s"), and a log line is more useful staying grep-friendly
+    # across whichever machine runs the pipeline than matching that machine's own settings.
+    return $Duration.TotalSeconds.ToString("N1", [System.Globalization.CultureInfo]::InvariantCulture) + "s"
+}
+
 function Write-PipelineHeader {
     param (
         [string]$StepName
     )
+    # Close out whatever step was running before this one - the first call in the run has
+    # nothing to close, hence the null check rather than an unconditional print.
+    if ($script:CurrentStepStopwatch) {
+        Write-Host ("[OK] Step '{0}' completed in {1}." -f $script:CurrentStepName, (Format-Duration $script:CurrentStepStopwatch.Elapsed)) -ForegroundColor DarkGray
+    }
     $Line = "=" * 80
     Write-Host ""
     Write-Host $Line -ForegroundColor Cyan
-    Write-Host ">>> PIPELINE STEP $($StepName.ToUpper())" -ForegroundColor Yellow
+    Write-Host ">>> PIPELINE STEP $($StepName.ToUpper()) - $(Get-Date -Format 'HH:mm:ss')" -ForegroundColor Yellow
     Write-Host $Line -ForegroundColor Cyan
     Write-Host ""
+    $script:CurrentStepName      = $StepName
+    $script:CurrentStepStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 }
 
 # Deletes the temporary MariaDB credential files. Safe to call more than once.
@@ -690,6 +723,14 @@ function Stop-Pipeline {
         [string]$Message,
         [int]$ExitCode = 1
     )
+    # Which step was running, and for how long, is often the first thing worth knowing about
+    # a failure - a step that died after 3 seconds points somewhere very different than one
+    # that ran for 20 minutes first. $script:CurrentStepStopwatch is still $null if this fires
+    # before the first Write-PipelineHeader call (the WorkspaceRoot/preflight checks), hence
+    # the null check rather than an unconditional print.
+    if ($script:CurrentStepStopwatch) {
+        Write-Host ("Step '{0}' ran for {1} before this failure." -f $script:CurrentStepName, (Format-Duration $script:CurrentStepStopwatch.Elapsed)) -ForegroundColor DarkGray
+    }
     if ($Message) { Write-Error $Message }
     Remove-PipelineLock
     Remove-PipelineSingleton
@@ -841,7 +882,15 @@ function Invoke-NativeLogged {
         [string[]]$Arguments = @()
     )
 
+    # Deliberately does not print $Arguments: Invoke-MySqlQuery's -e "$Query" argument
+    # carries CREATE USER/ALTER USER ... IDENTIFIED BY '$DbPassword' in plain text (step 06),
+    # and this is the one choke point every native call in the pipeline goes through. Printing
+    # the executable name and timing is enough to see what ran and how long it took without
+    # risking a credential landing in the console or in pipeline_console.log.
+    $CommandStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+    Write-Host ("[cmd] {0} - {1}" -f $Executable, (Get-Date -Format 'HH:mm:ss')) -ForegroundColor DarkGray
     & $Executable @Arguments 2>&1 | ForEach-Object { Write-Host $_.ToString() }
+    Write-Host ("[cmd] {0} finished in {1}." -f $Executable, (Format-Duration $CommandStopwatch.Elapsed)) -ForegroundColor DarkGray
 }
 
 # Aborts the pipeline when the last native command reported a failure. Native tools
@@ -3633,5 +3682,9 @@ Write-Host "[OK] Server launcher scripts are in place." -ForegroundColor Green
 Remove-PipelineLock
 Remove-PipelineSingleton
 Remove-PipelineCredentialFiles
+if ($script:CurrentStepStopwatch) {
+    Write-Host ("[OK] Step '{0}' completed in {1}." -f $script:CurrentStepName, (Format-Duration $script:CurrentStepStopwatch.Elapsed)) -ForegroundColor DarkGray
+}
+Write-Host ("[OK] Total pipeline run time: {0}." -f (Format-Duration $script:PipelineStopwatch.Elapsed)) -ForegroundColor Green
 Write-Host "[OK] Pipeline execution fully completed! Server environment is ready." -ForegroundColor Green
 try { Stop-Transcript | Out-Null } catch { }
