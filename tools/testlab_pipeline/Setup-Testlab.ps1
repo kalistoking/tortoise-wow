@@ -2068,29 +2068,20 @@ Write-Host "Verifying external C++ library environments via vcpkg toolchain..."
 
 Write-Host "Starting library deployment (ACE and Boost modules) for $VcpkgTriplet..."
 
-# Only what TortoiseBots' own source actually #includes - checked directly, not guessed at:
-# boost/algorithm/string.hpp (iequals/trim, ~20 live call sites across 6 files). Several other
-# Boost libraries used to be listed here (asio, bind, filesystem, functional, smart-ptr,
-# thread, system) without a single #include anywhere in this repo or the module actually
-# reaching for them - vcpkg installed them, and step 09 copied whatever DLLs came out, for
-# years, with nothing ever needing any of it: dumpbin /dependents against a full
+# Boost is gone entirely as of Sagiroth/TortoiseBots#173: boost-algorithm (iequals/
+# istarts_with/trim, 22 call sites across 6 files - the module's last remaining Boost
+# dependency) is replaced with hand-written equivalents, two of which (trim) turned out to
+# already exist in the module under a different call site. vcpkg depend-info confirmed ace
+# itself has zero Boost dependencies, so the entire ~35-package boost-* transitive closure
+# this step used to install traced back to that one port. Several OTHER Boost libraries used
+# to be listed here too, well before that (asio, bind, filesystem, functional, smart-ptr,
+# thread, system, then later boost-stacktrace and boost-bimap - see Sagiroth/TortoiseBots#171,
+# closes Sagiroth/TortoiseBots#166) without a single #include anywhere in this repo or the
+# module actually reaching for them - vcpkg installed them, and step 09 copied whatever DLLs
+# came out, for years, with nothing ever needing any of it: dumpbin /dependents against a full
 # -WithPlayerBots build confirms mangosd.exe/realmd.exe do not load a single boost_*.dll.
-# Deliberately not the 'boost' meta-package either way: that drags in boost-cobalt, which
-# needs C++20 and does not build under Visual Studio 2019.
-#
-# boost-stacktrace and boost-bimap were here too until Sagiroth/TortoiseBots#171 (closes
-# Sagiroth/TortoiseBots#166): MemoryMonitor.cpp included boost/stacktrace.hpp unconditionally
-# even though MemoryMonitor is dead code on every build this pipeline produces (MEMORY_MONITOR
-# is off by default, nothing ever calls sMemoryMonitor); LootValues.h included boost/bimap.hpp
-# + bimap/multiset_of.hpp with zero bimap<...> instantiations anywhere in the module. #171
-# gates the first behind MEMORY_MONITOR and deletes the second outright, so neither package is
-# needed at compile time anymore - the boost_stacktrace_*.dll files step 09 used to copy were
-# already confirmed unused at runtime (same dumpbin evidence above; boost-bimap never produced
-# a DLL at all, header-only); this closes the gap on the compile-time side too, on any branch
-# that has #171 applied.
 $VcpkgPackages = @(
-    "ace",
-    "boost-algorithm"
+    "ace"
 )
 
 $DesiredVcpkgNames = @($VcpkgPackages | ForEach-Object { "${_}:$VcpkgTriplet" })
@@ -3237,15 +3228,14 @@ Copy-Item -Path $AceDllPath -Destination $LibDir -Force
 # TortoiseBots#170 were: a build that needs this pair should say so with a build failure, not
 # have this pipeline quietly paper over it.
 
-# boost_*.dll: best-effort, and $VcpkgPackages above (ace, boost-algorithm) no longer installs
-# anything with a compiled DLL of its own - boost-algorithm is header-only, and boost-bimap /
-# boost-stacktrace (the only Boost packages here that ever produced a DLL, or were needed at
-# all once their one caller went dead) were dropped once Sagiroth/TortoiseBots#171 stopped
-# needing either at compile time. So this glob is expected to match nothing on a build with
-# #171 applied. Left in place, not deleted, as a
-# defensive best-effort: what the module's source #includes is not something this pipeline
-# controls, so if a future Boost header with a compiled backend gets added upstream, this
-# still picks up whatever DLL vcpkg produces for it rather than silently dropping it.
+# boost_*.dll: best-effort, and $VcpkgPackages above no longer installs Boost AT ALL as of
+# Sagiroth/TortoiseBots#173 - boost-algorithm, the module's last remaining Boost dependency,
+# is gone too now (replaced with hand-written equivalents), on top of boost-bimap/
+# boost-stacktrace going earlier via #171 (closes #166). So this glob is expected to match
+# nothing on a build with #173 applied. Left in place, not deleted, as a defensive
+# best-effort: what the module's source #includes is not something this pipeline controls,
+# so if a future Boost header with a compiled backend gets added upstream, this still picks
+# up whatever DLL vcpkg produces for it rather than silently dropping it.
 Get-ChildItem -Path (Join-Path $VcpkgBinDir "boost_*.dll") -ErrorAction SilentlyContinue |
     Copy-Item -Destination $LibDir -Force
 
