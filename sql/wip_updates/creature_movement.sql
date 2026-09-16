@@ -17,20 +17,47 @@
 --
 -- Confirmed against this database: Mossheart (entry 65124) and Rotmaw (entry
 -- 65122) already exist as permanent, non-pooled spawns on map 269 (Black
--- Morass) - guid 2577961 and guid 2577960 respectively. Pool 43525 and its
--- movement data are the pre-rework leftovers, superseded when the rework
--- shipped and never cleaned up. See wip_updates/pool_creature.sql and
--- wip_updates/pool_template.sql, which retire the pool itself.
+-- Morass) - guid 2577961 and guid 2577960 respectively. Pool 43525 itself is
+-- pre-rework leftover, superseded when the rework shipped and never cleaned
+-- up - see wip_updates/pool_creature.sql and wip_updates/pool_template.sql,
+-- which retire the pool.
+--
+-- But the waypoints themselves are not simply dead: live Mossheart
+-- (guid 2577961) still carries `movement_type = 2` (WAYPOINT_MOTION_TYPE) on
+-- both the spawn and its creature_template, with zero waypoints of its own -
+-- it stands still today despite being configured to patrol. Rotmaw
+-- (guid 2577960, movement_type = 0) carries no such flag, matching that only
+-- the "Mossheart" pool candidates carried movement data in the first place.
+-- All 5 old candidate paths sit 179-481 yards from Mossheart's live spawn, in
+-- the same swamp area - not geographically superseded, just orphaned by the
+-- rework dropping the reassignment step. Repointing candidate 2562710 (16
+-- points, the closest start to the live spawn at ~179 yards) onto the live
+-- guid restores that patrol instead of deleting still-plausible content; the
+-- other 4 candidates are now genuinely redundant with a single permanent
+-- spawn in place of 9 rotating ones, and are removed.
+--
+-- Which of the 5 candidates is "correct" cannot be established from data
+-- alone - the original pool-candidate `creature` rows (and whatever picked
+-- one path over another at runtime) are long gone. 2562710 is the
+-- best-supported guess (closest + second-most points), not a certainty.
 --
 -- Group B (10 guids, 251 points): 1068616, 660961, 9581, 21218, 9874, 21173,
 -- 9296, 8880, 8988, 9001 have carried these waypoints since sql/base itself -
 -- not something deleted later, never matched a `creature` row in this
--- repository's history. Donor-era dead data. Two of them (9874, 21173) also
--- carry a leftover creature_addon row, removed in
--- wip_updates/creature_addon.sql.
+-- repository's history. Every one of them sits in the middle of an otherwise
+-- intact, currently-live run of sequential donor-era creature guids on the
+-- correct map (checked entry-by-entry, guid +/-3) - there is no live
+-- creature these paths could plausibly belong to, unlike Group A. Donor-era
+-- dead data, confirmed. Two of them (9874, 21173) also carry a leftover
+-- creature_addon row, removed in wip_updates/creature_addon.sql.
+--
+-- The old value is in the WHERE clause of the repoint so re-running this
+-- cannot overwrite a later correction.
+UPDATE `creature_movement` SET `id` = 2577961 WHERE `id` = 2562710;
+
 DELETE FROM `creature_movement` WHERE `id` IN (
-    -- Group A: dead pre-1.17.0 Mossheart/Rotmaw pool candidates
-    2562709, 2562710, 2562711, 2562712, 2562713,
+    -- Group A: the other 4 dead pre-1.17.0 Mossheart pool candidates
+    2562709, 2562711, 2562712, 2562713,
     -- Group B: donor-era dead data, present since sql/base
     1068616, 660961, 9581, 21218, 9874, 21173, 9296, 8880, 8988, 9001
 );
