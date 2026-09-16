@@ -75,8 +75,7 @@
 #include "Config/Config.h"
 #include "ZoneScript.h"
 #include "ZoneScriptMgr.h"
-#include "PlayerBotMgr.h"
-#include "PlayerBotAI.h"
+#include "PlayerAI.h"
 #include "AccountMgr.h"
 #include "MoveSpline.h"
 #include "Anticheat/Anticheat.h"
@@ -598,6 +597,44 @@ void TradeData::SetAccepted(bool state, bool crosssend /*= false*/)
 }
 
 //== Player ====================================================
+
+// Server-side / scriptable trade initiation. Mirrors the setup of
+// WorldSession::HandleInitiateTradeOpcode (same guards), but performs no item,
+// gold or accept action -- the actual exchange stays fully gated by the normal
+// HandleAcceptTradeOpcode path. Purely additive; no existing code path changes.
+bool Player::BeginTradeWith(Player* other)
+{
+    if (!other || other == this)
+        return false;
+    if (m_trade || other->m_trade)
+        return false;
+    if (!IsAlive() || !other->IsAlive())
+        return false;
+    if (HasUnitState(UNIT_STAT_STUNNED | UNIT_STAT_PENDING_STUNNED) ||
+        other->HasUnitState(UNIT_STAT_STUNNED | UNIT_STAT_PENDING_STUNNED))
+        return false;
+    if ((GetSession() && GetSession()->isLogingOut()) ||
+        (other->GetSession() && other->GetSession()->isLogingOut()))
+        return false;
+    if (IsTaxiFlying() || other->IsTaxiFlying() || !FindMap() || GetMap() != other->GetMap())
+        return false;
+    if (GetDistance3dToCenter(other) > TRADE_DISTANCE)
+        return false;
+    if (!sWorld.getConfig(CONFIG_BOOL_ALLOW_TWO_SIDE_INTERACTION_TRADE) && GetTeam() != other->GetTeam())
+        return false;
+
+    m_trade = new TradeData(this, other);
+    other->m_trade = new TradeData(other, this);
+    m_trade->SetScamPreventionDelay(200);
+    other->m_trade->SetScamPreventionDelay(200);
+
+    WorldPacket data(SMSG_TRADE_STATUS, 12);
+    data << uint32(TRADE_STATUS_BEGIN_TRADE);
+    data << ObjectGuid(GetObjectGuid());
+    if (other->GetSession())
+        other->GetSession()->SendPacket(&data);
+    return true;
+}
 
 UpdateMask Player::updateVisualBits;
 
@@ -1932,7 +1969,7 @@ void Player::OnDisconnected()
             }, 1);
         }
 
-        // Update position after bot takes over
+        // Update position after disconnect
         // And remove movement flags, so he doesn't run into the void
         if (!GetMover()->HasUnitState(UNIT_STAT_FLEEING | UNIT_STAT_CONFUSED | UNIT_STAT_TAXI_FLIGHT))
         {
@@ -2929,8 +2966,6 @@ void Player::AddToWorld()
 
     if (HasItemCount(ITEM_SHELL_COIN, 1, true))
         sWorld.AddShellCoinOwner(GetObjectGuid());
-
-    sPlayerBotMgr.OnPlayerInWorld(this);
 }
 
 void Player::RemoveFromWorld()
@@ -3974,12 +4009,6 @@ void Player::GiveLevel(uint32 level)
     // update level to hunter/summon pet
     if (Pet* pet = GetPet())
         pet->SynchronizeLevelWithOwner();
-
-    if (PlayerBotEntry* bot = GetSession()->GetBot())
-    {
-        if (bot->ai)
-            bot->ai->OnLevelUp();
-    }
 
     CheckInfernoInvite();
 
@@ -6429,6 +6458,22 @@ void Player::RepopAtGraveyard()
 
     // Special handle for battleground maps
     uint32 TeleOptions = TELE_TO_NOT_UNSUMMON_PET;
+
+    // A managed bot cannot click an instance portal: released to the outdoor
+    // graveyard it would stand there as a ghost for good while its group carried
+    // on. So it comes back alive just inside the instance entrance instead.
+    bool const repopAtEntrance = sScriptMgr.IsBotManaged(this);
+
+    if (!IsAlive() && repopAtEntrance && GetMap() && GetMap()->IsDungeon())
+    {
+        if (AreaTriggerTeleport const* entrance = sObjectMgr.GetMapEntranceTrigger(GetMapId()))
+        {
+            ResurrectPlayer(1.0f);
+            SpawnCorpseBones();
+            TeleportTo(entrance->destination, TeleOptions);
+            return;
+        }
+    }
     if (BattleGround *bg = GetBattleGround())
     {
         ClosestGrave = bg->GetClosestGraveYard(this);
@@ -16595,7 +16640,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder *holder)
 
     // check if the character's account in the db and the logged in account match.
     // player should be able to load/delete character only with correct account!
-    if (!GetSession()->GetBot() && dbAccountId != GetSession()->GetAccountId())
+    if (dbAccountId != GetSession()->GetAccountId())
     {
         sLog.outError("%s loading from wrong account (is: %u, should be: %u)",
                       guid.GetString().c_str(), GetSession()->GetAccountId(), dbAccountId);
@@ -16793,9 +16838,6 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder *holder)
             RelocateToHomebind();
         }
     }
-
-    if (PlayerBotEntry* e = GetSession()->GetBot())
-        e->ai->BeforeAddToMap(this);
 
     // player bounded instance saves loaded in _LoadBoundInstances, group versions at group loading
     DungeonPersistentState* state = GetBoundInstanceSaveForSelfOrGroup(GetMapId());
@@ -18208,9 +18250,6 @@ bool Player::SaveToDB(bool online, bool force, bool direct)
     // delay auto save at any saves (manual, in code, or autosave)
     m_nextSave = sWorld.getConfig(CONFIG_UINT32_INTERVAL_SAVE);
 
-    // Pas de sauvegarde des bots
-    if (GetSession()->GetBot())
-        return false;
     if (m_DbSaveDisabled)
         return false;
 

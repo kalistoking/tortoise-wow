@@ -20,6 +20,7 @@
  */
 
 #include "Channel.h"
+#include "ScriptObjects.h"
 #include "ObjectMgr.h"
 #include "World.h"
 #include "SocialMgr.h"
@@ -697,12 +698,21 @@ void Channel::Say(ObjectGuid guid, const char *text, uint32 lang, bool skipCheck
     }
     else
     {
+        if (pPlayer && pPlayer->ToPlayer() && lang != LANG_ADDON)
+            ScriptRegistry<PlayerScript>::ForEachEnabledHook(PLAYERHOOK_ON_CHAT_CHANNEL,
+                [&](PlayerScript* s) { s->OnChatChannel(pPlayer->ToPlayer(), GetName().c_str(), text); });
+
         SendToAll(&data, (!skipCheck && !m_players[guid].IsModerator()) ? guid : ObjectGuid());
     }
 }
 
 void Channel::AsyncSay(ObjectGuid guid, const char* what, uint32 lang /*= LANG_UNIVERSAL*/, bool skipCheck /*= false*/)
 {
+    // Said by somebody with no client. Taken here, on the caller's thread, rather than in the
+    // broadcaster that consumes the queue on another one.
+    ScriptRegistry<WorldScript>::ForEachEnabledHook(WORLDHOOK_ON_CHANNEL_BROADCAST,
+        [&](WorldScript* s) { s->OnChannelBroadcast(guid.GetCounter(), GetName().c_str(), what); });
+
     sWorld.GetChannelBroadcaster()->EnqueueMessage(what, GetName(), guid, lang, GetTeam(), skipCheck);
 }
 
