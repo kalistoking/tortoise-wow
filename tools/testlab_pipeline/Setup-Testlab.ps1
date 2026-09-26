@@ -2261,116 +2261,15 @@ if (-not (Test-Path $SourceDir)) {
     Write-Host "[OK] Repository source files and submodules are fully up to date." -ForegroundColor Green
 }
 
-# ==============================================================================
-# PIPELINE SUB-STEP: SYNC PLAYERBOT/DUNGEON-CLEAR MODULES
-# ==============================================================================
-# The engine (-RepoUrl) and the bot module (-PlayerBotsRepoUrl) are entirely independent
-# repositories by design, so this keeps a second, dedicated checkout of the module and
-# mirrors whatever Resolve-ModuleLayout finds in it - sql\ and conf\ included, since both
-# live inside the module directory itself - into the checkout -RepoUrl/-BranchName produced
-# above. A second clone rather than a sparse-checkout of -RepoUrl's own tree, because the
-# module does not live inside the engine's tree at all with the default module (Sagiroth/
-# TortoiseBots is its own repository, not a fork of the engine).
-#
-# History, for whoever wonders why this looks more complicated than "clone the module": it
-# used to matter that Shyalya's fork carried the engine AND modules/mod-playerbots,
-# modules/mod-dungeon-clear together in one tree, while the engine itself (then Penqle,
-# renamed to tortoise-wow/tortoise-wow) carried neither. This second-clone approach was the
-# one mechanism that worked unchanged whichever side of that split a given checkout was on.
-# Shyalya is winding down and Sagiroth/TortoiseBots is the default now, but an operator can
-# still point -PlayerBotsRepoUrl at Shyalya's old shape - see the DEPRECATED note on
-# Resolve-ModuleLayout - so this still has to handle both.
-if (-not $WithPlayerBots) {
-    Write-Host "Module sync - skipped (pass -WithPlayerBots to add the bot module)." -ForegroundColor DarkGray
-} else {
-Write-Host "Syncing bot module from $PlayerBotsRepoUrl ($PlayerBotsBranch)..."
-
-$ModulesSourceDir = Join-Path $ScriptDirectory "modules-source"
-
-# core.longpaths: modules/mod-playerbots/src/playerbot/strategy/<class>/*.cpp runs deep
-# enough that checking it out under a -WorkspaceRoot with any real nesting of its own can
-# clear Windows' 260-character MAX_PATH - reproduced with a scratch directory ~140
-# characters deep: "Cloning into 'modules-source'... unable to checkout working tree", the
-# clone left half-applied. This is per-invocation (-c), not a change to the operator's
-# global git config.
-if (-not (Test-Path $ModulesSourceDir)) {
-    Invoke-NativeLogged -Executable "git" -Arguments @("-c", "core.longpaths=true", "clone", "--branch", $PlayerBotsBranch, $PlayerBotsRepoUrl, $ModulesSourceDir)
-    Assert-LastExitCode -Message "git clone of the module source '$PlayerBotsBranch' from $PlayerBotsRepoUrl failed"
-} else {
-    Push-Location $ModulesSourceDir
-
-    # Same reasoning as the -RepoUrl checkout above: make -PlayerBotsRepoUrl authoritative
-    # for an existing checkout too, fetch and check out -PlayerBotsBranch by name (creating a local
-    # tracking branch if this is the first time), then reset to it by name rather than relying
-    # on tracking configuration a locally-created branch would not have.
-    #
-    # This one does drive 'origin' directly, unlike the source checkout. The reason the
-    # source needs a remote of its own is that people work in it - they have their own
-    # remotes and their own branches tracking them, and the pipeline rewriting origin
-    # underneath that breaks their pushes. modules-source is created by this script, exists
-    # for this script, and nobody commits in it, so there is no such configuration to damage.
-    Invoke-NativeLogged -Executable "git" -Arguments @("remote", "set-url", "origin", $PlayerBotsRepoUrl)
-    Assert-LastExitCode -Message "Could not point the module source's 'origin' at $PlayerBotsRepoUrl"
-
-    Invoke-NativeLogged -Executable "git" -Arguments @("-c", "core.longpaths=true", "fetch", "origin", "--prune")
-    Assert-LastExitCode -Message "git fetch of the module source from $PlayerBotsRepoUrl failed"
-
-    $CurrentModulesBranch = (git rev-parse --abbrev-ref HEAD 2>$null)
-    if ($CurrentModulesBranch -ne $PlayerBotsBranch) {
-        git rev-parse --verify --quiet "refs/heads/$PlayerBotsBranch" > $null 2>&1
-        if ($LASTEXITCODE -eq 0) {
-            Invoke-NativeLogged -Executable "git" -Arguments @("-c", "core.longpaths=true", "checkout", $PlayerBotsBranch)
-        } else {
-            Invoke-NativeLogged -Executable "git" -Arguments @("-c", "core.longpaths=true", "checkout", "-b", $PlayerBotsBranch, "--track", "origin/$PlayerBotsBranch")
-        }
-        Assert-LastExitCode -Message "git checkout of the module source branch '$PlayerBotsBranch' failed"
-    }
-
-    # Reset rather than pull, unconditionally - not just when this happens to already match.
-    # Same fix, same reasoning, as the -RepoUrl/-BranchName checkout above (see its own
-    # comment) - this side of the sync used to just "pull", and that assumes local and origin
-    # never diverge. Caught live: modules-source's local 'main' sat 35 commits away from
-    # origin/main (an old local branch nobody had revisited since well before a since-merged
-    # PR landed there), and "git pull" on that divergence did not bring the fix in - the next
-    # build failed on a header the remote fix had already removed, silently, with no git error
-    # of its own to point at. A hard reset by name has no such failure mode: modules-source is
-    # created by this script, exists for this script, and nobody commits in it (see above), so
-    # there is nothing local ever worth reconciling with a merge or rebase.
-    Invoke-NativeLogged -Executable "git" -Arguments @("-c", "core.longpaths=true", "reset", "--hard", "origin/$PlayerBotsBranch")
-    Assert-LastExitCode -Message "git reset of the module source branch '$PlayerBotsBranch' to origin/$PlayerBotsBranch failed"
-
-    Pop-Location
-}
-
-# What this clone holds is worked out from the clone, not declared here - see
-# Resolve-ModuleLayout. A core repository carrying modules yields each of them; a
-# repository that is one module yields itself.
-$script:SyncedModules = Resolve-ModuleLayout -CloneDirectory $ModulesSourceDir -RepositoryUrl $PlayerBotsRepoUrl
-
-Write-Host (" -> Provides: " + (($script:SyncedModules | ForEach-Object { $_.Name }) -join ", "))
-
-foreach ($Module in $script:SyncedModules) {
-    $ModuleDestPath = Join-Path $SourceDir ("modules\" + $Module.Name)
-
-    Write-Host (" -> Syncing " + $Module.Name + "...")
-
-    # /MIR mirrors the destination onto the source exactly, deleting anything on the
-    # destination side that the source no longer has - the point of syncing from a live
-    # branch rather than copying once. Robocopy's exit codes are a bitmask where 0-7 are all
-    # success (0 = nothing to do, the rest describe what kind of change was made); only 8
-    # and above are real failures, unlike every other tool this script calls.
-    #
-    # /XD .git matters for the repository-is-the-module shape: there the source directory is
-    # the clone itself, and mirroring its .git into modules/ would copy a whole second
-    # repository in and then fight with it on the next run.
-    robocopy $Module.Path $ModuleDestPath /MIR /XD ".git" /NFL /NDL /NJH /NJS /NP | Out-Null
-    if ($LASTEXITCODE -ge 8) {
-        Stop-Pipeline -Message ("Syncing module '" + $Module.Name + "' failed (robocopy exit code $LASTEXITCODE).") -ExitCode $LASTEXITCODE
-    }
-}
-
-Write-Host "[OK] Bot module is up to date from $PlayerBotsRepoUrl." -ForegroundColor Green
-}
+# Module sync (SYNC PLAYERBOT/DUNGEON-CLEAR MODULES) used to live here, nested inside the
+# -DatabaseOnly skip above alongside vcpkg and the engine checkout. That silently broke
+# -DatabaseOnly -WithPlayerBots: step 11 needs $script:SyncedModules to know which SQL files
+# to import, and with this step skipped that stayed empty, so "the database structure is
+# not up to date" was the first anyone heard of a bot table like tortoise_bots_pool_account
+# never having been created. Module sync does not touch vcpkg, does not rebuild the engine,
+# and does not need either - it clones/updates a small independent checkout and mirrors it
+# into $SourceDir/modules, which already exists by the time -DatabaseOnly runs. Moved below,
+# out of the -DatabaseOnly conditional, so it always runs when -WithPlayerBots is passed.
 
 # ==============================================================================
 # PIPELINE SUB-STEP (OPTIONAL): DYNAMIC CHERRY-PICK HOTFIXES
@@ -2559,6 +2458,117 @@ if (-not [string]::IsNullOrEmpty($applyPatches)) {
     Pop-Location
 }
 }
+# ==============================================================================
+# PIPELINE SUB-STEP: SYNC PLAYERBOT/DUNGEON-CLEAR MODULES (runs even under -DatabaseOnly)
+# ==============================================================================
+# The engine (-RepoUrl) and the bot module (-PlayerBotsRepoUrl) are entirely independent
+# repositories by design, so this keeps a second, dedicated checkout of the module and
+# mirrors whatever Resolve-ModuleLayout finds in it - sql\ and conf\ included, since both
+# live inside the module directory itself - into the checkout -RepoUrl/-BranchName produced
+# above. A second clone rather than a sparse-checkout of -RepoUrl's own tree, because the
+# module does not live inside the engine's tree at all with the default module (Sagiroth/
+# TortoiseBots is its own repository, not a fork of the engine).
+#
+# History, for whoever wonders why this looks more complicated than "clone the module": it
+# used to matter that Shyalya's fork carried the engine AND modules/mod-playerbots,
+# modules/mod-dungeon-clear together in one tree, while the engine itself (then Penqle,
+# renamed to tortoise-wow/tortoise-wow) carried neither. This second-clone approach was the
+# one mechanism that worked unchanged whichever side of that split a given checkout was on.
+# Shyalya is winding down and Sagiroth/TortoiseBots is the default now, but an operator can
+# still point -PlayerBotsRepoUrl at Shyalya's old shape - see the DEPRECATED note on
+# Resolve-ModuleLayout - so this still has to handle both.
+if (-not $WithPlayerBots) {
+    Write-Host "Module sync - skipped (pass -WithPlayerBots to add the bot module)." -ForegroundColor DarkGray
+} else {
+Write-Host "Syncing bot module from $PlayerBotsRepoUrl ($PlayerBotsBranch)..."
+
+$ModulesSourceDir = Join-Path $ScriptDirectory "modules-source"
+
+# core.longpaths: modules/mod-playerbots/src/playerbot/strategy/<class>/*.cpp runs deep
+# enough that checking it out under a -WorkspaceRoot with any real nesting of its own can
+# clear Windows' 260-character MAX_PATH - reproduced with a scratch directory ~140
+# characters deep: "Cloning into 'modules-source'... unable to checkout working tree", the
+# clone left half-applied. This is per-invocation (-c), not a change to the operator's
+# global git config.
+if (-not (Test-Path $ModulesSourceDir)) {
+    Invoke-NativeLogged -Executable "git" -Arguments @("-c", "core.longpaths=true", "clone", "--branch", $PlayerBotsBranch, $PlayerBotsRepoUrl, $ModulesSourceDir)
+    Assert-LastExitCode -Message "git clone of the module source '$PlayerBotsBranch' from $PlayerBotsRepoUrl failed"
+} else {
+    Push-Location $ModulesSourceDir
+
+    # Same reasoning as the -RepoUrl checkout above: make -PlayerBotsRepoUrl authoritative
+    # for an existing checkout too, fetch and check out -PlayerBotsBranch by name (creating a local
+    # tracking branch if this is the first time), then reset to it by name rather than relying
+    # on tracking configuration a locally-created branch would not have.
+    #
+    # This one does drive 'origin' directly, unlike the source checkout. The reason the
+    # source needs a remote of its own is that people work in it - they have their own
+    # remotes and their own branches tracking them, and the pipeline rewriting origin
+    # underneath that breaks their pushes. modules-source is created by this script, exists
+    # for this script, and nobody commits in it, so there is no such configuration to damage.
+    Invoke-NativeLogged -Executable "git" -Arguments @("remote", "set-url", "origin", $PlayerBotsRepoUrl)
+    Assert-LastExitCode -Message "Could not point the module source's 'origin' at $PlayerBotsRepoUrl"
+
+    Invoke-NativeLogged -Executable "git" -Arguments @("-c", "core.longpaths=true", "fetch", "origin", "--prune")
+    Assert-LastExitCode -Message "git fetch of the module source from $PlayerBotsRepoUrl failed"
+
+    $CurrentModulesBranch = (git rev-parse --abbrev-ref HEAD 2>$null)
+    if ($CurrentModulesBranch -ne $PlayerBotsBranch) {
+        git rev-parse --verify --quiet "refs/heads/$PlayerBotsBranch" > $null 2>&1
+        if ($LASTEXITCODE -eq 0) {
+            Invoke-NativeLogged -Executable "git" -Arguments @("-c", "core.longpaths=true", "checkout", $PlayerBotsBranch)
+        } else {
+            Invoke-NativeLogged -Executable "git" -Arguments @("-c", "core.longpaths=true", "checkout", "-b", $PlayerBotsBranch, "--track", "origin/$PlayerBotsBranch")
+        }
+        Assert-LastExitCode -Message "git checkout of the module source branch '$PlayerBotsBranch' failed"
+    }
+
+    # Reset rather than pull, unconditionally - not just when this happens to already match.
+    # Same fix, same reasoning, as the -RepoUrl/-BranchName checkout above (see its own
+    # comment) - this side of the sync used to just "pull", and that assumes local and origin
+    # never diverge. Caught live: modules-source's local 'main' sat 35 commits away from
+    # origin/main (an old local branch nobody had revisited since well before a since-merged
+    # PR landed there), and "git pull" on that divergence did not bring the fix in - the next
+    # build failed on a header the remote fix had already removed, silently, with no git error
+    # of its own to point at. A hard reset by name has no such failure mode: modules-source is
+    # created by this script, exists for this script, and nobody commits in it (see above), so
+    # there is nothing local ever worth reconciling with a merge or rebase.
+    Invoke-NativeLogged -Executable "git" -Arguments @("-c", "core.longpaths=true", "reset", "--hard", "origin/$PlayerBotsBranch")
+    Assert-LastExitCode -Message "git reset of the module source branch '$PlayerBotsBranch' to origin/$PlayerBotsBranch failed"
+
+    Pop-Location
+}
+
+# What this clone holds is worked out from the clone, not declared here - see
+# Resolve-ModuleLayout. A core repository carrying modules yields each of them; a
+# repository that is one module yields itself.
+$script:SyncedModules = Resolve-ModuleLayout -CloneDirectory $ModulesSourceDir -RepositoryUrl $PlayerBotsRepoUrl
+
+Write-Host (" -> Provides: " + (($script:SyncedModules | ForEach-Object { $_.Name }) -join ", "))
+
+foreach ($Module in $script:SyncedModules) {
+    $ModuleDestPath = Join-Path $SourceDir ("modules\" + $Module.Name)
+
+    Write-Host (" -> Syncing " + $Module.Name + "...")
+
+    # /MIR mirrors the destination onto the source exactly, deleting anything on the
+    # destination side that the source no longer has - the point of syncing from a live
+    # branch rather than copying once. Robocopy's exit codes are a bitmask where 0-7 are all
+    # success (0 = nothing to do, the rest describe what kind of change was made); only 8
+    # and above are real failures, unlike every other tool this script calls.
+    #
+    # /XD .git matters for the repository-is-the-module shape: there the source directory is
+    # the clone itself, and mirroring its .git into modules/ would copy a whole second
+    # repository in and then fight with it on the next run.
+    robocopy $Module.Path $ModuleDestPath /MIR /XD ".git" /NFL /NDL /NJH /NJS /NP | Out-Null
+    if ($LASTEXITCODE -ge 8) {
+        Stop-Pipeline -Message ("Syncing module '" + $Module.Name + "' failed (robocopy exit code $LASTEXITCODE).") -ExitCode $LASTEXITCODE
+    }
+}
+
+Write-Host "[OK] Bot module is up to date from $PlayerBotsRepoUrl." -ForegroundColor Green
+}
+
 # ==============================================================================
 # PIPELINE STEP 03b: PROMOTE sql/wip_updates INTO A DATABASE_UPDATES MIGRATION
 # ==============================================================================
