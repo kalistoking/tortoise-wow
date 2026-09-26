@@ -1,7 +1,11 @@
 -- D6 prototype 2: Mr. Smite's fight (boss_mr_smite.cpp) as rows -- no C++, no restart.
 -- For his copy 990646: a copy of creature_template 646 that runs EventAI, not boss_mr_smite.
--- Load: run this file, then in game `.reload creature_ai_events` (it reloads the steps too) and
--- `.reload generic_scripts`, and spawn the copy near the chest in the Deadmines (`.npc add 990646`).
+-- Load: run this file, then in game, in this order -- the template before the rules that name it:
+--   .reload creature_template 990646   (one entry: Commands.cpp:18132-18146 -- a new one too)
+--   .reload generic_scripts             (refused while any DB script is running: try again)
+--   .reload creature_ai_events          (the steps too: Commands.cpp:18150-18166)
+-- and spawn the copy near the chest in the Deadmines (`.npc add 990646`). An edit later is the
+-- same three reloads and a fresh spawn: a creature keeps the rules it was made with.
 -- Written by the trt repo's scripts/d6_smite_rows.py from the same rows its engine test runs.
 -- Relies on conditions 999 (IS_IN_COMBAT, flags 3: the source not in combat), already in tw_world.
 
