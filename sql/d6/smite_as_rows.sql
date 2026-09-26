@@ -1,11 +1,14 @@
--- D6 prototype 2: Mr. Smite's fight (boss_mr_smite.cpp) as rows -- no C++, no restart.
+-- D6 prototype 2: Mr. Smite's fight (boss_mr_smite.cpp) as rows -- no C++, no build.
 -- For his copy 990646: a copy of creature_template 646 that runs EventAI, not boss_mr_smite.
--- Load: run this file, then in game, in this order -- the template before the rules that name it:
---   .reload creature_template 990646   (one entry: Commands.cpp:18132-18146 -- a new one too)
---   .reload generic_scripts             (refused while any DB script is running: try again)
---   .reload creature_ai_events          (the steps too: Commands.cpp:18150-18166)
--- and spawn the copy near the chest in the Deadmines (`.npc add 990646`). An edit later is the
--- same three reloads and a fresh spawn: a creature keeps the rules it was made with.
+-- Load: run this file AFTER the world's migrations (one drops creature_template), then restart
+-- the dev server and spawn the copy near the chest in the Deadmines (`.npc add 990646`).
+-- Loading it while the server runs would be, in this order:
+--   .reload creature_template 990646   (works live, a new entry too: Commands.cpp:18132-18146)
+--   .reload generic_scripts             (refused while any DB script is scheduled -- always, on a
+--                                        running world: measured 42 of 42 in 84 s)
+--   .reload creature_ai_events          (says it reloaded the steps but skips them while any DB
+--                                        script is scheduled: ScriptMgr.cpp:104-105)
+-- -- so today it is the restart; trt's ARCHITECTURE.md §20.8 proposes the core change.
 -- Written by the trt repo's scripts/d6_smite_rows.py from the same rows its engine test runs.
 -- Relies on conditions 999 (IS_IN_COMBAT, flags 3: the source not in combat), already in tw_world.
 
