@@ -617,6 +617,10 @@ class Map : public GridRefManager<NGridType>
         void RemoveBones(Corpse* corpse);
         void ScheduleCorpseRemoval();
 
+        // A module loaded while the server runs replaced the scripts with these ids: each creature
+        // here that runs one of them gets its AI made again. Returns how many did.
+        uint32 ReinitializeCreatureAIs(std::set<uint32> const& scriptIds);
+
         XStatTimer MovementPerfTimer;
         XStatTimer SpellPerfTimer;
         XStatTimer UpdateTimer;

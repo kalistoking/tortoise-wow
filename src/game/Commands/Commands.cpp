@@ -247,6 +247,27 @@ bool ChatHandler::HandleReloadModuleStringCommand(char* /*args*/)
     return true;
 }
 
+bool ChatHandler::HandleModuleLoadCommand(char* args)
+{
+    char* moduleName = ExtractQuotedOrLiteralArg(&args);
+    if (!moduleName)
+        return false;
+
+    uint32 replacedScripts = 0;
+    uint32 newCreatureAIs = 0;
+    if (!sScriptMgr.LoadModuleWhileRunning(moduleName, replacedScripts, newCreatureAIs))
+    {
+        PSendSysMessage("Module %s was not loaded -- the server log says why.", moduleName);
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+    PSendSysMessage("Module %s loaded: %u scripts replaced, %u creatures given a new AI. "
+                    "An instance made before keeps its instance script until it is made again.",
+                    moduleName, replacedScripts, newCreatureAIs);
+    return true;
+}
+
 bool ChatHandler::HandleReloadHousingCommand(char* /*args*/)
 {
     sObjectMgr.LoadGuildHouses();

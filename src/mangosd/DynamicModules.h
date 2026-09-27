@@ -3,4 +3,7 @@
 
 void AddConfiguredModulesScripts();
 
+// One configured dynamic module, loaded while the server runs (ScriptMgr::LoadModuleWhileRunning).
+bool LoadDynamicModuleWhileRunning(char const* moduleName);
+
 #endif

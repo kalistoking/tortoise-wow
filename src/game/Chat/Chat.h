@@ -334,6 +334,7 @@ class ChatHandler
         bool HandleReloadLocalesQuestCommand(char* args);
         bool HandleReloadLootTemplatesMailCommand(char* args);
         bool HandleReloadModuleStringCommand(char* args);
+        bool HandleModuleLoadCommand(char* args);
         bool HandleReloadNpcGossipCommand(char* args);
         bool HandleReloadNpcTextCommand(char* args);
         bool HandleReloadNpcTrainerCommand(char* args);

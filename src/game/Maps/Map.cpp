@@ -3616,6 +3616,24 @@ void Map::RemoveOldBones(const uint32 diff)
     }
 }
 
+uint32 Map::ReinitializeCreatureAIs(std::set<uint32> const& scriptIds)
+{
+    std::vector<Creature*> creatures;
+    {
+        std::shared_lock<std::shared_mutex> lock(m_objectsStore_lock);
+        auto range = m_objectsStore.range<Creature>();
+        for (auto itr = range.first; itr != range.second; ++itr)
+            if (itr->second && scriptIds.count(itr->second->GetScriptId()))
+                creatures.push_back(itr->second);
+    }
+
+    // Now if its AI is not running, else at its next update (Creature::AIM_Initialize).
+    for (Creature* creature : creatures)
+        creature->AIM_Initialize();
+
+    return uint32(creatures.size());
+}
+
 void Map::ScheduleCorpseRemoval()
 {
     //explicitly set timer to interval timer so that RemoveOldBones() is called on next tick.

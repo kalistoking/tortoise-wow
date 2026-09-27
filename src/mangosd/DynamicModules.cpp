@@ -5,9 +5,12 @@
 
 #include <ace/OS_NS_dlfcn.h>
 
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
+#include <filesystem>
 #include <string>
+#include <system_error>
 #include <vector>
 
 #ifndef TW_DYNAMIC_MODULES
@@ -149,13 +152,50 @@ namespace
         return true;
     }
 
+    // A module is loaded from a copy of its file, in "loaded" beside it: Windows keeps a loaded
+    // library's file locked, and a newer build must be able to take its place while the server
+    // runs (`module load`). Each load has a copy of its own -- a second dlopen of one path
+    // would hand back the library already loaded.
+    std::string ShadowCopy(std::string const& modulePath)
+    {
+        static uint32 loads = 0;
+        std::error_code error;
+        std::filesystem::path const original(modulePath);
+        std::filesystem::path const directory = original.parent_path() / "loaded";
+        std::filesystem::create_directories(directory, error);
+        std::filesystem::path const copy = directory /
+            (original.stem().string() + "." + std::to_string(++loads) + original.extension().string());
+        std::filesystem::copy_file(original, copy, std::filesystem::copy_options::overwrite_existing, error);
+        return error ? modulePath : copy.string();
+    }
+
+    // The copies of the last run, locked no more.
+    void RemoveShadowCopies()
+    {
+        for (std::string const& directory : GetModuleSearchDirectories())
+        {
+            std::error_code error;
+            std::filesystem::remove_all(std::filesystem::path(directory) / "loaded", error);
+        }
+    }
+
     bool LoadDynamicModule(std::string const& moduleName)
     {
-        for (std::string const& modulePath : GetModuleCandidatePaths(moduleName))
+        for (std::string const& candidatePath : GetModuleCandidatePaths(moduleName))
         {
+            // A path the system resolves (beside mangosd.exe, on Windows) is loaded as it is.
+            std::error_code error;
+            bool const found = std::filesystem::is_regular_file(candidatePath, error);
+            std::string const modulePath = found ? ShadowCopy(candidatePath) : candidatePath;
             ACE_SHLIB_HANDLE handle = ACE_OS::dlopen(modulePath.c_str(), RTLD_NOW | RTLD_GLOBAL);
             if (!handle)
+            {
+                // On Windows most often an import mangosd does not export: the module asks for
+                // more of the core than when mangosd was linked, and mangosd must be rebuilt.
+                if (found)
+                    sLog.outError("Dynamic module %s: %s could not be loaded.", moduleName.c_str(), modulePath.c_str());
                 continue;
+            }
 
             ModuleScriptLoaderFunction addScripts = nullptr;
             if (!ValidateModule(moduleName, modulePath, handle, addScripts))
@@ -178,8 +218,21 @@ namespace
 void AddConfiguredModulesScripts()
 {
     AddModulesScripts();
+    RemoveShadowCopies();
 
     std::vector<std::string> const moduleNames = GetDynamicModuleNames();
     for (std::string const& moduleName : moduleNames)
         LoadDynamicModule(moduleName);
+}
+
+bool LoadDynamicModuleWhileRunning(char const* moduleName)
+{
+    std::vector<std::string> const moduleNames = GetDynamicModuleNames();
+    if (std::find(moduleNames.begin(), moduleNames.end(), moduleName) == moduleNames.end())
+    {
+        sLog.outError("%s is not a dynamic module of this build.", moduleName);
+        return false;
+    }
+
+    return LoadDynamicModule(moduleName);
 }

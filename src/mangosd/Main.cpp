@@ -163,6 +163,7 @@ extern int main(int argc, char **argv)
 
     sScriptMgr.SetScriptLoader(AddScripts);
     sScriptMgr.SetModulesLoader(AddConfiguredModulesScripts);
+    sScriptMgr.SetModuleLoader(LoadDynamicModuleWhileRunning);
 
 #ifndef WIN32                                               // posix daemon commands need apply after config read
     switch (serviceDaemonMode)

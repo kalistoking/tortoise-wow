@@ -32,8 +32,10 @@
 #include "GameEventMgr.h"
 #include "CreatureGroups.h"
 #include "InstanceData.h"
+#include "MapManager.h"
 
 #include <algorithm>
+#include <set>
 
 typedef std::vector<Script*> ScriptVector;
 int num_sc_scripts;
@@ -134,8 +136,36 @@ namespace
 ScriptMgr::ScriptMgr()
     : m_scheduledScripts(0),
       m_scriptLoaderCallback(nullptr),
-      m_modulesLoaderCallback(nullptr)
+      m_modulesLoaderCallback(nullptr),
+      m_moduleLoaderCallback(nullptr)
 {
+}
+
+bool ScriptMgr::LoadModuleWhileRunning(char const* moduleName, uint32& replacedScripts, uint32& newCreatureAIs)
+{
+    replacedScripts = 0;
+    newCreatureAIs = 0;
+    if (!m_moduleLoaderCallback)
+        return false;
+
+    ScriptVector const before = m_NPC_scripts;
+    if (!m_moduleLoaderCallback(moduleName))
+        return false;
+    AddScriptObjectRegistriesAfterDatabaseLoad();
+
+    // The replaced scripts stay in memory, as does the library they came from: a creature, an
+    // object or an instance made from them may still run their code.
+    std::set<uint32> replaced;
+    for (uint32 id = 0; id < m_NPC_scripts.size(); ++id)
+        if (id >= before.size() || m_NPC_scripts[id] != before[id])
+            replaced.insert(id);
+    replacedScripts = uint32(replaced.size());
+
+    if (!replaced.empty())
+        for (auto const& map : sMapMgr.Maps())
+            newCreatureAIs += map.second->ReinitializeCreatureAIs(replaced);
+
+    return true;
 }
 
 ScriptMgr::~ScriptMgr()

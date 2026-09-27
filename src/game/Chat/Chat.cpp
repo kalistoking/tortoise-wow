@@ -833,8 +833,16 @@ ChatCommand * ChatHandler::getCommandTable()
 		{ nullptr,             0,                     false, nullptr,                                       "", nullptr }
 	};
 
+    // Console only: a module is loaded between map updates, when no creature's AI runs.
+    static ChatCommand moduleCommandTable[] =
+    {
+        { "load",           SEC_CONSOLE,         true,  &ChatHandler::HandleModuleLoadCommand,          "", nullptr },
+        { nullptr,          0,                   false, nullptr,                                        "", nullptr }
+    };
+
     static ChatCommand commandTable[] =
     {
+        { "module",         SEC_CONSOLE,         true,  nullptr,                                        "", moduleCommandTable   },
         { "account",        SEC_PLAYER,          true,  nullptr,                                        "", accountCommandTable  },
         { "blacklist",      SEC_ADMINISTRATOR,   true,  nullptr,                                        "", blacklistCommandTable  },
         { "cast",           SEC_DEVELOPER,       false, nullptr,                                        "", castCommandTable     },

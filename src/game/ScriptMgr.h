@@ -1556,9 +1556,17 @@ class ScriptMgr
 
         typedef void(*ScriptLoaderCallbackType)();
         typedef void(*ModulesLoaderCallbackType)();
+        typedef bool(*ModuleLoaderCallbackType)(char const* moduleName);
 
         void SetScriptLoader(ScriptLoaderCallbackType scriptLoaderCallback) { m_scriptLoaderCallback = scriptLoaderCallback; }
         void SetModulesLoader(ModulesLoaderCallbackType modulesLoaderCallback) { m_modulesLoaderCallback = modulesLoaderCallback; }
+        void SetModuleLoader(ModuleLoaderCallbackType moduleLoaderCallback) { m_moduleLoaderCallback = moduleLoaderCallback; }
+
+        // A dynamic module loaded while the server runs -- again, to put a newer build in place of
+        // the one loaded: its scripts replace those registered under the same names, and every
+        // creature running one of them gets a new AI. Instances made before keep their instance
+        // script until they are made again. Only from the console, between map updates.
+        bool LoadModuleWhileRunning(char const* moduleName, uint32& replacedScripts, uint32& newCreatureAIs);
 
         void LoadScriptTexts();
         void LoadScriptWaypoints();
@@ -1672,6 +1680,7 @@ class ScriptMgr
         std::atomic<int> m_scheduledScripts;
         ScriptLoaderCallbackType m_scriptLoaderCallback;
         ModulesLoaderCallbackType m_modulesLoaderCallback;
+        ModuleLoaderCallbackType m_moduleLoaderCallback;
 };
 
 extern TW_CORE_DATA ScriptMgr sScriptMgr;
