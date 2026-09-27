@@ -1,0 +1,15 @@
+###################################################################################################
+# mod-trttemplate module configuration
+###################################################################################################
+
+[ModuleConf]
+
+# mod-trttemplate.Enable
+#     The module's scripts do nothing when 0.
+#     Default: 1
+mod-trttemplate.Enable = 1
+
+# mod-trttemplate.GreetOnLogin
+#     Tell a player who logs in one line of mod_trttemplate_greeting.
+#     Default: 1
+mod-trttemplate.GreetOnLogin = 1
