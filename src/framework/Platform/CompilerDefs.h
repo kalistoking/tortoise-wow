@@ -61,4 +61,15 @@
 #  pragma warning( disable : 4267 )                         // conversion from 'size_t' to 'int', possible loss of data
 #  pragma warning( disable : 4786 )                         // identifier was truncated to '255' characters in the debug information
 #endif
+
+// Marks the core's data -- its globals, and static members a module's code reaches inline. On
+// Linux a dynamic module resolves against the running mangosd (-rdynamic) and this is nothing.
+// An MSVC dynamic module is a DLL that reaches mangosd's data through its import table
+// (modules/CMakeLists.txt defines TORTOISE_MSVC_DYNAMIC_MODULE for it): without dllimport it
+// could not link, or would hold a copy of its own that the server never reads.
+#if defined(_MSC_VER) && defined(TORTOISE_MSVC_DYNAMIC_MODULE)
+#  define TW_CORE_DATA __declspec(dllimport)
+#else
+#  define TW_CORE_DATA
+#endif
 #endif

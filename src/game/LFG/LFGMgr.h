@@ -131,6 +131,6 @@ class LFGQueue
         uint32 _groupSize = 5;
 };
 
-extern LFGQueue sLFGMgr;
+extern TW_CORE_DATA LFGQueue sLFGMgr;
 
 #endif

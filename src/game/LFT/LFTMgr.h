@@ -221,6 +221,6 @@ class LFTManager
         bool m_listingsLoaded;
 };
 
-extern LFTManager sLFTMgr;
+extern TW_CORE_DATA LFTManager sLFTMgr;
 
 #endif

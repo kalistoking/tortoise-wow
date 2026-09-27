@@ -127,7 +127,7 @@ class MassMailMgr
         MassMailList m_massMails;
 };
 
-extern MassMailMgr sMassMailMgr;
+extern TW_CORE_DATA MassMailMgr sMassMailMgr;
 
 #endif
 /*! @} */

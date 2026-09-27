@@ -31,7 +31,7 @@ enum UnitMoveType
 
 #define MAX_MOVE_TYPE 6
 
-extern float baseMoveSpeed[MAX_MOVE_TYPE];
+extern TW_CORE_DATA float baseMoveSpeed[MAX_MOVE_TYPE];
 
 #define MOVEMENT_PACKET_TIME_DELAY 0
 

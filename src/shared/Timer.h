@@ -142,12 +142,12 @@ private:
     int32 i_expiryTime;
 };
 
-extern bool g_bEnableStatGather;
+extern TW_CORE_DATA bool g_bEnableStatGather;
 
 namespace CPU
 {
-    extern uint64 qpc_freq;
-    extern uint32 qpc_counter;
+    extern TW_CORE_DATA uint64 qpc_freq;
+    extern TW_CORE_DATA uint32 qpc_counter;
 
     uint64 QPC();
     void Init();

@@ -82,8 +82,8 @@ class HashMapHolder
         //Non instanceable only static
         HashMapHolder() {}
 
-        static LockType i_lock;
-        static MapType  m_objectMap;
+        TW_CORE_DATA static LockType i_lock;
+        TW_CORE_DATA static MapType  m_objectMap;
 };
 
 class ObjectAccessor : public MaNGOS::Singleton<ObjectAccessor, MaNGOS::ClassLevelLockable<ObjectAccessor, std::mutex> >
@@ -165,8 +165,8 @@ class ObjectAccessor : public MaNGOS::Singleton<ObjectAccessor, MaNGOS::ClassLev
 
         typedef std::map<std::string, Player*> NameToPlayerPtr;
         typedef std::map<std::string, MasterPlayer*> NameToMasterPlayerPtr;
-        static NameToPlayerPtr playerNameToPlayerPointer;
-        static NameToMasterPlayerPtr playerNameToMasterPlayerPointer;
+        TW_CORE_DATA static NameToPlayerPtr playerNameToPlayerPointer;
+        TW_CORE_DATA static NameToMasterPlayerPtr playerNameToMasterPlayerPointer;
 };
 
 #define sObjectAccessor ObjectAccessor::Instance()

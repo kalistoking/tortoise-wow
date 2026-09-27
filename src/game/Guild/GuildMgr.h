@@ -167,6 +167,6 @@ private:
     uint32 m_playerAccount;
 };
 
-extern GuildMgr sGuildMgr;
+extern TW_CORE_DATA GuildMgr sGuildMgr;
 
 #endif // _GUILDMGR_H

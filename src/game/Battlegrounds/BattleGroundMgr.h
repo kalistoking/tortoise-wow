@@ -382,7 +382,7 @@ class BattleGroundMgr
         std::set<uint32> m_usedRefloot;
 };
 
-extern BattleGroundMgr sBattleGroundMgr;
+extern TW_CORE_DATA BattleGroundMgr sBattleGroundMgr;
 
 // Focused static assertions for the generic read-only demand DTO.
 static_assert(std::is_copy_constructible<BattleGroundQueue::QueuedParticipantInfo>::value, "QueuedParticipantInfo must be copy-constructible");

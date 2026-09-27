@@ -58,7 +58,7 @@ public:
     static MailerService* get_global_mailer();
 
 private:
-    static MailerService* _global_service;
+    TW_CORE_DATA static MailerService* _global_service;
     std::atomic_bool _stop;
 
     void process();

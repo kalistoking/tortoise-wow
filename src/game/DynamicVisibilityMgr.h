@@ -33,4 +33,4 @@ private:
 
 };
 
-extern DynamicVisibilityMgr sDynamicVisMgr;
+extern TW_CORE_DATA DynamicVisibilityMgr sDynamicVisMgr;

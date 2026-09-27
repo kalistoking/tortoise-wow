@@ -779,6 +779,6 @@ class SpellMgr
         SpellEntryMap      mSpellEntryMap;
 };
 
-extern SpellMgr sSpellMgr;
+extern TW_CORE_DATA SpellMgr sSpellMgr;
 
 #endif

@@ -71,7 +71,7 @@ struct LogFilterData
     bool defaultState;
 };
 
-extern LogFilterData logFilterData[LOG_FILTER_COUNT];
+extern TW_CORE_DATA LogFilterData logFilterData[LOG_FILTER_COUNT];
 
 enum Color
 {

@@ -192,7 +192,7 @@ enum AttackPowerModIndex
 uint32 CreateProcExtendMask(SpellNonMeleeDamage* damageInfo, SpellMissInfo missCondition);
 
 typedef SpellAuraProcResult(Unit::*pAuraProcHandler)(Unit* pVictim, uint32 damage, int32 originalAmount, Aura* triggeredByAura, SpellEntry const *procSpell, uint32 procFlag, uint32 procEx, uint32 cooldown);
-extern pAuraProcHandler AuraProcHandler[TOTAL_AURAS];
+extern TW_CORE_DATA pAuraProcHandler AuraProcHandler[TOTAL_AURAS];
 
 struct GlobalCooldown
 {

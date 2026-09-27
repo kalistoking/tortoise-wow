@@ -230,7 +230,7 @@ class PoolManager
         SearchMap mPoolSearchMap;
 };
 
-extern PoolManager sPoolMgr;
+extern TW_CORE_DATA PoolManager sPoolMgr;
 
 // Method that tell if the creature is part of a pool and return the pool id if yes
 template<>

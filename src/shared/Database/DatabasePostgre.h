@@ -77,6 +77,6 @@ class DatabasePostgre : public Database
         virtual SqlConnection * CreateConnection();
 
     private:
-        static size_t db_count;
+        TW_CORE_DATA static size_t db_count;
 };
 #endif

@@ -121,7 +121,7 @@ class DatabaseMysql : public Database
         SqlConnection* CreateConnection() override;
 
     private:
-        static size_t db_count;
+        TW_CORE_DATA static size_t db_count;
 };
 
 #endif

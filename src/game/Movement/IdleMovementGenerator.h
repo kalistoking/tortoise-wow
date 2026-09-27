@@ -36,7 +36,7 @@ class IdleMovementGenerator : public MovementGenerator
         MovementGeneratorType GetMovementGeneratorType() const { return IDLE_MOTION_TYPE; }
 };
 
-extern IdleMovementGenerator si_idleMovement;
+extern TW_CORE_DATA IdleMovementGenerator si_idleMovement;
 
 class DistractMovementGenerator : public MovementGenerator
 {

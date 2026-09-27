@@ -207,6 +207,6 @@ class HonorMgr
         Player* m_owner;
 };
 
-extern HonorMaintenancer sHonorMaintenancer;
+extern TW_CORE_DATA HonorMaintenancer sHonorMaintenancer;
 
 #endif

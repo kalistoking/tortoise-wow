@@ -40,6 +40,6 @@ class CreatureEventAIMgr
         CreatureEventAI_Event_Map  m_CreatureEventAI_Event_Map;
 };
 
-extern CreatureEventAIMgr sEventAIMgr;
+extern TW_CORE_DATA CreatureEventAIMgr sEventAIMgr;
 
 #endif

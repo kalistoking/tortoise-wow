@@ -26,6 +26,6 @@ class AutoBroadCastMgr
         time_t _current;
 };
 
-extern AutoBroadCastMgr sAutoBroadCastMgr;
+extern TW_CORE_DATA AutoBroadCastMgr sAutoBroadCastMgr;
 
 #endif

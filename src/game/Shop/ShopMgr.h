@@ -46,6 +46,6 @@ class ShopMgr
         std::mutex m_mutex;
 };
 
-extern ShopMgr sShopMgr;
+extern TW_CORE_DATA ShopMgr sShopMgr;
 
 #endif

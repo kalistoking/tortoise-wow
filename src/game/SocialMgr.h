@@ -153,6 +153,6 @@ class SocialMgr
         std::shared_mutex _socialMapLock;
 };
 
-extern SocialMgr sSocialMgr;
+extern TW_CORE_DATA SocialMgr sSocialMgr;
 
 #endif

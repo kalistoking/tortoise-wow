@@ -52,6 +52,6 @@ class CustomMerchantMgr
         std::unordered_map<uint32, CustomMerchantItem const*> m_itemsById;
 };
 
-extern CustomMerchantMgr sCustomMerchantMgr;
+extern TW_CORE_DATA CustomMerchantMgr sCustomMerchantMgr;
 
 #endif

@@ -202,6 +202,6 @@ class AuctionHouseMgr
         ItemMap             mAitems;
 };
 
-extern AuctionHouseMgr sAuctionMgr;
+extern TW_CORE_DATA AuctionHouseMgr sAuctionMgr;
 
 #endif

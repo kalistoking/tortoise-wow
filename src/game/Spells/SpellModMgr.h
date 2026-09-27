@@ -35,6 +35,6 @@ class SpellModMgr
         void LoadSpellMods();
 };
 
-extern SpellModMgr sSpellModMgr;
+extern TW_CORE_DATA SpellModMgr sSpellModMgr;
 
 #endif

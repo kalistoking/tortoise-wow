@@ -240,7 +240,7 @@ constexpr uint32 MAX_LOCALE = 9;
 LocaleConstant GetLocaleByName(const std::string& name);
 LocaleConstant GetDbcLocaleFromDbLocale(DBLocaleConstant localeIndex);
 
-extern char const* localeNames[MAX_LOCALE];
+extern TW_CORE_DATA char const* localeNames[MAX_LOCALE];
 
 struct LocaleNameStr
 {
@@ -249,7 +249,7 @@ struct LocaleNameStr
 };
 
 // used for iterate all names including alternative
-extern LocaleNameStr const fullLocaleNameList[];
+extern TW_CORE_DATA LocaleNameStr const fullLocaleNameList[];
 
 //operator new[] based version of strdup() function! Release memory by using operator delete[] !
 inline char * mangos_strdup(const char * source)

@@ -45,7 +45,7 @@
 #include <map>
 #include <limits>
 
-extern SQLStorage sCreatureDataLinkGroupStorage;
+extern TW_CORE_DATA SQLStorage sCreatureDataLinkGroupStorage;
 
 class Group;
 class Item;
@@ -483,7 +483,7 @@ struct LanguageDesc
     uint32   skill_id;
 };
 
-extern LanguageDesc lang_description[LANGUAGES_COUNT];
+extern TW_CORE_DATA LanguageDesc lang_description[LANGUAGES_COUNT];
 LanguageDesc const* GetLanguageDescByID(uint32 lang);
 
 class PlayerDumpReader;
@@ -1808,6 +1808,6 @@ class ObjectMgr
         robin_hood::unordered_map<uint32 /*spell id*/, std::vector<QuestSpellCastObjective>> m_questSpellCastObjectives;
 };
 
-extern ObjectMgr sObjectMgr;
+extern TW_CORE_DATA ObjectMgr sObjectMgr;
 
 #endif

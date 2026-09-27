@@ -8,6 +8,6 @@ enum
     DATA_ASZOSH                 = 1,
 };
 
-extern std::vector<ObjectGuid> m_vaultGuards;
+extern TW_CORE_DATA std::vector<ObjectGuid> m_vaultGuards;
 
 #endif

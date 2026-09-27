@@ -394,15 +394,15 @@ struct LootView
         : loot(_loot), viewer(_viewer), permission(_permission) {}
 };
 
-extern LootStore LootTemplates_Creature;
-extern LootStore LootTemplates_Fishing;
-extern LootStore LootTemplates_Gameobject;
-extern LootStore LootTemplates_Item;
-extern LootStore LootTemplates_Mail;
-extern LootStore LootTemplates_Pickpocketing;
-extern LootStore LootTemplates_Skinning;
-extern LootStore LootTemplates_Disenchant;
-extern LootStore LootTemplates_Reference;
+extern TW_CORE_DATA LootStore LootTemplates_Creature;
+extern TW_CORE_DATA LootStore LootTemplates_Fishing;
+extern TW_CORE_DATA LootStore LootTemplates_Gameobject;
+extern TW_CORE_DATA LootStore LootTemplates_Item;
+extern TW_CORE_DATA LootStore LootTemplates_Mail;
+extern TW_CORE_DATA LootStore LootTemplates_Pickpocketing;
+extern TW_CORE_DATA LootStore LootTemplates_Skinning;
+extern TW_CORE_DATA LootStore LootTemplates_Disenchant;
+extern TW_CORE_DATA LootStore LootTemplates_Reference;
 
 void LoadLootTemplates_Creature();
 void LoadLootTemplates_Fishing();

@@ -20,4 +20,4 @@ private:
     turtle_vector<uint32, Category_DailyQuest> m_questIds;
 };
 
-extern DailyQuestHandler sDailyQuestHandler;
+extern TW_CORE_DATA DailyQuestHandler sDailyQuestHandler;
