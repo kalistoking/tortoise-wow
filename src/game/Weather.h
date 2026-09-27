@@ -161,6 +161,6 @@ class WeatherMgr
         WeatherZoneMap      mWeatherZoneMap;
 };
 
-extern WeatherMgr sWeatherMgr;
+extern TW_CORE_DATA WeatherMgr sWeatherMgr;
 
 #endif

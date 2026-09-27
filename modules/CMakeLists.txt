@@ -195,7 +195,7 @@ foreach(SOURCE_MODULE ${MODULES_MODULE_LIST})
       # of the core before it links, and exports exactly that (cmake/ModuleExports.cmake). The
       # DLL then links against mangosd itself -- one core, one set of singletons -- where it
       # used to link game, shared and framework statically and hold a private copy of each.
-      # MSVC only: /FI and dumpbin are its own. Other Windows toolchains keep the old path.
+      # MSVC only: dllimport and dumpbin are its own. Other Windows toolchains keep the old path.
       add_library(${MODULE_PROJECT_NAME}_objects OBJECT
         ${MODULE_SOURCE_FILES}
         ${MODULE_EXTRA_SCRIPT_SOURCES}
@@ -205,10 +205,9 @@ foreach(SOURCE_MODULE ${MODULES_MODULE_LIST})
           ${MODULES_COMMON_INCLUDES}
           ${MODULE_INCLUDE_DIRS}
           ${MODULE_EXTRA_SCRIPT_INCLUDE_DIRS})
-      target_compile_options(${MODULE_PROJECT_NAME}_objects
-        PRIVATE "/FI${CMAKE_CURRENT_SOURCE_DIR}/ModuleImports.h")
-      # The core's data the module reads -- the script registries -- comes dllimport'ed from
-      # mangosd (TW_CORE_DATA, ScriptMgr.h), not as the module's own copy.
+      # The core's data comes dllimport'ed from mangosd (TW_CORE_DATA, Platform/CompilerDefs.h),
+      # and its singletons' Instance() is mangosd's (Policies/SingletonImp.h): the module has no
+      # copy of its own of either.
       target_compile_definitions(${MODULE_PROJECT_NAME}_objects PRIVATE TORTOISE_MSVC_DYNAMIC_MODULE)
       # The core's usage requirements -- its definitions and includes -- and nothing linked: an
       # object library only compiles.
@@ -267,45 +266,42 @@ foreach(SOURCE_MODULE ${MODULES_MODULE_LIST})
   endif()
 endforeach()
 
-# **mangosd exports what the dynamic modules ask of it** (MSVC; Linux has -rdynamic): read
-# from their objects just before mangosd links, into a .def it links with, and an import library
-# the modules link against.
+# **mangosd exports what the dynamic modules ask of it** (MSVC; Linux has -rdynamic), in two
+# steps (cmake/ModuleExports.cmake): what the modules' objects ask for, before mangosd builds,
+# into a source mangosd compiles -- so that a new ask relinks it; and of that, what the core
+# defines, just before mangosd links (src/mangosd/CMakeLists.txt, which reads the properties set
+# here), into the .def it links with and the import library the modules link against.
 if(MSVC AND MODULES_WINDOWS_OBJECT_TARGETS)
   get_filename_component(MODULES_LINKER_DIR "${CMAKE_LINKER}" DIRECTORY)
+  set(MODULES_EXPORTS_NEEDS "${CMAKE_BINARY_DIR}/mangosd_module_needs.cpp")
   set(MODULES_EXPORTS_DEF "${CMAKE_BINARY_DIR}/mangosd_modules.def")
-  # The core a module builds on: the game, its shared and framework layers, and the scripts'
-  # own base (ScriptedInstance, ScriptedAI) when the core is built with them.
-  set(MODULES_EXPORT_LIB_TARGETS game shared framework)
-  if(TARGET scripts)
-    list(APPEND MODULES_EXPORT_LIB_TARGETS scripts)
-  endif()
-  set(MODULES_EXPORT_LIBS)
-  foreach(LIB_TARGET ${MODULES_EXPORT_LIB_TARGETS})
-    list(APPEND MODULES_EXPORT_LIBS "$<TARGET_FILE:${LIB_TARGET}>")
-  endforeach()
   set(MODULES_EXPORT_OBJECTS)
   foreach(OBJECT_TARGET ${MODULES_WINDOWS_OBJECT_TARGETS})
     list(APPEND MODULES_EXPORT_OBJECTS "$<TARGET_OBJECTS:${OBJECT_TARGET}>")
   endforeach()
   # A command here and a target mangosd waits for: a custom command can only hang on a target
   # made in its own directory, and mangosd is made in src/mangosd, before the modules are known.
-  # Each list goes over as one "|"-joined argument; the script splits it again.
-  add_custom_command(OUTPUT "${MODULES_EXPORTS_DEF}"
+  # The list goes over as one "|"-joined argument; the script splits it again.
+  add_custom_command(OUTPUT "${MODULES_EXPORTS_NEEDS}"
     COMMAND "${CMAKE_COMMAND}"
+      -DMODE=needs
       "-DDUMPBIN=${MODULES_LINKER_DIR}/dumpbin.exe"
       "-DOBJECTS=$<JOIN:${MODULES_EXPORT_OBJECTS},|>"
-      "-DLIBS=$<JOIN:${MODULES_EXPORT_LIBS},|>"
-      "-DOUT=${MODULES_EXPORTS_DEF}"
+      "-DOUT=${MODULES_EXPORTS_NEEDS}"
       -P "${CMAKE_SOURCE_DIR}/cmake/ModuleExports.cmake"
     DEPENDS
-      ${MODULES_EXPORT_OBJECTS} ${MODULES_EXPORT_LIBS}
+      ${MODULES_EXPORT_OBJECTS}
       "${CMAKE_SOURCE_DIR}/cmake/ModuleExports.cmake"
-    COMMENT "mangosd: exporting what the dynamic modules need"
+    COMMENT "mangosd: reading what the dynamic modules need"
     VERBATIM)
-  add_custom_target(mangosd_module_exports DEPENDS "${MODULES_EXPORTS_DEF}")
-  add_dependencies(mangosd mangosd_module_exports)
+  add_custom_target(mangosd_module_needs DEPENDS "${MODULES_EXPORTS_NEEDS}")
+  add_dependencies(mangosd mangosd_module_needs)
+  target_sources(mangosd PRIVATE "${MODULES_EXPORTS_NEEDS}")
+  set_target_properties(mangosd PROPERTIES
+    TW_MODULE_EXPORTS_DUMPBIN "${MODULES_LINKER_DIR}/dumpbin.exe"
+    TW_MODULE_EXPORTS_NEEDS "${MODULES_EXPORTS_NEEDS}"
+    TW_MODULE_EXPORTS_DEF "${MODULES_EXPORTS_DEF}")
   set_property(TARGET mangosd APPEND PROPERTY LINK_OPTIONS "/DEF:${MODULES_EXPORTS_DEF}")
-  set_property(TARGET mangosd APPEND PROPERTY LINK_DEPENDS "${MODULES_EXPORTS_DEF}")
 endif()
 
 ConfigureModuleLoader("static" MODULE_STATIC_LOADER OFF ${MODULES_STATIC_MODULES})

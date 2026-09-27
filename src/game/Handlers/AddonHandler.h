@@ -36,6 +36,6 @@ class AddonHandler
         bool BuildAddonPacket(WorldPacket* Source, WorldPacket* Target);
 };
 
-extern AddonHandler sAddOnHandler;
+extern TW_CORE_DATA AddonHandler sAddOnHandler;
 
 #endif

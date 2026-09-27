@@ -86,6 +86,6 @@ private:
     FakeItemProtoMap m_fakeitemproto;
 };
 
-extern transmog sTransmog;
+extern TW_CORE_DATA transmog sTransmog;
 
 #endif

@@ -25,15 +25,15 @@
 #include "Common.h"
 #include "Database/SQLStorage.h"
 
-extern SQLStorage sCreatureDataAddonStorage;
-extern SQLStorage sCreatureDisplayInfoAddonStorage;
-extern SQLStorage sGameObjectDisplayInfoAddonStorage;
-extern SQLStorage sEquipmentStorage;
-extern SQLStorage sPageTextStore;
-extern SQLStorage sMapStorage;
-extern SQLStorage sConditionStorage;
-extern SQLStorage sAreaStorage;
-extern SQLStorage sMailTemplateStorage;
-extern SQLStorage sCreatureSpellDataStorage;
+extern TW_CORE_DATA SQLStorage sCreatureDataAddonStorage;
+extern TW_CORE_DATA SQLStorage sCreatureDisplayInfoAddonStorage;
+extern TW_CORE_DATA SQLStorage sGameObjectDisplayInfoAddonStorage;
+extern TW_CORE_DATA SQLStorage sEquipmentStorage;
+extern TW_CORE_DATA SQLStorage sPageTextStore;
+extern TW_CORE_DATA SQLStorage sMapStorage;
+extern TW_CORE_DATA SQLStorage sConditionStorage;
+extern TW_CORE_DATA SQLStorage sAreaStorage;
+extern TW_CORE_DATA SQLStorage sMailTemplateStorage;
+extern TW_CORE_DATA SQLStorage sCreatureSpellDataStorage;
 
 #endif

@@ -262,6 +262,6 @@ protected:
     std::vector<std::pair<std::string, std::string>> m_ticketTemplates;
 };
 
-extern TicketMgr sTicketMgr;
+extern TW_CORE_DATA TicketMgr sTicketMgr;
 
 #endif // _TICKETMGR_H

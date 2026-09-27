@@ -106,6 +106,6 @@ class ZoneScriptMgr
         uint32 m_UpdateTimer;
 };
 
-extern ZoneScriptMgr sZoneScriptMgr;
+extern TW_CORE_DATA ZoneScriptMgr sZoneScriptMgr;
 
 #endif /*OUTDOOR_PVP_MGR_H_*/

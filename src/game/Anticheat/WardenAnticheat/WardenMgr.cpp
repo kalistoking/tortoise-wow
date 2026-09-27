@@ -30,6 +30,12 @@
 
 WardenMgr::WardenMgr() : CheckStore(), CheckResultStore() { }
 
+WardenMgr* WardenMgr::instance()
+{
+    static WardenMgr instance;
+    return &instance;
+}
+
 WardenMgr::~WardenMgr()
 {
     for (CheckMap::iterator it = CheckStore.begin(); it != CheckStore.end(); ++it)

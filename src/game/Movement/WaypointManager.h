@@ -174,6 +174,6 @@ class WaypointManager
         WaypointPathMap m_pathSpecialMap;
 };
 
-extern WaypointManager sWaypointMgr;
+extern TW_CORE_DATA WaypointManager sWaypointMgr;
 
 #endif

@@ -283,6 +283,6 @@ class AccountMgr
         mutable std::shared_mutex m_accountDataMutex;
 };
 
-extern AccountMgr sAccountMgr;
+extern TW_CORE_DATA AccountMgr sAccountMgr;
 
 #endif

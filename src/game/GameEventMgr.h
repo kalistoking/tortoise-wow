@@ -186,6 +186,6 @@ RequestedEventType* GameEventMgr::GetHardcodedEvent()
 	return nullptr;
 }
 
-extern GameEventMgr sGameEventMgr;
+extern TW_CORE_DATA GameEventMgr sGameEventMgr;
 
 #endif

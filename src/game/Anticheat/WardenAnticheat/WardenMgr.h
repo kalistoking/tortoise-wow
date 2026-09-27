@@ -73,11 +73,9 @@ class WardenMgr
         ~WardenMgr();
 
     public:
-        static WardenMgr* instance()
-        {
-            static WardenMgr instance;
-            return &instance;
-        }
+        // Defined in WardenMgr.cpp, not here: inline, a Windows dynamic module would hold an
+        // instance of its own.
+        static WardenMgr* instance();
 
         WardenCheck* GetWardenDataById(uint16 /*build*/, uint16 /*id*/);
         WardenCheckResult* GetWardenResultById(uint16 /*build*/, uint16 /*id*/);

@@ -189,4 +189,4 @@ class Antispam : public AntispamInterface
         std::mutex m_messageMutex;
 };
 
-extern Antispam sAntispam;
+extern TW_CORE_DATA Antispam sAntispam;

@@ -98,6 +98,6 @@ class CreatureGroupsManager
         std::map<ObjectGuid, CreatureGroup*> m_groups;
 };
 
-extern CreatureGroupsManager sCreatureGroupsManager;
+extern TW_CORE_DATA CreatureGroupsManager sCreatureGroupsManager;
 
 #endif

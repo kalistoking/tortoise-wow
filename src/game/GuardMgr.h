@@ -50,6 +50,6 @@ class GuardMgr
         uint32 m_uiRechargeTimer;
 };
 
-extern GuardMgr sGuardMgr;
+extern TW_CORE_DATA GuardMgr sGuardMgr;
 
 #endif

@@ -43,4 +43,4 @@ protected:
 	std::mutex MemBytesGuard;
 };
 
-extern PerformanceMonitor sPerfMonitor;
+extern TW_CORE_DATA PerformanceMonitor sPerfMonitor;

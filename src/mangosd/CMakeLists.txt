@@ -204,6 +204,27 @@ set_target_properties(${EXECUTABLE_NAME} PROPERTIES LINK_FLAGS
   "${EXECUTABLE_LINK_FLAGS}"
 )
 
+# Windows dynamic modules: just before mangosd links, what they ask of it that the core defines --
+# its libraries, or mangosd's own objects -- becomes the .def it links with
+# (cmake/ModuleExports.cmake). modules/CMakeLists.txt sets the TW_MODULE_EXPORTS_* properties
+# when there is such a module; without one, the step does nothing.
+if(MSVC)
+  set(MODULE_EXPORT_LIBS "$<TARGET_FILE:game>|$<TARGET_FILE:shared>|$<TARGET_FILE:framework>")
+  if(USE_SCRIPTS)
+    string(APPEND MODULE_EXPORT_LIBS "|$<TARGET_FILE:scripts>")
+  endif()
+  add_custom_command(TARGET ${EXECUTABLE_NAME} PRE_LINK
+    COMMAND "${CMAKE_COMMAND}"
+      -DMODE=def
+      "-DDUMPBIN=$<TARGET_PROPERTY:${EXECUTABLE_NAME},TW_MODULE_EXPORTS_DUMPBIN>"
+      "-DNEEDS=$<TARGET_PROPERTY:${EXECUTABLE_NAME},TW_MODULE_EXPORTS_NEEDS>"
+      "-DLIBS=${MODULE_EXPORT_LIBS}"
+      "-DSELF=$<JOIN:$<TARGET_OBJECTS:${EXECUTABLE_NAME}>,|>"
+      "-DOUT=$<TARGET_PROPERTY:${EXECUTABLE_NAME},TW_MODULE_EXPORTS_DEF>"
+      -P "${CMAKE_SOURCE_DIR}/cmake/ModuleExports.cmake"
+    VERBATIM)
+endif()
+
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION ${BIN_DIR})
 install(FILES run-mangosd DESTINATION ${BIN_DIR})
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mangosd.conf.dist.in ${CMAKE_CURRENT_BINARY_DIR}/mangosd.conf.dist)

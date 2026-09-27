@@ -57,6 +57,6 @@ private:
     turtle_map<uint32, turtle_vector<AuraRemovalEntry, Category_AuraRemoval>, Category_AuraRemoval> m_data;
 };
 
-extern AuraRemovalManager sAuraRemovalMgr;
+extern TW_CORE_DATA AuraRemovalManager sAuraRemovalMgr;
 
 #endif

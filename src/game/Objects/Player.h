@@ -1136,7 +1136,7 @@ class Player final: public Unit
 
         void CleanupsBeforeDelete() override;
 
-        static UpdateMask updateVisualBits;
+        TW_CORE_DATA static UpdateMask updateVisualBits;
         static void InitVisibleBits();
 
         bool Create(uint32 guidlow, std::string const& name, uint8 race, uint8 class_, uint8 gender, uint8 skin, uint8 face, uint8 hairStyle, uint8 hairColor, uint8 facialHair);

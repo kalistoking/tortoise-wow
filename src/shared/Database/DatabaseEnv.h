@@ -51,9 +51,9 @@ typedef DatabaseMysql DatabaseType;
 #define _OFFSET_ "LIMIT %d,1"
 #endif
 
-extern DatabaseType WorldDatabase;
-extern DatabaseType CharacterDatabase;
-extern DatabaseType LoginDatabase;
-extern DatabaseType LogsDatabase;
+extern TW_CORE_DATA DatabaseType WorldDatabase;
+extern TW_CORE_DATA DatabaseType CharacterDatabase;
+extern TW_CORE_DATA DatabaseType LoginDatabase;
+extern TW_CORE_DATA DatabaseType LogsDatabase;
 
 #endif

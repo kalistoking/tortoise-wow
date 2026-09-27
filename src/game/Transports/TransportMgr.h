@@ -129,6 +129,6 @@ class TransportMgr
         std::unordered_set<Transport*> m_shipTransports;
 };
 
-extern TransportMgr sTransportMgr;
+extern TW_CORE_DATA TransportMgr sTransportMgr;
 
 #endif // TRANSPORTMGR_H

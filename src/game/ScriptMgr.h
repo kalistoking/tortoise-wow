@@ -22,18 +22,6 @@
 #define _SCRIPTMGR_H
 
 #include "Common.h"
-
-// The core's data a dynamic module uses. On Linux a module resolves against the running mangosd
-// (-rdynamic) and this is nothing. An MSVC module is a DLL that reaches mangosd's data through
-// its import table (modules/CMakeLists.txt defines TORTOISE_MSVC_DYNAMIC_MODULE for it): without
-// dllimport it could not link, or would hold its own copy -- its hooks in a registry the server
-// never calls.
-#if defined(_MSC_VER) && defined(TORTOISE_MSVC_DYNAMIC_MODULE)
-#define TW_CORE_DATA __declspec(dllimport)
-#else
-#define TW_CORE_DATA
-#endif
-
 #include <string>
 #include "Log.h"
 #include "Policies/Singleton.h"
@@ -1175,16 +1163,16 @@ struct ScriptAction
 typedef std::multimap<uint32, ScriptInfo> ScriptMap;
 typedef std::map<uint32, ScriptMap > ScriptMapMap;
 
-extern ScriptMapMap sQuestEndScripts;
-extern ScriptMapMap sQuestStartScripts;
-extern ScriptMapMap sSpellScripts;
-extern ScriptMapMap sCreatureSpellScripts;
-extern ScriptMapMap sGameObjectScripts;
-extern ScriptMapMap sEventScripts;
-extern ScriptMapMap sGenericScripts;
-extern ScriptMapMap sGossipScripts;
-extern ScriptMapMap sCreatureMovementScripts;
-extern ScriptMapMap sCreatureAIScripts;
+extern TW_CORE_DATA ScriptMapMap sQuestEndScripts;
+extern TW_CORE_DATA ScriptMapMap sQuestStartScripts;
+extern TW_CORE_DATA ScriptMapMap sSpellScripts;
+extern TW_CORE_DATA ScriptMapMap sCreatureSpellScripts;
+extern TW_CORE_DATA ScriptMapMap sGameObjectScripts;
+extern TW_CORE_DATA ScriptMapMap sEventScripts;
+extern TW_CORE_DATA ScriptMapMap sGenericScripts;
+extern TW_CORE_DATA ScriptMapMap sGossipScripts;
+extern TW_CORE_DATA ScriptMapMap sCreatureMovementScripts;
+extern TW_CORE_DATA ScriptMapMap sCreatureAIScripts;
 
 #define MAX_SCRIPTS         5000                            //72 bytes each (approx 351kb)
 #define VISIBLE_RANGE       (166.0f)                        //MAX visible range (size of grid)

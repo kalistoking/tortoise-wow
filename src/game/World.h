@@ -1293,7 +1293,7 @@ class World
         bool configNoReload(bool reload, eConfigFloatValues index, char const* fieldname, float defvalue);
         bool configNoReload(bool reload, eConfigBoolValues index, char const* fieldname, bool defvalue);
 
-        static volatile bool m_stopEvent;
+        TW_CORE_DATA static volatile bool m_stopEvent;
         static uint8 m_ExitCode;
         uint32 m_ShutdownTimer = 0;
         uint32 m_ShutdownMask = 0;
@@ -1346,15 +1346,15 @@ class World
         MigrationFile m_worldMigration;
 
         // for max speed access
-        static float m_MaxVisibleDistanceOnContinents;
-        static float m_MaxVisibleDistanceInInstances;
-        static float m_MaxVisibleDistanceInBG;
+        TW_CORE_DATA static float m_MaxVisibleDistanceOnContinents;
+        TW_CORE_DATA static float m_MaxVisibleDistanceInInstances;
+        TW_CORE_DATA static float m_MaxVisibleDistanceInBG;
 
-        static float m_MaxVisibleDistanceInFlight;
-        static float m_VisibleUnitGreyDistance;
-        static float m_VisibleObjectGreyDistance;
+        TW_CORE_DATA static float m_MaxVisibleDistanceInFlight;
+        TW_CORE_DATA static float m_VisibleUnitGreyDistance;
+        TW_CORE_DATA static float m_VisibleObjectGreyDistance;
 
-        static float  m_relocation_lower_limit_sq;
+        TW_CORE_DATA static float  m_relocation_lower_limit_sq;
         static uint32 m_relocation_ai_notify_delay;
 
         // CLI command holder to be thread safe
@@ -1408,9 +1408,9 @@ class World
         std::unique_ptr<ThreadPool> m_updateThreads;
 };
 
-extern uint32 realmID;
+extern TW_CORE_DATA uint32 realmID;
 
-extern World sWorld;
+extern TW_CORE_DATA World sWorld;
 
 #endif
 /// @}

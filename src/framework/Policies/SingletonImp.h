@@ -27,6 +27,11 @@
 // avoid the using namespace here cuz
 // its a .h file afterall
 
+// A Windows dynamic module calls the core's Instance(), which mangosd exports, and never makes
+// its own: made in the module, it would create a second, empty instance of the core's singleton.
+// (A module that needs a singleton of its own writes it without this template.)
+#ifndef TORTOISE_MSVC_DYNAMIC_MODULE
+
 template
 <
 typename T,
@@ -70,6 +75,8 @@ void MaNGOS::Singleton<T, ThreadingModel, CreatePolicy, LifeTimePolicy>::Destroy
     si_instance = nullptr;
     si_destroyed = true;
 }
+
+#endif
 
 #define INSTANTIATE_SINGLETON_4(TYPE, THREADINGMODEL, CREATIONPOLICY, OBJECTLIFETIME) \
     template <> TYPE* MaNGOS::Singleton<TYPE, THREADINGMODEL, CREATIONPOLICY, OBJECTLIFETIME >::si_instance = 0; \

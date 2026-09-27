@@ -95,13 +95,13 @@ class Opcodes
             return emptyHandler;
         }
 
-        static OpcodeHandler const emptyHandler;
+        TW_CORE_DATA static OpcodeHandler const emptyHandler;
 
         OpcodeMap mOpcodeMap;
 
 };
 
-extern Opcodes opcodeTable;
+extern TW_CORE_DATA Opcodes opcodeTable;
 
 /// Lookup opcode name for human understandable logging
 inline char const* LookupOpcodeName(uint16 id)

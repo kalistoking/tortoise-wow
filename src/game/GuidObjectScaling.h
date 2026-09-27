@@ -54,4 +54,4 @@ private:
     std::unordered_map<uint64, float> m_guidScales;
 };
 
-extern GuidObjectScaling sGuidObjectScaling;
+extern TW_CORE_DATA GuidObjectScaling sGuidObjectScaling;

@@ -96,12 +96,16 @@ namespace MaNGOS
 
     private:
 
-        static MUTEX si_mtx;
+        TW_CORE_DATA static MUTEX si_mtx;
     };
 
 }
 
+// A Windows dynamic module locks the core's mutex, imported from mangosd (TW_CORE_DATA): one of
+// its own would lock nothing the core holds.
+#ifndef TORTOISE_MSVC_DYNAMIC_MODULE
 template<class T, class MUTEX> MUTEX MaNGOS::ClassLevelLockable<T, MUTEX>::si_mtx;
+#endif
 
 #define INSTANTIATE_CLASS_MUTEX(CTYPE, MUTEX) \
     template class MaNGOS::ClassLevelLockable<CTYPE, MUTEX>

@@ -89,7 +89,7 @@ class CharacterDatabaseCache
 
 };
 
-extern CharacterDatabaseCache sCharacterDatabaseCache;
+extern TW_CORE_DATA CharacterDatabaseCache sCharacterDatabaseCache;
 
 
 #endif

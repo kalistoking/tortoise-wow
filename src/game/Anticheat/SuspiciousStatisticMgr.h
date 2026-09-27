@@ -157,4 +157,4 @@ protected:
     uint32 FishingClearMaintanceTimer = 0;
 };
 
-extern SuspiciousStatisticMgr sSuspiciousStatisticMgr;
+extern TW_CORE_DATA SuspiciousStatisticMgr sSuspiciousStatisticMgr;

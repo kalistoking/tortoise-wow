@@ -204,7 +204,7 @@ private:
     BossGuidMap m_masterGuid;
 };
 
-extern CreatureLinkingMgr sCreatureLinkingMgr;
+extern TW_CORE_DATA CreatureLinkingMgr sCreatureLinkingMgr;
 
 #endif
 /*! @} */
