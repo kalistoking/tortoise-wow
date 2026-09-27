@@ -57,10 +57,6 @@ dungeons/blackwing_lair/boss_razorgore.cpp
 dungeons/blackwing_lair/boss_vaelastrasz.cpp
 dungeons/blackwing_lair/boss_victor_nefarius.cpp
 dungeons/blackwing_lair/instance_blackwing_lair.cpp
-dungeons/deadmines/boss_mr_smite.cpp
-dungeons/deadmines/deadmines.cpp
-dungeons/deadmines/deadmines.h
-dungeons/deadmines/instance_deadmines.cpp
 dungeons/dragonmaw_retreat/boss_bogpaw_truthsay.cpp
 dungeons/dragonmaw_retreat/boss_gowlfang.cpp
 dungeons/dragonmaw_retreat/boss_halgan_redbrand.cpp

@@ -22,7 +22,10 @@ SDCategory: Deadmines
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "deadmines.h"
+#include "mod_deadmines.h"
+
+namespace mod_deadmines
+{
 
 struct instance_deadmines : public ScriptedInstance
 {
@@ -141,6 +144,14 @@ struct instance_deadmines : public ScriptedInstance
             m_uiDoor2GUID = pGo->GetGUID();
         if (pGo->GetEntry() == GO_DOOR2 && pGo->GetPositionX() > -169.0f && pGo->GetPositionX() < -168.0f)
             m_uiDoor3GUID = pGo->GetGUID();
+
+        // The doors to the next boss are the server's to open -- on the boss's death, or by the
+        // lever behind each for the way back -- never a player's: not interactable, since
+        // GO_FLAG_LOCKED would not hold them -- the client casts Opening on a locked door, and
+        // lock 85 asks for nothing. The Iron Clad Door is locked by its template; the cannon
+        // opens it.
+        if (pGo->GetGUID() == m_uiDoor1GUID || pGo->GetGUID() == m_uiDoor2GUID || pGo->GetGUID() == m_uiDoor3GUID)
+            pGo->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NO_INTERACT);
 
         if (pGo->GetEntry() == GO_DMF_CHEST)
         {
@@ -315,3 +326,5 @@ void AddSC_instance_deadmines()
     newscript->GetInstanceData = &GetInstanceData_instance_deadmines;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_deadmines

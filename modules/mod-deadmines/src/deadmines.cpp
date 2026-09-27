@@ -22,7 +22,10 @@ SDCategory: Deadmines
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "deadmines.h"
+#include "mod_deadmines.h"
+
+namespace mod_deadmines
+{
 
 bool GOHello_go_door_lever_dm(Player* pPlayer, GameObject* pGo)
 {
@@ -111,3 +114,5 @@ void AddSC_deadmines()
     newscript->GOGetAI = &GetAIgo_defias_gunpowder;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_deadmines

@@ -75,10 +75,6 @@ void AddSC_boss_nefarian();
 void AddSC_boss_victor_nefarius();
 void AddSC_instance_blackwing_lair();
 
-void AddSC_deadmines();                              //deadmines
-void AddSC_instance_deadmines();
-void AddSC_boss_mr_smite();
-
 void AddSC_instance_dragonmaw_retreat();             //dragonmaw_retreat
 void AddSC_boss_bogpaw_truthsay();
 void AddSC_boss_gowlfang();
@@ -456,9 +452,6 @@ void AddScripts()
     AddSC_boss_nefarian();
     AddSC_boss_victor_nefarius();
     AddSC_instance_blackwing_lair();
-    AddSC_deadmines();                                      //deadmines
-    AddSC_instance_deadmines();
-    AddSC_boss_mr_smite();
     AddSC_instance_dragonmaw_retreat();                     //dragonmaw_retreat
     AddSC_boss_bogpaw_truthsay();
     AddSC_boss_gowlfang();

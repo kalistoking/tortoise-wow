@@ -22,7 +22,10 @@ SDCategory: Deadmines
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "deadmines.h"
+#include "mod_deadmines.h"
+
+namespace mod_deadmines
+{
 
 enum
 {
@@ -54,6 +57,7 @@ struct boss_mr_smiteAI : public ScriptedAI
 {
     boss_mr_smiteAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
+        sLog.outString("[mod-deadmines] boss_mr_smite: the module's AI runs this creature");
         Reset();
     }
 
@@ -327,3 +331,5 @@ void AddSC_boss_mr_smite()
     pNewScript->RegisterSelf();
 
 }
+
+} // namespace mod_deadmines
