@@ -635,7 +635,9 @@ if(TARGET mangosd AND TARGET modules)
   target_link_libraries(mangosd modules)
 endif()
 
-if(TARGET mangosd AND WORLDSERVER_DYNAMIC_MODULES_DEPENDENCIES)
+# On Windows a dynamic module links mangosd (modules/CMakeLists.txt), so it is built after it,
+# not before.
+if(TARGET mangosd AND WORLDSERVER_DYNAMIC_MODULES_DEPENDENCIES AND NOT WIN32)
   add_dependencies(mangosd ${WORLDSERVER_DYNAMIC_MODULES_DEPENDENCIES})
 endif()
 
