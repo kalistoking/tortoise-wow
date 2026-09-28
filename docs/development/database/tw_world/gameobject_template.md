@@ -294,3 +294,32 @@ Source: `src/game/SharedDefines.h enum GameobjectTypes`
 | `28` | `0x1C` | `GAMEOBJECT_TYPE_LOTTERY_KIOSK` | Lottery kiosk |
 | `29` | `0x1D` | `GAMEOBJECT_TYPE_CAPTURE_POINT` | Capture point |
 | `30` | `0x1E` | `GAMEOBJECT_TYPE_AURA_GENERATOR` | Aura generator |
+
+## Worked examples
+
+### A door only the server may open
+
+`GO_FLAG_LOCKED` looks right for "not until the boss is dead", but isn't:
+the client's own Opening cast passes a lock with nothing in it (empty
+`lockId` slots), regardless of the flag. Use `GO_FLAG_NO_INTERACT`
+instead, set in the instance script's `OnObjectCreate` for each door
+GUID that must wait, and cleared (`RemoveFlag`) wherever the script
+already opens that door on its own (a boss death, a lever, a switch). A
+lever placed behind the door for "the way back" needs no flag at all —
+it has its own `gameobject_scripts` row and works from either side.
+
+```cpp
+// The doors to the next boss are the server's to open -- on the boss's death, or by the
+// lever behind each for the way back -- never a player's: not interactable, since
+// GO_FLAG_LOCKED would not hold them -- the client casts Opening on a locked door, and
+// lock 85 asks for nothing.
+if (pGo->GetGUID() == m_uiDoor1GUID || pGo->GetGUID() == m_uiDoor2GUID || pGo->GetGUID() == m_uiDoor3GUID)
+    pGo->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NO_INTERACT);
+```
+
+Worked out for the Deadmines' three boss doors (`modules/mod-deadmines/src/instance_deadmines.cpp`,
+`OnObjectCreate`), PR [#545](https://github.com/tortoise-wow/tortoise-wow/pull/545) — closed,
+not because the fix didn't work, but because real Turtle WoW already has these doors
+interactable: what looked like a bug was the game's actual behavior. Kept here as the
+technique, not a fix to reapply — useful the next time a door, chest or lever genuinely
+should wait on something happening first.
