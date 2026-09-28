@@ -103,6 +103,13 @@ Database.AutoUpdate.AllowedModules = "all"
 
 Use `all` to allow every enabled module, or a comma-separated allowlist.
 
+A module's files and tables are named after it (settled 2026-09-28):
+
+- a migration: `YYYY_MM_DD_NN_<module>_<what>.sql` -- the date and number order a module's
+  files, the name keeps them apart from the core's; each one idempotent, safe to run again;
+- a table the module owns: `mod_<module>_<what>` (as `mod_trttemplate_greeting`), created only
+  if missing and never dropped -- a change of shape is a new file.
+
 Module-owned localized strings should use:
 
 ```sql

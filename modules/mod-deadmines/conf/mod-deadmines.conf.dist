@@ -1,0 +1,13 @@
+###################################################################################################
+# mod-deadmines module configuration
+###################################################################################################
+
+[ModuleConf]
+
+# mod-deadmines.Enable
+#     Register the Deadmines' scripts -- Mr. Smite, the instance, the doors' lever, the cannon and
+#     the gunpowder. When 0 the module registers nothing: the world database still names the
+#     scripts, the server logs them as not found, and the Deadmines run without their C++, as
+#     with no module at all.
+#     Default: 1
+mod-deadmines.Enable = 1
