@@ -216,10 +216,13 @@ void DisableScriptAction(ScriptInfo& script)
 
 void ScriptMgr::LoadScripts(ScriptMapMap& scripts, const char* tablename)
 {
-    if (IsScriptScheduled())                                // function don't must be called in time scripts use.
-        return;
-
-    scripts.clear();                                        // need for reload support
+    // A reload retires the table it replaces instead of freeing it: a scheduled step
+    // (ScriptAction::script) and every live creature's EventAI rule (its ScriptMap*) still
+    // point into it, and a std::map's nodes stay where they are when the map is moved. So the
+    // reload runs whatever is scheduled, and a server keeps one table per reload.
+    if (!scripts.empty())
+        m_retiredScripts.push_back(std::move(scripts));
+    scripts.clear();
 
     //                                                  0    1       2         3         4          5          6         7           8             9          10        11        12        13        14    15 16 17 18       19
     QueryResult *result = WorldDatabase.PQuery("SELECT id, delay, command, datalong, datalong2, datalong3, datalong4, target_param1, target_param2, target_type, data_flags, dataint, dataint2, dataint3, dataint4, x, y, z, o, condition_id FROM %s ORDER BY `id`, `delay`, `priority`", tablename);

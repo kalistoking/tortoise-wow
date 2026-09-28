@@ -1696,6 +1696,8 @@ class ScriptMgr
         ModuleLoaderCallbackType m_moduleLoaderCallback;
         std::string m_registeringModule;
         std::map<std::string, std::set<uint32>> m_moduleScripts;
+        // The script tables a reload replaced, kept: something may still point into them.
+        std::list<ScriptMapMap> m_retiredScripts;
 };
 
 extern TW_CORE_DATA ScriptMgr sScriptMgr;

@@ -18239,13 +18239,6 @@ bool ChatHandler::HandleReloadCreatureSpellsCommand(char* /*args*/)
 
 bool ChatHandler::HandleReloadCreatureSpellScriptsCommand(char* args)
 {
-    if (sScriptMgr.IsScriptScheduled())
-    {
-        SendSysMessage("DB scripts used currently, please attempt reload later.");
-        SetSentErrorMessage(true);
-        return false;
-    }
-
     if (*args != 'a')
         sLog.outInfo("Re-Loading Scripts from `creature_spells_scripts`...");
 
@@ -18267,13 +18260,6 @@ bool ChatHandler::HandleReloadLootTemplatesDisenchantCommand(char* /*args*/)
 
 bool ChatHandler::HandleReloadEventScriptsCommand(char* args)
 {
-    if (sScriptMgr.IsScriptScheduled())
-    {
-        SendSysMessage("DB scripts used currently, please attempt reload later.");
-        SetSentErrorMessage(true);
-        return false;
-    }
-
     if (*args != 'a')
         sLog.outInfo("Re-Loading Scripts from `event_scripts`...");
 
@@ -18352,13 +18338,6 @@ bool ChatHandler::HandleReloadGORequirementsCommand(char* /*args*/)
 
 bool ChatHandler::HandleReloadGameObjectScriptsCommand(char* args)
 {
-    if (sScriptMgr.IsScriptScheduled())
-    {
-        SendSysMessage("DB scripts used currently, please attempt reload later.");
-        SetSentErrorMessage(true);
-        return false;
-    }
-
     if (*args != 'a')
         sLog.outInfo("Re-Loading Scripts from `gameobject_scripts`...");
 
@@ -18399,13 +18378,6 @@ bool ChatHandler::HandleReloadGossipMenuOptionCommand(char* /*args*/)
 
 bool ChatHandler::HandleReloadGenericScriptsCommand(char* args)
 {
-    if (sScriptMgr.IsScriptScheduled())
-    {
-        SendSysMessage("DB scripts used currently, please attempt reload later.");
-        SetSentErrorMessage(true);
-        return false;
-    }
-
     if (*args != 'a')
         sLog.outInfo("Re-Loading Scripts from `generic_scripts`...");
 
@@ -18419,13 +18391,6 @@ bool ChatHandler::HandleReloadGenericScriptsCommand(char* args)
 
 bool ChatHandler::HandleReloadGossipScriptsCommand(char* args)
 {
-    if (sScriptMgr.IsScriptScheduled())
-    {
-        SendSysMessage("DB scripts used currently, please attempt reload later.");
-        SetSentErrorMessage(true);
-        return false;
-    }
-
     if (*args != 'a')
         sLog.outInfo("Re-Loading Scripts from `gossip_scripts`...");
 
@@ -18588,13 +18553,6 @@ bool ChatHandler::HandleReloadPointsOfInterestCommand(char* /*args*/)
 
 bool ChatHandler::HandleReloadQuestEndScriptsCommand(char* args)
 {
-    if (sScriptMgr.IsScriptScheduled())
-    {
-        SendSysMessage("DB scripts used currently, please attempt reload later.");
-        SetSentErrorMessage(true);
-        return false;
-    }
-
     if (*args != 'a')
         sLog.outInfo("Re-Loading Scripts from `quest_end_scripts`...");
 
@@ -18608,13 +18566,6 @@ bool ChatHandler::HandleReloadQuestEndScriptsCommand(char* args)
 
 bool ChatHandler::HandleReloadQuestStartScriptsCommand(char* args)
 {
-    if (sScriptMgr.IsScriptScheduled())
-    {
-        SendSysMessage("DB scripts used currently, please attempt reload later.");
-        SetSentErrorMessage(true);
-        return false;
-    }
-
     if (*args != 'a')
         sLog.outInfo("Re-Loading Scripts from `quest_start_scripts`...");
 
@@ -18751,13 +18702,6 @@ bool ChatHandler::HandleReloadSpellScriptTargetCommand(char* /*args*/)
 
 bool ChatHandler::HandleReloadSpellScriptsCommand(char* args)
 {
-    if (sScriptMgr.IsScriptScheduled())
-    {
-        SendSysMessage("DB scripts used currently, please attempt reload later.");
-        SetSentErrorMessage(true);
-        return false;
-    }
-
     if (*args != 'a')
         sLog.outInfo("Re-Loading Scripts from `spell_scripts`...");
 
