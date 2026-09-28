@@ -268,6 +268,28 @@ bool ChatHandler::HandleModuleLoadCommand(char* args)
     return true;
 }
 
+bool ChatHandler::HandleModuleUnloadCommand(char* args)
+{
+    char* moduleName = ExtractQuotedOrLiteralArg(&args);
+    if (!moduleName)
+        return false;
+
+    uint32 removedScripts = 0;
+    uint32 newCreatureAIs = 0;
+    if (!sScriptMgr.UnloadModuleWhileRunning(moduleName, removedScripts, newCreatureAIs))
+    {
+        PSendSysMessage("Module %s has no script registered -- not loaded, or unloaded already.", moduleName);
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+    PSendSysMessage("Module %s unloaded: %u scripts removed, %u creatures given the core's AI. "
+                    "Its library stays loaded; an instance made before keeps its instance script "
+                    "until it is made again.",
+                    moduleName, removedScripts, newCreatureAIs);
+    return true;
+}
+
 bool ChatHandler::HandleReloadHousingCommand(char* /*args*/)
 {
     sObjectMgr.LoadGuildHouses();

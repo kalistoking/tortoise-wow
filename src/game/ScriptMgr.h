@@ -1568,6 +1568,19 @@ class ScriptMgr
         // script until they are made again. Only from the console, between map updates.
         bool LoadModuleWhileRunning(char const* moduleName, uint32& replacedScripts, uint32& newCreatureAIs);
 
+        // Whose scripts are being registered: a dynamic module's name while its loader runs, so
+        // each script it registers is known as its own (`module unload` takes them out again).
+        void BeginModuleScripts(char const* moduleName) { m_registeringModule = moduleName ? moduleName : ""; }
+        void EndModuleScripts() { m_registeringModule.clear(); }
+        void NoteScriptOfModule(uint32 scriptId);
+
+        // A dynamic module's scripts taken out while the server runs: each script it registered
+        // no longer answers its script_name, and every creature running one gets a new AI -- the
+        // core's own, as with no module. Its library stays loaded (objects made from it may
+        // still run its code), and an instance made before keeps its instance script until it
+        // is made again. Only from the console, between map updates.
+        bool UnloadModuleWhileRunning(char const* moduleName, uint32& removedScripts, uint32& newCreatureAIs);
+
         void LoadScriptTexts();
         void LoadScriptWaypoints();
         void LoadEscortData();
@@ -1681,6 +1694,8 @@ class ScriptMgr
         ScriptLoaderCallbackType m_scriptLoaderCallback;
         ModulesLoaderCallbackType m_modulesLoaderCallback;
         ModuleLoaderCallbackType m_moduleLoaderCallback;
+        std::string m_registeringModule;
+        std::map<std::string, std::set<uint32>> m_moduleScripts;
 };
 
 extern TW_CORE_DATA ScriptMgr sScriptMgr;

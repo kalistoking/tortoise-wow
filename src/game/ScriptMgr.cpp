@@ -168,6 +168,37 @@ bool ScriptMgr::LoadModuleWhileRunning(char const* moduleName, uint32& replacedS
     return true;
 }
 
+void ScriptMgr::NoteScriptOfModule(uint32 scriptId)
+{
+    // The newest registration owns the name: a module's own, or the core's (no module).
+    for (auto& module : m_moduleScripts)
+        module.second.erase(scriptId);
+    if (!m_registeringModule.empty())
+        m_moduleScripts[m_registeringModule].insert(scriptId);
+}
+
+bool ScriptMgr::UnloadModuleWhileRunning(char const* moduleName, uint32& removedScripts, uint32& newCreatureAIs)
+{
+    removedScripts = 0;
+    newCreatureAIs = 0;
+    auto const module = m_moduleScripts.find(moduleName);
+    if (module == m_moduleScripts.end() || module->second.empty())
+        return false;
+
+    // The script objects stay in memory, as does the library they came from: an object or an
+    // instance made from them may still run their code.
+    std::set<uint32> const removed = module->second;
+    for (uint32 id : removed)
+        if (id < m_NPC_scripts.size())
+            m_NPC_scripts[id] = nullptr;
+    m_moduleScripts.erase(module);
+    removedScripts = uint32(removed.size());
+
+    for (auto const& map : sMapMgr.Maps())
+        newCreatureAIs += map.second->ReinitializeCreatureAIs(removed);
+    return true;
+}
+
 ScriptMgr::~ScriptMgr()
 {
     m_NPC_scripts.clear();
@@ -3059,6 +3090,7 @@ void Script::RegisterSelf(bool bReportError)
     else if (uint32 id = sScriptMgr.GetScriptId(Name.c_str()))
     {
         m_NPC_scripts[id] = this;
+        sScriptMgr.NoteScriptOfModule(id);
         ++num_sc_scripts;
     }
     else

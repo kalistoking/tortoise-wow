@@ -837,6 +837,7 @@ ChatCommand * ChatHandler::getCommandTable()
     static ChatCommand moduleCommandTable[] =
     {
         { "load",           SEC_CONSOLE,         true,  &ChatHandler::HandleModuleLoadCommand,          "", nullptr },
+        { "unload",         SEC_CONSOLE,         true,  &ChatHandler::HandleModuleUnloadCommand,        "", nullptr },
         { nullptr,          0,                   false, nullptr,                                        "", nullptr }
     };
 

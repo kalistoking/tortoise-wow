@@ -2,6 +2,7 @@
 
 #include "Log.h"
 #include "ModulesScriptLoader.h"
+#include "ScriptMgr.h"
 
 #include <ace/OS_NS_dlfcn.h>
 
@@ -204,7 +205,10 @@ namespace
                 return false;
             }
 
+            // Each script it registers noted as its own, for `module unload`.
+            sScriptMgr.BeginModuleScripts(moduleName.c_str());
             addScripts();
+            sScriptMgr.EndModuleScripts();
             LoadedModules().push_back({modulePath, handle});
             sLog.outString("Loaded dynamic module %s from %s.", moduleName.c_str(), modulePath.c_str());
             return true;
