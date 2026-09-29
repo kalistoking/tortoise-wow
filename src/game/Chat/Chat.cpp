@@ -841,9 +841,17 @@ ChatCommand * ChatHandler::getCommandTable()
         { nullptr,          0,                   false, nullptr,                                        "", nullptr }
     };
 
+    // Console only, as `module`: an AI is made again between map updates, when none runs.
+    static ChatCommand aiCommandTable[] =
+    {
+        { "reinit",         SEC_CONSOLE,         true,  &ChatHandler::HandleAIReinitCommand,            "", nullptr },
+        { nullptr,          0,                   false, nullptr,                                        "", nullptr }
+    };
+
     static ChatCommand commandTable[] =
     {
         { "module",         SEC_CONSOLE,         true,  nullptr,                                        "", moduleCommandTable   },
+        { "ai",             SEC_CONSOLE,         true,  nullptr,                                        "", aiCommandTable       },
         { "account",        SEC_PLAYER,          true,  nullptr,                                        "", accountCommandTable  },
         { "blacklist",      SEC_ADMINISTRATOR,   true,  nullptr,                                        "", blacklistCommandTable  },
         { "cast",           SEC_DEVELOPER,       false, nullptr,                                        "", castCommandTable     },

@@ -290,6 +290,26 @@ bool ChatHandler::HandleModuleUnloadCommand(char* args)
     return true;
 }
 
+// `ai reinit <entry> [<entry> ...]`: the creatures of these entries standing in any map given a
+// new AI -- after `reload creature_ai_events`, so they take the rules just reloaded. A creature's
+// EventAI copies its rules when it is made, and a respawn does not make it again.
+bool ChatHandler::HandleAIReinitCommand(char* args)
+{
+    std::set<uint32> entries;
+    uint32 entry = 0;
+    while (ExtractUInt32(&args, entry))
+        entries.insert(entry);
+    if (entries.empty())
+        return false;
+
+    uint32 newCreatureAIs = 0;
+    for (auto const& map : sMapMgr.Maps())
+        newCreatureAIs += map.second->ReinitializeCreatureAIsOfEntries(entries);
+
+    PSendSysMessage("%u creatures of %u entries given a new AI.", newCreatureAIs, uint32(entries.size()));
+    return true;
+}
+
 bool ChatHandler::HandleReloadHousingCommand(char* /*args*/)
 {
     sObjectMgr.LoadGuildHouses();

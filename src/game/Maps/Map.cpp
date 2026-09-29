@@ -3616,14 +3616,15 @@ void Map::RemoveOldBones(const uint32 diff)
     }
 }
 
-uint32 Map::ReinitializeCreatureAIs(std::set<uint32> const& scriptIds)
+template <typename Which>
+uint32 Map::ReinitializeCreatureAIsWhere(Which which)
 {
     std::vector<Creature*> creatures;
     {
         std::shared_lock<std::shared_mutex> lock(m_objectsStore_lock);
         auto range = m_objectsStore.range<Creature>();
         for (auto itr = range.first; itr != range.second; ++itr)
-            if (itr->second && scriptIds.count(itr->second->GetScriptId()))
+            if (itr->second && which(itr->second))
                 creatures.push_back(itr->second);
     }
 
@@ -3632,6 +3633,16 @@ uint32 Map::ReinitializeCreatureAIs(std::set<uint32> const& scriptIds)
         creature->AIM_Initialize();
 
     return uint32(creatures.size());
+}
+
+uint32 Map::ReinitializeCreatureAIs(std::set<uint32> const& scriptIds)
+{
+    return ReinitializeCreatureAIsWhere([&](Creature* creature) { return scriptIds.count(creature->GetScriptId()) != 0; });
+}
+
+uint32 Map::ReinitializeCreatureAIsOfEntries(std::set<uint32> const& entries)
+{
+    return ReinitializeCreatureAIsWhere([&](Creature* creature) { return entries.count(creature->GetEntry()) != 0; });
 }
 
 void Map::ScheduleCorpseRemoval()

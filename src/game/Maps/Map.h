@@ -617,9 +617,18 @@ class Map : public GridRefManager<NGridType>
         void RemoveBones(Corpse* corpse);
         void ScheduleCorpseRemoval();
 
+    private:
+        template <typename Which>
+        uint32 ReinitializeCreatureAIsWhere(Which which);
+
+    public:
+
         // A module loaded while the server runs replaced the scripts with these ids: each creature
         // here that runs one of them gets its AI made again. Returns how many did.
         uint32 ReinitializeCreatureAIs(std::set<uint32> const& scriptIds);
+        // Their rules reloaded (`reload creature_ai_events`), each creature here of these entries
+        // gets its AI made again -- an AI copies its rules when it is made. Returns how many did.
+        uint32 ReinitializeCreatureAIsOfEntries(std::set<uint32> const& entries);
 
         XStatTimer MovementPerfTimer;
         XStatTimer SpellPerfTimer;

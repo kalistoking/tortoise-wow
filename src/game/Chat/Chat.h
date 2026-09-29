@@ -336,6 +336,7 @@ class ChatHandler
         bool HandleReloadModuleStringCommand(char* args);
         bool HandleModuleLoadCommand(char* args);
         bool HandleModuleUnloadCommand(char* args);
+        bool HandleAIReinitCommand(char* args);
         bool HandleReloadNpcGossipCommand(char* args);
         bool HandleReloadNpcTextCommand(char* args);
         bool HandleReloadNpcTrainerCommand(char* args);
