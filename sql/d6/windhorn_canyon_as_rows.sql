@@ -11,7 +11,7 @@
 -- The Flame of Shalk: the C++ polled the map's players while Shalk fought and took the aura off
 -- one whose head was under water. As a row, the spell's own aura interrupt flag NOT_ABOVEWATER:
 -- the aura goes as the player goes into deep water. Differences: deep enough to swim, not head
--- under; and a player already swimming when it lands keeps it until he leaves and re-enters.
+-- under; and a player already swimming when it lands keeps it until they leave and re-enter.
 -- NOT rows, and so not here: the Storm Guardian (62865) summoning three residues at offsets from
 -- where it died -- its C++ stays (npc_windhorn_storm_guardian) until AC4.
 -- Also: 13 TALK steps of Windhorn creatures that named script_texts ids, repointed.
