@@ -384,8 +384,8 @@ enum eScriptCommand
                                                             // datalong2 = eSetHealthModes
                                                             // datalong3 = (bool) keep_percent, with SET_HEALTH_MAX
     SCRIPT_COMMAND_UNIT_STATE               = 95,           // source = Creature
-                                                            // datalong = unit state mask: can't rotate, ignore pathfinding, allow incomplete path, allow LoS attack
-                                                            // datalong2 = (bool) add, else clear
+                                                            // datalong = (bool) add, else clear
+                                                            // datalong2 = unit state mask: can't rotate, ignore pathfinding, allow incomplete path, allow LoS attack
 
     SCRIPT_COMMAND_MAX,
 
@@ -1153,8 +1153,9 @@ struct ScriptInfo
 
         struct                                              // SCRIPT_COMMAND_UNIT_STATE (95)
         {
-            uint32 mask;                                    // datalong
-            uint32 add;                                     // datalong2
+            uint32 add;                                     // datalong
+            uint32 mask;                                    // datalong2: the bits are past what datalong
+                                                            // (mediumint) holds, as MODIFY_FLAGS's are
         } unitState;
 
         struct

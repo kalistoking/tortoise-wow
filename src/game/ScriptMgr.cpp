@@ -645,13 +645,13 @@ void ScriptMgr::LoadScripts(ScriptMapMap& scripts, const char* tablename)
                                        UNIT_STAT_ALLOW_INCOMPLETE_PATH | UNIT_STAT_ALLOW_LOS_ATTACK;
                 if (!tmp.unitState.mask || (tmp.unitState.mask & ~allowed))
                 {
-                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_UNIT_STATE has mask 0x%X (datalong) -- only 0x%X can be set, for script id %u",
+                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_UNIT_STATE has mask 0x%X (datalong2) -- only 0x%X can be set, for script id %u",
                                     tablename, tmp.unitState.mask, allowed, tmp.id);
                     continue;
                 }
                 if (tmp.unitState.add > 1)
                 {
-                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_UNIT_STATE has datalong2 = %u -- 1 adds, 0 clears, for script id %u",
+                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_UNIT_STATE has datalong = %u -- 1 adds, 0 clears, for script id %u",
                                     tablename, tmp.unitState.add, tmp.id);
                     continue;
                 }
