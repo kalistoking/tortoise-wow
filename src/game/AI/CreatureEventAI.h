@@ -72,8 +72,19 @@ enum EventAI_Type
     EVENT_T_VICTIM_ROOTED           = 33,                   // RepeatMin, RepeatMax
     EVENT_T_HIT_BY_AURA             = 34,                   // AuraType, Unused, RepeatMin, RepeatMax
     EVENT_T_STEALTH_ALERT           = 35,                   // RepeatMin, RepeatMax
+    EVENT_T_SPELL_HIT_TARGET        = 36,                   // SpellID (0 any), eSpellHitTargetFilter, RepeatMin, RepeatMax
 
     EVENT_T_END,
+};
+
+// Which unit an EVENT_T_SPELL_HIT_TARGET answers (trt E22, AC2): the unit its own spell hit.
+enum eSpellHitTargetFilter
+{
+    SPELL_HIT_TARGET_ANY              = 0,
+    SPELL_HIT_TARGET_PLAYER           = 1,                  // a player
+    SPELL_HIT_TARGET_PLAYER_OR_THEIRS = 2,                  // a player, or a unit a player owns or charms
+    SPELL_HIT_TARGET_NOT_SELF         = 3,                  // any unit but the caster itself
+    SPELL_HIT_TARGET_FILTER_MAX
 };
 
 enum EventFlags
@@ -144,6 +155,14 @@ struct CreatureEventAI_Event
             uint32 repeatMin;
             uint32 repeatMax;
         } hit_by_spell;
+        // EVENT_T_SPELL_HIT_TARGET                         = 36
+        struct
+        {
+            uint32 spellId;
+            uint32 filter;                                  // eSpellHitTargetFilter
+            uint32 repeatMin;
+            uint32 repeatMax;
+        } spell_hit_target;
         // EVENT_T_RANGE                                    = 9
         struct
         {
@@ -313,6 +332,7 @@ class CreatureEventAI : public CreatureAI
         void AttackStart(Unit *who) override;
         void MoveInLineOfSight(Unit *who) override;
         void SpellHit(WorldObject* pUnit, const SpellEntry* pSpell) override;
+        void SpellHitTarget(Unit* pTarget, const SpellEntry* pSpell) override;
         void MovementInform(uint32 type, uint32 id) override;
         void UpdateAI(const uint32 diff) override;
         void ReceiveEmote(Player* pPlayer, uint32 text_emote) override;

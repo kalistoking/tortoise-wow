@@ -199,6 +199,12 @@ bool CreatureEventAI::ProcessEvent(CreatureEventAIHolder& pHolder, WorldObject* 
             pHolder.UpdateRepeatTimer(m_creature, event.hit_by_spell.repeatMin, event.hit_by_spell.repeatMax);
             break;
         }
+        case EVENT_T_SPELL_HIT_TARGET:
+        {
+            // Its spell and the unit hit are checked in CreatureEventAI::SpellHitTarget.
+            pHolder.UpdateRepeatTimer(m_creature, event.spell_hit_target.repeatMin, event.spell_hit_target.repeatMax);
+            break;
+        }
         case EVENT_T_RANGE:
         {
             //Repeat Timers
@@ -793,6 +799,42 @@ void CreatureEventAI::SpellHit(WorldObject* pUnit, const SpellEntry* pSpell)
                 break;
             }
         }
+    }
+}
+
+// **Its own spell hitting a unit** (trt E22, AC2) -- the mirror of EVENT_T_HIT_BY_SPELL. Called
+// from Spell::DoAllEffectOnTarget for a creature caster, on a hit only and once per unit hit, so
+// an area spell answers once for each -- a repeat timer makes it the first and a cooldown. The
+// unit hit is the invoker: the provided target of its steps, what its condition is asked of.
+void CreatureEventAI::SpellHitTarget(Unit* pTarget, const SpellEntry* pSpell)
+{
+    if (m_bEmptyList || !pTarget || !pSpell)
+        return;
+
+    for (auto& i : m_CreatureEventAIList)
+    {
+        if (i.Event.event_type != EVENT_T_SPELL_HIT_TARGET)
+            continue;
+        if (i.Event.spell_hit_target.spellId && pSpell->Id != i.Event.spell_hit_target.spellId)
+            continue;
+
+        bool wanted = true;
+        switch (i.Event.spell_hit_target.filter)
+        {
+            case SPELL_HIT_TARGET_PLAYER:
+                wanted = pTarget->IsPlayer();
+                break;
+            case SPELL_HIT_TARGET_PLAYER_OR_THEIRS:
+                wanted = pTarget->IsCharmerOrOwnerPlayerOrPlayerItself();
+                break;
+            case SPELL_HIT_TARGET_NOT_SELF:
+                wanted = pTarget != m_creature;
+                break;
+            default:
+                break;
+        }
+        if (wanted)
+            ProcessEvent(i, pTarget);
     }
 }
 

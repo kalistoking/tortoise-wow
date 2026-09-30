@@ -150,6 +150,20 @@ void CreatureEventAIMgr::LoadCreatureEventAI_Events()
                     if (temp.hit_by_spell.repeatMax < temp.hit_by_spell.repeatMin)
                         sLog.outErrorDb("CreatureEventAI:  Creature %u is using repeatable event(%u) with param4 < param3 (RepeatMax < RepeatMin). Event will never repeat.", temp.creature_id, i);
                     break;
+                case EVENT_T_SPELL_HIT_TARGET:
+                    if (temp.spell_hit_target.spellId && !sSpellMgr.GetSpellEntry(temp.spell_hit_target.spellId))
+                    {
+                        sLog.outErrorDb("CreatureEventAI:  Creature %u has nonexistent SpellID(%u) defined in event %u.", temp.creature_id, temp.spell_hit_target.spellId, i);
+                        continue;
+                    }
+                    if (temp.spell_hit_target.filter >= SPELL_HIT_TARGET_FILTER_MAX)
+                    {
+                        sLog.outErrorDb("CreatureEventAI:  Creature %u has unknown filter (param2 = %u) of the unit hit in event %u.", temp.creature_id, temp.spell_hit_target.filter, i);
+                        continue;
+                    }
+                    if (temp.spell_hit_target.repeatMax < temp.spell_hit_target.repeatMin)
+                        sLog.outErrorDb("CreatureEventAI:  Creature %u is using repeatable event(%u) with param4 < param3 (RepeatMax < RepeatMin). Event will never repeat.", temp.creature_id, i);
+                    break;
                 case EVENT_T_RANGE:
                     if (temp.range.maxDist < temp.range.minDist)
                         sLog.outErrorDb("CreatureEventAI:  Creature %u is using event(%u) with param2 < param1 (MaxDist < MinDist). Event will never repeat.", temp.creature_id, i);
