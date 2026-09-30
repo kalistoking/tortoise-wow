@@ -325,6 +325,9 @@ struct CreatureEventAIHolder
     CreatureEventAI_Event Event;
     uint32 Time;
     bool Enabled;
+    // Fired by a hit since the last update (trt AC6): the hit that opens a fight comes before
+    // EnterCombat, which would otherwise enable the rule again and zero its time.
+    bool FiredByHit = false;
 
     // helper
     bool UpdateRepeatTimer(Creature* creature, uint32 repeatMin, uint32 repeatMax);
@@ -376,6 +379,7 @@ class CreatureEventAI : public CreatureAI
         uint32 m_EventDiff;                                 //Time between the last event call
         bool   m_bEmptyList;
         bool   m_bInDamageTaken = false;                    // a rule's own damage does not start the rules again
+        bool   m_bFiredByHit = false;                       // a holder's FiredByHit is set, to clear at the next update
 
         //Variables used by Events themselves
         typedef std::vector<CreatureEventAIHolder> CreatureEventAIList;

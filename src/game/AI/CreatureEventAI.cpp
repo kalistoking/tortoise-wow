@@ -679,6 +679,10 @@ void CreatureEventAI::EnterCombat(Unit *enemy)
                     break;
                 //All normal events need to be re-enabled and their time set to 0
                 default:
+                    // Not one the opening hit fired just now (trt AC6): a one-shot rule stays
+                    // spent, a repeated one keeps its time.
+                    if (i.FiredByHit)
+                        break;
                     i.Enabled = true;
                     i.Time = 0;
                     break;
@@ -841,6 +845,8 @@ void CreatureEventAI::DamageTaken(Unit* pDoneBy, uint32& uiDamage)
 
         if (!ProcessEvent(i, pDoneBy))
             continue;
+        i.FiredByHit = true;
+        m_bFiredByHit = true;
 
         if (!m_creature->IsAlive() || !m_creature->IsInWorld())
         {
@@ -922,6 +928,14 @@ void CreatureEventAI::UpdateAI(const uint32 diff)
     //Must return if creature isn't alive. Normally select hostil target and get victim prevent this
     if (!m_creature->IsAlive())
         return;
+
+    // A hit's rules are past EnterCombat by now (trt AC6).
+    if (m_bFiredByHit)
+    {
+        for (auto& i : m_CreatureEventAIList)
+            i.FiredByHit = false;
+        m_bFiredByHit = false;
+    }
 
     if (!m_bEmptyList)
         UpdateEventsOn_UpdateAI(diff, Combat);
