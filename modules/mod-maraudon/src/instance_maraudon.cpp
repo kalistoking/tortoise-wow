@@ -5,6 +5,10 @@
 #include "scriptPCH.h"
 #include "maraudon.h"
 
+namespace mod_maraudon
+{
+
+
 struct instance_maraudon : public ScriptedInstance
 {
     instance_maraudon(Map *pMap) : ScriptedInstance(pMap)
@@ -216,3 +220,5 @@ void AddSC_instance_maraudon()
     pNewScript->GetInstanceData = &GetInstanceData_instance_maraudon;
     pNewScript->RegisterSelf();
 }
+
+} // namespace mod_maraudon

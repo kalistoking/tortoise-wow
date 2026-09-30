@@ -110,12 +110,7 @@ dungeons/gilneas_city/instance_gilneas_city.h
 dungeons/gilneas_city/instance_gilneas_city.cpp
 dungeons/gilneas_city/boss_celia.cpp
 dungeons/gilneas_city/boss_lord_mortimer.cpp
-dungeons/maraudon/boss_celebras_the_cursed.cpp
-dungeons/maraudon/boss_landslide.cpp
-dungeons/maraudon/boss_noxxion.cpp
-dungeons/maraudon/boss_princess_theradras.cpp
-dungeons/maraudon/instance_maraudon.cpp
-dungeons/maraudon/maraudon.h
+dungeons/maraudon/celebras_spirit.cpp
 dungeons/molten_core/boss_baron_geddon.cpp
 dungeons/molten_core/boss_garr.cpp
 dungeons/molten_core/boss_gehennas.cpp

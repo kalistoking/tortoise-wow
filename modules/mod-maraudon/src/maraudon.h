@@ -6,6 +6,10 @@
 #define MARAUDON_H
 #include "scriptPCH.h"
 
+namespace mod_maraudon
+{
+
+
 enum
 {
     TYPE_LARVA_SPEWER      = 0,
@@ -20,5 +24,7 @@ enum
 
     GO_LARVA_SPEWER = 178559,
 };
+
+} // namespace mod_maraudon
 
 #endif

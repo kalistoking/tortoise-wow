@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_maraudon
+{
+
+
 #define SPELL_DUSTFIELD 21909
 #define SPELL_BOULDER 21832
 #define SPELL_THRASH 3391
@@ -132,3 +136,5 @@ void AddSC_boss_ptheradras()
     newscript->GetAI = &GetAI_boss_ptheradras;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_maraudon

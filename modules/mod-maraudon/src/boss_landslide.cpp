@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_maraudon
+{
+
+
 #define SPELL_KNOCKAWAY 18670
 #define SPELL_TRAMPLE 5568
 #define SPELL_LANDSLIDE 21808
@@ -94,3 +98,5 @@ void AddSC_boss_landslide()
     newscript->GetAI = &GetAI_boss_landslide;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_maraudon

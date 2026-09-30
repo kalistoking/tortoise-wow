@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_maraudon
+{
+
+
 #define SPELL_TOXICVOLLEY 21687
 #define SPELL_UPPERCUT 22916
 
@@ -138,3 +142,5 @@ void AddSC_boss_noxxion()
     newscript->GetAI = &GetAI_boss_noxxion;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_maraudon
