@@ -14,8 +14,8 @@ The dungeon's rows (`frostmane_hollow_as_rows.sql`: Hailar's three lines, the ri
 - **unloaded** (`module unload mod-frostmane-hollow` on a running server, or off for the next start): the
   names find no script, and the core gives the creatures their `ai_name` -- Hailar and the ritualists on EventAI, their rows alone.
 
-A creature standing when the module goes keeps the AI it had until `ai reinit <entry>` or its
-respawn; an open instance keeps its instance script until it closes.
+`module unload` gives every creature running one of its scripts a new AI at once -- the rows;
+its library stays loaded, so an instance opened before keeps its instance script until it closes.
 
 ## Its settings
 

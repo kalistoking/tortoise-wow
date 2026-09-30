@@ -14,8 +14,8 @@ The dungeon's rows (`windhorn_canyon_as_rows.sql`: Narlgom, Rotag and Shalk as r
 - **unloaded** (`module unload mod-windhorn-canyon` on a running server, or off for the next start): the
   names find no script, and the core gives the creatures their `ai_name` -- Narlgom, Rotag and Shalk on their rows alone; the Storm Guardian has no rows yet (its residues wait on AC4) and dies with no residue.
 
-A creature standing when the module goes keeps the AI it had until `ai reinit <entry>` or its
-respawn; an open instance keeps its instance script until it closes.
+`module unload` gives every creature running one of its scripts a new AI at once -- the rows;
+its library stays loaded, so an instance opened before keeps its instance script until it closes.
 
 ## Its settings
 
