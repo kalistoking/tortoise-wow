@@ -1,0 +1,12 @@
+###################################################################################################
+# mod-windhorn-canyon module configuration
+###################################################################################################
+
+[ModuleConf]
+
+# mod-windhorn-canyon.Enable
+#     Register Windhorn Canyon's scripts -- Narlgom and Champion Rotag, Chieftain Shalk Blackwind, the Storm Guardian. When 0 the module registers nothing: the
+#     world database still names the scripts, and Windhorn Canyon runs as with no module at all --
+#     Narlgom, Rotag and Shalk on their rows alone; the Storm Guardian has no rows yet (its residues wait on AC4) and dies with no residue.
+#     Default: 1
+mod-windhorn-canyon.Enable = 1

@@ -1,6 +1,9 @@
 #include "scriptPCH.h"
 #include "windhorn_canyon.h"
 
+namespace mod_windhorn_canyon
+{
+
 namespace
 {
 struct boss_bonespeaker_narlgomAI : public ScriptedAI
@@ -190,3 +193,5 @@ void AddSC_boss_bonespeaker_narlgom()
     script->GetAI = &GetAI_npc_champion_rotag;
     script->RegisterSelf();
 }
+
+} // namespace mod_windhorn_canyon

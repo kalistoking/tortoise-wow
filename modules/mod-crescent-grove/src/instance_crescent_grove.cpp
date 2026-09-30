@@ -1,5 +1,8 @@
 #include "scriptPCH.h"
 
+namespace mod_crescent_grove
+{
+
 template <typename Functor>
 void DoAfterTime(Player* player, uint32 p_time, Functor&& function)
 {
@@ -82,3 +85,5 @@ void AddSC_instance_crescent_grove()
     newscript->GetInstanceData = &GetInstanceData_instance_crescent_grove;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_crescent_grove

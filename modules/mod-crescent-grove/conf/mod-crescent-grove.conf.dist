@@ -1,0 +1,12 @@
+###################################################################################################
+# mod-crescent-grove module configuration
+###################################################################################################
+
+[ModuleConf]
+
+# mod-crescent-grove.Enable
+#     Register Crescent Grove's scripts -- the instance script -- every creature pulling the zone into its fight, the four bosses' aggro and death yells. When 0 the module registers nothing: the
+#     world database still names the scripts, and Crescent Grove runs as with no module at all --
+#     no instance script: the rows alone pull the zone and yell.
+#     Default: 1
+mod-crescent-grove.Enable = 1

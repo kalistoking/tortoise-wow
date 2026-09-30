@@ -64,11 +64,6 @@ dungeons/dragonmaw_retreat/boss_searistrasz.cpp
 dungeons/dragonmaw_retreat/boss_zuluhed_the_whacked.cpp
 dungeons/dragonmaw_retreat/dragonmaw_retreat.h
 dungeons/dragonmaw_retreat/instance_dragonmaw_retreat.cpp
-dungeons/frostmane_hollow/boss_hailar_the_frigid.cpp
-dungeons/frostmane_hollow/frostmane_hollow.h
-dungeons/windhorn_canyon/boss_bonespeaker_narlgom.cpp
-dungeons/windhorn_canyon/windhorn_canyon.cpp
-dungeons/windhorn_canyon/windhorn_canyon.h
 dungeons/stormwrought_ruins/boss_chieftain_stormsong.cpp
 dungeons/stormwrought_ruins/boss_dagar_the_glutton.cpp
 dungeons/stormwrought_ruins/boss_deathlord_tidebane.cpp
@@ -118,7 +113,6 @@ dungeons/upper_karazhan_halls/boss_keeper_gnarlmoon.cpp
 dungeons/upper_karazhan_halls/boss_kings_council.cpp
 dungeons/upper_karazhan_halls/boss_kruul.cpp
 dungeons/upper_karazhan_halls/boss_sanv_tasdal.cpp
-dungeons/crescent_grove/instance_crescent_grove.cpp
 dungeons/gilneas_city/instance_gilneas_city.h
 dungeons/gilneas_city/instance_gilneas_city.cpp
 dungeons/gilneas_city/boss_celia.cpp

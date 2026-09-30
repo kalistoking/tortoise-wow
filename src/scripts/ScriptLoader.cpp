@@ -286,7 +286,6 @@ void AddSC_boss_rares();
 void AddSC_boss_avatar_of_pompa();
 void AddSC_boss_turtlhu();
 void AddSC_instance_karazhan_crypt();
-void AddSC_instance_crescent_grove();
 void AddSC_instance_gilneas_city();
 void AddSC_boss_celia();
 void AddSC_boss_lord_mortimer();
@@ -335,13 +334,6 @@ void AddSC_boss_engineer_figgles();
 void AddSC_boss_hargesh_doomcaller();
 void AddSC_boss_hatereaver_annhilator();
 void AddSC_trash_mobs_hateforge_quarry();
-
-// Frostmane Hollow
-void AddSC_boss_hailar_the_frigid();
-
-// Windhorn Canyon
-void AddSC_boss_bonespeaker_narlgom();
-void AddSC_windhorn_canyon();
 
 // Stormwind Vaults
 void AddSC_boss_aszosh_grimflame();
@@ -654,13 +646,6 @@ void AddScripts()
     AddSC_ungoro_crater();
     AddSC_winterspring();
 
-    // Frostmane Hollow
-    AddSC_boss_hailar_the_frigid();
-
-    // Windhorn Canyon
-    AddSC_boss_bonespeaker_narlgom();
-    AddSC_windhorn_canyon();
-
     // Stormwind Vaults
     AddSC_boss_aszosh_grimflame();
     AddSC_boss_black_bride();
@@ -676,7 +661,6 @@ void AddScripts()
     AddSC_boss_avatar_of_pompa();
     AddSC_boss_turtlhu();
     AddSC_instance_karazhan_crypt();
-    AddSC_instance_crescent_grove();
     AddSC_instance_gilneas_city();
     AddSC_boss_celia();
     AddSC_boss_lord_mortimer();

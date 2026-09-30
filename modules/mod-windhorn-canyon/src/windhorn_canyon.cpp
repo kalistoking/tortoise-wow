@@ -1,6 +1,9 @@
 #include "scriptPCH.h"
 #include "windhorn_canyon.h"
 
+namespace mod_windhorn_canyon
+{
+
 namespace
 {
 struct boss_chieftain_shalk_blackwindAI : public ScriptedAI
@@ -141,3 +144,5 @@ void AddSC_windhorn_canyon()
     script->GetAI = &GetAI_npc_windhorn_storm_guardian;
     script->RegisterSelf();
 }
+
+} // namespace mod_windhorn_canyon

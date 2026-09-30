@@ -1,6 +1,9 @@
 #include "scriptPCH.h"
 #include "frostmane_hollow.h"
 
+namespace mod_frostmane_hollow
+{
+
 namespace
 {
 bool IsHailarRitualist(Creature const* creature)
@@ -153,3 +156,5 @@ void AddSC_boss_hailar_the_frigid()
     script->GetAI = &GetAI_npc_frostmane_ritualist;
     script->RegisterSelf();
 }
+
+} // namespace mod_frostmane_hollow

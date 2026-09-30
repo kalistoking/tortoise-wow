@@ -1,0 +1,12 @@
+###################################################################################################
+# mod-frostmane-hollow module configuration
+###################################################################################################
+
+[ModuleConf]
+
+# mod-frostmane-hollow.Enable
+#     Register Frostmane Hollow's scripts -- Hailar the Frigid's lines and the ritualists channelling at him. When 0 the module registers nothing: the
+#     world database still names the scripts, and Frostmane Hollow runs as with no module at all --
+#     Hailar and the ritualists on EventAI, their rows alone.
+#     Default: 1
+mod-frostmane-hollow.Enable = 1
