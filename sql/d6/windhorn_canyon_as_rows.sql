@@ -4,7 +4,7 @@
 --
 -- The C++ keeps its script names: mod-windhorn-canyon is the switch (AM1, handoff/manager-091).
 -- Loaded, the C++ runs as before -- a script found by name comes first. Unloaded
--- (`module unload mod-windhorn-canyon`, then `ai reinit <entry>` for a creature standing),
+-- (`module unload mod-windhorn-canyon`, which gives every creature standing a new AI at once),
 -- the names find no script and the creatures run these rows (their ai_name).
 --
 -- Narlgom: channels at Rotag while idle, stops as he aggroes (Rotag down, out of combat); Summon

@@ -4,7 +4,7 @@
 --
 -- The C++ keeps its script names: mod-frostmane-hollow is the switch (AM1, handoff/manager-091).
 -- Loaded, the C++ runs as before -- a script found by name comes first. Unloaded
--- (`module unload mod-frostmane-hollow`, then `ai reinit <entry>` for a creature standing),
+-- (`module unload mod-frostmane-hollow`, which gives every creature standing a new AI at once),
 -- the names find no script and the creatures run these rows (their ai_name).
 --
 -- Hailar's three lines, the script_texts made broadcast texts. The ritualists -- the five spawns

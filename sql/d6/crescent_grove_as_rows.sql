@@ -4,7 +4,7 @@
 --
 -- The C++ keeps its script names: mod-crescent-grove is the switch (AM1, handoff/manager-091).
 -- Loaded, the C++ runs as before -- a script found by name comes first. Unloaded
--- (`module unload mod-crescent-grove`, then `ai reinit <entry>` for a creature standing),
+-- (`module unload mod-crescent-grove`, which gives every creature standing a new AI at once),
 -- the names find no script and the creatures run these rows (their ai_name).
 --
 -- Every creature of the dungeon pulls the zone into its fight as it enters combat, as the
