@@ -657,7 +657,10 @@ enum InstanceDataSlotFlags
 {
     INSTANCE_SLOT_RESET_IN_PROGRESS = 0x1,                  // 1 (IN_PROGRESS) back to 0 as the instance loads
     INSTANCE_SLOT_ENCOUNTER         = 0x2,                  // 1 (IN_PROGRESS) is an encounter in progress
-    INSTANCE_SLOT_FLAGS_ALL         = 0x3
+    INSTANCE_SLOT_TRANSIENT         = 0x4,                  // back to 0 as the instance loads, whatever it
+                                                            // held: a count of what the instance does not
+                                                            // keep (summons, objects used)
+    INSTANCE_SLOT_FLAGS_ALL         = 0x7
 };
 
 struct InstanceDataSlot

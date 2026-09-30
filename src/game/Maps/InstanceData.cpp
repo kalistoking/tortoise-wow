@@ -57,9 +57,12 @@ void GenericInstanceData::Load(char const* data)
 
     // An encounter the instance closed on is not going on when it opens again: a slot
     // `instance_data_slot` says so goes from 1 (IN_PROGRESS) back to 0, as the scripts' Load do.
+    // A transient slot counts what the instance does not keep -- its summons, the objects used --
+    // and starts again from 0 with them.
     if (auto const* described = sObjectMgr.GetInstanceDataSlots(instance->GetId()))
         for (auto const& slot : *described)
-            if ((slot.second.flags & INSTANCE_SLOT_RESET_IN_PROGRESS) && slot.first < m_slots.size() && m_slots[slot.first] == 1)
+            if (slot.first < m_slots.size() && ((slot.second.flags & INSTANCE_SLOT_TRANSIENT) ||
+                ((slot.second.flags & INSTANCE_SLOT_RESET_IN_PROGRESS) && m_slots[slot.first] == 1)))
                 m_slots[slot.first] = 0;
 }
 
