@@ -2,6 +2,11 @@
 -- Written by the trt repo's scripts/tier1_rows.py from t1_world; windhorn_canyon_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
+-- The C++ keeps its script names: mod-windhorn-canyon is the switch (AM1, handoff/manager-091).
+-- Loaded, the C++ runs as before -- a script found by name comes first. Unloaded
+-- (`module unload mod-windhorn-canyon`, then `ai reinit <entry>` for a creature standing),
+-- the names find no script and the creatures run these rows (their ai_name).
+--
 -- Narlgom: channels at Rotag while idle, stops as he aggroes (Rotag down, out of combat); Summon
 -- Rotag at half health, Bone Armor and Rain of Fire on the C++'s timers -- each retried until it
 -- takes, as the C++ kept its timer on a failure (EFLAG_CHECK_RESULT, the step ABORT_ON_FAILURE).
@@ -13,15 +18,16 @@
 -- the aura goes as the player goes into deep water. Differences: deep enough to swim, not head
 -- under; and a player already swimming when it lands keeps it until they leave and re-enter.
 -- NOT rows, and so not here: the Storm Guardian (62865) summoning three residues at offsets from
--- where it died -- its C++ stays (npc_windhorn_storm_guardian) until AC4.
+-- where it died -- its C++ (npc_windhorn_storm_guardian, in the module too) until AC4: the
+-- module unloaded, it dies with no residue.
 -- Also: 13 TALK steps of Windhorn creatures that named script_texts ids, repointed.
 -- Load: run into the world database, then .reload creature_template 62780, 62785 and 62782 (or
 -- a restart), .reload creature_ai_events, .reload creature_ai_scripts, .reload generic_scripts,
 -- .reload broadcast_text; spell_template takes a restart.
 
-UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = '' WHERE `entry` = 62780;
-UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = '' WHERE `entry` = 62782;
-UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = '', `flags_extra` = `flags_extra` | 2 WHERE `entry` = 62785;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62780;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62782;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `flags_extra` = `flags_extra` | 2 WHERE `entry` = 62785;
 UPDATE `spell_template` SET `auraInterruptFlags` = `auraInterruptFlags` | 128 WHERE `entry` = 41121;
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (6141001, 6277105, 6277902, 6277903, 6277904, 6278001, 6278002, 6278006, 6278101, 6278102, 6278103, 6278201, 6278202, 6278203, 6278302, 6278303, 6278304, 6278402, 6278403, 6278404);

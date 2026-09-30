@@ -2,6 +2,11 @@
 -- Written by the trt repo's scripts/tier1_rows.py from t1_world; frostmane_hollow_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
+-- The C++ keeps its script names: mod-frostmane-hollow is the switch (AM1, handoff/manager-091).
+-- Loaded, the C++ runs as before -- a script found by name comes first. Unloaded
+-- (`module unload mod-frostmane-hollow`, then `ai reinit <entry>` for a creature standing),
+-- the names find no script and the creatures run these rows (their ai_name).
+--
 -- Hailar's three lines, the script_texts made broadcast texts. The ritualists -- the five spawns
 -- the C++ named are the entry's only five -- never aggro on sight (flags_extra NO_AGGRO), neither
 -- chase nor swing, and channel the ritual at Hailar every 5 s, again at once when it fails
@@ -13,8 +18,8 @@
 -- restart), .reload creature_ai_events, .reload creature_ai_scripts, .reload broadcast_text,
 -- .reload conditions.
 
-UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = '', `flags_extra` = `flags_extra` | 2 WHERE `entry` = 36519;
-UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = '' WHERE `entry` = 63130;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `flags_extra` = `flags_extra` | 2 WHERE `entry` = 36519;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 63130;
 
 DELETE FROM `conditions` WHERE `condition_entry` IN (822001);
 INSERT INTO `conditions`

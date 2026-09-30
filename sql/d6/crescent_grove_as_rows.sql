@@ -2,6 +2,11 @@
 -- Written by the trt repo's scripts/tier1_rows.py from t1_world; crescent_grove_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
+-- The C++ keeps its script names: mod-crescent-grove is the switch (AM1, handoff/manager-091).
+-- Loaded, the C++ runs as before -- a script found by name comes first. Unloaded
+-- (`module unload mod-crescent-grove`, then `ai reinit <entry>` for a creature standing),
+-- the names find no script and the creatures run these rows (their ai_name).
+--
 -- Every creature of the dungeon pulls the zone into its fight as it enters combat, as the
 -- instance script's OnCreatureEnterCombat did: an aggro rule on each entry, held to map 802 by
 -- condition 802001 (92100 and 92101 also live on map 1). The entries without an AI name take
@@ -12,7 +17,7 @@
 --   883 Deer (a world creature: EventAI would reach every zone it lives in)
 -- Load: run into the world database, then .reload creature_template for each entry above (or a
 -- restart), .reload creature_ai_events, .reload creature_ai_scripts, .reload broadcast_text,
--- .reload conditions; the map script takes a restart.
+-- .reload conditions.
 
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 92100;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 92101;
@@ -44,7 +49,6 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 92129;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 92130;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 92131;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 92133;
-UPDATE `map_template` SET `script_name` = '' WHERE `entry` = 802;
 
 DELETE FROM `conditions` WHERE `condition_entry` IN (802001);
 INSERT INTO `conditions`
