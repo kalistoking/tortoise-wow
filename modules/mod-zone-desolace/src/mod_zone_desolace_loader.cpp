@@ -1,0 +1,22 @@
+// Desolace's scripts, registered from the module: the core has no copy of them (AM1,
+// handoff/manager-088). The legacy Script + RegisterSelf registers each under the script_name
+// the world database gives it.
+#include "scriptPCH.h"
+#include "Config/Config.h"
+
+namespace mod_zone_desolace
+{
+    void AddSC_desolace();
+}
+
+void Addmod_zone_desolaceScripts()
+{
+    // conf/mod-zone-desolace.conf: off, nothing is registered -- the world database's names find no script.
+    if (!sConfig.GetBoolDefault("mod-zone-desolace.Enable", true))
+    {
+        sLog.outString("[mod-zone-desolace] disabled by mod-zone-desolace.Enable -- no script registered");
+        return;
+    }
+    mod_zone_desolace::AddSC_desolace();
+    sLog.outString("[mod-zone-desolace] Desolace's scripts registered from the module");
+}

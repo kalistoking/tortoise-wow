@@ -1,0 +1,12 @@
+###################################################################################################
+# mod-event-pompa module configuration
+###################################################################################################
+
+[ModuleConf]
+
+# mod-event-pompa.Enable
+#     Register Pompa's scripts. When 0 the module registers nothing: the world database
+#     still names the scripts, and their creatures and objects run on what the core gives them
+#     without one -- their ai_name, their rows.
+#     Default: 1
+mod-event-pompa.Enable = 1

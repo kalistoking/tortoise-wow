@@ -3,7 +3,6 @@
 * Please see the included DOCS/LICENSE.TXT for more information */
 
 #include "scriptPCH.h"
-#include "world/silithus/silithus.h"
 
 // AI system
 void AddSC_generic_spell_ai();
@@ -14,25 +13,16 @@ void AddSC_bg_alterac();
 void AddSC_bg_sunnyglade();
 
 //custom
-void AddSC_go_scripts();
-void AddSC_event_fireworks();
 
 // Event
-void AddSC_elemental_invasions();
 
 // Items
-void AddSC_item_orb_of_draconic_energy();
 
 // HT
 void AddSC_instance_dire_maul();
 void AddSC_dreadsteed_ritual();
 
 //world
-void AddSC_areatrigger_scripts();
-void AddSC_dragons_of_nightmare();
-void AddSC_boss_lord_kazzak();
-void AddSC_world_event_naxxramas();
-void AddSC_event_scourge_invasion();
 
 //eastern kingdoms
 void AddSC_blackrock_spire_rookery_egg();         // the egg's spell (trt A18)
@@ -101,32 +91,8 @@ void AddSC_boss_thekal();
 //void AddSC_boss_wushoolay();
 void AddSC_instance_zulgurub();
 void AddSC_zulgurub_pile_dechets();
-void AddSC_boss_omen();
 
 //void AddSC_alterac_mountains();
-void AddSC_arathi_highlands();
-void AddSC_blasted_lands();
-void AddSC_burning_steppes();
-void AddSC_dun_morogh();
-void AddSC_eastern_plaguelands();
-void AddSC_elwynn_forest();
-void AddSC_grim_reaches();
-void AddSC_hillsbrad_foothills();
-void AddSC_hinterlands();
-void AddSC_ironforge();
-void AddSC_loch_modan();
-void AddSC_redridge_mountains();
-void AddSC_searing_gorge();
-void AddSC_silverpine_forest();
-void AddSC_stormwind_city();
-void AddSC_quest_stormwind_rendezvous();
-void AddSC_stranglethorn_vale();
-void AddSC_swamp_of_sorrows();
-void AddSC_tirisfal_glades();
-void AddSC_undercity();
-void AddSC_western_plaguelands();
-void AddSC_westfall();
-void AddSC_wetlands();
 
 //kalimdor
 void AddSC_celebras_spirit();                        // Celebras the Redeemed, stays in the core (trt A7)
@@ -151,46 +117,10 @@ void AddSC_instance_temple_of_ahnqiraj();
 void AddSC_wailing_caverns_disciple();               // the Disciple of Naralex, stays in the core (trt A36)
 void AddSC_zulfarrak_tablet_ward();               // the tablet and the ward (trt A37)
 
-void AddSC_ashenvale();
-void AddSC_alahthalas();
-void AddSC_azshara();
-void AddSC_balor();
-void AddSC_darkshore();
-void AddSC_desolace();
-void AddSC_durotar();
-void AddSC_dustwallow_marsh();
-void AddSC_duskwood();
-void AddSC_felwood();
-void AddSC_feralas();
-void AddSC_moonglade();
-void AddSC_moonwhisper_coast();
-void AddSC_mulgore();
-void AddSC_northwind();
-void AddSC_orgrimmar();
-void AddSC_silithus();
-void AddSC_stonetalon_mountains();
-void AddSC_tanaris();
-void AddSC_teldrassil();
-void AddSC_the_barrens();
-void AddSC_thousand_needles();
-void AddSC_thunder_bluff();
-void AddSC_ungoro_crater();
-void AddSC_winterspring();
 void AddSC_war_effort();
 
 // Turtle WoW
-void AddSC_arena_tournament();
-void AddSC_boss_rares();
-void AddSC_boss_avatar_of_pompa();
-void AddSC_boss_turtlhu();
 void AddSC_karazhan_crypt_triggers();             // the trigger objects and the gate (trt A31)
-void AddSC_boss_xmas_wolf();
-void AddSC_boss_nerubian_overseer();
-void AddSC_mirage_raceway();
-void AddSC_gardening();
-void AddSC_boss_dark_reaver();
-void AddSC_boss_ostarius();
-void AddSC_CUSTOM_SPELL();
 void AddSC_instance_emerald_sanctum();
 void AddSC_boss_solnius();
 void AddSC_boss_anomalus();
@@ -201,14 +131,9 @@ void AddSC_boss_kings_council();
 void AddSC_boss_kruul();
 void AddSC_boss_sanv_tasdal();
 
-void AddSC_random_scripts_0();
-void AddSC_random_scripts_1();
-void AddSC_random_scripts_2();
-void AddSC_random_scripts_3();
 void AddSC_npc_j_eevee();
 void AddSC_easter_egg_loot();
 
-void AddSC_custom_exploration_triggers();
 
 // Scarlet Citadel
 void AddSC_boss_ardaeus();
@@ -227,8 +152,6 @@ void AddSC_black_morass_neto();
 
 // Misc
 void AddSC_npc_loothelper();
-void AddSC_npc_ptr();
-void AddSC_jewelcrafting();
 
 // Spell and aura scripts
 void AddSC_druid_spell_scripts();
@@ -255,25 +178,16 @@ void AddScripts()
     AddSC_bg_sunnyglade();
 
     //custom
-    AddSC_go_scripts();
-    AddSC_event_fireworks();
 
     // Event
-    AddSC_elemental_invasions();
 
     // Items
-    AddSC_item_orb_of_draconic_energy();
 
     // HT
     AddSC_instance_dire_maul();
     AddSC_dreadsteed_ritual();
 
     //world
-    AddSC_areatrigger_scripts();
-    AddSC_dragons_of_nightmare();
-    AddSC_boss_lord_kazzak();
-    AddSC_world_event_naxxramas();
-    AddSC_event_scourge_invasion();
 
     AddSC_war_effort();
 
@@ -341,32 +255,8 @@ void AddScripts()
     //AddSC_boss_wushoolay();
     AddSC_instance_zulgurub();
     AddSC_zulgurub_pile_dechets();
-    AddSC_boss_omen();
 
     //AddSC_alterac_mountains();
-    AddSC_arathi_highlands();
-    AddSC_blasted_lands();
-    AddSC_burning_steppes();
-    AddSC_dun_morogh();
-    AddSC_eastern_plaguelands();
-    AddSC_elwynn_forest();
-    AddSC_grim_reaches();
-    AddSC_hillsbrad_foothills();
-    AddSC_hinterlands();
-    AddSC_ironforge();
-    AddSC_loch_modan();
-    AddSC_redridge_mountains();
-    AddSC_searing_gorge();
-    AddSC_silverpine_forest();
-    AddSC_stormwind_city();
-    AddSC_quest_stormwind_rendezvous();
-    AddSC_stranglethorn_vale();
-    AddSC_swamp_of_sorrows();
-    AddSC_tirisfal_glades();
-    AddSC_undercity();
-    AddSC_western_plaguelands();
-    AddSC_westfall();
-    AddSC_wetlands();
 
     //kalimdor
     AddSC_celebras_spirit();
@@ -391,48 +281,13 @@ void AddScripts()
     AddSC_wailing_caverns_disciple();
     AddSC_zulfarrak_tablet_ward();
 
-    AddSC_ashenvale();
-    AddSC_alahthalas();
-    AddSC_azshara();
-    AddSC_balor();
-    AddSC_darkshore();
-    AddSC_desolace();
-    AddSC_durotar();
-    AddSC_dustwallow_marsh();
-    AddSC_duskwood();
-    AddSC_felwood();
-    AddSC_feralas();
-    AddSC_moonglade();
-    AddSC_moonwhisper_coast();
-    AddSC_mulgore();
-    AddSC_northwind();
-    AddSC_orgrimmar();
-    AddSC_silithus();
-    RegisterScripts_Silithus();
-    AddSC_stonetalon_mountains();
-    AddSC_tanaris();
-    AddSC_teldrassil();
-    AddSC_the_barrens();
-    AddSC_thousand_needles();
-    AddSC_thunder_bluff();
-    AddSC_ungoro_crater();
-    AddSC_winterspring();
 
     // Stormwind Vaults
     AddSC_boss_damian_the_ripper();
     AddSC_boss_volkan_cruelblade();
     AddSC_instance_stormwind_vaults();
 
-    AddSC_arena_tournament();
-    AddSC_boss_rares();
-    AddSC_boss_avatar_of_pompa();
-    AddSC_boss_turtlhu();
     AddSC_karazhan_crypt_triggers();
-    AddSC_boss_xmas_wolf();
-    AddSC_boss_nerubian_overseer();
-    AddSC_mirage_raceway();
-    AddSC_gardening();
-    AddSC_boss_dark_reaver();
     AddSC_instance_emerald_sanctum();
     AddSC_boss_solnius();
     AddSC_boss_anomalus();
@@ -442,8 +297,6 @@ void AddScripts()
     AddSC_boss_kings_council();
     AddSC_boss_kruul();
     AddSC_boss_sanv_tasdal();
-    AddSC_boss_ostarius();
-    AddSC_CUSTOM_SPELL();
 
     // Spell and aura scripts
     AddSC_druid_spell_scripts();
@@ -459,14 +312,9 @@ void AddScripts()
     AddSC_warlock_spell_scripts();
     AddSC_warrior_spell_scripts();
 
-    AddSC_random_scripts_0();
-    AddSC_random_scripts_1();
-    AddSC_random_scripts_2();
-    AddSC_random_scripts_3();
     AddSC_npc_j_eevee();
     AddSC_easter_egg_loot();
 
-    AddSC_custom_exploration_triggers();
 
     // Scarlet Citadel
     AddSC_boss_ardaeus();
@@ -480,6 +328,4 @@ void AddScripts()
 
     // Misc
     AddSC_npc_loothelper();
-    AddSC_npc_ptr();
-    AddSC_jewelcrafting();
 }

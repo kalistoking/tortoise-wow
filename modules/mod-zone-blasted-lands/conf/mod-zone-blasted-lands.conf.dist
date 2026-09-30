@@ -1,0 +1,12 @@
+###################################################################################################
+# mod-zone-blasted-lands module configuration
+###################################################################################################
+
+[ModuleConf]
+
+# mod-zone-blasted-lands.Enable
+#     Register Blasted Lands's scripts. When 0 the module registers nothing: the world database
+#     still names the scripts, and their creatures and objects run on what the core gives them
+#     without one -- their ai_name, their rows.
+#     Default: 1
+mod-zone-blasted-lands.Enable = 1
