@@ -44,6 +44,7 @@ char const* conditionSourceToStr[] =
                 "script action",
                 "areatrigger",
                 "quest template",
+                "gameobject spawn state",
         };
 
 // Stores what params need to be provided to each condition type.
@@ -1421,6 +1422,34 @@ bool ConditionEntry::CanBeUsedWithoutPlayer(uint32 entry)
                 case CONDITION_REQ_SOURCE_UNIT:
                 case CONDITION_REQ_SOURCE_CREATURE:
                 case CONDITION_REQ_ANY_WORLDOBJECT:
+                case CONDITION_REQ_MAP_OR_WORLDOBJECT:
+                    return true;
+            }
+    }
+    return false;
+}
+
+bool ConditionEntry::CanBeUsedWithMapOnly(uint32 entry)
+{
+    ConditionEntry const* condition = sConditionStorage.LookupEntry<ConditionEntry>(entry);
+    if (!condition)
+        return false;
+
+    switch (condition->m_condition)
+    {
+        case CONDITION_NOT:
+            return CanBeUsedWithMapOnly(condition->m_value1) &&
+                   (!condition->m_value3 || CanBeUsedWithMapOnly(condition->m_value3)) &&
+                   (!condition->m_value4 || CanBeUsedWithMapOnly(condition->m_value4));
+        case CONDITION_AND:
+        case CONDITION_OR:
+            return CanBeUsedWithMapOnly(condition->m_value1) && CanBeUsedWithMapOnly(condition->m_value2) &&
+                   (!condition->m_value3 || CanBeUsedWithMapOnly(condition->m_value3)) &&
+                   (!condition->m_value4 || CanBeUsedWithMapOnly(condition->m_value4));
+        default:
+            switch (ConditionTargets[condition->m_condition])
+            {
+                case CONDITION_REQ_NONE:
                 case CONDITION_REQ_MAP_OR_WORLDOBJECT:
                     return true;
             }

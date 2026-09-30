@@ -283,6 +283,7 @@ enum ConditionSource                                        // From where was th
     CONDITION_FROM_DBSCRIPTS        = 9,                    // Used to check a condition from DB Scripts Engine
     CONDITION_FROM_AREATRIGGER      = 10,                   // Used to check a condition from areatrigger_teleport table
     CONDITION_FROM_QUEST            = 11,                   // Used to check a condition from quest_template
+    CONDITION_FROM_GO_SPAWN_STATE   = 12,                   // Used to check a condition from gameobject_spawn_state (trt E22, AC3)
 };
 
 enum ConditionRequirement
@@ -324,6 +325,9 @@ public:
     // Checks correctness of values
     bool IsValid();
     static bool CanBeUsedWithoutPlayer(uint32 entry);
+    // True when the condition asks for nothing but a map (trt E22, AC3): an object not yet in the
+    // world can have it checked.
+    static bool CanBeUsedWithMapOnly(uint32 entry);
 
     // Checks if the condition is met
     bool Meets(WorldObject const* target, Map const* map, WorldObject const* source, ConditionSource conditionSourceType) const;

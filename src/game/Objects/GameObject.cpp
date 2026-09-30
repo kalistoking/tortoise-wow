@@ -986,6 +986,22 @@ bool GameObject::LoadFromDB(uint32 guid, Map *map, bool force)
     if (!Create(guid, entry, map, x, y, z, ang, rotation0, rotation1, rotation2, rotation3, animprogress, go_state))
         return false;
 
+    // trt E22, AC3: the spawn's state as its rows decide it, from the map's saved data.
+    if (std::vector<GameObjectSpawnState> const* rows = sObjectMgr.GetGameObjectSpawnStates(guid))
+    {
+        for (GameObjectSpawnState const& row : *rows)
+        {
+            if (row.conditionId && !IsConditionSatisfied(row.conditionId, nullptr, map, nullptr, CONDITION_FROM_GO_SPAWN_STATE))
+                continue;
+            if (row.state >= 0)
+                SetGoState(GOState(row.state));
+            if (row.flagsSet)
+                SetFlag(GAMEOBJECT_FLAGS, row.flagsSet);
+            if (row.flagsClear)
+                RemoveFlag(GAMEOBJECT_FLAGS, row.flagsClear);
+        }
+    }
+
     if (!GetGOInfo()->GetDespawnPossibility() && !GetGOInfo()->IsDespawnAtAction() && data->spawntimesecsmin >= 0)
     {
         SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NODESPAWN);

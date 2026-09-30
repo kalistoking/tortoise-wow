@@ -640,6 +640,16 @@ public:
     ObjectGuid guid;
 };
 
+// A database spawn's state decided as it loads (trt E22, AC3): the rows of `gameobject_spawn_state`
+// for its guid, in `ord` order, each applied when its condition holds -- later rows win.
+struct GameObjectSpawnState
+{
+    uint32 conditionId;
+    int8 state;                                             // a GOState, or -1 to keep the spawn's own
+    uint32 flagsSet;
+    uint32 flagsClear;
+};
+
 class PvPMaintenanceMaker;
 
 struct QuestSpellCastObjective
@@ -725,6 +735,13 @@ class ObjectMgr
         void AddGameobjectInfo(GameObjectInfo&& goinfo);
         void LoadGameObjectDisplayInfoAddon();
         void LoadGameobjectsRequirements();
+        void LoadGameObjectSpawnStates();
+        std::vector<GameObjectSpawnState> const* GetGameObjectSpawnStates(uint32 guid) const
+        {
+            auto itr = m_gameObjectSpawnStates.find(guid);
+            return itr != m_gameObjectSpawnStates.end() ? &itr->second : nullptr;
+        }
+        std::unordered_map<uint32, std::vector<GameObjectSpawnState>> m_gameObjectSpawnStates;
         GameObjectUseRequirement const* GetGameObjectUseRequirement(ObjectGuid guid) const;
         std::map<uint32, GameObjectUseRequirement> _gobjRequirements;
 

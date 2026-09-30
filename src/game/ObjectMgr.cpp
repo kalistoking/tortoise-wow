@@ -6127,6 +6127,56 @@ void ObjectMgr::LoadGameobjectsRequirements()
     while (result->NextRow());
 }
 
+void ObjectMgr::LoadGameObjectSpawnStates()
+{
+    m_gameObjectSpawnStates.clear();
+
+    std::unique_ptr<QueryResult> result(WorldDatabase.Query("SELECT `guid`, `condition_id`, `state`, `flags_set`, `flags_clear` FROM `gameobject_spawn_state` ORDER BY `guid`, `ord`"));
+    if (!result)
+    {
+        sLog.outString(">> Loaded 0 gameobject spawn states");
+        return;
+    }
+
+    uint32 count = 0;
+    do
+    {
+        Field* fields = result->Fetch();
+
+        uint32 guid = fields[0].GetUInt32();
+        GameObjectSpawnState row;
+        row.conditionId = fields[1].GetUInt32();
+        int32 state = fields[2].GetInt32();
+        row.flagsSet = fields[3].GetUInt32();
+        row.flagsClear = fields[4].GetUInt32();
+
+        if (!GetGOData(guid))
+        {
+            sLog.outErrorDb("Table `gameobject_spawn_state` has a row for gameobject guid %u, which is not spawned, skipped.", guid);
+            continue;
+        }
+        if (state < -1 || state > GO_STATE_ACTIVE_ALTERNATIVE)
+        {
+            sLog.outErrorDb("Table `gameobject_spawn_state` has state %i for gameobject guid %u (-1 keeps, 0-2 a GOState), skipped.", state, guid);
+            continue;
+        }
+        row.state = int8(state);
+        // The object is not in the world when its row is checked: only a condition that needs nothing
+        // but the map (instance data, a map event, a game event, and/or/not of these) can be answered.
+        if (row.conditionId && !ConditionEntry::CanBeUsedWithMapOnly(row.conditionId))
+        {
+            sLog.outErrorDb("Table `gameobject_spawn_state` has condition %u for gameobject guid %u, which is missing or asks for more than the map, skipped.", row.conditionId, guid);
+            continue;
+        }
+
+        m_gameObjectSpawnStates[guid].push_back(row);
+        ++count;
+    }
+    while (result->NextRow());
+
+    sLog.outString(">> Loaded %u gameobject spawn states", count);
+}
+
 GameObjectUseRequirement const* ObjectMgr::GetGameObjectUseRequirement(ObjectGuid guid) const
 {
     std::map<uint32, GameObjectUseRequirement>::const_iterator it = _gobjRequirements.find(guid.GetCounter());
