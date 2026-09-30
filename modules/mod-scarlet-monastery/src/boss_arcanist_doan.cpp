@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_scarlet_monastery
+{
+
+
 enum
 {
     SAY_AGGRO                   = -1189019,
@@ -131,3 +135,5 @@ void AddSC_boss_arcanist_doan()
     newscript->GetAI = &GetAI_boss_arcanist_doan;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scarlet_monastery

@@ -167,15 +167,8 @@ dungeons/scarlet_citadel/trashbosses_scarlet_citadel.hpp
 dungeons/scarlet_citadel/trashmobs_scarlet_citadel.cpp
 dungeons/scarlet_citadel/trashmobs_scarlet_citadel.hpp
 dungeons/scarlet_citadel/scarlet_citadel.h
-dungeons/scarlet_monastery/boss_arcanist_doan.cpp
 dungeons/scarlet_monastery/boss_azshir_the_sleepless.cpp
-dungeons/scarlet_monastery/boss_bloodmage_thalnos.cpp
 dungeons/scarlet_monastery/boss_headless_horseman.cpp
-dungeons/scarlet_monastery/boss_herod.cpp
-dungeons/scarlet_monastery/boss_high_inquisitor_fairbanks.cpp
-dungeons/scarlet_monastery/boss_houndmaster_loksey.cpp
-dungeons/scarlet_monastery/boss_interrogator_vishas.cpp
-dungeons/scarlet_monastery/boss_scorn.cpp
 dungeons/scarlet_monastery/instance_scarlet_monastery.cpp
 dungeons/scarlet_monastery/scarlet_monastery.h
 dungeons/scholomance/boss_darkmaster_gandling.cpp

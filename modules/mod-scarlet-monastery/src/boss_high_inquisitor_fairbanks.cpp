@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_scarlet_monastery
+{
+
+
 enum
 {
     SPELL_CURSEOFBLOOD = 8282,
@@ -149,3 +153,5 @@ void AddSC_boss_high_inquisitor_fairbanks()
     newscript->GetAI = &GetAI_boss_high_inquisitor_fairbanks;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scarlet_monastery

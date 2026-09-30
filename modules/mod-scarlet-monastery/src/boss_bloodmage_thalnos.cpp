@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_scarlet_monastery
+{
+
+
 enum
 {
     SAY_AGGRO               = -1189016,
@@ -128,3 +132,5 @@ void AddSC_boss_bloodmage_thalnos()
     newscript->GetAI = &GetAI_boss_bloodmage_thalnos;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scarlet_monastery

@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_scarlet_monastery
+{
+
+
 enum
 {
     SAY_AGGRO                       = -1189021,
@@ -79,3 +83,5 @@ void AddSC_boss_houndmaster_loksey()
     newscript->GetAI = &GetAI_boss_houndmaster_loksey;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scarlet_monastery

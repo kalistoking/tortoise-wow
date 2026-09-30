@@ -4,6 +4,10 @@
 
 #include "scriptPCH.h"
 
+namespace mod_scarlet_monastery
+{
+
+
 #define SAY_AGGRO -1189000
 #define SAY_WHIRLWIND -1189001
 #define SAY_ENRAGE -1189002
@@ -407,3 +411,5 @@ void AddSC_boss_herod()
     newscript->GOGetAI = &GetAI_go_herod_lever;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scarlet_monastery

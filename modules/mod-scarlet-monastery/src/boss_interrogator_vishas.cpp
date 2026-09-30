@@ -22,7 +22,11 @@ SDCategory: Scarlet Monastery
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "scarlet_monastery.h"
+#include "dungeons/scarlet_monastery/scarlet_monastery.h"
+
+namespace mod_scarlet_monastery
+{
+
 
 enum
 {
@@ -119,3 +123,5 @@ void AddSC_boss_interrogator_vishas()
     newscript->GetAI = &GetAI_boss_interrogator_vishas;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scarlet_monastery

@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_scarlet_monastery
+{
+
+
 #define SPELL_LICHSLAP 28873
 #define SPELL_FROSTBOLTVOLLEY 22643 //was 8398
 #define SPELL_MINDFLAY 17313
@@ -135,3 +139,5 @@ void AddSC_boss_scorn()
     newscript->GetAI = &GetAI_boss_scorn;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scarlet_monastery
