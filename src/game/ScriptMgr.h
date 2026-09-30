@@ -379,10 +379,28 @@ enum eScriptCommand
                                                             // datalong2 = zone_id
     SCRIPT_COMMAND_TAKE_MONEY               = 93,           // source = Player (from provided source or target)
                                                             // datalong = copper amount
+    SCRIPT_COMMAND_SET_HEALTH               = 94,           // source = Creature
+                                                            // datalong = amount (hit points, or a percent of the maximum)
+                                                            // datalong2 = eSetHealthModes
+                                                            // datalong3 = (bool) keep_percent, with SET_HEALTH_MAX
 
     SCRIPT_COMMAND_MAX,
 
     SCRIPT_COMMAND_DISABLED                 = 9999          // Script action was disabled during loading.
+};
+
+// Modes of SCRIPT_COMMAND_SET_HEALTH (trt E22, AC5): health set, raised or lowered -- never to 0,
+// never past the maximum -- or the maximum itself set.
+enum eSetHealthModes
+{
+    SET_HEALTH_VALUE          = 0,                          // to datalong hit points
+    SET_HEALTH_PERCENT        = 1,                          // to datalong % of the maximum
+    SET_HEALTH_RAISE          = 2,                          // up by datalong hit points
+    SET_HEALTH_RAISE_PERCENT  = 3,                          // up by datalong % of the maximum
+    SET_HEALTH_LOWER          = 4,                          // down by datalong hit points
+    SET_HEALTH_LOWER_PERCENT  = 5,                          // down by datalong % of the maximum
+    SET_HEALTH_MAX            = 6,                          // the maximum to datalong hit points
+    SET_HEALTH_MODE_MAX
 };
 
 #define MAX_TEXT_ID 4                                       // used for SCRIPT_COMMAND_TALK
@@ -1110,6 +1128,13 @@ struct ScriptInfo
         {
             uint32 amount;                                  // datalong
         } takeMoney;
+
+        struct                                              // SCRIPT_COMMAND_SET_HEALTH (94)
+        {
+            uint32 amount;                                  // datalong
+            uint32 mode;                                    // datalong2
+            uint32 keepPercent;                             // datalong3
+        } setHealth;
 
         struct
         {

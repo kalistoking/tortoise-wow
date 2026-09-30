@@ -701,6 +701,57 @@ bool Map::ScriptCommand_TakeMoney(ScriptInfo const& script, WorldObject* source,
     return false;
 }
 
+// SCRIPT_COMMAND_SET_HEALTH (94)
+// Health set, raised or lowered -- never to 0 (DEAL_DAMAGE kills), never past the maximum -- or the
+// maximum set through the health base modifier, so it holds when an aura recalculates it (a raw
+// FIELD_SET of UNIT_FIELD_MAXHEALTH does not). Silent: no threat, no heal, no damage hook.
+bool Map::ScriptCommand_SetHealth(ScriptInfo const& script, WorldObject* source, WorldObject* target)
+{
+    Creature* pSource = ToCreature(source);
+
+    if (!pSource)
+    {
+        sLog.outError("SCRIPT_COMMAND_SET_HEALTH (script id %u) call for a nullptr or non-creature source (TypeId: %u), skipping.", script.id, source ? source->GetTypeId() : 0);
+        return ShouldAbortScript(script);
+    }
+
+    if (!pSource->IsAlive())
+        return ShouldAbortScript(script);
+
+    uint32 const amount = script.setHealth.amount;
+    uint64 const max = pSource->GetMaxHealth();
+    uint64 const now = pSource->GetHealth();
+    uint64 const share = max * amount / 100;
+    uint64 health = now;
+
+    switch (script.setHealth.mode)
+    {
+        case SET_HEALTH_VALUE:          health = amount; break;
+        case SET_HEALTH_PERCENT:        health = share; break;
+        case SET_HEALTH_RAISE:          health = now + amount; break;
+        case SET_HEALTH_RAISE_PERCENT:  health = now + share; break;
+        case SET_HEALTH_LOWER:          health = now > amount ? now - amount : 1; break;
+        case SET_HEALTH_LOWER_PERCENT:  health = now > share ? now - share : 1; break;
+        case SET_HEALTH_MAX:
+        {
+            float const percent = max ? float(now) / float(max) : 1.0f;
+            pSource->SetUInt32Value(UNIT_FIELD_BASE_HEALTH, amount); // Unit::SetCreateHealth, protected
+            pSource->SetModifierValue(UNIT_MOD_HEALTH, BASE_VALUE, float(amount));
+            pSource->UpdateMaxHealth();
+            uint64 const newMax = pSource->GetMaxHealth();
+            health = script.setHealth.keepPercent ? uint64(float(newMax) * percent) : newMax;
+            break;
+        }
+        default:
+            return ShouldAbortScript(script);
+    }
+
+    uint64 const cap = pSource->GetMaxHealth();
+    health = std::max<uint64>(1, std::min<uint64>(health, cap));
+    pSource->SetHealth(uint32(health));
+    return false;
+}
+
 // SCRIPT_COMMAND_DESPAWN_CREATURE (18)
 bool Map::ScriptCommand_DespawnCreature(const ScriptInfo& script, WorldObject* source, WorldObject* target)
 {

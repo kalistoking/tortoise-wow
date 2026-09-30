@@ -624,6 +624,36 @@ void ScriptMgr::LoadScripts(ScriptMapMap& scripts, const char* tablename)
                 }
                 break;
             }
+            case SCRIPT_COMMAND_SET_HEALTH:
+            {
+                uint32 const mode = tmp.setHealth.mode;
+                bool const percent = mode == SET_HEALTH_PERCENT || mode == SET_HEALTH_RAISE_PERCENT || mode == SET_HEALTH_LOWER_PERCENT;
+                if (mode >= SET_HEALTH_MODE_MAX)
+                {
+                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_SET_HEALTH has unknown mode (datalong2 = %u) for script id %u",
+                                    tablename, mode, tmp.id);
+                    continue;
+                }
+                if (!tmp.setHealth.amount && (mode == SET_HEALTH_VALUE || mode == SET_HEALTH_PERCENT || mode == SET_HEALTH_MAX))
+                {
+                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_SET_HEALTH sets health to 0 (datalong = 0) for script id %u -- it never kills",
+                                    tablename, tmp.id);
+                    continue;
+                }
+                if ((percent && tmp.setHealth.amount > 100) || tmp.setHealth.amount > 0x7FFFFFFF)
+                {
+                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_SET_HEALTH amount is out of range (%u) for script id %u",
+                                    tablename, tmp.setHealth.amount, tmp.id);
+                    continue;
+                }
+                if (tmp.setHealth.keepPercent && mode != SET_HEALTH_MAX)
+                {
+                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_SET_HEALTH keeps the percent (datalong3) only with SET_HEALTH_MAX, for script id %u",
+                                    tablename, tmp.id);
+                    continue;
+                }
+                break;
+            }
             case SCRIPT_COMMAND_DESPAWN_CREATURE:
             {
                 break;
