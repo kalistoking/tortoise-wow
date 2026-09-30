@@ -2247,6 +2247,8 @@ void LoadPlayerEggLoot();
     sScriptMgr.LoadEventScripts();                          // must be after load Creature/Gameobject(Template/Data)
     sLog.outString("Loading generic scripts...");
     sScriptMgr.LoadGenericScripts();
+    sLog.outString("Loading area trigger generic scripts...");       // after the generic scripts it starts
+    sScriptMgr.LoadAreaTriggerGenericScripts();
     sLog.outString("Loading creature EventAI scripts...");
     sScriptMgr.LoadCreatureEventAIScripts();
     sScriptMgr.CheckAllScriptTexts();

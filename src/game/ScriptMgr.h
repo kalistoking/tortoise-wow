@@ -1579,7 +1579,12 @@ class ScriptMgr
 
         void LoadScriptNames();
         void LoadAreaTriggerScripts();
+        void LoadAreaTriggerGenericScripts();
         void LoadEventIdScripts();
+
+        // trt E22, AC8: an area trigger's rows -- generic scripts started with the player stepping in
+        // as source and target, where no C++ took the trigger.
+        void StartAreaTriggerGenericScripts(Player* pPlayer, uint32 triggerId) const;
 
         uint32 GetAreaTriggerScriptId(uint32 triggerId) const;
         uint32 GetEventIdScriptId(uint32 eventId) const;
@@ -1706,6 +1711,19 @@ class ScriptMgr
 
         typedef std::vector<std::string> ScriptNameMap;
         typedef std::unordered_map<uint32, uint32> AreaTriggerScriptMap;
+
+        enum AreaTriggerGenericScriptFlags
+        {
+            AT_GENERIC_ALIVE_ONLY = 0x1,                    // not for a dead player (a ghost walks through triggers)
+            AT_GENERIC_NOT_GM     = 0x2,                    // not for a game master
+        };
+        struct AreaTriggerGenericScript
+        {
+            uint32 scriptId;
+            uint32 conditionId;
+            uint32 flags;
+        };
+        std::unordered_multimap<uint32, AreaTriggerGenericScript> m_areaTriggerGenericScripts;
         typedef std::unordered_map<uint32, uint32> EventIdScriptMap;
         
         //Maps and lists

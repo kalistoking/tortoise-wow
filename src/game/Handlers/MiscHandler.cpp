@@ -799,6 +799,10 @@ void WorldSession::HandleAreaTriggerOpcode(WorldPacket & recv_data)
     if (sScriptMgr.OnAreaTrigger(pPlayer, pTrigger))
         return;
 
+    // trt E22, AC8: the trigger's rows, where no C++ took it; the quest, tavern and teleport below
+    // still run.
+    sScriptMgr.StartAreaTriggerGenericScripts(pPlayer, triggerId);
+
     uint32 quest_id = sObjectMgr.GetQuestForAreaTrigger(triggerId);
     if (quest_id && pPlayer->IsAlive() && pPlayer->IsActiveQuest(quest_id))
     {

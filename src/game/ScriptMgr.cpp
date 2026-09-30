@@ -1825,6 +1825,71 @@ void ScriptMgr::LoadAreaTriggerScripts()
     delete result;
 }
 
+void ScriptMgr::LoadAreaTriggerGenericScripts()
+{
+    m_areaTriggerGenericScripts.clear();
+
+    std::unique_ptr<QueryResult> result(WorldDatabase.Query("SELECT `trigger_id`, `script_id`, `condition_id`, `flags` FROM `areatrigger_generic_script`"));
+    if (!result)
+    {
+        sLog.outString(">> Loaded 0 area trigger generic scripts");
+        return;
+    }
+
+    uint32 count = 0;
+    do
+    {
+        Field* fields = result->Fetch();
+
+        uint32 triggerId = fields[0].GetUInt32();
+        AreaTriggerGenericScript row;
+        row.scriptId = fields[1].GetUInt32();
+        row.conditionId = fields[2].GetUInt32();
+        row.flags = fields[3].GetUInt32();
+
+        if (!sObjectMgr.GetAreaTrigger(triggerId))
+        {
+            if (!sObjectMgr.IsExistingAreaTriggerId(triggerId))
+                sLog.outErrorDb("Table `areatrigger_generic_script` has area trigger %u not in `areatrigger_template`, skipped.", triggerId);
+            continue;
+        }
+        if (sGenericScripts.find(row.scriptId) == sGenericScripts.end())
+        {
+            sLog.outErrorDb("Table `areatrigger_generic_script` has script %u for area trigger %u, not in `generic_scripts`, skipped.", row.scriptId, triggerId);
+            continue;
+        }
+        if (row.conditionId && !sConditionStorage.LookupEntry<ConditionEntry>(row.conditionId))
+        {
+            sLog.outErrorDb("Table `areatrigger_generic_script` has condition %u for area trigger %u, not in `conditions`, skipped.", row.conditionId, triggerId);
+            continue;
+        }
+        if (row.flags & ~uint32(AT_GENERIC_ALIVE_ONLY | AT_GENERIC_NOT_GM))
+            sLog.outErrorDb("Table `areatrigger_generic_script` has unknown flags %u for area trigger %u.", row.flags, triggerId);
+
+        m_areaTriggerGenericScripts.emplace(triggerId, row);
+        ++count;
+    }
+    while (result->NextRow());
+
+    sLog.outString(">> Loaded %u area trigger generic scripts", count);
+}
+
+void ScriptMgr::StartAreaTriggerGenericScripts(Player* pPlayer, uint32 triggerId) const
+{
+    auto const range = m_areaTriggerGenericScripts.equal_range(triggerId);
+    for (auto itr = range.first; itr != range.second; ++itr)
+    {
+        AreaTriggerGenericScript const& row = itr->second;
+        if ((row.flags & AT_GENERIC_ALIVE_ONLY) && !pPlayer->IsAlive())
+            continue;
+        if ((row.flags & AT_GENERIC_NOT_GM) && pPlayer->IsGameMaster())
+            continue;
+        if (row.conditionId && !IsConditionSatisfied(row.conditionId, pPlayer, pPlayer->GetMap(), pPlayer, CONDITION_FROM_AREATRIGGER))
+            continue;
+        pPlayer->GetMap()->ScriptsStart(sGenericScripts, row.scriptId, pPlayer->GetObjectGuid(), pPlayer->GetObjectGuid());
+    }
+}
+
 void ScriptMgr::LoadEventIdScripts()
 {
     m_EventIdScripts.clear();                           // need for reload case
@@ -2837,6 +2902,16 @@ void ScriptMgr::CollectPossibleGenericIds(std::set<uint32>& genericIds)
                     genericIds.insert(script2);
             } while (result->NextRow());
         }
+    }
+
+    // trt E22, AC8: an area trigger's rows.
+    std::unique_ptr<QueryResult> result(WorldDatabase.Query("SELECT `script_id` FROM `areatrigger_generic_script`"));
+    if (result)
+    {
+        do
+        {
+            genericIds.insert(result->Fetch()[0].GetUInt32());
+        } while (result->NextRow());
     }
 }
 
