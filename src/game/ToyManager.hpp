@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <memory>
 #include <optional>
+#include "Platform/CompilerDefs.h"
 
 class ToyManager
 {
@@ -35,5 +36,5 @@ private:
 	std::unordered_map<uint32, uint32> m_ToySpells;
 };
 
-extern ToyManager sToyMgr;
-extern ToyManager sToyMgr;
+extern TW_CORE_DATA ToyManager sToyMgr;
+extern TW_CORE_DATA ToyManager sToyMgr;
