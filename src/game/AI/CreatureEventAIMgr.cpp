@@ -164,6 +164,20 @@ void CreatureEventAIMgr::LoadCreatureEventAI_Events()
                     if (temp.spell_hit_target.repeatMax < temp.spell_hit_target.repeatMin)
                         sLog.outErrorDb("CreatureEventAI:  Creature %u is using repeatable event(%u) with param4 < param3 (RepeatMax < RepeatMin). Event will never repeat.", temp.creature_id, i);
                     break;
+                case EVENT_T_DAMAGE_TAKEN:
+                    if (temp.damage_taken.percent > 100)
+                    {
+                        sLog.outErrorDb("CreatureEventAI:  Creature %u has health percent %u > 100 (param1) in event %u.", temp.creature_id, temp.damage_taken.percent, i);
+                        continue;
+                    }
+                    if ((temp.damage_taken.mode & ~DAMAGE_TAKEN_COUNT_SELF) >= DAMAGE_TAKEN_MODE_MAX)
+                    {
+                        sLog.outErrorDb("CreatureEventAI:  Creature %u has unknown damage taken mode (param2 = %u) in event %u.", temp.creature_id, temp.damage_taken.mode, i);
+                        continue;
+                    }
+                    if (temp.damage_taken.repeatMax < temp.damage_taken.repeatMin)
+                        sLog.outErrorDb("CreatureEventAI:  Creature %u is using repeatable event(%u) with param4 < param3 (RepeatMax < RepeatMin). Event will never repeat.", temp.creature_id, i);
+                    break;
                 case EVENT_T_RANGE:
                     if (temp.range.maxDist < temp.range.minDist)
                         sLog.outErrorDb("CreatureEventAI:  Creature %u is using event(%u) with param2 < param1 (MaxDist < MinDist). Event will never repeat.", temp.creature_id, i);

@@ -205,6 +205,12 @@ bool CreatureEventAI::ProcessEvent(CreatureEventAIHolder& pHolder, WorldObject* 
             pHolder.UpdateRepeatTimer(m_creature, event.spell_hit_target.repeatMin, event.spell_hit_target.repeatMax);
             break;
         }
+        case EVENT_T_DAMAGE_TAKEN:
+        {
+            // The hit and the percent are checked in CreatureEventAI::DamageTaken.
+            pHolder.UpdateRepeatTimer(m_creature, event.damage_taken.repeatMin, event.damage_taken.repeatMax);
+            break;
+        }
         case EVENT_T_RANGE:
         {
             //Repeat Timers
@@ -806,6 +812,64 @@ void CreatureEventAI::SpellHit(WorldObject* pUnit, const SpellEntry* pSpell)
 // from Spell::DoAllEffectOnTarget for a creature caster, on a hit only and once per unit hit, so
 // an area spell answers once for each -- a repeat timer makes it the first and a cooldown. The
 // unit hit is the invoker: the provided target of its steps, what its condition is asked of.
+// EVENT_T_DAMAGE_TAKEN (trt E22, AC6): before the hit is cut from health -- melee, spells, periodic
+// ticks; not DEAL_DAMAGE's or an instant kill's. A rule that fired then clamps or absorbs the hit;
+// one whose action killed or despawned the creature leaves nothing to hit.
+void CreatureEventAI::DamageTaken(Unit* pDoneBy, uint32& uiDamage)
+{
+    if (m_bEmptyList || m_bInDamageTaken || !pDoneBy || !uiDamage)
+        return;
+
+    uint32 const maxHealth = m_creature->GetMaxHealth();
+    if (!maxHealth)
+        return;
+
+    m_bInDamageTaken = true;
+    for (auto& i : m_CreatureEventAIList)
+    {
+        if (i.Event.event_type != EVENT_T_DAMAGE_TAKEN)
+            continue;
+        uint32 const mode = i.Event.damage_taken.mode;
+        if (pDoneBy == m_creature && !(mode & DAMAGE_TAKEN_COUNT_SELF))
+            continue;
+
+        uint32 const percent = i.Event.damage_taken.percent;
+        uint32 const health = m_creature->GetHealth();
+        uint32 const left = uiDamage >= health ? 0 : health - uiDamage;
+        if (percent ? uint64(left) * 100 > uint64(maxHealth) * percent : left > 0)
+            continue;
+
+        if (!ProcessEvent(i, pDoneBy))
+            continue;
+
+        if (!m_creature->IsAlive() || !m_creature->IsInWorld())
+        {
+            uiDamage = 0;
+            break;
+        }
+
+        switch (mode & ~DAMAGE_TAKEN_COUNT_SELF)
+        {
+            case DAMAGE_TAKEN_CLAMP:
+            {
+                uint32 const floor = std::max<uint32>(1, uint32(uint64(maxHealth) * percent / 100));
+                uint32 const now = m_creature->GetHealth();
+                uiDamage = now > floor ? std::min(uiDamage, now - floor) : 0;
+                break;
+            }
+            case DAMAGE_TAKEN_ABSORB:
+                uiDamage = 0;
+                break;
+            default:
+                break;
+        }
+
+        if (!uiDamage)
+            break;
+    }
+    m_bInDamageTaken = false;
+}
+
 void CreatureEventAI::SpellHitTarget(Unit* pTarget, const SpellEntry* pSpell)
 {
     if (m_bEmptyList || !pTarget || !pSpell)

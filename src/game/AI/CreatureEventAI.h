@@ -73,6 +73,7 @@ enum EventAI_Type
     EVENT_T_HIT_BY_AURA             = 34,                   // AuraType, Unused, RepeatMin, RepeatMax
     EVENT_T_STEALTH_ALERT           = 35,                   // RepeatMin, RepeatMax
     EVENT_T_SPELL_HIT_TARGET        = 36,                   // SpellID (0 any), eSpellHitTargetFilter, RepeatMin, RepeatMax
+    EVENT_T_DAMAGE_TAKEN            = 37,                   // HealthPct (0 the killing blow, 100 every hit), eDamageTakenMode, RepeatMin, RepeatMax
 
     EVENT_T_END,
 };
@@ -85,6 +86,18 @@ enum eSpellHitTargetFilter
     SPELL_HIT_TARGET_PLAYER_OR_THEIRS = 2,                  // a player, or a unit a player owns or charms
     SPELL_HIT_TARGET_NOT_SELF         = 3,                  // any unit but the caster itself
     SPELL_HIT_TARGET_FILTER_MAX
+};
+
+// What an EVENT_T_DAMAGE_TAKEN does to the hit once its rule has fired (trt E22, AC6). It fires when
+// a hit would leave the creature at or below its percent of health, before the hit is dealt; the
+// attacker is the rule's invoker, so the rule's condition reads the attacker.
+enum eDamageTakenMode
+{
+    DAMAGE_TAKEN_REACT      = 0,                            // the hit lands as it is
+    DAMAGE_TAKEN_CLAMP      = 1,                            // the hit stops at the percent (0: at 1 health)
+    DAMAGE_TAKEN_ABSORB     = 2,                            // the hit is absorbed whole
+    DAMAGE_TAKEN_MODE_MAX,
+    DAMAGE_TAKEN_COUNT_SELF = 0x100,                        // the creature's own damage counts too
 };
 
 enum EventFlags
@@ -163,6 +176,14 @@ struct CreatureEventAI_Event
             uint32 repeatMin;
             uint32 repeatMax;
         } spell_hit_target;
+        // EVENT_T_DAMAGE_TAKEN                             = 37
+        struct
+        {
+            uint32 percent;
+            uint32 mode;                                    // eDamageTakenMode, | DAMAGE_TAKEN_COUNT_SELF
+            uint32 repeatMin;
+            uint32 repeatMax;
+        } damage_taken;
         // EVENT_T_RANGE                                    = 9
         struct
         {
@@ -333,6 +354,7 @@ class CreatureEventAI : public CreatureAI
         void MoveInLineOfSight(Unit *who) override;
         void SpellHit(WorldObject* pUnit, const SpellEntry* pSpell) override;
         void SpellHitTarget(Unit* pTarget, const SpellEntry* pSpell) override;
+        void DamageTaken(Unit* pDoneBy, uint32& uiDamage) override;
         void MovementInform(uint32 type, uint32 id) override;
         void UpdateAI(const uint32 diff) override;
         void ReceiveEmote(Player* pPlayer, uint32 text_emote) override;
@@ -353,6 +375,7 @@ class CreatureEventAI : public CreatureAI
         uint32 m_EventUpdateTime;                           //Time between event updates
         uint32 m_EventDiff;                                 //Time between the last event call
         bool   m_bEmptyList;
+        bool   m_bInDamageTaken = false;                    // a rule's own damage does not start the rules again
 
         //Variables used by Events themselves
         typedef std::vector<CreatureEventAIHolder> CreatureEventAIList;
