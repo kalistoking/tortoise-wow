@@ -320,6 +320,8 @@ miscellaneous/random_scripts_0.cpp
 miscellaneous/random_scripts_1.cpp
 miscellaneous/random_scripts_2.cpp
 miscellaneous/random_scripts_3.cpp
+miscellaneous/npc_j_eevee.cpp
+miscellaneous/easter_egg_loot.cpp
 miscellaneous/custom_exploration_triggers.cpp
 miscellaneous/jewelcrafting.cpp
 

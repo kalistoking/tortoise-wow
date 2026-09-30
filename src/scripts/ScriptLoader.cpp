@@ -316,6 +316,8 @@ void AddSC_random_scripts_0();
 void AddSC_random_scripts_1();
 void AddSC_random_scripts_2();
 void AddSC_random_scripts_3();
+void AddSC_npc_j_eevee();
+void AddSC_easter_egg_loot();
 
 void AddSC_custom_exploration_triggers();
 
@@ -705,6 +707,8 @@ void AddScripts()
     AddSC_random_scripts_1();
     AddSC_random_scripts_2();
     AddSC_random_scripts_3();
+    AddSC_npc_j_eevee();
+    AddSC_easter_egg_loot();
 
     AddSC_custom_exploration_triggers();
 
