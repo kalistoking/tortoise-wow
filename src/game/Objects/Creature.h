@@ -599,6 +599,17 @@ class Creature : public Unit
         bool IsTemporarySummon() const { return m_subtype == CREATURE_SUBTYPE_TEMPORARY_SUMMON; }
         bool IsCorpse() const { return GetDeathState() ==  CORPSE; }
         bool IsDespawned() const { return GetDeathState() ==  DEAD; }
+
+        // Unit state bits a script set (trt E22, AC1: SCRIPT_COMMAND_UNIT_STATE), remembered: the
+        // walk home and a death or respawn clear them, as the C++ scripts do in Reset.
+        void AddScriptUnitState(uint32 mask) { m_scriptUnitStates |= mask; AddUnitState(mask); }
+        void ClearScriptUnitState(uint32 mask) { m_scriptUnitStates &= ~mask; ClearUnitState(mask); }
+        void ClearScriptUnitStates()
+        {
+            if (m_scriptUnitStates)
+                ClearUnitState(m_scriptUnitStates);
+            m_scriptUnitStates = 0;
+        }
         void SetCorpseDelay(uint32 delay) { m_corpseDelay = delay; }
         bool IsRacialLeader() const { return GetCreatureInfo()->racial_leader; }
         bool IsCivilian() const { return GetCreatureInfo()->civilian; }
@@ -1086,6 +1097,7 @@ class Creature : public Unit
         uint32 m_corpseDecayTimer;                          // (msecs)timer for death or corpse disappearance
         time_t m_respawnTime;                               // (secs) time of next respawn
         uint32 m_respawnDelay;                              // (secs) delay between corpse disappearance and respawning
+        uint32 m_scriptUnitStates = 0;                     // what AddScriptUnitState set
         uint32 m_corpseDelay;                               // (secs) delay between death and corpse disappearance
         float m_wanderDistance;
 

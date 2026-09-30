@@ -1958,6 +1958,10 @@ float Creature::GetAttackDistance(Unit const* pTarget) const
 
 void Creature::SetDeathState(DeathState s)
 {
+    // What a script set does not outlive the creature's life (trt E22, AC1).
+    if (s == JUST_DIED || s == JUST_ALIVED)
+        ClearScriptUnitStates();
+
     if ((s == JUST_DIED && !IsDeadByDefault()) || (s == JUST_ALIVED && IsDeadByDefault()))
     {
         auto data = sObjectMgr.GetCreatureData(GetGUIDLow());

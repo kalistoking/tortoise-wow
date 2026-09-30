@@ -360,6 +360,11 @@ void MotionMaster::MoveTargetedHome()
     if (m_owner->HasUnitState(UNIT_STAT_LOST_CONTROL))
         return;
 
+    // The bits a script set go before the walk home (trt E22, AC1): a C++ script clears them in
+    // Reset, which a row cannot reach before the home move is under way.
+    if (Creature* pCreature = m_owner->ToCreature())
+        pCreature->ClearScriptUnitStates();
+
     Clear(false);
 
     if (m_owner->IsCreature() && !((Creature*)m_owner)->GetCharmerOrOwnerGuid())

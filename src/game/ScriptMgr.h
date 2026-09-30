@@ -383,6 +383,9 @@ enum eScriptCommand
                                                             // datalong = amount (hit points, or a percent of the maximum)
                                                             // datalong2 = eSetHealthModes
                                                             // datalong3 = (bool) keep_percent, with SET_HEALTH_MAX
+    SCRIPT_COMMAND_UNIT_STATE               = 95,           // source = Creature
+                                                            // datalong = unit state mask: can't rotate, ignore pathfinding, allow incomplete path, allow LoS attack
+                                                            // datalong2 = (bool) add, else clear
 
     SCRIPT_COMMAND_MAX,
 
@@ -1147,6 +1150,12 @@ struct ScriptInfo
             uint32 mode;                                    // datalong2
             uint32 keepPercent;                             // datalong3
         } setHealth;
+
+        struct                                              // SCRIPT_COMMAND_UNIT_STATE (95)
+        {
+            uint32 mask;                                    // datalong
+            uint32 add;                                     // datalong2
+        } unitState;
 
         struct
         {

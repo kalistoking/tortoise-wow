@@ -636,6 +636,27 @@ void ScriptMgr::LoadScripts(ScriptMapMap& scripts, const char* tablename)
                 }
                 break;
             }
+            case SCRIPT_COMMAND_UNIT_STATE:
+            {
+                // What a row may set (trt E22, AC1): a root is said by a root aura (17507), which
+                // evade takes off before the walk home; never a stun, a feign death, an aura's or a
+                // movement generator's own state.
+                uint32 const allowed = UNIT_STAT_CANT_ROTATE | UNIT_STAT_IGNORE_PATHFINDING |
+                                       UNIT_STAT_ALLOW_INCOMPLETE_PATH | UNIT_STAT_ALLOW_LOS_ATTACK;
+                if (!tmp.unitState.mask || (tmp.unitState.mask & ~allowed))
+                {
+                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_UNIT_STATE has mask 0x%X (datalong) -- only 0x%X can be set, for script id %u",
+                                    tablename, tmp.unitState.mask, allowed, tmp.id);
+                    continue;
+                }
+                if (tmp.unitState.add > 1)
+                {
+                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_UNIT_STATE has datalong2 = %u -- 1 adds, 0 clears, for script id %u",
+                                    tablename, tmp.unitState.add, tmp.id);
+                    continue;
+                }
+                break;
+            }
             case SCRIPT_COMMAND_SET_HEALTH:
             {
                 uint32 const mode = tmp.setHealth.mode;

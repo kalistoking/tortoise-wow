@@ -712,6 +712,26 @@ bool Map::ScriptCommand_TakeMoney(ScriptInfo const& script, WorldObject* source,
 // Health set, raised or lowered -- never to 0 (DEAL_DAMAGE kills), never past the maximum -- or the
 // maximum set through the health base modifier, so it holds when an aura recalculates it (a raw
 // FIELD_SET of UNIT_FIELD_MAXHEALTH does not). Silent: no threat, no heal, no damage hook.
+// SCRIPT_COMMAND_UNIT_STATE (95) (trt E22, AC1): a creature's unit state bits set or cleared by a
+// row -- remembered, so the walk home and a death or respawn clear them (Creature::ClearScriptUnitStates).
+bool Map::ScriptCommand_UnitState(ScriptInfo const& script, WorldObject* source, WorldObject* target)
+{
+    Creature* pSource = ToCreature(source);
+
+    if (!pSource)
+    {
+        sLog.outError("SCRIPT_COMMAND_UNIT_STATE (script id %u) call for a nullptr or non-creature source (TypeId: %u), skipping.", script.id, source ? source->GetTypeId() : 0);
+        return ShouldAbortScript(script);
+    }
+
+    if (script.unitState.add)
+        pSource->AddScriptUnitState(script.unitState.mask);
+    else
+        pSource->ClearScriptUnitState(script.unitState.mask);
+
+    return false;
+}
+
 bool Map::ScriptCommand_SetHealth(ScriptInfo const& script, WorldObject* source, WorldObject* target)
 {
     Creature* pSource = ToCreature(source);
