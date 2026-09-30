@@ -1,0 +1,12 @@
+###################################################################################################
+# mod-stormwrought-ruins module configuration
+###################################################################################################
+
+[ModuleConf]
+
+# mod-stormwrought-ruins.Enable
+#     Register Stormwrought Ruins's scripts. When 0 the module registers nothing: the world database
+#     still names the scripts, and their creatures and objects run on what the core gives them
+#     without one -- their ai_name, their rows.
+#     Default: 1
+mod-stormwrought-ruins.Enable = 1

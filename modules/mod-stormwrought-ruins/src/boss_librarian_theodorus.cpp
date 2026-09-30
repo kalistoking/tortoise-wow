@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "stormwrought_ruins.h"
 
+namespace mod_stormwrought_ruins
+{
+
+
 struct boss_librarian_theodorusAI : public ScriptedAI
 {
     explicit boss_librarian_theodorusAI(Creature* pCreature) : ScriptedAI(pCreature)
@@ -93,3 +97,5 @@ void AddSC_boss_librarian_theodorus()
     pNewscript->GetAI = &GetAI_boss_librarian_theodorus;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_stormwrought_ruins

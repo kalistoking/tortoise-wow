@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "stormwrought_ruins.h"
 
+namespace mod_stormwrought_ruins
+{
+
+
 struct instance_stormwrought_ruins : public ScriptedInstance
 {
     explicit instance_stormwrought_ruins(Map* pMap) : ScriptedInstance(pMap)
@@ -135,3 +139,5 @@ void AddSC_instance_stormwrought_ruins()
     pNewscript->pGOHello = &GOHello_go_stormwrought_secret_door;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_stormwrought_ruins

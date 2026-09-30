@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "stormwrought_ruins.h"
 
+namespace mod_stormwrought_ruins
+{
+
+
 struct boss_eldermaw_the_primordialAI : public ScriptedAI
 {
     explicit boss_eldermaw_the_primordialAI(Creature* pCreature) : ScriptedAI(pCreature)
@@ -72,3 +76,5 @@ void AddSC_boss_eldermaw_the_primordial()
     pNewscript->GetAI = &GetAI_boss_eldermaw_the_primordial;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_stormwrought_ruins

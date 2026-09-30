@@ -76,18 +76,7 @@ void AddSC_boss_victor_nefarius();
 void AddSC_instance_blackwing_lair();
 
 
-void AddSC_instance_stormwrought_ruins();            //stormwrought_ruins
-void AddSC_boss_chieftain_stormsong();
-void AddSC_boss_dagar_the_glutton();
-void AddSC_boss_deathlord_tidebane();
-void AddSC_boss_duke_balor_iv();
-void AddSC_boss_eldermaw_the_primordial();
-void AddSC_boss_ighalfor();
-void AddSC_boss_lady_drazare();
-void AddSC_boss_librarian_theodorus();
-void AddSC_boss_mycellakos();
-void AddSC_boss_oronok_torn_heart();
-void AddSC_boss_subjugator_halthas_shadecrest();
+void AddSC_stormwrought_ruins_spells();              // Drazare's Embrace, stays in the core (trt A19)
 
 void AddSC_gnomeregan();                             //gnomeregan
 void AddSC_boss_thermaplugg();
@@ -414,18 +403,7 @@ void AddScripts()
     AddSC_boss_nefarian();
     AddSC_boss_victor_nefarius();
     AddSC_instance_blackwing_lair();
-    AddSC_instance_stormwrought_ruins();                    //stormwrought_ruins
-    AddSC_boss_chieftain_stormsong();
-    AddSC_boss_dagar_the_glutton();
-    AddSC_boss_deathlord_tidebane();
-    AddSC_boss_duke_balor_iv();
-    AddSC_boss_eldermaw_the_primordial();
-    AddSC_boss_ighalfor();
-    AddSC_boss_lady_drazare();
-    AddSC_boss_librarian_theodorus();
-    AddSC_boss_mycellakos();
-    AddSC_boss_oronok_torn_heart();
-    AddSC_boss_subjugator_halthas_shadecrest();
+    AddSC_stormwrought_ruins_spells();
     AddSC_gnomeregan();                                     //gnomeregan
     AddSC_boss_thermaplugg();
     AddSC_instance_gnomeregan();

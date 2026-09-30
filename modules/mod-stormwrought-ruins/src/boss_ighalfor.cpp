@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "stormwrought_ruins.h"
 
+namespace mod_stormwrought_ruins
+{
+
+
 namespace
 {
 struct ThreatCopier : public ThreatListProcesser
@@ -434,3 +438,5 @@ void AddSC_boss_ighalfor()
     pNewscript->GetAI = &GetAI_boss_mergothid;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_stormwrought_ruins

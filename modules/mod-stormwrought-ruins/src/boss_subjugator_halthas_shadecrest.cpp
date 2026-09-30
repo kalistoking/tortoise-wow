@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "stormwrought_ruins.h"
 
+namespace mod_stormwrought_ruins
+{
+
+
 struct boss_subjugator_halthas_shadecrestAI : public ScriptedAI
 {
     explicit boss_subjugator_halthas_shadecrestAI(Creature* pCreature) : ScriptedAI(pCreature)
@@ -79,3 +83,5 @@ void AddSC_boss_subjugator_halthas_shadecrest()
     pNewscript->GetAI = &GetAI_boss_subjugator_halthas_shadecrest;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_stormwrought_ruins

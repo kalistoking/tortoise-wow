@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "stormwrought_ruins.h"
 
+namespace mod_stormwrought_ruins
+{
+
+
 struct boss_deathlord_tidebaneAI : public ScriptedAI
 {
     explicit boss_deathlord_tidebaneAI(Creature* pCreature) : ScriptedAI(pCreature)
@@ -90,3 +94,5 @@ void AddSC_boss_deathlord_tidebane()
     pNewscript->GetAI = &GetAI_boss_deathlord_tidebane;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_stormwrought_ruins

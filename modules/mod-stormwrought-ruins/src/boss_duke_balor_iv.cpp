@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "stormwrought_ruins.h"
 
+namespace mod_stormwrought_ruins
+{
+
+
 struct boss_duke_balor_ivAI : public ScriptedAI
 {
     explicit boss_duke_balor_ivAI(Creature* pCreature) : ScriptedAI(pCreature)
@@ -86,3 +90,5 @@ void AddSC_boss_duke_balor_iv()
     pNewscript->GetAI = &GetAI_boss_duke_balor_iv;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_stormwrought_ruins

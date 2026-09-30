@@ -1,6 +1,10 @@
 #ifndef DEF_STORMWROUGHT_RUINS_H
 #define DEF_STORMWROUGHT_RUINS_H
 
+namespace mod_stormwrought_ruins
+{
+
+
 enum
 {
     DATA_IGHALFOR_GUID                  = 1,
@@ -95,5 +99,7 @@ enum
     SAY_STORMWROUGHT_MERGOTHID_HALF     = -1999987,
     SAY_STORMWROUGHT_MERGOTHID_DEATH    = -1999988
 };
+
+} // namespace mod_stormwrought_ruins
 
 #endif

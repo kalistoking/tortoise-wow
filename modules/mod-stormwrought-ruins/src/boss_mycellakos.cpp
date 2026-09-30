@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "stormwrought_ruins.h"
 
+namespace mod_stormwrought_ruins
+{
+
+
 struct boss_mycellakosAI : public ScriptedAI
 {
     explicit boss_mycellakosAI(Creature* pCreature) : ScriptedAI(pCreature)
@@ -97,3 +101,5 @@ void AddSC_boss_mycellakos()
     pNewscript->GetAI = &GetAI_boss_mycellakos;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_stormwrought_ruins

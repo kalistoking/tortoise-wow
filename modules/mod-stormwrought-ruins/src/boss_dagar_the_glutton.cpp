@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "stormwrought_ruins.h"
 
+namespace mod_stormwrought_ruins
+{
+
+
 struct boss_dagar_the_gluttonAI : public ScriptedAI
 {
     explicit boss_dagar_the_gluttonAI(Creature* pCreature) : ScriptedAI(pCreature)
@@ -56,3 +60,5 @@ void AddSC_boss_dagar_the_glutton()
     pNewscript->GetAI = &GetAI_boss_dagar_the_glutton;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_stormwrought_ruins

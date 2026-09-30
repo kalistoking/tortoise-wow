@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "stormwrought_ruins.h"
 
+namespace mod_stormwrought_ruins
+{
+
+
 struct boss_oronok_torn_heartAI : public ScriptedAI
 {
     explicit boss_oronok_torn_heartAI(Creature* pCreature) : ScriptedAI(pCreature)
@@ -79,3 +83,5 @@ void AddSC_boss_oronok_torn_heart()
     pNewscript->GetAI = &GetAI_boss_oronok_torn_heart;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_stormwrought_ruins
