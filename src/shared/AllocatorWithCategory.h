@@ -9,6 +9,7 @@
 #include <unordered_set>
 #include <set>
 #include <string.h>
+#include "Platform/CompilerDefs.h"
 
 // following code was copy-pasted from C++ library
 // It's very difficult to read, and I'm not sure about cross-compiler support
@@ -21,7 +22,7 @@ public:
 	virtual void ReportDealloc(const char* Category, size_t Bytes) = 0;
 };
 
-extern IPerfMonitor* gPerfMonitorInterface;
+extern TW_CORE_DATA IPerfMonitor* gPerfMonitorInterface;
 
 template<typename TargetType>
 class SizeGuide_Direct

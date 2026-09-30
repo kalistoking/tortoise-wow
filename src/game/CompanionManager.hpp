@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <memory>
 #include <optional>
+#include "Platform/CompilerDefs.h"
 
 class CompanionManager
 {
@@ -34,4 +35,4 @@ private:
 	std::unordered_map<uint32, uint32> m_companionSpells;
 };
 
-extern CompanionManager sCompanionMgr;
+extern TW_CORE_DATA CompanionManager sCompanionMgr;
