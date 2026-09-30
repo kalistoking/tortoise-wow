@@ -1,0 +1,13 @@
+-- Puts back what stormwind_vaults_as_rows.sql replaced, as t1_world had it when the migration
+-- was written (scripts/tier2/a16_stormwind_vaults.py). The rows the migration added are removed.
+
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_nazorna', `flags_extra` = 0, `mana_max` = 8343, `mana_min` = 8343 WHERE `entry` = 80830;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_black_bride', `flags_extra` = 0, `mana_max` = 9476, `mana_min` = 9476 WHERE `entry` = 80850;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_thamgrarr', `flags_extra` = 0, `mana_max` = 0, `mana_min` = 0 WHERE `entry` = 80852;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_aszosh_grimflame', `flags_extra` = 0, `mana_max` = 7458, `mana_min` = 7458 WHERE `entry` = 80853;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_arctiras', `flags_extra` = 0, `mana_max` = 0, `mana_min` = 0 WHERE `entry` = 93107;
+DELETE FROM `conditions` WHERE `condition_entry` IN (35001);
+DELETE FROM `broadcast_text` WHERE `entry` IN (8083051, 8083052, 8083053, 8083054, 8083055, 8085051, 8085052, 8085053, 8085054, 8085055, 8085260, 8085261, 8085262, 8085263, 8085264, 8085265, 8085266, 8085267, 8085351, 8085352, 8085360, 8085361, 8085362, 8085363, 8085364, 8085365, 9310751, 9310752, 9310753, 9310754);
+DELETE FROM `creature_ai_events` WHERE `id` IN (8083001, 8083002, 8083003, 8083004, 8083005, 8083006, 8083007, 8083008, 8083009, 8083010, 8083011, 8083012, 8083013, 8085001, 8085002, 8085003, 8085004, 8085005, 8085201, 8085202, 8085203, 8085204, 8085205, 8085301, 8085302, 8085303, 8085304, 8085305, 8085306, 8085307, 8085308, 8085309, 8085310, 8085311, 8085312, 8085313, 8085314, 8085315, 8085316, 8085317, 8085318, 8085319, 8085320, 8085321, 8085322, 8085323, 8085324, 8085325, 8085326, 8085327, 9310701, 9310702, 9310703, 9310704, 9310705, 9310706, 9310707, 9310708, 9310709, 9310710);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (8083001, 8083002, 8083003, 8083004, 8083005, 8083006, 8083007, 8083008, 8083009, 8083010, 8083011, 8083012, 8083013, 8085001, 8085002, 8085003, 8085004, 8085005, 8085201, 8085202, 8085203, 8085204, 8085205, 8085301, 8085302, 8085303, 8085304, 8085305, 8085306, 8085307, 8085308, 8085309, 8085310, 8085311, 8085312, 8085313, 8085314, 8085315, 8085316, 8085317, 8085318, 8085319, 8085320, 8085321, 8085322, 8085323, 8085324, 8085325, 8085326, 8085327, 9310701, 9310702, 9310703, 9310704, 9310705, 9310706, 9310707, 9310708, 9310709, 9310710);
+DELETE FROM `generic_scripts` WHERE `id` IN (8085230, 8085231, 8085232, 8085233, 8085330, 8085331, 8085332, 8085333, 9310730, 9310731);
