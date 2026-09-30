@@ -210,8 +210,6 @@ void AddSC_westfall();
 void AddSC_wetlands();
 
 //kalimdor
-void AddSC_boss_velthelaxx_the_defiler();            //blackfathom_deeps
-void AddSC_instance_blackfathom_deeps();             //blackfathom_deeps
 void AddSC_celebras_spirit();                        // Celebras the Redeemed, stays in the core (trt A7)
 void AddSC_instance_onyxia_lair();
 void AddSC_boss_onyxia();                            //onyxias_lair
@@ -562,8 +560,6 @@ void AddScripts()
     AddSC_wetlands();
 
     //kalimdor
-    AddSC_boss_velthelaxx_the_defiler();                    //blackfathom_deeps
-    AddSC_instance_blackfathom_deeps();                     //blackfathom_deeps
     AddSC_celebras_spirit();
     AddSC_instance_onyxia_lair();
     AddSC_boss_onyxia();                                    //onyxias_lair

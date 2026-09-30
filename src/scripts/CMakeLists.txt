@@ -18,9 +18,6 @@ dungeons/black_morass/boss_chronormu.hpp
 dungeons/black_morass/boss_gerastrasz.cpp
 dungeons/black_morass/boss_gerastrasz.hpp
 dungeons/black_morass/instance_black_morass.cpp
-dungeons/blackfathom_deeps/blackfathom_deeps.h
-dungeons/blackfathom_deeps/boss_velthelaxx_the_defiler.cpp
-dungeons/blackfathom_deeps/instance_blackfathom_deeps.cpp
 dungeons/blackrock_depths/arena_challenge_ai.cpp
 dungeons/blackrock_depths/blackrock_depths.cpp
 dungeons/blackrock_depths/blackrock_depths.h

@@ -24,6 +24,10 @@ EndScriptData */
 #include "scriptPCH.h"
 #include "blackfathom_deeps.h"
 
+namespace mod_blackfathom_deeps
+{
+
+
 /* Encounter 0 = Twilight Lord Kelris
    Encounter 1 = Shrine event
    Must kill twilight lord for shrine event to be possible
@@ -436,3 +440,5 @@ void AddSC_instance_blackfathom_deeps()
     newscript->pGOHello = &GOUse_go_fathom_stone;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackfathom_deeps

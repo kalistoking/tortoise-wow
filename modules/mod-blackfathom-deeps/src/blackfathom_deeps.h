@@ -5,6 +5,10 @@
 #ifndef DEF_BFD_H
 #define DEF_BFD_H
 
+namespace mod_blackfathom_deeps
+{
+
+
 enum
 {
     DATA_SHRINE1                = 1,
@@ -45,4 +49,6 @@ enum
     BFD_ENCOUNTER_AQUANIS       = 2,
     INSTANCE_BFD_MAX_ENCOUNTER  = 3,
 };
+
+} // namespace mod_blackfathom_deeps
 #endif

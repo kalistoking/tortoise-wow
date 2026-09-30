@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "blackfathom_deeps.h"
 
+namespace mod_blackfathom_deeps
+{
+
+
 namespace
 {
 enum VelthelaxxSpells
@@ -204,3 +208,5 @@ void AddSC_boss_velthelaxx_the_defiler()
     script->GetAI = &GetAI_boss_velthelaxx_the_defiler;
     script->RegisterSelf();
 }
+
+} // namespace mod_blackfathom_deeps
