@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include <sstream>
 
+namespace mod_stormwind_vaults
+{
+
+
 using namespace std;
 
 struct boss_aszosh_grimbladeAI final : ScriptedAI
@@ -355,3 +359,5 @@ void AddSC_boss_aszosh_grimflame()
     newscript->GetAI = &GetAI_boss_aszosh_grimblade;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_stormwind_vaults

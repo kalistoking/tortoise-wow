@@ -312,12 +312,7 @@ void AddSC_trash_mobs_scarlet_citadel();
 void AddSC_hateforge_quarry_spells();                // the dispel counterpart, stays in the core (trt A6)
 
 // Stormwind Vaults
-void AddSC_boss_aszosh_grimflame();
-void AddSC_boss_black_bride();
 void AddSC_boss_damian_the_ripper();
-void AddSC_boss_nazorna();
-void AddSC_boss_major_resonating_crystalAI();
-void AddSC_boss_thamgrarr();
 void AddSC_boss_volkan_cruelblade();
 void AddSC_instance_stormwind_vaults();
 
@@ -601,12 +596,7 @@ void AddScripts()
     AddSC_winterspring();
 
     // Stormwind Vaults
-    AddSC_boss_aszosh_grimflame();
-    AddSC_boss_black_bride();
     AddSC_boss_damian_the_ripper();
-    AddSC_boss_nazorna();
-	AddSC_boss_major_resonating_crystalAI();
-    AddSC_boss_thamgrarr();
     AddSC_boss_volkan_cruelblade();
     AddSC_instance_stormwind_vaults();
 

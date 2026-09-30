@@ -1,5 +1,9 @@
 #include "scriptPCH.h"
 
+namespace mod_stormwind_vaults
+{
+
+
 using namespace std;
 
 struct boss_nazornaAI final : ScriptedAI {
@@ -314,3 +318,5 @@ void AddSC_boss_nazorna() {
     newscript->GetAI = &GetAI_boss_nazorna;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_stormwind_vaults

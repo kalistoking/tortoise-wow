@@ -1,5 +1,9 @@
 #include "scriptPCH.h"
 
+namespace mod_stormwind_vaults
+{
+
+
 using namespace std;
 
 struct boss_black_brideAI final : ScriptedAI {
@@ -178,3 +182,5 @@ void AddSC_boss_black_bride() {
     newscript->GetAI = &GetAI_boss_black_bride;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_stormwind_vaults

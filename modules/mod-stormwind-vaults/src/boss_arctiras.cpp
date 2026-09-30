@@ -4,6 +4,10 @@
 #include "scriptPCH.h"
 #include "GenericSpellAI.h"
 
+namespace mod_stormwind_vaults
+{
+
+
 enum
 {
 	SPELL_FROSTBOLT = 17503,
@@ -171,3 +175,5 @@ void AddSC_boss_major_resonating_crystalAI()
 	newscript->GetAI = &GetAI_major_resonating_crystal;
 	newscript->RegisterSelf();
 }
+
+} // namespace mod_stormwind_vaults
