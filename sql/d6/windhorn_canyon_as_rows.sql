@@ -17,9 +17,8 @@
 -- one whose head was under water. As a row, the spell's own aura interrupt flag NOT_ABOVEWATER:
 -- the aura goes as the player goes into deep water. Differences: deep enough to swim, not head
 -- under; and a player already swimming when it lands keeps it until they leave and re-enter.
--- NOT rows, and so not here: the Storm Guardian (62865) summoning three residues at offsets from
--- where it died -- its C++ (npc_windhorn_storm_guardian, in the module too) until AC4: the
--- module unloaded, it dies with no residue.
+-- The Storm Guardian (62865): its own pair, windhorn_storm_guardian_as_rows.sql, after this one --
+-- its residues summoned near enough; AC4 makes them exact.
 -- Also: 13 TALK steps of Windhorn creatures that named script_texts ids, repointed.
 -- Load: run into the world database, then .reload creature_template 62780, 62785 and 62782 (or
 -- a restart), .reload creature_ai_events, .reload creature_ai_scripts, .reload generic_scripts,
