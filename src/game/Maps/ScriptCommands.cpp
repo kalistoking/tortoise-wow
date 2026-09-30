@@ -138,6 +138,10 @@ bool Map::ScriptCommand_FieldSet(const ScriptInfo& script, WorldObject* source, 
     return false;
 }
 
+// Where a step puts something (trt E22, AC4) -- defined with TEMP_SUMMON_CREATURE below.
+static bool ResolveScriptPosition(uint32 type, ScriptInfo const& script, WorldObject* source, WorldObject* target,
+                                  float& x, float& y, float& z, float& o);
+
 // SCRIPT_COMMAND_MOVE_TO (3)
 bool Map::ScriptCommand_MoveTo(const ScriptInfo& script, WorldObject* source, WorldObject* target)
 {
