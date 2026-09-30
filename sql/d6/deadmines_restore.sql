@@ -1,4 +1,4 @@
--- Puts back what deadmines_as_rows.sql replaced, as d6_world had it when the migration was
+-- Puts back what deadmines_as_rows.sql replaced, as t1_world had it when the migration was
 -- written (scripts/d6_deadmines_rows.py). The rows the migration added are removed.
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_mr_smite' WHERE `entry` = 646;
 DELETE FROM `creature_ai_events` WHERE `creature_id` = 646;

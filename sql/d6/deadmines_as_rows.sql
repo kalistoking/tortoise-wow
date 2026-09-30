@@ -1,7 +1,12 @@
 -- The Deadmines' C++ (mod-deadmines: boss_mr_smite, instance_deadmines, the three object
 -- scripts) as rows -- handoff/manager-057 item 2, ARCHITECTURE.md §20.11.
 -- Written by the trt repo's scripts/d6_deadmines_rows.py; deadmines_restore.sql puts back what
--- this replaces. For the testlab (d6_world) -- R8: a person applies it.
+-- this replaces. Written from t1_world -- R8: a person applies it.
+--
+-- The C++ keeps its script names: mod-deadmines is the switch (AM1, handoff/manager-091).
+-- Loaded, its C++ runs as before -- Mr. Smite's AI, the objects' uses, the instance script;
+-- unloaded (`module unload mod-deadmines`), the names find no script and these rows run:
+-- Mr. Smite on EventAI, the objects' own events, the doors' requirements.
 --
 -- Load, the server stopped or running:
 --   run this file into the world database, then (running) .reload creature_template 646,
@@ -15,7 +20,7 @@
 -- thing a row says. With the map's script gone the chest is seen by all; its loot is its own.
 
 -- Mr. Smite: prototype 2's rules (his copy 990646) onto 646 itself.
-UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = '' WHERE `entry` = 646;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 646;
 DELETE FROM `creature_ai_events` WHERE `creature_id` = 646;
 DELETE FROM `creature_ai_scripts` WHERE `id` IN (16777201, 16777202, 16777203, 16777204, 16777205, 16777206);
 DELETE FROM `generic_scripts` WHERE `id` IN (16777201, 16777202);
@@ -113,7 +118,7 @@ VALUES
 (3600101, 0, 1, 80, 2, 0, 0, 0, 30534, 0, 12, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Deadmines cannon - the Iron Clad Door blown open'),
 (3600101, 3, 0, 0, 6, 0, 0, 0, 646, 400, 8, 18, 1148, 0, 0, 0, 0, 0, 0, 0, 0, 'Deadmines cannon - Mr. Smite: You there! Check out that noise.'),
 (3600101, 18, 0, 0, 6, 0, 0, 0, 646, 400, 8, 18, 1149, 0, 0, 0, 0, 0, 0, 0, 0, 'Deadmines cannon - Mr. Smite: We''re under attack! ...');
-UPDATE `gameobject_template` SET `data2` = 3600101, `script_name` = '' WHERE `entry` = 16398;
+UPDATE `gameobject_template` SET `data2` = 3600101 WHERE `entry` = 16398;
 
 -- The gunpowder: its event (the chest's own, 619) summons and walks the Overseer as the C++
 -- did. Once an instance, as the C++'s instance data had it: the chest back in 12 hours, not 3 minutes.
@@ -129,13 +134,11 @@ VALUES
 (3600101, 0, 0, 3, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -128.92598, -616.494629, 13.53234, 6.269623, 0, 'Defias Overseer (gunpowder) - down the ramp'),
 (3600101, 11, 0, 3, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, -115.263672, -617.396118, 13.579387, 6.182347, 0, 'Defias Overseer (gunpowder) - to the powder'),
 (3600101, 17, 0, 34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -115.263672, -617.396118, 13.579387, 6.182347, 0, 'Defias Overseer (gunpowder) - stays there');
-UPDATE `gameobject_template` SET `script_name` = '' WHERE `entry` = 17155;
 UPDATE `gameobject` SET `spawntimesecsmin` = 43200, `spawntimesecsmax` = 43200 WHERE `guid` = 26203;
 
 -- The Iron Clad Door's lever: its step opens the door only while the door is closed, as the C++'s
 -- check let the lever work only then.
 UPDATE `gameobject_scripts` SET `condition_id` = 3600102 WHERE `id` = 26206 AND `command` = 11;
-UPDATE `gameobject_template` SET `script_name` = '' WHERE `entry` = 101833;
 
--- The instance's script: everything it did is above, or is the chest.
-UPDATE `map_template` SET `script_name` = '' WHERE `entry` = 36;
+-- The instance's script keeps its name: everything it did is above, or is the chest -- the
+-- module unloaded, the map runs without it.
