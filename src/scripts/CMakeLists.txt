@@ -57,13 +57,6 @@ dungeons/blackwing_lair/boss_razorgore.cpp
 dungeons/blackwing_lair/boss_vaelastrasz.cpp
 dungeons/blackwing_lair/boss_victor_nefarius.cpp
 dungeons/blackwing_lair/instance_blackwing_lair.cpp
-dungeons/dragonmaw_retreat/boss_bogpaw_truthsay.cpp
-dungeons/dragonmaw_retreat/boss_gowlfang.cpp
-dungeons/dragonmaw_retreat/boss_halgan_redbrand.cpp
-dungeons/dragonmaw_retreat/boss_searistrasz.cpp
-dungeons/dragonmaw_retreat/boss_zuluhed_the_whacked.cpp
-dungeons/dragonmaw_retreat/dragonmaw_retreat.h
-dungeons/dragonmaw_retreat/instance_dragonmaw_retreat.cpp
 dungeons/stormwrought_ruins/boss_chieftain_stormsong.cpp
 dungeons/stormwrought_ruins/boss_dagar_the_glutton.cpp
 dungeons/stormwrought_ruins/boss_deathlord_tidebane.cpp

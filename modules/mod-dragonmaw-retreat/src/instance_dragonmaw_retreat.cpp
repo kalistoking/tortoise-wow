@@ -2,6 +2,10 @@
 #include "dragonmaw_retreat.h"
 #include <algorithm>
 
+namespace mod_dragonmaw_retreat
+{
+
+
 struct instance_dragonmaw_retreat : public ScriptedInstance
 {
     explicit instance_dragonmaw_retreat(Map* pMap) : ScriptedInstance(pMap)
@@ -88,3 +92,5 @@ void AddSC_instance_dragonmaw_retreat()
     pNewscript->GetInstanceData = &GetInstanceData_instance_dragonmaw_retreat;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_dragonmaw_retreat

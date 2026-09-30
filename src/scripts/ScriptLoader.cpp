@@ -75,12 +75,6 @@ void AddSC_boss_nefarian();
 void AddSC_boss_victor_nefarius();
 void AddSC_instance_blackwing_lair();
 
-void AddSC_instance_dragonmaw_retreat();             //dragonmaw_retreat
-void AddSC_boss_bogpaw_truthsay();
-void AddSC_boss_gowlfang();
-void AddSC_boss_halgan_redbrand();
-void AddSC_boss_searistrasz();
-void AddSC_boss_zuluhed_the_whacked();
 
 void AddSC_instance_stormwrought_ruins();            //stormwrought_ruins
 void AddSC_boss_chieftain_stormsong();
@@ -446,12 +440,6 @@ void AddScripts()
     AddSC_boss_nefarian();
     AddSC_boss_victor_nefarius();
     AddSC_instance_blackwing_lair();
-    AddSC_instance_dragonmaw_retreat();                     //dragonmaw_retreat
-    AddSC_boss_bogpaw_truthsay();
-    AddSC_boss_gowlfang();
-    AddSC_boss_halgan_redbrand();
-    AddSC_boss_searistrasz();
-    AddSC_boss_zuluhed_the_whacked();
     AddSC_instance_stormwrought_ruins();                    //stormwrought_ruins
     AddSC_boss_chieftain_stormsong();
     AddSC_boss_dagar_the_glutton();

@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "dragonmaw_retreat.h"
 
+namespace mod_dragonmaw_retreat
+{
+
+
 enum
 {
     SPELL_FIREBALL      = 8401,
@@ -109,3 +113,5 @@ void AddSC_boss_searistrasz()
     pNewscript->GetAI = &GetAI_boss_searistrasz;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_dragonmaw_retreat

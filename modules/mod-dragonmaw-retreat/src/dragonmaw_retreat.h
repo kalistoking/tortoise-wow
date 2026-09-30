@@ -1,6 +1,10 @@
 #ifndef DEF_DRAGONMAW_RETREAT_H
 #define DEF_DRAGONMAW_RETREAT_H
 
+namespace mod_dragonmaw_retreat
+{
+
+
 enum
 {
     DATA_SEARISTRASZ_GUID                = 1,
@@ -54,5 +58,7 @@ enum
     SAY_DRAGONMAW_ZULUHED_WITHERING_SOUL = -1999907,
     SAY_DRAGONMAW_ZULUHED_DEATH         = -1999908
 };
+
+} // namespace mod_dragonmaw_retreat
 
 #endif

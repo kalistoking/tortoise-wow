@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "dragonmaw_retreat.h"
 
+namespace mod_dragonmaw_retreat
+{
+
+
 enum
 {
     SPELL_SOUL_DOMINATION    = 52042,
@@ -101,3 +105,5 @@ void AddSC_boss_zuluhed_the_whacked()
     pNewscript->GetAI = &GetAI_boss_zuluhed_the_whacked;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_dragonmaw_retreat

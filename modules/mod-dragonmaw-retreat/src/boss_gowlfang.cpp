@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "dragonmaw_retreat.h"
 
+namespace mod_dragonmaw_retreat
+{
+
+
 enum
 {
     SPELL_INTIMIDATING_ROAR = 8715,
@@ -61,3 +65,5 @@ void AddSC_boss_gowlfang()
     pNewscript->GetAI = &GetAI_boss_gowlfang;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_dragonmaw_retreat

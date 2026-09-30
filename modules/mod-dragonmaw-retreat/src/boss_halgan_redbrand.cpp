@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "dragonmaw_retreat.h"
 
+namespace mod_dragonmaw_retreat
+{
+
+
 enum
 {
     SPELL_CURSE_OF_AGONY    = 11711,
@@ -98,3 +102,5 @@ void AddSC_boss_halgan_redbrand()
     pNewscript->GetAI = &GetAI_boss_halgan_redbrand;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_dragonmaw_retreat

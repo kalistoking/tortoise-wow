@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "dragonmaw_retreat.h"
 
+namespace mod_dragonmaw_retreat
+{
+
+
 enum
 {
     SPELL_ENTANGLING_ROOTS  = 22415,
@@ -106,3 +110,5 @@ void AddSC_boss_bogpaw_truthsay()
     pNewscript->GetAI = &GetAI_boss_bogpaw_truthsay;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_dragonmaw_retreat
