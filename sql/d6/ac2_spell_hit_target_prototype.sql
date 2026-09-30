@@ -2,8 +2,10 @@
 -- the Kobold Worker of Northshire (257) -- the core of trt/module-structure with the event
 -- (Install-Core-Build.ps1). Two rules beside its own aggro say:
 --   25702 in combat, every 5 s: Strike (11976) on its victim;
---   25703 its own Strike hitting a player (event 36: spell 11976, unit hit 1 = a player): it cheers.
--- A Strike that misses, or is dodged or parried, is no hit and gets no cheer.
+--   25703 its own Strike hitting a player (event 36: spell 11976, unit hit 1 = a player): it says
+--   "Hah!" (broadcast text 66683) and cheers -- the cheer alone is not seen in melee, where the
+--   attack's animation takes over at once (his try, TC22).
+-- A Strike that misses, or is dodged or parried, is no hit and gets no "Hah!".
 -- Undone by ac2_spell_hit_target_prototype_restore.sql. R8: a person applies it.
 DELETE FROM `creature_ai_events` WHERE `id` IN (25702, 25703);
 INSERT INTO `creature_ai_events`
@@ -16,4 +18,5 @@ INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
 (25702, 0, 0, 15, 11976, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kobold Worker - Strike on its victim'),
-(25703, 0, 0, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kobold Worker - cheer');
+(25703, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 66683, 0, 0, 0, 0, 0, 0, 0, 0, 'Kobold Worker - say Hah!'),
+(25703, 0, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kobold Worker - cheer');
