@@ -22,7 +22,11 @@ SDCategory: Uldaman
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "uldaman.h"
+#include "dungeons/uldaman/uldaman.h"
+
+namespace mod_uldaman
+{
+
 
 enum Texts
 {
@@ -125,3 +129,5 @@ void AddSC_boss_ironaya()
     newscript->GetAI = &GetAI_boss_ironaya;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_uldaman
