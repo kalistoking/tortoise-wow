@@ -2913,6 +2913,16 @@ void ScriptMgr::CollectPossibleGenericIds(std::set<uint32>& genericIds)
             genericIds.insert(result->Fetch()[0].GetUInt32());
         } while (result->NextRow());
     }
+
+    // trt E22, AC3: a spawn's script.
+    result.reset(WorldDatabase.Query("SELECT `script_id` FROM `gameobject_spawn_state` WHERE `script_id` != 0"));
+    if (result)
+    {
+        do
+        {
+            genericIds.insert(result->Fetch()[0].GetUInt32());
+        } while (result->NextRow());
+    }
 }
 
 void ScriptMgr::CollectPossibleEventIds(std::set<uint32>& eventIds)
