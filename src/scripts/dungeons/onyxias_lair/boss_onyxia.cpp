@@ -756,48 +756,12 @@ CreatureAI* GetAI_boss_onyxiaAI(Creature* pCreature)
     return new boss_onyxiaAI(pCreature);
 }
 
-struct OnyxianWhelpAI: public ScriptedAI
-{
-    OnyxianWhelpAI(Creature* pCreature) : ScriptedAI(pCreature)
-    {
-        Reset();
-    }
-
-
-    void Reset() override
-    {
-    }
-
-    void Aggro(Unit* pWho) override
-    {
-        m_creature->SetInCombatWithZone();
-    }
-
-    void UpdateAI(const uint32 uiDiff) override
-    {
-        if (!m_creature->SelectHostileTarget() || !m_creature->GetVictim())
-            return;
-
-        DoMeleeAttackIfReady();
-    }
-};
-
-CreatureAI* GetAI_npc_onyxian_whelp(Creature* pCreature)
-{
-    return new OnyxianWhelpAI(pCreature);
-}
-
 void AddSC_boss_onyxia()
 {
     Script *newscript;
     newscript = new Script;
     newscript->Name = "boss_onyxia";
     newscript->GetAI = &GetAI_boss_onyxiaAI;
-    newscript->RegisterSelf();
-
-    newscript = new Script;
-    newscript->Name = "npc_onyxian_whelp";
-    newscript->GetAI = &GetAI_npc_onyxian_whelp;
     newscript->RegisterSelf();
 }
 

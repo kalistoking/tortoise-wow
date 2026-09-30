@@ -1,5 +1,9 @@
 #include "scriptPCH.h"
-#include "instance_onyxia_lair.h"
+#include "dungeons/onyxias_lair/instance_onyxia_lair.h"
+
+namespace mod_onyxias_lair
+{
+
 
 #define MAX_ENCOUNTER 1
 
@@ -73,3 +77,5 @@ void AddSC_instance_onyxia_lair()
     newscript->GetInstanceData = &GetInstanceData_instance_onyxia_lair;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_onyxias_lair
