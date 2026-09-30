@@ -126,7 +126,7 @@ DELETE FROM `event_scripts` WHERE `id` = 619;
 INSERT INTO `event_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(619, 0, 0, 10, 634, 310000, 1, 100, 0, 0, 0, 0, 4, 3600101, 0, 4, -131.290833, -591.243103, 18.07719, 4.792192, 0, 'Defias Gunpowder - summon the Defias Overseer');
+(619, 0, 0, 10, 634, 310000, 1, 100, 0, 0, 0, 0, 8, 3600101, 0, 4, -131.290833, -591.243103, 18.07719, 4.792192, 0, 'Defias Gunpowder - summon the Defias Overseer');
 DELETE FROM `generic_scripts` WHERE `id` = 3600101;
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
