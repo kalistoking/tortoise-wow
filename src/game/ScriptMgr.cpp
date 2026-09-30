@@ -1907,7 +1907,24 @@ void ScriptMgr::StartAreaTriggerGenericScripts(Player* pPlayer, uint32 triggerId
             continue;
         if (row.conditionId && !IsConditionSatisfied(row.conditionId, pPlayer, pPlayer->GetMap(), pPlayer, CONDITION_FROM_AREATRIGGER))
             continue;
-        pPlayer->GetMap()->ScriptsStart(sGenericScripts, row.scriptId, pPlayer->GetObjectGuid(), pPlayer->GetObjectGuid());
+        // The steps due at once run now, as a rule's do (trt AC8): a claim written by the first of
+        // two players stepping in on one tick is read by the second's condition, not a map update
+        // later. The later ones are scheduled; a step at once that aborts stops the rest.
+        auto const script = sGenericScripts.find(row.scriptId);
+        if (script == sGenericScripts.end())
+            continue;
+        Map* map = pPlayer->GetMap();
+        bool aborted = false;
+        for (auto const& step : script->second)
+        {
+            if (step.first == 0)
+            {
+                if (!aborted && map->ScriptCommandStartDirect(step.second, pPlayer, pPlayer))
+                    aborted = true;
+            }
+            else if (!aborted)
+                map->ScriptCommandStart(step.second, step.first, pPlayer->GetObjectGuid(), pPlayer->GetObjectGuid());
+        }
     }
 }
 
