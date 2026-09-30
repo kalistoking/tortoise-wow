@@ -2410,9 +2410,21 @@ void Unit::AttackerStateUpdate(Unit* pVictim, WeaponAttackType attType, bool che
     for (uint8 i = 0; i < m_weaponDamageCount[attType]; i++)
     {
         damageInfo.totalDamage -= damageInfo.subDamage[i].damage;
+        uint32 const absorbedBefore = damageInfo.subDamage[i].absorb;
         DealDamageMods(pVictim, damageInfo.subDamage[i].damage, &damageInfo.subDamage[i].absorb);
         damageInfo.totalDamage += damageInfo.subDamage[i].damage;
+        // What DealDamageMods took off -- the victim's DamageTaken, a script's or a rule's (trt
+        // AC6) -- is absorbed, and the swing says so: CalculateMeleeDamage set the flags before,
+        // and a hit taken whole showed as a miss.
+        if (uint32 const absorbedHere = damageInfo.subDamage[i].absorb - absorbedBefore)
+        {
+            damageInfo.totalAbsorb += absorbedHere;
+            damageInfo.HitInfo |= HITINFO_ABSORB;
+            damageInfo.procEx |= PROC_EX_ABSORB;
+        }
     }
+    if (!damageInfo.totalDamage && (damageInfo.HitInfo & HITINFO_ABSORB))
+        damageInfo.HitInfo &= ~HITINFO_AFFECTS_VICTIM;
 
     ProcDamageAndSpell(damageInfo.target, damageInfo.procAttacker, damageInfo.procVictim, damageInfo.procEx, damageInfo.totalDamage, damageInfo.totalDamage + damageInfo.totalAbsorb + damageInfo.totalResist, damageInfo.attackType);
 
