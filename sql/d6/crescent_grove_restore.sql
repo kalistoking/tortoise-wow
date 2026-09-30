@@ -1,4 +1,4 @@
--- Puts back what crescent_grove_as_rows.sql replaced, as d6_world had it when the migration
+-- Puts back what crescent_grove_as_rows.sql replaced, as t1_world had it when the migration
 -- was written (scripts/tier1_rows.py). The rows the migration added are removed.
 
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = '', `flags_extra` = 0 WHERE `entry` = 92100;

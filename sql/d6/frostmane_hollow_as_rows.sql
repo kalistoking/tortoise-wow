@@ -1,5 +1,5 @@
 -- Frostmane Hollow (map 822), boss_hailar_the_frigid + npc_frostmane_ritualist: its C++ as rows -- EPIC10 tier 1, handoff/manager-084.
--- Written by the trt repo's scripts/tier1_rows.py from d6_world; frostmane_hollow_restore.sql puts
+-- Written by the trt repo's scripts/tier1_rows.py from t1_world; frostmane_hollow_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- Hailar's three lines, the script_texts made broadcast texts. The ritualists -- the five spawns

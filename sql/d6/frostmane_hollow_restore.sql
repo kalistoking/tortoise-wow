@@ -1,4 +1,4 @@
--- Puts back what frostmane_hollow_as_rows.sql replaced, as d6_world had it when the migration
+-- Puts back what frostmane_hollow_as_rows.sql replaced, as t1_world had it when the migration
 -- was written (scripts/tier1_rows.py). The rows the migration added are removed.
 
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_frostmane_ritualist', `flags_extra` = 0 WHERE `entry` = 36519;

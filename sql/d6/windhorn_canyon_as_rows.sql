@@ -1,5 +1,5 @@
 -- Windhorn Canyon (map 820), Narlgom, Rotag and Shalk: its C++ as rows -- EPIC10 tier 1, handoff/manager-084.
--- Written by the trt repo's scripts/tier1_rows.py from d6_world; windhorn_canyon_restore.sql puts
+-- Written by the trt repo's scripts/tier1_rows.py from t1_world; windhorn_canyon_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- Narlgom: channels at Rotag while idle, stops as he aggroes (Rotag down, out of combat); Summon

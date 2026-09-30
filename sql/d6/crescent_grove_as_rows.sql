@@ -1,5 +1,5 @@
 -- Crescent Grove (map 802), instance_crescent_grove: its C++ as rows -- EPIC10 tier 1, handoff/manager-084.
--- Written by the trt repo's scripts/tier1_rows.py from d6_world; crescent_grove_restore.sql puts
+-- Written by the trt repo's scripts/tier1_rows.py from t1_world; crescent_grove_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- Every creature of the dungeon pulls the zone into its fight as it enters combat, as the
