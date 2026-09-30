@@ -650,6 +650,20 @@ struct GameObjectSpawnState
     uint32 flagsClear;
 };
 
+// A slot of the generic instance store, described (trt E22, AC7): `instance_data_slot`.
+enum InstanceDataSlotFlags
+{
+    INSTANCE_SLOT_RESET_IN_PROGRESS = 0x1,                  // 1 (IN_PROGRESS) back to 0 as the instance loads
+    INSTANCE_SLOT_ENCOUNTER         = 0x2,                  // 1 (IN_PROGRESS) is an encounter in progress
+    INSTANCE_SLOT_FLAGS_ALL         = 0x3
+};
+
+struct InstanceDataSlot
+{
+    uint32 flags;
+    std::string name;                                       // for the tools; the core does not read it
+};
+
 class PvPMaintenanceMaker;
 
 struct QuestSpellCastObjective
@@ -736,6 +750,13 @@ class ObjectMgr
         void LoadGameObjectDisplayInfoAddon();
         void LoadGameobjectsRequirements();
         void LoadGameObjectSpawnStates();
+        void LoadInstanceDataSlots();
+        std::map<uint32, InstanceDataSlot> const* GetInstanceDataSlots(uint32 mapId) const
+        {
+            auto itr = m_instanceDataSlots.find(mapId);
+            return itr != m_instanceDataSlots.end() ? &itr->second : nullptr;
+        }
+        std::unordered_map<uint32, std::map<uint32, InstanceDataSlot>> m_instanceDataSlots;
         std::vector<GameObjectSpawnState> const* GetGameObjectSpawnStates(uint32 guid) const
         {
             auto itr = m_gameObjectSpawnStates.find(guid);

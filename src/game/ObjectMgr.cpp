@@ -20,6 +20,7 @@
  */
 
 #include "ObjectMgr.h"
+#include "ScriptedInstance.h"
 #include "Database/DatabaseEnv.h"
 #include "Database/DatabaseImpl.h"
 #include "Database/SQLStorageImpl.h"
@@ -6175,6 +6176,49 @@ void ObjectMgr::LoadGameObjectSpawnStates()
     while (result->NextRow());
 
     sLog.outString(">> Loaded %u gameobject spawn states", count);
+}
+
+void ObjectMgr::LoadInstanceDataSlots()
+{
+    m_instanceDataSlots.clear();
+
+    std::unique_ptr<QueryResult> result(WorldDatabase.Query("SELECT `map`, `slot`, `flags`, `name` FROM `instance_data_slot`"));
+    if (!result)
+    {
+        sLog.outString(">> Loaded 0 instance data slots");
+        return;
+    }
+
+    uint32 count = 0;
+    do
+    {
+        Field* fields = result->Fetch();
+        uint32 mapId = fields[0].GetUInt32();
+        uint32 slot = fields[1].GetUInt32();
+        InstanceDataSlot row;
+        row.flags = fields[2].GetUInt32();
+        row.name = fields[3].GetCppString();
+
+        MapEntry const* map = sMapStorage.LookupEntry<MapEntry>(mapId);
+        if (!map || !map->IsDungeon())
+        {
+            sLog.outErrorDb("Table `instance_data_slot` has map %u, which is no dungeon or raid, skipped.", mapId);
+            continue;
+        }
+        if (slot >= GenericInstanceData::MAX_SLOTS)
+        {
+            sLog.outErrorDb("Table `instance_data_slot` has slot %u for map %u, past the %u there are, skipped.", slot, mapId, GenericInstanceData::MAX_SLOTS);
+            continue;
+        }
+        if (row.flags & ~uint32(INSTANCE_SLOT_FLAGS_ALL))
+            sLog.outErrorDb("Table `instance_data_slot` has unknown flags %u for map %u slot %u.", row.flags, mapId, slot);
+
+        m_instanceDataSlots[mapId][slot] = row;
+        ++count;
+    }
+    while (result->NextRow());
+
+    sLog.outString(">> Loaded %u instance data slots", count);
 }
 
 GameObjectUseRequirement const* ObjectMgr::GetGameObjectUseRequirement(ObjectGuid guid) const

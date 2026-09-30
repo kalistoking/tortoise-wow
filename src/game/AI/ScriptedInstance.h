@@ -83,6 +83,9 @@ class GenericInstanceData : public ScriptedInstance
         char const* Save() override;
         uint32 GetData(uint32 slot) override;
         void SetData(uint32 slot, uint32 value) override;
+        // A slot `instance_data_slot` counts as an encounter, at 1 (IN_PROGRESS): a raid is not
+        // entered meanwhile (Map::CanEnter).
+        bool IsEncounterInProgress() const override;
 
     private:
         std::vector<uint32> m_slots;

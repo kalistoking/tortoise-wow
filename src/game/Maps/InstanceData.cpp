@@ -23,6 +23,7 @@
 #include "Database/DatabaseEnv.h"
 #include "Map.h"
 #include "ScriptedInstance.h"
+#include "ObjectMgr.h"
 
 #include <sstream>
 
@@ -53,6 +54,22 @@ void GenericInstanceData::Load(char const* data)
     uint32 value;
     while (m_slots.size() < MAX_SLOTS && (in >> value))
         m_slots.push_back(value);
+
+    // An encounter the instance closed on is not going on when it opens again: a slot
+    // `instance_data_slot` says so goes from 1 (IN_PROGRESS) back to 0, as the scripts' Load do.
+    if (auto const* described = sObjectMgr.GetInstanceDataSlots(instance->GetId()))
+        for (auto const& slot : *described)
+            if ((slot.second.flags & INSTANCE_SLOT_RESET_IN_PROGRESS) && slot.first < m_slots.size() && m_slots[slot.first] == 1)
+                m_slots[slot.first] = 0;
+}
+
+bool GenericInstanceData::IsEncounterInProgress() const
+{
+    if (auto const* described = sObjectMgr.GetInstanceDataSlots(instance->GetId()))
+        for (auto const& slot : *described)
+            if ((slot.second.flags & INSTANCE_SLOT_ENCOUNTER) && slot.first < m_slots.size() && m_slots[slot.first] == 1)
+                return true;
+    return false;
 }
 
 char const* GenericInstanceData::Save()

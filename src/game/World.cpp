@@ -2117,6 +2117,8 @@ void LoadPlayerEggLoot();
     sObjectMgr.LoadConditions();
     sLog.outString("Loading gameobject spawn states...");               // after the conditions it checks
     sObjectMgr.LoadGameObjectSpawnStates();
+    sLog.outString("Loading instance data slots...");
+    sObjectMgr.LoadInstanceDataSlots();
     sLog.outString("Loading creature respawn timers...");
     sMapPersistentStateMgr.LoadCreatureRespawnTimes();
     sLog.outString("Loading gameobject respawn timers...");
