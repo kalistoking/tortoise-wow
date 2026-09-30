@@ -1,6 +1,10 @@
 
 #include "scriptPCH.h"
 
+namespace mod_hateforge_quarry
+{
+
+
 
 static constexpr int32 VOICE_SCRIPT_AGGRO{ -1999955 };
 static constexpr int32 VOICE_SCRIPT_DEAD{ -1999956 };
@@ -74,3 +78,5 @@ void AddSC_boss_engineer_figgles()
     pNewscript->GetAI = &GetAI_boss_engineer_figglesAI;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_hateforge_quarry

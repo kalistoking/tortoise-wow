@@ -1,6 +1,10 @@
 
 #include "scriptPCH.h"
 
+namespace mod_hateforge_quarry
+{
+
+
 
 namespace nsCleric
 {
@@ -217,35 +221,6 @@ CreatureAI* GetAI_mob_twilight_firebladeAI(Creature* pCreature)
     return new mob_twilight_firebladeAI(pCreature);
 }
 
-class spell_hateforge_dispel_counterpart : public AuraScript
-{
-public:
-    void OnDispel(SpellAuraHolder* holder, Unit* target, Spell* /*dispelSpell*/, uint32 /*dispelCount*/) override
-    {
-        if (!holder || !target || target->GetMapId() != 807)
-            return;
-
-        uint32 counterpartAura = 0;
-        switch (holder->GetId())
-        {
-            case 56508: counterpartAura = 56509; break;
-            case 56510: counterpartAura = 56511; break;
-            case 56512: counterpartAura = 56513; break;
-            case 56514: counterpartAura = 56515; break;
-            case 56516: counterpartAura = 56517; break;
-            default: break;
-        }
-
-        if (counterpartAura && !target->HasAura(counterpartAura))
-            target->AddAura(counterpartAura);
-    }
-};
-
-AuraScript* GetScript_HateforgeDispelCounterpart(SpellEntry const*)
-{
-    return new spell_hateforge_dispel_counterpart();
-}
-
 void AddSC_trash_mobs_hateforge_quarry()
 {
     Script* pNewscript;
@@ -265,8 +240,6 @@ void AddSC_trash_mobs_hateforge_quarry()
     pNewscript->GetAI = &GetAI_mob_twilight_firebladeAI;
     pNewscript->RegisterSelf();
 
-    pNewscript = new Script;
-    pNewscript->Name = "spell_hateforge_dispel_counterpart";
-    pNewscript->GetAuraScript = &GetScript_HateforgeDispelCounterpart;
-    pNewscript->RegisterSelf();
 }
+
+} // namespace mod_hateforge_quarry

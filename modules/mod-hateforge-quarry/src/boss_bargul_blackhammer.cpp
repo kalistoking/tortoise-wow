@@ -1,6 +1,10 @@
 
 #include "scriptPCH.h"
 
+namespace mod_hateforge_quarry
+{
+
+
 
 static constexpr int32 VOICE_SCRIPT_OOC_0{ -1999950 };
 static constexpr int32 VOICE_SCRIPT_OOC_1{ -1999951 };
@@ -137,3 +141,5 @@ void AddSC_boss_bargul_blackhammer()
     pNewscript->GetAI = &GetAI_boss_bargul_blackhammerAI;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_hateforge_quarry

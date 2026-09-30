@@ -86,11 +86,7 @@ dungeons/gnomeregan/boss_thermaplugg.cpp
 dungeons/gnomeregan/gnomeregan.cpp
 dungeons/gnomeregan/gnomeregan.h
 dungeons/gnomeregan/instance_gnomeregan.cpp
-dungeons/hateforge_quarry/boss_bargul_blackhammer.cpp
-dungeons/hateforge_quarry/boss_engineer_figgles.cpp
-dungeons/hateforge_quarry/boss_hargesh_doomcaller.cpp
-dungeons/hateforge_quarry/boss_hatereaver_annhilator.cpp
-dungeons/hateforge_quarry/hateforge_quarry_trash.cpp
+dungeons/hateforge_quarry/hateforge_quarry_spells.cpp
 dungeons/karazhan_crypt/instance_karazhan_crypt.cpp
 dungeons/lower_karazhan_halls/boss_brood_queen_araxxna.cpp
 dungeons/lower_karazhan_halls/boss_blackwald_ii.cpp

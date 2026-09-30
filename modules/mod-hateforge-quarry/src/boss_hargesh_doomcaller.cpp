@@ -1,6 +1,10 @@
 
 #include "scriptPCH.h"
 
+namespace mod_hateforge_quarry
+{
+
+
 
 struct Location
 {
@@ -359,3 +363,5 @@ void AddSC_boss_hargesh_doomcaller()
     pNewscript->GetAI = &GetAI_npc_faceless_terror;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_hateforge_quarry

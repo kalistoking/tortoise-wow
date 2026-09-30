@@ -320,11 +320,7 @@ void AddSC_trash_bosses_scarlet_citadel();
 void AddSC_trash_mobs_scarlet_citadel();
 
 // Hateforge Quarry
-void AddSC_boss_bargul_blackhammer();
-void AddSC_boss_engineer_figgles();
-void AddSC_boss_hargesh_doomcaller();
-void AddSC_boss_hatereaver_annhilator();
-void AddSC_trash_mobs_hateforge_quarry();
+void AddSC_hateforge_quarry_spells();                // the dispel counterpart, stays in the core (trt A6)
 
 // Stormwind Vaults
 void AddSC_boss_aszosh_grimflame();
@@ -700,11 +696,7 @@ void AddScripts()
     AddSC_trash_mobs_scarlet_citadel();
 
     // Hateforge Quarry
-    AddSC_boss_bargul_blackhammer();
-    AddSC_boss_engineer_figgles();
-    AddSC_boss_hargesh_doomcaller();
-    AddSC_boss_hatereaver_annhilator();
-    AddSC_trash_mobs_hateforge_quarry();
+    AddSC_hateforge_quarry_spells();
 
     // Black Morass
     AddSC_black_morass_trash();

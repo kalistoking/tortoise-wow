@@ -1,6 +1,10 @@
 
 #include "scriptPCH.h"
 
+namespace mod_hateforge_quarry
+{
+
+
 
 static constexpr int32 VOICE_SCRIPT_AGGRO{ -1999957 };
 static constexpr int32 VOICE_SCRIPT_DEAD{ -1999958 };
@@ -110,3 +114,5 @@ void AddSC_boss_hatereaver_annhilator()
     pNewscript->GetAI = &GetAI_boss_hatereaver_annhilatorAI;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_hateforge_quarry
