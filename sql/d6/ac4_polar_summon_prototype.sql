@@ -6,6 +6,7 @@
 --   0, 120 and 240 degrees -- the triangle npc_windhorn_storm_guardian made.
 --   dataint 2 (ACTIVE) becomes 65538 = 2 | 1 << 16; x the distance, y = z = 0.
 -- Only with that core: an older one reads x = 1.5 as a world coordinate and summons far away.
+-- The whole (core `90211cdb`) numbers the polar summon 5: apply ac4_positions_whole.sql after this.
 -- Undone by ac4_polar_summon_prototype_restore.sql. R8: a person applies it.
 UPDATE `creature_ai_scripts` SET `dataint` = 65538, `x` = 1.5, `y` = 0, `z` = 0
 WHERE `id` IN (6286501, 6286502, 6286503) AND `command` = 10;
