@@ -1541,7 +1541,9 @@ bool Map::ScriptCommand_DealDamage(const ScriptInfo& script, WorldObject* source
         return ShouldAbortScript(script);
     }
 
-    Unit* pTarget = ToUnit(source);
+    // The target, as ScriptMgr.h says (target = Unit) -- it read the source, so every row damaged
+    // its own source (trt E22). A row meaning itself says so by SF_GENERAL_TARGET_SELF.
+    Unit* pTarget = ToUnit(target);
 
     if (!pTarget)
     {
