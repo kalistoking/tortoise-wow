@@ -5,6 +5,10 @@
 #ifndef DEF_RFK_H
 #define DEF_RFK_H
 
+namespace mod_razorfen_kraul
+{
+
+
 enum
 {
     RFK_MAX_ENCOUNTER = 1,
@@ -42,4 +46,6 @@ class instance_razorfen_kraul : public ScriptedInstance
         uint64 m_uiAgathelosWardGUID;
         uint64 m_uiAgathelosGUID;
 };
+
+} // namespace mod_razorfen_kraul
 #endif

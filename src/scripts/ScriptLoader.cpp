@@ -216,8 +216,7 @@ void AddSC_celebras_spirit();                        // Celebras the Redeemed, s
 void AddSC_instance_onyxia_lair();
 void AddSC_boss_onyxia();                            //onyxias_lair
 void AddSC_razorfen_downs();
-void AddSC_razorfen_kraul();                         //razorfen_kraul
-void AddSC_instance_razorfen_kraul();
+void AddSC_razorfen_kraul_quests();                  // Willix and the gopher, stay in the core (trt A8)
 void AddSC_instance_razorfen_downs();
 void AddSC_boss_ayamiss();                           //ruins_of_ahnqiraj
 void AddSC_boss_buru();
@@ -569,9 +568,8 @@ void AddScripts()
     AddSC_instance_onyxia_lair();
     AddSC_boss_onyxia();                                    //onyxias_lair
     AddSC_razorfen_downs();
-    AddSC_razorfen_kraul();                                 //razorfen_kraul
+    AddSC_razorfen_kraul_quests();
     AddSC_instance_razorfen_downs();
-    AddSC_instance_razorfen_kraul();
     AddSC_boss_ayamiss();                                   //ruins_of_ahnqiraj
     AddSC_boss_buru();
     AddSC_boss_kurinnaxx();

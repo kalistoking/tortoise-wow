@@ -1,30 +1,10 @@
 /* This file is part of the ScriptDev2 Project. See AUTHORS file for Copyright information
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+ * This program is free software licensed under GPL version 2
+ * Please see the included DOCS/LICENSE.TXT for more information */
 
-/* ScriptData
-SDName: Razorfen_Kraul
-SD%Complete: 100
-SDComment: Quest support: 1144, 1221
-SDCategory: Razorfen Kraul
-EndScriptData */
-
-/* ContentData
-quest_willix_the_importer
-EndContentData */
-
+// Willix the Importer's escort and the Snufflenose gopher, taken out of razorfen_kraul.cpp: an
+// escort quest and a quest pet driven by a spell's dummy effect stay in the core while the
+// dungeon's creatures are mod-razorfen-kraul's and their rows (trt A8, AM1).
 #include "scriptPCH.h"
 
 /*######
@@ -347,76 +327,10 @@ bool EffectDummyCreature_npc_snufflenose_gopher(WorldObject* pCaster, uint32 uiS
     return false;
 }
 
-enum
-{
-    SPELL_DEFENSIVE_STANCE = 7164,
-    SPELL_IMPROVED_BLOCKING = 3248,
-    SPELL_SHIELD_BASH = 11972,
 
-};
-
-struct RazorfenDefenderAI : public ScriptedAI
-{
-    RazorfenDefenderAI(Creature* pCreature) : ScriptedAI(pCreature)
-    {
-        Reset();
-    }
-
-    uint32 m_uiImprovedBlocking_Timer;
-    uint32 m_uiShieldBash_Timer;
-
-    void Reset() override
-    {
-        m_uiImprovedBlocking_Timer = 1000;
-        m_uiShieldBash_Timer = 6600;
-        DoCastSpellIfCan(m_creature, SPELL_DEFENSIVE_STANCE, true);
-    }
-
-    void Aggro(Unit* pWho) override
-    {
-        m_creature->SetInCombatWithZone();
-    }
-
-    void UpdateAI(const uint32 uiDiff) override
-    {
-        if (!m_creature->SelectHostileTarget() || !m_creature->GetVictim())
-            return;
-
-        if (m_uiShieldBash_Timer < uiDiff)
-        {
-            if (DoCastSpellIfCan(m_creature->GetVictim(), SPELL_SHIELD_BASH) == CAST_OK)
-                m_uiShieldBash_Timer = 8100;
-        }
-        else
-            m_uiShieldBash_Timer -= uiDiff;
-
-        if (m_uiImprovedBlocking_Timer < uiDiff)
-        {
-            if (DoCastSpellIfCan(m_creature, SPELL_IMPROVED_BLOCKING, true) == CAST_OK)
-                m_uiImprovedBlocking_Timer = urand(6000, 9000);
-        }
-        else
-            m_uiImprovedBlocking_Timer -= uiDiff;
-
-        DoMeleeAttackIfReady();
-    }
-};
-
-CreatureAI* GetAI_RazorfenDefenderAI(Creature* pCreature)
-{
-    return new RazorfenDefenderAI(pCreature);
-}
-
-void AddSC_razorfen_kraul()
+void AddSC_razorfen_kraul_quests()
 {
     Script* pNewScript;
-
-    pNewScript = new Script;
-    pNewScript->Name = "razorfen_defender";
-    pNewScript->GetAI = &GetAI_RazorfenDefenderAI;
-    pNewScript->RegisterSelf();
-
-
     pNewScript = new Script;
     pNewScript->Name = "npc_willix_the_importer";
     pNewScript->GetAI = &GetAI_npc_willix_the_importer;

@@ -24,6 +24,10 @@ EndScriptData */
 #include "scriptPCH.h"
 #include "razorfen_kraul.h"
 
+namespace mod_razorfen_kraul
+{
+
+
 instance_razorfen_kraul::instance_razorfen_kraul(Map* pMap) : ScriptedInstance(pMap),
     m_uiWardKeepersRemaining(0)
 {
@@ -139,3 +143,5 @@ void AddSC_instance_razorfen_kraul()
     pNewScript->GetInstanceData = &GetInstanceData_instance_razorfen_kraul;
     pNewScript->RegisterSelf();
 }
+
+} // namespace mod_razorfen_kraul

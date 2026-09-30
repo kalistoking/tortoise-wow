@@ -146,9 +146,7 @@ dungeons/onyxias_lair/instance_onyxia_lair.h
 dungeons/razorfen_downs/instance_razorfen_downs.cpp
 dungeons/razorfen_downs/razorfen_downs.cpp
 dungeons/razorfen_downs/razorfen_downs.h
-dungeons/razorfen_kraul/instance_razorfen_kraul.cpp
-dungeons/razorfen_kraul/razorfen_kraul.cpp
-dungeons/razorfen_kraul/razorfen_kraul.h
+dungeons/razorfen_kraul/razorfen_kraul_quests.cpp
 dungeons/ruins_of_ahnqiraj/boss_ayamiss.cpp
 dungeons/ruins_of_ahnqiraj/boss_buru.cpp
 dungeons/ruins_of_ahnqiraj/boss_kurinnaxx.cpp
