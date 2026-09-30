@@ -6132,7 +6132,7 @@ void ObjectMgr::LoadGameObjectSpawnStates()
 {
     m_gameObjectSpawnStates.clear();
 
-    std::unique_ptr<QueryResult> result(WorldDatabase.Query("SELECT `guid`, `condition_id`, `state`, `flags_set`, `flags_clear` FROM `gameobject_spawn_state` ORDER BY `guid`, `ord`"));
+    std::unique_ptr<QueryResult> result(WorldDatabase.Query("SELECT `guid`, `condition_id`, `state`, `flags_set`, `flags_clear`, `despawn`, `script_id` FROM `gameobject_spawn_state` ORDER BY `guid`, `ord`"));
     if (!result)
     {
         sLog.outString(">> Loaded 0 gameobject spawn states");
@@ -6150,6 +6150,8 @@ void ObjectMgr::LoadGameObjectSpawnStates()
         int32 state = fields[2].GetInt32();
         row.flagsSet = fields[3].GetUInt32();
         row.flagsClear = fields[4].GetUInt32();
+        row.despawn = fields[5].GetUInt32() != 0;
+        row.scriptId = fields[6].GetUInt32();
 
         if (!GetGOData(guid))
         {
@@ -6167,6 +6169,12 @@ void ObjectMgr::LoadGameObjectSpawnStates()
         if (row.conditionId && !ConditionEntry::CanBeUsedWithMapOnly(row.conditionId))
         {
             sLog.outErrorDb("Table `gameobject_spawn_state` has condition %u for gameobject guid %u, which is missing or asks for more than the map, skipped.", row.conditionId, guid);
+            continue;
+        }
+
+        if (row.scriptId && sGenericScripts.find(row.scriptId) == sGenericScripts.end())
+        {
+            sLog.outErrorDb("Table `gameobject_spawn_state` has script %u for gameobject guid %u, not in `generic_scripts`, skipped.", row.scriptId, guid);
             continue;
         }
 

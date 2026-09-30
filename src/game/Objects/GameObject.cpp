@@ -986,21 +986,31 @@ bool GameObject::LoadFromDB(uint32 guid, Map *map, bool force)
     if (!Create(guid, entry, map, x, y, z, ang, rotation0, rotation1, rotation2, rotation3, animprogress, go_state))
         return false;
 
-    // trt E22, AC3: the spawn's state as its rows decide it, from the map's saved data.
+    // trt E22, AC3: the spawn's state as its rows decide it, from the map's saved data. A row may
+    // keep it from spawning at all -- not when a script loads it (force) -- and start scripts,
+    // which run once it is in the world.
+    std::vector<uint32> spawnScripts;
     if (std::vector<GameObjectSpawnState> const* rows = sObjectMgr.GetGameObjectSpawnStates(guid))
     {
         for (GameObjectSpawnState const& row : *rows)
         {
             if (row.conditionId && !IsConditionSatisfied(row.conditionId, nullptr, map, nullptr, CONDITION_FROM_GO_SPAWN_STATE))
                 continue;
+            if (row.despawn && !force)
+                return false;
             if (row.state >= 0)
                 SetGoState(GOState(row.state));
             if (row.flagsSet)
                 SetFlag(GAMEOBJECT_FLAGS, row.flagsSet);
             if (row.flagsClear)
                 RemoveFlag(GAMEOBJECT_FLAGS, row.flagsClear);
+            if (row.scriptId)
+                spawnScripts.push_back(row.scriptId);
         }
     }
+    // Scheduled, not run: the steps go at the map's next update, the object in the world by then.
+    for (uint32 scriptId : spawnScripts)
+        map->ScriptsStart(sGenericScripts, scriptId, GetObjectGuid(), GetObjectGuid());
 
     if (!GetGOInfo()->GetDespawnPossibility() && !GetGOInfo()->IsDespawnAtAction() && data->spawntimesecsmin >= 0)
     {

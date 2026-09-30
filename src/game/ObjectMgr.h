@@ -648,6 +648,8 @@ struct GameObjectSpawnState
     int8 state;                                             // a GOState, or -1 to keep the spawn's own
     uint32 flagsSet;
     uint32 flagsClear;
+    bool despawn;                                           // not spawned at all -- a script's LOAD_GAMEOBJECT still does
+    uint32 scriptId;                                        // generic_scripts started at spawn, the object source and target
 };
 
 // A slot of the generic instance store, described (trt E22, AC7): `instance_data_slot`.

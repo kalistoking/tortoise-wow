@@ -2115,8 +2115,6 @@ void LoadPlayerEggLoot();
     sGuidObjectScaling.LoadFromDB();
     sLog.outString("Loading conditions...");
     sObjectMgr.LoadConditions();
-    sLog.outString("Loading gameobject spawn states...");               // after the conditions it checks
-    sObjectMgr.LoadGameObjectSpawnStates();
     sLog.outString("Loading instance data slots...");
     sObjectMgr.LoadInstanceDataSlots();
     sLog.outString("Loading creature respawn timers...");
@@ -2249,6 +2247,8 @@ void LoadPlayerEggLoot();
     sScriptMgr.LoadEventScripts();                          // must be after load Creature/Gameobject(Template/Data)
     sLog.outString("Loading generic scripts...");
     sScriptMgr.LoadGenericScripts();
+    sLog.outString("Loading gameobject spawn states...");               // after the conditions and scripts it names
+    sObjectMgr.LoadGameObjectSpawnStates();
     sLog.outString("Loading area trigger generic scripts...");       // after the generic scripts it starts
     sScriptMgr.LoadAreaTriggerGenericScripts();
     sLog.outString("Loading creature EventAI scripts...");
