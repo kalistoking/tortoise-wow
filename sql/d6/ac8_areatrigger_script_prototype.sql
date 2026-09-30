@@ -18,8 +18,11 @@ CREATE TABLE IF NOT EXISTS `areatrigger_generic_script` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='trt E22, AC8: an area trigger starting rows';
 
 DELETE FROM `conditions` WHERE `condition_entry` = 3600104;
-INSERT INTO `conditions` (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`) VALUES
+-- conditions has a unique key on the values: where a row with the same ones is there already,
+-- that row is taken (INSERT IGNORE skips ours) and its entry used below.
+INSERT IGNORE INTO `conditions` (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`) VALUES
 (3600104, 34, 3, 0, 0, 0, 0);
+SET @not_claimed := (SELECT `condition_entry` FROM `conditions` WHERE `type` = 34 AND `value1` = 3 AND `value2` = 0 AND `value3` = 0 AND `value4` = 0 AND `flags` = 0 LIMIT 1);
 
 DELETE FROM `generic_scripts` WHERE `id` = 3746;
 INSERT INTO `generic_scripts`
@@ -30,4 +33,4 @@ VALUES
 
 DELETE FROM `areatrigger_generic_script` WHERE `trigger_id` = 3746;
 INSERT INTO `areatrigger_generic_script` (`trigger_id`, `script_id`, `condition_id`, `flags`, `comment`) VALUES
-(3746, 3746, 3600104, 1, 'Deadmines entrance: Power Word: Fortitude, once per instance');
+(3746, 3746, @not_claimed, 1, 'Deadmines entrance: Power Word: Fortitude, once per instance');

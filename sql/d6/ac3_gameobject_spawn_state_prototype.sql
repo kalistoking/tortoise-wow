@@ -19,8 +19,11 @@ CREATE TABLE IF NOT EXISTS `gameobject_spawn_state` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='trt E22, AC3: a gameobject''s state as it spawns';
 
 DELETE FROM `conditions` WHERE `condition_entry` = 3600103;
-INSERT INTO `conditions` (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`) VALUES
+-- conditions has a unique key on the values: where a row with the same ones is there already,
+-- that row is taken (INSERT IGNORE skips ours) and its entry used below.
+INSERT IGNORE INTO `conditions` (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`) VALUES
 (3600103, 34, 2, 3, 0, 0, 0);
+SET @door_open := (SELECT `condition_entry` FROM `conditions` WHERE `type` = 34 AND `value1` = 2 AND `value2` = 3 AND `value3` = 0 AND `value4` = 0 AND `flags` = 0 LIMIT 1);
 
 DELETE FROM `creature_ai_scripts` WHERE `id` = 64402 AND `command` = 37;
 INSERT INTO `creature_ai_scripts`
@@ -30,4 +33,4 @@ VALUES
 
 DELETE FROM `gameobject_spawn_state` WHERE `guid` = 30533;
 INSERT INTO `gameobject_spawn_state` (`guid`, `ord`, `condition_id`, `state`, `flags_set`, `flags_clear`, `comment`) VALUES
-(30533, 0, 3600103, 0, 0, 0, 'Factory Door: open once Rhahk''Zor is dead (slot 2 = 3)');
+(30533, 0, @door_open, 0, 0, 0, 'Factory Door: open once Rhahk''Zor is dead (slot 2 = 3)');
