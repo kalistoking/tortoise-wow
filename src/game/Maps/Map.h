@@ -627,8 +627,9 @@ class Map : public GridRefManager<NGridType>
         // here that runs one of them gets its AI made again. Returns how many did.
         uint32 ReinitializeCreatureAIs(std::set<uint32> const& scriptIds);
         // Their rules reloaded (`reload creature_ai_events`), each creature here of these entries
-        // gets its AI made again -- an AI copies its rules when it is made. Returns how many did.
-        uint32 ReinitializeCreatureAIsOfEntries(std::set<uint32> const& entries);
+        // that runs EventAI gets its AI made again -- an AI copies its rules when it is made.
+        // Returns how many did; `leftAlone` counts those of the entries that run another AI.
+        uint32 ReinitializeCreatureAIsOfEntries(std::set<uint32> const& entries, uint32& leftAlone);
 
         XStatTimer MovementPerfTimer;
         XStatTimer SpellPerfTimer;

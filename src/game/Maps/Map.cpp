@@ -58,6 +58,7 @@
 #include "LFGMgr.h"
 #include "Geometry.h"
 #include "CreatureGroups.h"
+#include "CreatureEventAI.h"
 #include "Logging/DatabaseLogger.hpp"
 #include "PerfStats.h"
 
@@ -3628,9 +3629,15 @@ uint32 Map::ReinitializeCreatureAIsWhere(Which which)
                 creatures.push_back(itr->second);
     }
 
-    // Now if its AI is not running, else at its next update (Creature::AIM_Initialize).
+    // Now if its AI is not running, else at its next update (Creature::AIM_Initialize). A new AI
+    // resets the motion master: a creature in a fight keeps its victim and threat, and is sent
+    // after its victim again -- else it stood still, still in combat.
     for (Creature* creature : creatures)
-        creature->AIM_Initialize();
+    {
+        Unit* victim = creature->IsInCombat() ? creature->GetVictim() : nullptr;
+        if (creature->AIM_Initialize() && victim && creature->IsAlive())
+            creature->GetMotionMaster()->MoveChase(victim);
+    }
 
     return uint32(creatures.size());
 }
@@ -3640,9 +3647,23 @@ uint32 Map::ReinitializeCreatureAIs(std::set<uint32> const& scriptIds)
     return ReinitializeCreatureAIsWhere([&](Creature* creature) { return scriptIds.count(creature->GetScriptId()) != 0; });
 }
 
-uint32 Map::ReinitializeCreatureAIsOfEntries(std::set<uint32> const& entries)
+uint32 Map::ReinitializeCreatureAIsOfEntries(std::set<uint32> const& entries, uint32& leftAlone)
 {
-    return ReinitializeCreatureAIsWhere([&](Creature* creature) { return entries.count(creature->GetEntry()) != 0; });
+    // Only a creature whose AI is EventAI takes the rules reloaded. One of a C++ script, a pet, or
+    // an escort is left as it is: a new AI would lose its script's state and its escort, and give
+    // it nothing the reload changed.
+    return ReinitializeCreatureAIsWhere([&](Creature* creature)
+    {
+        if (!entries.count(creature->GetEntry()))
+            return false;
+        bool const eventAI = dynamic_cast<CreatureEventAI*>(creature->AI()) != nullptr;
+        if (!eventAI || creature->IsPet() || creature->IsEscortable())
+        {
+            ++leftAlone;
+            return false;
+        }
+        return true;
+    });
 }
 
 void Map::ScheduleCorpseRemoval()

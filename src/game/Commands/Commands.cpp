@@ -303,10 +303,12 @@ bool ChatHandler::HandleAIReinitCommand(char* args)
         return false;
 
     uint32 newCreatureAIs = 0;
+    uint32 leftAlone = 0;
     for (auto const& map : sMapMgr.Maps())
-        newCreatureAIs += map.second->ReinitializeCreatureAIsOfEntries(entries);
+        newCreatureAIs += map.second->ReinitializeCreatureAIsOfEntries(entries, leftAlone);
 
-    PSendSysMessage("%u creatures of %u entries given a new AI.", newCreatureAIs, uint32(entries.size()));
+    PSendSysMessage("%u creatures of %u entries given a new AI; %u left as they are (not EventAI, a pet or an escort).",
+                    newCreatureAIs, uint32(entries.size()), leftAlone);
     return true;
 }
 
