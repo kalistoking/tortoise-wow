@@ -66,6 +66,29 @@ class ScriptedInstance : public InstanceData
         EntryGuidMap m_mNpcEntryGuidStore;                  ///< Store unique NPC-Guids by entry
 };
 
+// **A dungeon's or raid's store when no instance script is loaded for it** (trt E22, AC7): none
+// named in map_template, or the one named not loaded (a module switched off, AM1). Rows write it by
+// SET_INST_DATA and read it by CONDITION_INSTANCE_DATA; slots by index, each saved as it is written,
+// in the positional form the C++ scripts use ("v0 v1 ..."), so a dungeon going from its script to
+// this keeps its saves where the index is the script's own.
+// A ScriptedInstance, so a C++ script's cast of its map's data stays sound.
+class GenericInstanceData : public ScriptedInstance
+{
+    public:
+        static constexpr uint32 MAX_SLOTS = 64;
+
+        explicit GenericInstanceData(Map* map) : ScriptedInstance(map) {}
+
+        void Load(char const* data) override;
+        char const* Save() override;
+        uint32 GetData(uint32 slot) override;
+        void SetData(uint32 slot, uint32 value) override;
+
+    private:
+        std::vector<uint32> m_slots;
+        std::string m_saved;
+};
+
 class ScriptedInstance_PTR : public ScriptedInstance
 {
 public:

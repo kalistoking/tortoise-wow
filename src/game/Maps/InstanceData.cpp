@@ -22,6 +22,9 @@
 #include "InstanceData.h"
 #include "Database/DatabaseEnv.h"
 #include "Map.h"
+#include "ScriptedInstance.h"
+
+#include <sstream>
 
 void InstanceData::SaveToDB()
 {
@@ -39,6 +42,46 @@ void InstanceData::SaveToDB()
         CharacterDatabase.PExecute("UPDATE instance SET data = '%s' WHERE id = '%u'", data.c_str(), instance->GetInstanceId());
     else
         CharacterDatabase.PExecute("UPDATE world SET data = '%s' WHERE map = '%u'", data.c_str(), instance->GetId());
+}
+
+void GenericInstanceData::Load(char const* data)
+{
+    m_slots.clear();
+    if (!data)
+        return;
+    std::istringstream in(data);
+    uint32 value;
+    while (m_slots.size() < MAX_SLOTS && (in >> value))
+        m_slots.push_back(value);
+}
+
+char const* GenericInstanceData::Save()
+{
+    std::ostringstream out;
+    for (size_t i = 0; i < m_slots.size(); ++i)
+        out << (i ? " " : "") << m_slots[i];
+    m_saved = out.str();
+    return m_saved.c_str();
+}
+
+uint32 GenericInstanceData::GetData(uint32 slot)
+{
+    return slot < m_slots.size() ? m_slots[slot] : 0;
+}
+
+void GenericInstanceData::SetData(uint32 slot, uint32 value)
+{
+    if (slot >= MAX_SLOTS)
+    {
+        sLog.outError("GenericInstanceData (map %u): slot %u is past the %u there are, not written.", instance->GetId(), slot, MAX_SLOTS);
+        return;
+    }
+    if (slot >= m_slots.size())
+        m_slots.resize(slot + 1, 0);
+    m_slots[slot] = value;
+    // Saved as written: an instance unloading does not save (Map's destructor), and a store written
+    // by rows is written rarely.
+    SaveToDB();
 }
 
 bool InstanceData::CheckConditionCriteriaMeet(Player const* /*player*/, uint32 map_id, WorldObject const* source, uint32 instance_condition_id) const

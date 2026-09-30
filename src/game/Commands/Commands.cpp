@@ -17859,10 +17859,17 @@ bool ChatHandler::HandleDebugSetInstanceDataCommand(char* args)
 				uint32 Param2;
 				if (!ExtractUInt32(&args, Param1))
 					return false;
+				// One number reads the field (trt AC7): what the rows wrote there.
 				if (!ExtractUInt32(&args, Param2))
-					return false;
+				{
+					PSendSysMessage("Instance data %u = %u", Param1, pInstData->GetData(Param1));
+					return true;
+				}
 				pInstData->SetData(Param1, Param2);
+				PSendSysMessage("Instance data %u set to %u", Param1, Param2);
 			}
+			else
+				SendSysMessage("This map has no instance data.");
 		}
 	}
 	return true;

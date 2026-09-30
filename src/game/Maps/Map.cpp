@@ -27,6 +27,7 @@
 #include "GridStates.h"
 #include "CellImpl.h"
 #include "InstanceData.h"
+#include "ScriptedInstance.h"
 #include "GridNotifiersImpl.h"
 #include "Transport.h"
 #include "ObjectAccessor.h"
@@ -1902,12 +1903,16 @@ void Map::CreateInstanceData(bool load)
     if (i_data)
         return;
 
-    if (!i_mapEntry->scriptId)
-        return;
-
     i_script_id = i_mapEntry->scriptId;
 
-    i_data = sScriptMgr.CreateInstanceData(this);
+    if (i_script_id)
+        i_data = sScriptMgr.CreateInstanceData(this);
+
+    // No instance script loaded for it -- none named, or the one named not registered (a module
+    // switched off, AM1): a dungeon's or raid's rows get a store of their own (trt E22, AC7).
+    if (!i_data && Instanceable() && !IsBattleGround())
+        i_data = new GenericInstanceData(this);
+
     if (!i_data)
         return;
 
