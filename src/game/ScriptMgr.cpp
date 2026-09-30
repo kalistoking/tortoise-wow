@@ -214,6 +214,34 @@ void DisableScriptAction(ScriptInfo& script)
     script.condition = 0;
 }
 
+// A step's position type (trt E22, AC4): known, and x, y, z, o that fit it -- a distance not
+// negative, the fields the type does not read left 0.
+static bool IsValidScriptPosition(char const* tablename, char const* command, uint32 type, ScriptInfo const& tmp)
+{
+    if (type >= SCRIPT_POSITION_MAX)
+    {
+        sLog.outErrorDb("Table `%s` has unknown position type %u in %s for script id %u", tablename, type, command, tmp.id);
+        return false;
+    }
+    switch (type)
+    {
+        case SCRIPT_POSITION_POLAR_SOURCE:
+        case SCRIPT_POSITION_POLAR_TARGET:
+        case SCRIPT_POSITION_DISTANCE_SOURCE:
+        case SCRIPT_POSITION_NEAR_TARGET:
+        case SCRIPT_POSITION_NEAR_SOURCE:
+            if (tmp.x < 0.0f || tmp.y != 0.0f || tmp.z != 0.0f)
+            {
+                sLog.outErrorDb("Table `%s` has position type %u (x the distance) with x %f < 0 or y, z not 0 in %s for script id %u", tablename, type, tmp.x, command, tmp.id);
+                return false;
+            }
+            break;
+        default:
+            break;
+    }
+    return true;
+}
+
 void ScriptMgr::LoadScripts(ScriptMapMap& scripts, const char* tablename)
 {
     // A reload retires the table it replaces instead of freeing it: a scheduled step
@@ -348,6 +376,9 @@ void ScriptMgr::LoadScripts(ScriptMapMap& scripts, const char* tablename)
                     sLog.outErrorDb("Table `%s` has invalid coordinates type (datalong = %u) in SCRIPT_COMMAND_MOVE_TO for script id %u", tablename, tmp.moveTo.coordinatesType, tmp.id);
                     continue;
                 }
+                if (tmp.moveTo.coordinatesType > SO_MOVETO_COORDINATES_RANDOM_POINT &&
+                    !IsValidScriptPosition(tablename, "SCRIPT_COMMAND_MOVE_TO", tmp.moveTo.coordinatesType, tmp))
+                    continue;
 
                 // combined flags of MoveOptions enum
                 if (tmp.moveTo.movementOptions > 511)
@@ -380,6 +411,12 @@ void ScriptMgr::LoadScripts(ScriptMapMap& scripts, const char* tablename)
             }
             case SCRIPT_COMMAND_TELEPORT_TO:
             {
+                if (!IsValidScriptPosition(tablename, "SCRIPT_COMMAND_TELEPORT_TO", tmp.teleportTo.positionType, tmp))
+                    continue;
+                // A position from the source or the target is in the source's map (trt AC4).
+                if (tmp.teleportTo.positionType != SCRIPT_POSITION_ABSOLUTE)
+                    break;
+
                 if (!sMapStorage.LookupEntry<MapEntry>(tmp.teleportTo.mapId))
                 {
                     sLog.outErrorDb("Table `%s` has invalid map (Id: %u) in SCRIPT_COMMAND_TELEPORT_TO for script id %u", tablename, tmp.teleportTo.mapId, tmp.id);
@@ -503,16 +540,8 @@ void ScriptMgr::LoadScripts(ScriptMapMap& scripts, const char* tablename)
                 }
 
                 uint32 const positionType = (uint32(tmp.summonCreature.flags) & SUMMON_POSITION_MASK) >> SUMMON_POSITION_SHIFT;
-                if (positionType >= SUMMON_POSITION_MAX)
-                {
-                    sLog.outErrorDb("Table `%s` has unknown position type %u (dataint bits 16-23) in SCRIPT_COMMAND_TEMP_SUMMON_CREATURE for script id %u", tablename, positionType, tmp.id);
+                if (!IsValidScriptPosition(tablename, "SCRIPT_COMMAND_TEMP_SUMMON_CREATURE", positionType, tmp))
                     continue;
-                }
-                if (positionType == SUMMON_POSITION_POLAR_SOURCE && (tmp.x < 0.0f || tmp.y != 0.0f || tmp.z != 0.0f))
-                {
-                    sLog.outErrorDb("Table `%s` has a polar summon (x the distance, o the angle) with x %f < 0 or y, z not 0 in SCRIPT_COMMAND_TEMP_SUMMON_CREATURE for script id %u", tablename, tmp.x, tmp.id);
-                    continue;
-                }
 
                 if (!sObjectMgr.GetCreatureTemplate(tmp.summonCreature.creatureEntry))
                 {
@@ -1299,6 +1328,8 @@ void ScriptMgr::LoadScripts(ScriptMapMap& scripts, const char* tablename)
             }
             case SCRIPT_COMMAND_SUMMON_OBJECT:
             {
+                if (!IsValidScriptPosition(tablename, "SCRIPT_COMMAND_SUMMON_OBJECT", tmp.summonObject.positionType, tmp))
+                    continue;
                 if (!sObjectMgr.GetGameObjectInfo(tmp.summonObject.gameobject_entry))
                 {
                     if (!sObjectMgr.IsExistingGameObjectId(tmp.summonObject.gameobject_entry))

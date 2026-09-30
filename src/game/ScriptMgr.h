@@ -103,6 +103,7 @@ enum eScriptCommand
     SCRIPT_COMMAND_TELEPORT_TO              = 6,            // source = Unit
                                                             // datalong = map_id (only used for players but still required)
                                                             // datalong2 = teleport_options (see enum TeleportToOptions)
+                                                            // datalong3 = eScriptPosition (0 the coordinates; else in the source's map)
                                                             // x/y/z/o = coordinates
     SCRIPT_COMMAND_QUEST_EXPLORED           = 7,            // source = Player (from provided source or target)
                                                             // target = WorldObject (from provided source or target)
@@ -337,6 +338,7 @@ enum eScriptCommand
     SCRIPT_COMMAND_SUMMON_OBJECT            = 76,           // source = WorldObject
                                                             // datalong = gameobject_entry
                                                             // datalong2 = respawn_time
+                                                            // datalong3 = eScriptPosition
                                                             // x/y/z/o = coordinates
     SCRIPT_COMMAND_SET_FLY                  = 77,           // source = Unit
                                                             // datalong = (bool) 0 = off, 1 = on
@@ -416,15 +418,34 @@ enum eMoveToFlags
     SF_MOVETO_POINT_MOVEGEN = 0x2,                          // Changes movement generator to point movement.
 };
 
-// Possible datalong3 values for SCRIPT_COMMAND_MOVE_TO
+// Where a step puts something (trt E22, AC4): MOVE_TO's datalong, TEMP_SUMMON_CREATURE's dataint
+// bits 16-23, SUMMON_OBJECT's and TELEPORT_TO's datalong3. 0-3 are MOVE_TO's own, as they were; the
+// rest are exact -- a point at a distance and an angle is where the line from its centre first meets
+// a wall, on the ground there (WorldObject::GetFirstCollision), never a free spot searched nearby.
+enum eScriptPosition
+{
+    SCRIPT_POSITION_ABSOLUTE        = 0, // x, y, z, o
+    SCRIPT_POSITION_OFFSET_TARGET   = 1, // x, y, z added to the target's
+    SCRIPT_POSITION_DISTANCE_TARGET = 2, // x yards from the target at a random angle; o < 0 toward the source
+    SCRIPT_POSITION_RANDOM_POINT    = 3, // a random point within o yards of x, y, z
+    SCRIPT_POSITION_OFFSET_SOURCE   = 4, // x, y, z added to the source's
+    SCRIPT_POSITION_POLAR_SOURCE    = 5, // x yards from the source at angle o from its facing
+    SCRIPT_POSITION_POLAR_TARGET    = 6, // x yards from the target at angle o from its facing
+    SCRIPT_POSITION_DISTANCE_SOURCE = 7, // x yards from the source at a random angle
+    SCRIPT_POSITION_NEAR_TARGET     = 8, // a random point within x yards of the target
+    SCRIPT_POSITION_NEAR_SOURCE     = 9, // a random point within x yards of the source
+    SCRIPT_POSITION_MAX
+};
+
+// Possible datalong values for SCRIPT_COMMAND_MOVE_TO: eScriptPosition's first four, and the rest.
 enum eMoveToCoordinateTypes
 {
-    SO_MOVETO_COORDINATES_NORMAL = 0,
-    SO_MOVETO_COORDINATES_RELATIVE_TO_TARGET = 1, // Coordinates are added to that of target.
-    SO_MOVETO_COORDINATES_DISTANCE_FROM_TARGET = 2, // X is distance from target, others not used.
-    SO_MOVETO_COORDINATES_RANDOM_POINT = 3, // O is max distance from coordinates
+    SO_MOVETO_COORDINATES_NORMAL = SCRIPT_POSITION_ABSOLUTE,
+    SO_MOVETO_COORDINATES_RELATIVE_TO_TARGET = SCRIPT_POSITION_OFFSET_TARGET, // Coordinates are added to that of target.
+    SO_MOVETO_COORDINATES_DISTANCE_FROM_TARGET = SCRIPT_POSITION_DISTANCE_TARGET, // X is distance from target, others not used.
+    SO_MOVETO_COORDINATES_RANDOM_POINT = SCRIPT_POSITION_RANDOM_POINT, // O is max distance from coordinates
 
-    MOVETO_COORDINATES_MAX
+    MOVETO_COORDINATES_MAX = SCRIPT_POSITION_MAX
 };
 
 // Possible datalong3 values for SCRIPT_COMMAND_MODIFY_FLAGS
@@ -445,15 +466,9 @@ enum eSummonCreatureFlags
     SF_SUMMONCREATURE_NULL_AI     = 0x10  // use Null AI instead of the normal creature script
 };
 
-// Where SCRIPT_COMMAND_TEMP_SUMMON_CREATURE places its summon: bits 16-23 of its dataint, beside the
-// flags (trt E22, AC4 prototype).
-enum eSummonCreaturePosition
-{
-    SUMMON_POSITION_ABSOLUTE     = 0, // x, y, z, o as given; x = y = z = 0 beside the summoner at angle o
-    SUMMON_POSITION_POLAR_SOURCE = 1, // x yards from the summoner at angle o from its facing, clipped by
-                                      // line of sight and on the ground; facing as the summoner does
-    SUMMON_POSITION_MAX
-};
+// Where SCRIPT_COMMAND_TEMP_SUMMON_CREATURE places its summon: an eScriptPosition in bits 16-23 of its
+// dataint, beside the flags (trt E22, AC4) -- the command has no spare field. Absolute with x = y = z = 0
+// is beside the summoner at angle o, as it always was.
 #define SUMMON_POSITION_SHIFT 16
 #define SUMMON_POSITION_MASK  0x00FF0000
 
@@ -641,6 +656,7 @@ struct ScriptInfo
         {
             uint32 mapId;                                   // datalong
             uint32 teleportOptions;                         // datalong2
+            uint32 positionType;                            // datalong3, eScriptPosition (trt AC4)
         } teleportTo;
 
         struct                                              // SCRIPT_COMMAND_QUEST_EXPLORED (7)
@@ -1068,6 +1084,7 @@ struct ScriptInfo
         {
             uint32 gameobject_entry;                        // datalong
             uint32 respawn_time;                            // datalong2
+            uint32 positionType;                            // datalong3, eScriptPosition (trt AC4)
         } summonObject;
 
         struct                                              // SCRIPT_COMMAND_SET_FLY (77)

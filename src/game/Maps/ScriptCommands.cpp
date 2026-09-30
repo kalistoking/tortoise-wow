@@ -195,6 +195,17 @@ bool Map::ScriptCommand_MoveTo(const ScriptInfo& script, WorldObject* source, Wo
             pSource->GetRandomPoint(x, y, z, script.o, x, y, z);
             break;
         }
+        default:
+        {
+            // trt E22, AC4: the positions past MOVE_TO's own four.
+            float facing;
+            if (!ResolveScriptPosition(script.moveTo.coordinatesType, script, source, target, x, y, z, facing))
+            {
+                sLog.outError("SCRIPT_COMMAND_MOVE_TO (script id %u) call with datalong = %u and no unit to be from, skipping.", script.id, script.moveTo.coordinatesType);
+                return ShouldAbortScript(script);
+            }
+            break;
+        }
     }
 
     // Only move if we can move.
@@ -204,8 +215,9 @@ bool Map::ScriptCommand_MoveTo(const ScriptInfo& script, WorldObject* source, Wo
     float speed = script.moveTo.travelTime != 0 ? pSource->GetDistance(x, y, z) / ((float)script.moveTo.travelTime * 0.001f) : 0.0f;
     float orientation = script.o > 0.0f ? script.o : -10.0f;
 
-    // o is distance in this case
-    if (script.moveTo.coordinatesType == SO_MOVETO_COORDINATES_RANDOM_POINT)
+    // o is distance in this case -- or an angle, or unread, for the positions past the offsets (trt AC4)
+    if (script.moveTo.coordinatesType == SO_MOVETO_COORDINATES_RANDOM_POINT ||
+        script.moveTo.coordinatesType > SCRIPT_POSITION_OFFSET_SOURCE)
         orientation = -10.0f;
 
     if (script.moveTo.flags & SF_MOVETO_POINT_MOVEGEN)
@@ -285,7 +297,18 @@ bool Map::ScriptCommand_TeleportTo(const ScriptInfo& script, WorldObject* source
 
     bool result;
 
-    if (pSource->GetTypeId() == TYPEID_PLAYER)
+    if (script.teleportTo.positionType != SCRIPT_POSITION_ABSOLUTE)
+    {
+        // trt E22, AC4: a point from the source or the target, in the source's map.
+        float x, y, z, o;
+        if (!ResolveScriptPosition(script.teleportTo.positionType, script, source, target, x, y, z, o))
+            return ShouldAbortScript(script);
+        if (pSource->GetTypeId() == TYPEID_PLAYER)
+            result = (static_cast<Player*>(pSource))->TeleportTo(pSource->GetMapId(), x, y, z, o, script.teleportTo.teleportOptions);
+        else
+            result = pSource->NearTeleportTo(x, y, z, o, script.teleportTo.teleportOptions);
+    }
+    else if (pSource->GetTypeId() == TYPEID_PLAYER)
         result = (static_cast<Player*>(pSource))->TeleportTo(script.teleportTo.mapId, script.x, script.y, script.z, script.o, script.teleportTo.teleportOptions);
     else
         result = pSource->NearTeleportTo(script, script.teleportTo.teleportOptions);
@@ -395,6 +418,73 @@ bool Map::ScriptCommand_RespawnGameObject(const ScriptInfo& script, WorldObject*
     return false;
 }
 
+// Where a step puts something (trt E22, AC4), by its eScriptPosition. False when the source or the
+// target the type is from is not there. o, when the type sets none, is the centre's facing.
+static bool ResolveScriptPosition(uint32 type, ScriptInfo const& script, WorldObject* source, WorldObject* target,
+                                  float& x, float& y, float& z, float& o)
+{
+    x = script.x;
+    y = script.y;
+    z = script.z;
+    o = script.o;
+
+    bool const ofTarget = type == SCRIPT_POSITION_OFFSET_TARGET || type == SCRIPT_POSITION_DISTANCE_TARGET ||
+                          type == SCRIPT_POSITION_POLAR_TARGET || type == SCRIPT_POSITION_NEAR_TARGET;
+    WorldObject* centre = ofTarget ? target : source;
+    if (type != SCRIPT_POSITION_ABSOLUTE && type != SCRIPT_POSITION_RANDOM_POINT && !centre)
+        return false;
+
+    switch (type)
+    {
+        case SCRIPT_POSITION_ABSOLUTE:
+            return true;
+        case SCRIPT_POSITION_OFFSET_TARGET:
+        case SCRIPT_POSITION_OFFSET_SOURCE:
+            x += centre->GetPositionX();
+            y += centre->GetPositionY();
+            z += centre->GetPositionZ();
+            if (!o)
+                o = centre->GetOrientation();
+            return true;
+        case SCRIPT_POSITION_RANDOM_POINT:
+        {
+            if (!source)
+                return false;
+            float const radius = script.o;
+            source->GetRandomPoint(script.x, script.y, script.z, radius, x, y, z);
+            o = source->GetOrientation();
+            return true;
+        }
+        case SCRIPT_POSITION_POLAR_SOURCE:
+        case SCRIPT_POSITION_POLAR_TARGET:
+            centre->GetFirstCollision(script.x, script.o, x, y, z);
+            o = centre->GetOrientation();
+            return true;
+        case SCRIPT_POSITION_DISTANCE_TARGET:
+        case SCRIPT_POSITION_DISTANCE_SOURCE:
+        {
+            // An angle from the centre's facing, as GetFirstCollision reads it.
+            float angle = frand(0.0f, 2 * M_PI_F);
+            if (type == SCRIPT_POSITION_DISTANCE_TARGET && script.o < 0.0f && source)
+                angle = centre->GetAngle(source) - centre->GetOrientation();
+            centre->GetFirstCollision(script.x, angle, x, y, z);
+            o = centre->GetOrientation();
+            return true;
+        }
+        case SCRIPT_POSITION_NEAR_TARGET:
+        case SCRIPT_POSITION_NEAR_SOURCE:
+        {
+            // Even over the disc: the distance by the square root of a uniform share.
+            float const distance = script.x * sqrt(frand(0.0f, 1.0f));
+            centre->GetFirstCollision(distance, frand(0.0f, 2 * M_PI_F), x, y, z);
+            o = centre->GetOrientation();
+            return true;
+        }
+        default:
+            return false;
+    }
+}
+
 // SCRIPT_COMMAND_TEMP_SUMMON_CREATURE (10)
 bool Map::ScriptCommand_SummonCreature(ScriptInfo const& script, WorldObject* source, WorldObject* target)
 {
@@ -412,16 +502,13 @@ bool Map::ScriptCommand_SummonCreature(ScriptInfo const& script, WorldObject* so
         return ShouldAbortScript(script);
     }
 
-    float x = script.x;
-    float y = script.y;
-    float z = script.z;
-    float o = script.o;
-
-    // trt E22, AC4: x yards from the summoner at angle o from its facing.
-    if (((uint32(script.summonCreature.flags) & SUMMON_POSITION_MASK) >> SUMMON_POSITION_SHIFT) == SUMMON_POSITION_POLAR_SOURCE)
+    // trt E22, AC4: where, by the position type in bits 16-23 of dataint.
+    float x, y, z, o;
+    uint32 const positionType = (uint32(script.summonCreature.flags) & SUMMON_POSITION_MASK) >> SUMMON_POSITION_SHIFT;
+    if (!ResolveScriptPosition(positionType, script, pSummoner, target, x, y, z, o))
     {
-        pSummoner->GetFirstCollision(script.x, script.o, x, y, z);
-        o = pSummoner->GetOrientation();
+        sLog.outError("SCRIPT_COMMAND_TEMP_SUMMON_CREATURE (script id %u): position type %u has no unit to be from, skipping.", script.id, positionType);
+        return ShouldAbortScript(script);
     }
 
     if (script.summonCreature.flags & (SF_SUMMONCREATURE_UNIQUE | SF_SUMMONCREATURE_UNIQUE_TEMP))
@@ -2294,6 +2381,11 @@ bool Map::ScriptCommand_SummonObject(const ScriptInfo& script, WorldObject* sour
     float y = script.y ? script.y : source->GetPositionY();
     float z = script.z ? script.z : source->GetPositionZ();
     float o = script.o ? script.o : source->GetOrientation();
+
+    // trt E22, AC4: a point from the source or the target.
+    if (script.summonObject.positionType != SCRIPT_POSITION_ABSOLUTE &&
+        !ResolveScriptPosition(script.summonObject.positionType, script, source, target, x, y, z, o))
+        return ShouldAbortScript(script);
 
     source->SummonGameObject(script.summonObject.gameobject_entry, x, y, z, o, 0, 0, 0, 0, script.summonObject.respawn_time);
 
