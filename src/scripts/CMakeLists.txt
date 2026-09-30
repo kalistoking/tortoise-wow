@@ -206,7 +206,6 @@ dungeons/scholomance/boss_vectus.cpp
 dungeons/scholomance/instance_scholomance.cpp
 dungeons/scholomance/scholo_trash.cpp
 dungeons/scholomance/scholomance.h
-dungeons/shadowfang_keep/instance_shadowfang_keep.cpp
 dungeons/stormwind_vaults/boss_aszosh_grimflame.cpp
 dungeons/stormwind_vaults/boss_black_bride.cpp
 dungeons/stormwind_vaults/boss_damian_the_ripper.cpp

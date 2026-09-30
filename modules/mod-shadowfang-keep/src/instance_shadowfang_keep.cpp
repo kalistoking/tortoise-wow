@@ -1,5 +1,9 @@
 #include "scriptPCH.h"
 
+namespace mod_shadowfang_keep
+{
+
+
 
 enum ShadowFangKeepType
 {
@@ -422,3 +426,5 @@ void AddSC_instance_shadowfang_keep()
     newscript->GetInstanceData = &GetInstanceData_instance_shadowfang_keep;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_shadowfang_keep

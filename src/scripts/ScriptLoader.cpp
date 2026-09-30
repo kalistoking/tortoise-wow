@@ -147,7 +147,6 @@ void AddSC_boss_vectus();
 //void AddSC_boss_lordblackwood();
 void AddSC_scholo_trash();
 void AddSC_instance_scholomance();
-void AddSC_instance_shadowfang_keep();
 void AddSC_boss_magistrate_barthilas();              //stratholme
 void AddSC_boss_maleki_the_pallid();
 void AddSC_boss_nerubenkan();
@@ -509,7 +508,6 @@ void AddScripts()
     //AddSC_boss_lordblackwood();
     AddSC_scholo_trash();
     AddSC_instance_scholomance();
-    AddSC_instance_shadowfang_keep();
     AddSC_boss_magistrate_barthilas();                      //stratholme
     AddSC_boss_maleki_the_pallid();
     AddSC_boss_nerubenkan();
