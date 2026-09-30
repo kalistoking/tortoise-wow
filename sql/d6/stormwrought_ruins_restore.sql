@@ -1,0 +1,27 @@
+-- Puts back what stormwrought_ruins_as_rows.sql replaced, as t1_world had it when the migration
+-- was written (scripts/tier2/a19_stormwrought_ruins.py). The rows the migration added are removed.
+
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_dagar_the_glutton', `flags_extra` = 0 WHERE `entry` = 62547;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_oronok_torn_heart', `flags_extra` = 0 WHERE `entry` = 62548;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_duke_balor_iv', `flags_extra` = 0 WHERE `entry` = 62549;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_deathlord_tidebane', `flags_extra` = 0 WHERE `entry` = 62550;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_chieftain_stormsong', `flags_extra` = 0 WHERE `entry` = 62551;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_librarian_theodorus', `flags_extra` = 0 WHERE `entry` = 62552;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_subjugator_halthas_shadecrest', `flags_extra` = 0 WHERE `entry` = 62652;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_eldermaw_the_primordial', `flags_extra` = 0 WHERE `entry` = 62661;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_mycellakos', `flags_extra` = 0 WHERE `entry` = 62664;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_lady_drazare', `flags_extra` = 0 WHERE `entry` = 62665;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'boss_ighalfor', `flags_extra` = 0 WHERE `entry` = 62671;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'boss_mergothid', `flags_extra` = 0 WHERE `entry` = 62673;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = '', `flags_extra` = 0 WHERE `entry` = 62731;
+DELETE FROM `conditions` WHERE `condition_entry` IN (818012, 818013, 818014);
+DELETE FROM `broadcast_text` WHERE `entry` IN (818062, 818063, 818064, 818065, 818066, 818067, 818068, 818069, 818070, 818071, 818072, 818073, 818074, 818075, 818076, 818077, 818078, 818079, 818080, 818081, 818082, 818083, 818084, 818085, 818086, 818087, 818088);
+DELETE FROM `creature_ai_events` WHERE `id` IN (6254701, 6254702, 6254703, 6254801, 6254802, 6254803, 6254804, 6254805, 6254901, 6254902, 6254903, 6254904, 6254905, 6254906, 6255001, 6255002, 6255003, 6255004, 6255005, 6255101, 6255102, 6255103, 6255104, 6255105, 6255106, 6255201, 6255202, 6255203, 6255204, 6255205, 6255206, 6265201, 6265202, 6265203, 6265204, 6265205, 6266101, 6266102, 6266401, 6266402, 6266501, 6266502, 6266503, 6266504, 6267101, 6267102, 6267103, 6267104, 6267105, 6267106, 6267107, 6267108, 6267201, 6267301, 6267302, 6267303, 6267401, 6267501);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (6254701, 6254702, 6254703, 6254801, 6254802, 6254803, 6254804, 6254805, 6254901, 6254902, 6254903, 6254904, 6254905, 6254906, 6255001, 6255002, 6255003, 6255004, 6255005, 6255101, 6255102, 6255103, 6255104, 6255105, 6255106, 6255201, 6255202, 6255203, 6255204, 6255205, 6255206, 6265201, 6265202, 6265203, 6265204, 6265205, 6266101, 6266102, 6266401, 6266402, 6266501, 6266502, 6266503, 6266504, 6267101, 6267102, 6267103, 6267104, 6267105, 6267106, 6267107, 6267108, 6267201, 6267301, 6267302, 6267303, 6267401, 6267501);
+DELETE FROM `generic_scripts` WHERE `id` IN (6266430, 6267130, 6267132);
+DELETE FROM `gameobject_scripts` WHERE `id` IN (5025429, 5025430, 5025431, 5025432);
+DELETE FROM `instance_data_slot` WHERE `map` = 818 AND `slot` = 4;
+DELETE FROM `instance_data_slot` WHERE `map` = 818 AND `slot` = 5;
+DELETE FROM `instance_data_slot` WHERE `map` = 818 AND `slot` = 6;
+DELETE FROM `instance_data_slot` WHERE `map` = 818 AND `slot` = 7;
+DELETE FROM `instance_data_slot` WHERE `map` = 818 AND `slot` = 8;
