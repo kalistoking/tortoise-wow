@@ -5,8 +5,8 @@
 # "everything" -- game alone defines ~88 000 symbols, and an export table holds 65 535. So it
 # exports exactly what the modules ask for, in two steps:
 #
-#   cmake -DMODE=needs -DDUMPBIN=<dumpbin.exe> -DOBJECTS=<obj|obj> -DOUT=<needs.cpp>
-#         -P ModuleExports.cmake
+#   cmake -DMODE=needs -DDUMPBIN=<dumpbin.exe> -DOBJECTS_FILE=<a path a line> -DOUT=<needs.cpp>
+#         -P ModuleExports.cmake      (or -DOBJECTS=<obj|obj>)
 #
 # before mangosd builds (modules/CMakeLists.txt): every symbol the modules' objects leave
 # undefined, one comment line each, into a source file mangosd compiles. It changes only when
@@ -34,7 +34,11 @@ foreach(var MODE DUMPBIN OUT)
 endforeach()
 
 if(MODE STREQUAL "needs")
-  string(REPLACE "|" ";" OBJECTS "${OBJECTS}")
+  if(DEFINED OBJECTS_FILE)
+    file(STRINGS "${OBJECTS_FILE}" OBJECTS)
+  else()
+    string(REPLACE "|" ";" OBJECTS "${OBJECTS}")
+  endif()
   set(undefined)
   set(called)
   set(defined_here)

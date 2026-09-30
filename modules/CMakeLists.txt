@@ -281,12 +281,16 @@ if(MSVC AND MODULES_WINDOWS_OBJECT_TARGETS)
   endforeach()
   # A command here and a target mangosd waits for: a custom command can only hang on a target
   # made in its own directory, and mangosd is made in src/mangosd, before the modules are known.
-  # The list goes over as one "|"-joined argument; the script splits it again.
+  # The list goes over in a file, a path a line, written as the build files are: as one argument
+  # it passes cmd.exe's 8191 characters at some sixty modules, and the command falls apart.
+  set(MODULES_EXPORT_OBJECTS_FILE "${CMAKE_BINARY_DIR}/mangosd_module_objects_$<CONFIG>.txt")
+  file(GENERATE OUTPUT "${MODULES_EXPORT_OBJECTS_FILE}"
+    CONTENT "$<JOIN:${MODULES_EXPORT_OBJECTS},\n>\n")
   add_custom_command(OUTPUT "${MODULES_EXPORTS_NEEDS}"
     COMMAND "${CMAKE_COMMAND}"
       -DMODE=needs
       "-DDUMPBIN=${MODULES_LINKER_DIR}/dumpbin.exe"
-      "-DOBJECTS=$<JOIN:${MODULES_EXPORT_OBJECTS},|>"
+      "-DOBJECTS_FILE=${MODULES_EXPORT_OBJECTS_FILE}"
       "-DOUT=${MODULES_EXPORTS_NEEDS}"
       -P "${CMAKE_SOURCE_DIR}/cmake/ModuleExports.cmake"
     DEPENDS
