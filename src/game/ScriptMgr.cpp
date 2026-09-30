@@ -502,6 +502,18 @@ void ScriptMgr::LoadScripts(ScriptMapMap& scripts, const char* tablename)
                     continue;
                 }
 
+                uint32 const positionType = (uint32(tmp.summonCreature.flags) & SUMMON_POSITION_MASK) >> SUMMON_POSITION_SHIFT;
+                if (positionType >= SUMMON_POSITION_MAX)
+                {
+                    sLog.outErrorDb("Table `%s` has unknown position type %u (dataint bits 16-23) in SCRIPT_COMMAND_TEMP_SUMMON_CREATURE for script id %u", tablename, positionType, tmp.id);
+                    continue;
+                }
+                if (positionType == SUMMON_POSITION_POLAR_SOURCE && (tmp.x < 0.0f || tmp.y != 0.0f || tmp.z != 0.0f))
+                {
+                    sLog.outErrorDb("Table `%s` has a polar summon (x the distance, o the angle) with x %f < 0 or y, z not 0 in SCRIPT_COMMAND_TEMP_SUMMON_CREATURE for script id %u", tablename, tmp.x, tmp.id);
+                    continue;
+                }
+
                 if (!sObjectMgr.GetCreatureTemplate(tmp.summonCreature.creatureEntry))
                 {
                     if (!sObjectMgr.IsExistingCreatureId(tmp.summonCreature.creatureEntry))

@@ -417,6 +417,13 @@ bool Map::ScriptCommand_SummonCreature(ScriptInfo const& script, WorldObject* so
     float z = script.z;
     float o = script.o;
 
+    // trt E22, AC4: x yards from the summoner at angle o from its facing.
+    if (((uint32(script.summonCreature.flags) & SUMMON_POSITION_MASK) >> SUMMON_POSITION_SHIFT) == SUMMON_POSITION_POLAR_SOURCE)
+    {
+        pSummoner->GetFirstCollision(script.x, script.o, x, y, z);
+        o = pSummoner->GetOrientation();
+    }
+
     if (script.summonCreature.flags & (SF_SUMMONCREATURE_UNIQUE | SF_SUMMONCREATURE_UNIQUE_TEMP))
     {
         float dist = script.summonCreature.uniqueDistance ? script.summonCreature.uniqueDistance : (pSummoner->GetDistance(x, y, z) + 50.0f) * 2;

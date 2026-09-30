@@ -442,6 +442,18 @@ enum eSummonCreatureFlags
     SF_SUMMONCREATURE_NULL_AI     = 0x10  // use Null AI instead of the normal creature script
 };
 
+// Where SCRIPT_COMMAND_TEMP_SUMMON_CREATURE places its summon: bits 16-23 of its dataint, beside the
+// flags (trt E22, AC4 prototype).
+enum eSummonCreaturePosition
+{
+    SUMMON_POSITION_ABSOLUTE     = 0, // x, y, z, o as given; x = y = z = 0 beside the summoner at angle o
+    SUMMON_POSITION_POLAR_SOURCE = 1, // x yards from the summoner at angle o from its facing, clipped by
+                                      // line of sight and on the ground; facing as the summoner does
+    SUMMON_POSITION_MAX
+};
+#define SUMMON_POSITION_SHIFT 16
+#define SUMMON_POSITION_MASK  0x00FF0000
+
 // Flags used by SCRIPT_COMMAND_PLAY_SOUND
 enum ePlaySoundFlags
 {
