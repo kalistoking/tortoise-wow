@@ -98,19 +98,10 @@ void AddSC_boss_sapphiron();
 void AddSC_instance_naxxramas();
 //void AddSC_boss_azshir_the_sleepless();
 void AddSC_instance_scarlet_monastery();
-void AddSC_boss_darkmaster_gandling();               //scholomance
-void AddSC_boss_theolenkrastinov();
-void AddSC_boss_illuciabarov();
-void AddSC_boss_instructormalicia();
 void AddSC_boss_jandicebarov();
 //void AddSC_boss_kormok();
-void AddSC_boss_lordalexeibarov();
-void AddSC_boss_lorekeeperpolkelt();
-void AddSC_boss_rasfrost();
-void AddSC_boss_theravenian();
 void AddSC_boss_vectus();
 //void AddSC_boss_lordblackwood();
-void AddSC_scholo_trash();
 void AddSC_instance_scholomance();
 void AddSC_boss_magistrate_barthilas();              //stratholme
 void AddSC_boss_maleki_the_pallid();
@@ -396,19 +387,10 @@ void AddScripts()
     AddSC_instance_naxxramas();
     //AddSC_boss_azshir_the_sleepless();
     AddSC_instance_scarlet_monastery();
-    AddSC_boss_darkmaster_gandling();                       //scholomance
-    AddSC_boss_theolenkrastinov();
-    AddSC_boss_illuciabarov();
-    AddSC_boss_instructormalicia();
     AddSC_boss_jandicebarov();
     //AddSC_boss_kormok();
-    AddSC_boss_lordalexeibarov();
-    AddSC_boss_lorekeeperpolkelt();
-    AddSC_boss_rasfrost();
-    AddSC_boss_theravenian();
     AddSC_boss_vectus();
     //AddSC_boss_lordblackwood();
-    AddSC_scholo_trash();
     AddSC_instance_scholomance();
     AddSC_boss_magistrate_barthilas();                      //stratholme
     AddSC_boss_maleki_the_pallid();

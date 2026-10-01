@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_scholomance
+{
+
+
 #define SPELL_FROSTBOLT 21369
 #define SPELL_ICEARMOR 18100                       //This is actually a buff he gives himself
 #define SPELL_FREEZE 18763
@@ -128,3 +132,5 @@ void AddSC_boss_rasfrost()
     newscript->GetAI = &GetAI_boss_rasfrost;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scholomance

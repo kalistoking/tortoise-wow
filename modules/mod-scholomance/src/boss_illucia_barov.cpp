@@ -22,7 +22,11 @@ SDCategory: Scholomance
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "scholomance.h"
+#include "dungeons/scholomance/scholomance.h"
+
+namespace mod_scholomance
+{
+
 
 #define SPELL_CURSEOFAGONY 18671
 #define SPELL_SHADOWSHOCK 20603
@@ -111,3 +115,5 @@ void AddSC_boss_illuciabarov()
     newscript->GetAI = &GetAI_boss_illuciabarov;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scholomance

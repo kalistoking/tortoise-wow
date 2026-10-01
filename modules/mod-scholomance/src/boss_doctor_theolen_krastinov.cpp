@@ -22,7 +22,11 @@ SDCategory: Scholomance
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "scholomance.h"
+#include "dungeons/scholomance/scholomance.h"
+
+namespace mod_scholomance
+{
+
 
 enum
 {
@@ -113,3 +117,5 @@ void AddSC_boss_theolenkrastinov()
     newscript->GetAI = &GetAI_boss_theolenkrastinov;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scholomance

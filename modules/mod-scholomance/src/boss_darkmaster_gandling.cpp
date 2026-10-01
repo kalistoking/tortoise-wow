@@ -22,7 +22,11 @@ SDCategory: Scholomance
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "scholomance.h"
+#include "dungeons/scholomance/scholomance.h"
+
+namespace mod_scholomance
+{
+
 
 #define SAY_GANDLING_SPAWN -1289000
 #define SAY_GANDLING_DEATH -1289001
@@ -322,3 +326,5 @@ void AddSC_boss_darkmaster_gandling()
     newscript->GetAI = &GetAI_boss_darkmaster_gandling;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scholomance

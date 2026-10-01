@@ -22,7 +22,11 @@ SDCategory: Scholomance
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "scholomance.h"
+#include "dungeons/scholomance/scholomance.h"
+
+namespace mod_scholomance
+{
+
 
 #define SPELL_IMMOLATE 15570
 #define SPELL_VEILOFSHADOW 17820
@@ -91,3 +95,5 @@ void AddSC_boss_lordalexeibarov()
     newscript->GetAI = &GetAI_boss_lordalexeibarov;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scholomance

@@ -1,5 +1,9 @@
 #include "scriptPCH.h"
 
+namespace mod_scholomance
+{
+
+
 enum
 {
     SPELL_DARK_PLAGUE_AURA  = 12038,    // procs 18270
@@ -193,3 +197,5 @@ void AddSC_scholo_trash()
     script->GetAI = &GetAI_npc_spectral_projection;
     script->RegisterSelf();
 }
+
+} // namespace mod_scholomance

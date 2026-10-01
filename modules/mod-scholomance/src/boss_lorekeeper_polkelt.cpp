@@ -22,7 +22,11 @@ SDCategory: Scholomance
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "scholomance.h"
+#include "dungeons/scholomance/scholomance.h"
+
+namespace mod_scholomance
+{
+
 
 #define SPELL_VOLATILEINFECTION 24928
 #define SPELL_DARKPLAGUE_AURA 12038
@@ -104,3 +108,5 @@ void AddSC_boss_lorekeeperpolkelt()
     newscript->GetAI = &GetAI_boss_lorekeeperpolkelt;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scholomance

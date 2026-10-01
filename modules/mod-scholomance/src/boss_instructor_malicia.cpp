@@ -22,7 +22,11 @@ SDCategory: Scholomance
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "scholomance.h"
+#include "dungeons/scholomance/scholomance.h"
+
+namespace mod_scholomance
+{
+
 
 #define SPELL_CALLOFGRAVES 17831
 #define SPELL_CORRUPTION 11672
@@ -148,3 +152,5 @@ void AddSC_boss_instructormalicia()
     newscript->GetAI = &GetAI_boss_instructormalicia;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scholomance

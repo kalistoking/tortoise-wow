@@ -22,7 +22,11 @@ SDCategory: Scholomance
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "scholomance.h"
+#include "dungeons/scholomance/scholomance.h"
+
+namespace mod_scholomance
+{
+
 
 #define SPELL_TRAMPLE 15550
 #define SPELL_CLEAVE 20691
@@ -111,3 +115,5 @@ void AddSC_boss_theravenian()
     newscript->GetAI = &GetAI_boss_theravenian;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scholomance
