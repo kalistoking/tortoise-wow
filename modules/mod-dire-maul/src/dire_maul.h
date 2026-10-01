@@ -5,6 +5,10 @@
 #ifndef __DEF_DIRE_MAUL_HEADER
 #define __DEF_DIRE_MAUL_HEADER
 
+namespace mod_dire_maul
+{
+
+
 enum
 {
     MAX_CRISTALS              = 5,
@@ -179,5 +183,7 @@ class instance_dire_maul : public ScriptedInstance
         bool m_bIsGordokTributeRespawned;
         bool m_bIsTanninLooted;
 };
+
+} // namespace mod_dire_maul
 
 #endif

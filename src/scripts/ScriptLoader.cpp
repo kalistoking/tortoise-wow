@@ -19,8 +19,6 @@ void AddSC_bg_sunnyglade();
 // Items
 
 // HT
-void AddSC_instance_dire_maul();
-void AddSC_dreadsteed_ritual();
 
 //world
 
@@ -184,8 +182,6 @@ void AddScripts()
     // Items
 
     // HT
-    AddSC_instance_dire_maul();
-    AddSC_dreadsteed_ritual();
 
     //world
 

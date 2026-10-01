@@ -12,6 +12,9 @@ Taken from the core:
 - `src/scripts/dungeons/dire_maul/boss_zevrim.cpp`
 - `src/scripts/dungeons/dire_maul/npc_ecorcefer.cpp`
 - `src/scripts/dungeons/dire_maul/npc_pusillin.cpp`
+- `src/scripts/dungeons/dire_maul/dire_maul.h`
+- `src/scripts/dungeons/dire_maul/dreadsteed_ritual.cpp`
+- `src/scripts/dungeons/dire_maul/instance_dire_maul.cpp`
 
 ## The switch
 

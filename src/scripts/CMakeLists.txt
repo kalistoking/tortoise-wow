@@ -25,9 +25,6 @@ dungeons/blackwing_lair/boss_vaelastrasz.cpp
 dungeons/blackwing_lair/boss_victor_nefarius.cpp
 dungeons/blackwing_lair/instance_blackwing_lair.cpp
 dungeons/stormwrought_ruins/stormwrought_ruins_spells.cpp
-dungeons/dire_maul/dire_maul.h
-dungeons/dire_maul/dreadsteed_ritual.cpp
-dungeons/dire_maul/instance_dire_maul.cpp
 dungeons/emerald_sanctum/emerald_sanctum.h
 dungeons/emerald_sanctum/instance_emerald_sanctum.cpp
 dungeons/emerald_sanctum/boss_solnius.cpp

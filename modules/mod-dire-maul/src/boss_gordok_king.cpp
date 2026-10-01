@@ -1,5 +1,5 @@
 #include "scriptPCH.h"
-#include "dungeons/dire_maul/dire_maul.h"
+#include "dire_maul.h"
 
 namespace mod_dire_maul
 {

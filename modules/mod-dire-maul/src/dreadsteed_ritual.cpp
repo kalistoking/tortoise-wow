@@ -4,7 +4,11 @@
 
 #include "scriptPCH.h"
 #include "dire_maul.h"
-#include "../../events/event_dreadsteed.h"
+#include "events/event_dreadsteed.h"
+
+namespace mod_dire_maul
+{
+
 
 enum
 {
@@ -1010,3 +1014,5 @@ void AddSC_dreadsteed_ritual()
     newscript->GOGetAI = &GetAIgo_pedestal_of_immol_thar;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_dire_maul

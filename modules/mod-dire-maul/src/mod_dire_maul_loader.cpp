@@ -12,6 +12,8 @@ namespace mod_dire_maul
     void AddSC_boss_zevrim();
     void AddSC_npc_ecorcefer();
     void AddSC_npc_pusillin();
+    void AddSC_dreadsteed_ritual();
+    void AddSC_instance_dire_maul();
 }
 
 void Addmod_dire_maulScripts()
@@ -28,5 +30,7 @@ void Addmod_dire_maulScripts()
     mod_dire_maul::AddSC_boss_zevrim();
     mod_dire_maul::AddSC_npc_ecorcefer();
     mod_dire_maul::AddSC_npc_pusillin();
+    mod_dire_maul::AddSC_dreadsteed_ritual();
+    mod_dire_maul::AddSC_instance_dire_maul();
     sLog.outString("[mod-dire-maul] Dire Maul's scripts registered from the module");
 }

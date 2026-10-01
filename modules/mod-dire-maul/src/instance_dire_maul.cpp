@@ -5,6 +5,10 @@
 #include "scriptPCH.h"
 #include "dire_maul.h"
 
+namespace mod_dire_maul
+{
+
+
 //#define DEBUG_ON
 
 void EnableCreature(Creature* pCreature)
@@ -2512,3 +2516,5 @@ void AddSC_instance_dire_maul()
     pNewScript->GOGetAI = &GetAI_go_warpwood_pod;
     pNewScript->RegisterSelf();
 }
+
+} // namespace mod_dire_maul
