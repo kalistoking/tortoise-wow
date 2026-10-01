@@ -32,37 +32,37 @@ VALUES
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246003, 0, 0, 2, 157, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Field'),
+(1246003, 0, 0, 15, 33001, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell CustomSpell'),
 (1246003, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 1'),
-(1246003, 0, 0, 15, 33001, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell CustomSpell');
+(1246003, 0, 0, 2, 157, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Field');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246004, 0, 0, 2, 158, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Field'),
+(1246004, 0, 0, 15, 33002, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell CustomSpell'),
 (1246004, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 1'),
-(1246004, 0, 0, 15, 33002, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell CustomSpell');
+(1246004, 0, 0, 2, 158, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Field');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246005, 0, 0, 2, 159, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Field'),
+(1246005, 0, 0, 15, 33004, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell CustomSpell'),
 (1246005, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 1'),
-(1246005, 0, 0, 15, 33004, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell CustomSpell');
+(1246005, 0, 0, 2, 159, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Field');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246006, 0, 0, 2, 160, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Field'),
+(1246006, 0, 0, 15, 33003, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell CustomSpell'),
 (1246006, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 1'),
-(1246006, 0, 0, 15, 33003, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell CustomSpell');
+(1246006, 0, 0, 2, 160, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Field');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246007, 0, 0, 2, 161, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Field'),
+(1246007, 0, 0, 15, 33005, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell CustomSpell'),
 (1246007, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 1'),
-(1246007, 0, 0, 15, 33005, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell CustomSpell');
+(1246007, 0, 0, 2, 161, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Field');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
@@ -97,32 +97,32 @@ VALUES
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246014, 0, 0, 15, 22288, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell Brood Power: Green'),
-(1246014, 0, 0, 44, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 2');
+(1246014, 0, 0, 44, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 2'),
+(1246014, 0, 0, 15, 22288, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell Brood Power: Green');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246015, 0, 0, 15, 22283, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell Brood Power: Red'),
-(1246015, 0, 0, 44, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 2');
+(1246015, 0, 0, 44, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 2'),
+(1246015, 0, 0, 15, 22283, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell Brood Power: Red');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246016, 0, 0, 15, 22286, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell Brood Power: Bronze'),
-(1246016, 0, 0, 44, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 2');
+(1246016, 0, 0, 44, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 2'),
+(1246016, 0, 0, 15, 22286, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell Brood Power: Bronze');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246017, 0, 0, 15, 22287, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell Brood Power: Black'),
-(1246017, 0, 0, 44, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 2');
+(1246017, 0, 0, 44, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 2'),
+(1246017, 0, 0, 15, 22287, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell Brood Power: Black');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246018, 0, 0, 15, 22285, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell Brood Power: Blue'),
-(1246018, 0, 0, 44, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 2');
+(1246018, 0, 0, 44, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Set Phase to 2'),
+(1246018, 0, 0, 15, 22285, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Wyrmguard - Cast Spell Brood Power: Blue');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
@@ -137,37 +137,37 @@ VALUES
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246103, 0, 0, 2, 157, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Field'),
+(1246103, 0, 0, 15, 33001, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Cast Spell CustomSpell'),
 (1246103, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Phase to 1'),
-(1246103, 0, 0, 15, 33001, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Cast Spell CustomSpell');
+(1246103, 0, 0, 2, 157, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Field');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246104, 0, 0, 2, 158, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Field'),
+(1246104, 0, 0, 15, 33002, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Cast Spell CustomSpell'),
 (1246104, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Phase to 1'),
-(1246104, 0, 0, 15, 33002, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Cast Spell CustomSpell');
+(1246104, 0, 0, 2, 158, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Field');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246105, 0, 0, 2, 159, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Field'),
+(1246105, 0, 0, 15, 33004, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Cast Spell CustomSpell'),
 (1246105, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Phase to 1'),
-(1246105, 0, 0, 15, 33004, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Cast Spell CustomSpell');
+(1246105, 0, 0, 2, 159, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Field');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246106, 0, 0, 2, 160, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Field'),
 (1246106, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Phase to 1'),
-(1246106, 0, 0, 15, 33003, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Cast Spell CustomSpell');
+(1246106, 0, 0, 15, 33003, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Cast Spell CustomSpell'),
+(1246106, 0, 0, 2, 160, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Field');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1246107, 0, 0, 2, 161, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Field'),
+(1246107, 0, 0, 15, 33005, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Cast Spell CustomSpell'),
 (1246107, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Phase to 1'),
-(1246107, 0, 0, 15, 33005, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Cast Spell CustomSpell');
+(1246107, 0, 0, 2, 161, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Set Field');
 
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
@@ -202,41 +202,41 @@ VALUES
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
-(1246001, 12460, 0, 0, 0, 80, 13, 8000, 8000, 8000, 14000, 1246001, 0, 0, 'Death Talon Wyrmguard - Cast War Stomp'),
-(1246018, 12460, 0, 1, 13, 10, 1, 500, 500, 1000, 1000, 1246018, 0, 0, 'Death Talon Wyrmguard - Pouvoir d espece : bleu (Ustaag)'),
-(1246017, 12460, 0, 1, 13, 10, 1, 400, 400, 900, 900, 1246017, 0, 0, 'Death Talon Wyrmguard - Pouvoir d espece : noir (Ustaag)'),
 (1246016, 12460, 0, 1, 13, 10, 1, 300, 300, 800, 800, 1246016, 0, 0, 'Death Talon Wyrmguard - Pouvoir d espece : bronze (Ustaag)'),
 (1246015, 12460, 0, 1, 13, 10, 1, 200, 200, 700, 700, 1246015, 0, 0, 'Death Talon Wyrmguard - Pouvoir d espece : rouge (Ustaag)'),
 (1246014, 12460, 0, 1, 13, 10, 1, 100, 100, 600, 600, 1246014, 0, 0, 'Death Talon Wyrmguard - Pouvoir d espece : Vert (Ustaag)'),
 (1246013, 12460, 0, 11, 0, 100, 1, 0, 0, 0, 0, 1246013, 0, 0, 'Death Talon Overseer - On spawn set phase 0 (Ustaag)'),
 (1246012, 12460, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246012, 0, 0, 'Death Talon Wyrmguard - On Death resist arcane (Ustaag)'),
-(1246011, 12460, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246011, 0, 0, 'Death Talon Wyrmguard - On Death resist shadow (Ustaag)'),
-(1246010, 12460, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246010, 0, 0, 'Death Talon Wyrmguard - On Death resist frost (Ustaag)'),
-(1246009, 12460, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246009, 0, 0, 'Death Talon Wyrmguard - On Death resist nature (Ustaag)'),
-(1246008, 12460, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246008, 0, 0, 'Death Talon Wyrmguard - On Death resist fire (Ustaag)'),
-(1246002, 12460, 0, 0, 0, 75, 13, 2000, 2000, 2000, 6000, 1246002, 0, 0, 'Death Talon Wyrmguard - Cast Cleave (Ustaag)'),
-(1246007, 12460, 0, 1, 14, 10, 1, 500, 500, 1000, 1000, 1246007, 0, 0, 'Death Talon Wyrmguard - sensible arcane + set phase 1 (Ustaag)'),
-(1246006, 12460, 0, 1, 14, 10, 1, 400, 400, 900, 900, 1246006, 0, 0, 'Death Talon Wyrmguard - sensible shadow + set phase 1 (Ustaag)'),
-(1246005, 12460, 0, 1, 14, 10, 1, 300, 300, 800, 800, 1246005, 0, 0, 'Death Talon Wyrmguard - sensible frost + set phase 1 (Ustaag)'),
+(1246001, 12460, 0, 0, 0, 80, 13, 8000, 8000, 8000, 14000, 1246001, 0, 0, 'Death Talon Wyrmguard - Cast War Stomp'),
+(1246018, 12460, 0, 1, 13, 10, 1, 500, 500, 1000, 1000, 1246018, 0, 0, 'Death Talon Wyrmguard - Pouvoir d espece : bleu (Ustaag)'),
+(1246017, 12460, 0, 1, 13, 10, 1, 400, 400, 900, 900, 1246017, 0, 0, 'Death Talon Wyrmguard - Pouvoir d espece : noir (Ustaag)'),
+(1246003, 12460, 0, 1, 14, 10, 1, 100, 100, 600, 600, 1246003, 0, 0, 'Death Talon Wyrmguard - sensible fire + set phase 1 (Ustaag)'),
 (1246004, 12460, 0, 1, 14, 10, 1, 200, 200, 700, 700, 1246004, 0, 0, 'Death Talon Wyrmguard - sensible nature + set phase 1 (Ustaag)'),
-(1246003, 12460, 0, 1, 14, 10, 1, 100, 100, 600, 600, 1246003, 0, 0, 'Death Talon Wyrmguard - sensible fire + set phase 1 (Ustaag)');
+(1246005, 12460, 0, 1, 14, 10, 1, 300, 300, 800, 800, 1246005, 0, 0, 'Death Talon Wyrmguard - sensible frost + set phase 1 (Ustaag)'),
+(1246006, 12460, 0, 1, 14, 10, 1, 400, 400, 900, 900, 1246006, 0, 0, 'Death Talon Wyrmguard - sensible shadow + set phase 1 (Ustaag)'),
+(1246007, 12460, 0, 1, 14, 10, 1, 500, 500, 1000, 1000, 1246007, 0, 0, 'Death Talon Wyrmguard - sensible arcane + set phase 1 (Ustaag)'),
+(1246002, 12460, 0, 0, 0, 75, 13, 2000, 2000, 2000, 6000, 1246002, 0, 0, 'Death Talon Wyrmguard - Cast Cleave (Ustaag)'),
+(1246008, 12460, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246008, 0, 0, 'Death Talon Wyrmguard - On Death resist fire (Ustaag)'),
+(1246009, 12460, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246009, 0, 0, 'Death Talon Wyrmguard - On Death resist nature (Ustaag)'),
+(1246010, 12460, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246010, 0, 0, 'Death Talon Wyrmguard - On Death resist frost (Ustaag)'),
+(1246011, 12460, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246011, 0, 0, 'Death Talon Wyrmguard - On Death resist shadow (Ustaag)');
 
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
-(1246107, 12461, 0, 1, 14, 10, 1, 500, 500, 1000, 1000, 1246107, 0, 0, 'Death Talon Overseer - sensible arcane + set phase 1 (Ustaag)'),
-(1246106, 12461, 0, 1, 14, 10, 1, 400, 400, 900, 900, 1246106, 0, 0, 'Death Talon Overseer - sensible shadow + set phase 1 (Ustaag)'),
-(1246105, 12461, 0, 1, 14, 10, 1, 300, 300, 800, 800, 1246105, 0, 0, 'Death Talon Overseer - sensible frost + set phase 1 (Ustaag)'),
-(1246103, 12461, 0, 1, 14, 10, 1, 100, 100, 600, 600, 1246103, 0, 0, 'Death Talon Overseer - sensible fire + set phase 1 (Ustaag)'),
-(1246104, 12461, 0, 1, 14, 10, 1, 200, 200, 700, 700, 1246104, 0, 0, 'Death Talon Overseer - sensible nature + set phase 1 (Ustaag)'),
-(1246101, 12461, 0, 0, 0, 75, 13, 2000, 2000, 2000, 6000, 1246101, 0, 0, 'Death Talon Overseer - Cast Cleave'),
-(1246102, 12461, 0, 0, 0, 100, 13, 10000, 10000, 10000, 10000, 1246102, 0, 0, 'Death Talon Overseer - Cast Fire Blast'),
 (1246108, 12461, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246108, 0, 0, 'Death Talon Overseer - On Death resist fire (Ustaag)'),
 (1246109, 12461, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246109, 0, 0, 'Death Talon Overseer - On Death resist nature (Ustaag)'),
 (1246110, 12461, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246110, 0, 0, 'Death Talon Overseer - On Death resist frost (Ustaag)'),
 (1246111, 12461, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246111, 0, 0, 'Death Talon Overseer - On Death resist shadow (Ustaag)'),
 (1246112, 12461, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246112, 0, 0, 'Death Talon Overseer - On Death resist arcane (Ustaag)'),
-(1246113, 12461, 0, 11, 0, 100, 1, 0, 0, 0, 0, 1246113, 0, 0, 'Death Talon Overseer - On aggro set phase 0 (Ustaag)');
+(1246113, 12461, 0, 11, 0, 100, 1, 0, 0, 0, 0, 1246113, 0, 0, 'Death Talon Overseer - On aggro set phase 0 (Ustaag)'),
+(1246102, 12461, 0, 0, 0, 100, 13, 10000, 10000, 10000, 10000, 1246102, 0, 0, 'Death Talon Overseer - Cast Fire Blast'),
+(1246101, 12461, 0, 0, 0, 75, 13, 2000, 2000, 2000, 6000, 1246101, 0, 0, 'Death Talon Overseer - Cast Cleave'),
+(1246104, 12461, 0, 1, 14, 10, 1, 200, 200, 700, 700, 1246104, 0, 0, 'Death Talon Overseer - sensible nature + set phase 1 (Ustaag)'),
+(1246103, 12461, 0, 1, 14, 10, 1, 100, 100, 600, 600, 1246103, 0, 0, 'Death Talon Overseer - sensible fire + set phase 1 (Ustaag)'),
+(1246105, 12461, 0, 1, 14, 10, 1, 300, 300, 800, 800, 1246105, 0, 0, 'Death Talon Overseer - sensible frost + set phase 1 (Ustaag)'),
+(1246106, 12461, 0, 1, 14, 10, 1, 400, 400, 900, 900, 1246106, 0, 0, 'Death Talon Overseer - sensible shadow + set phase 1 (Ustaag)'),
+(1246107, 12461, 0, 1, 14, 10, 1, 500, 500, 1000, 1000, 1246107, 0, 0, 'Death Talon Overseer - sensible arcane + set phase 1 (Ustaag)');
 
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)

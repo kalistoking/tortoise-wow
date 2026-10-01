@@ -27,13 +27,18 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62671;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62673;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62731;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (818012, 818013, 818014);
+DELETE FROM `conditions` WHERE `condition_entry` IN (818012, 818014);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (818012, 34, 6, 1, 0, 0, 0),
-(818013, 34, 7, 1, 0, 0, 0),
 (818014, -1, 298, 9938, 818012, 818013, 0);
+
+-- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
+INSERT IGNORE INTO `conditions`
+(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
+VALUES
+(818013, 34, 7, 1, 0, 0, 0);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (818062, 818063, 818064, 818065, 818066, 818067, 818068, 818069, 818070, 818071, 818072, 818073, 818074, 818075, 818076, 818077, 818078, 818079, 818080, 818081, 818082, 818083, 818084, 818085, 818086, 818087, 818088);
 INSERT INTO `broadcast_text`
