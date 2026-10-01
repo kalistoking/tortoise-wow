@@ -821,6 +821,21 @@ bool Map::ScriptCommand_UnitState(ScriptInfo const& script, WorldObject* source,
     return false;
 }
 
+// SCRIPT_COMMAND_SET_WEATHER (96) (trt A10): the weather of the zone the source stands in, on the
+// source's map -- an instance's own, as Gilneas City's C++ set it for each player entering.
+bool Map::ScriptCommand_SetWeather(ScriptInfo const& script, WorldObject* source, WorldObject* target)
+{
+    if (!source)
+    {
+        sLog.outError("SCRIPT_COMMAND_SET_WEATHER (script id %u) call for a nullptr source, skipping.", script.id);
+        return ShouldAbortScript(script);
+    }
+
+    SetWeather(source->GetZoneId(), WeatherType(script.setWeather.type), script.setWeather.grade / 100.0f,
+               script.setWeather.permanent != 0);
+    return false;
+}
+
 // SCRIPT_COMMAND_SET_HEALTH (94)
 // Health set, raised or lowered -- never to 0 (DEAL_DAMAGE kills), never past the maximum -- or the
 // maximum set through the health base modifier, so it holds when an aura recalculates it (a raw

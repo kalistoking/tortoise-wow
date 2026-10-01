@@ -890,6 +890,7 @@ class Map : public GridRefManager<NGridType>
         bool ScriptCommand_TakeMoney(ScriptInfo const& script, WorldObject* source, WorldObject* target);
         bool ScriptCommand_SetHealth(ScriptInfo const& script, WorldObject* source, WorldObject* target);
         bool ScriptCommand_UnitState(ScriptInfo const& script, WorldObject* source, WorldObject* target);
+        bool ScriptCommand_SetWeather(ScriptInfo const& script, WorldObject* source, WorldObject* target);
 
         // Add any new script command functions to the array.
         const ScriptCommandFunction m_ScriptCommands[SCRIPT_COMMAND_MAX] =
@@ -990,6 +991,7 @@ class Map : public GridRefManager<NGridType>
             &Map::ScriptCommand_TakeMoney,              // 93
             &Map::ScriptCommand_SetHealth,              // 94
             &Map::ScriptCommand_UnitState,              // 95
+            &Map::ScriptCommand_SetWeather,             // 96
         };
 
     public:

@@ -392,6 +392,10 @@ enum eScriptCommand
     SCRIPT_COMMAND_UNIT_STATE               = 95,           // source = Creature
                                                             // datalong = (bool) add, else clear
                                                             // datalong2 = unit state mask: can't rotate, ignore pathfinding, allow incomplete path, allow LoS attack
+    SCRIPT_COMMAND_SET_WEATHER              = 96,           // source = WorldObject: the zone it stands in, on its map
+                                                            // datalong = WeatherType
+                                                            // datalong2 = grade, in hundredths (100 = 1.0)
+                                                            // datalong3 = (bool) permanent: the zone's own weather changes no longer replace it
 
     SCRIPT_COMMAND_MAX,
 
@@ -1204,6 +1208,13 @@ struct ScriptInfo
             uint32 mask;                                    // datalong2: the bits are past what datalong
                                                             // (mediumint) holds, as MODIFY_FLAGS's are
         } unitState;
+
+        struct                                              // SCRIPT_COMMAND_SET_WEATHER (96)
+        {
+            uint32 type;                                    // datalong, WeatherType
+            uint32 grade;                                   // datalong2, hundredths
+            uint32 permanent;                               // datalong3
+        } setWeather;
 
         struct
         {

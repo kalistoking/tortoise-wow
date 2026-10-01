@@ -706,6 +706,22 @@ void ScriptMgr::LoadScripts(ScriptMapMap& scripts, const char* tablename)
                 }
                 break;
             }
+            case SCRIPT_COMMAND_SET_WEATHER:
+            {
+                if (tmp.setWeather.type >= MAX_WEATHER_TYPE)
+                {
+                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_SET_WEATHER has unknown weather type (datalong = %u) for script id %u",
+                                    tablename, tmp.setWeather.type, tmp.id);
+                    continue;
+                }
+                if (tmp.setWeather.permanent > 1)
+                {
+                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_SET_WEATHER has datalong3 = %u -- 1 permanent, 0 not, for script id %u",
+                                    tablename, tmp.setWeather.permanent, tmp.id);
+                    continue;
+                }
+                break;
+            }
             case SCRIPT_COMMAND_SET_HEALTH:
             {
                 uint32 const mode = tmp.setHealth.mode;
