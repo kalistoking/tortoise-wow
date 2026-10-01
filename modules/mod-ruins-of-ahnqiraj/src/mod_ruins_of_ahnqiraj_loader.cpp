@@ -9,6 +9,7 @@ namespace mod_ruins_of_ahnqiraj
     void AddSC_boss_kurinnaxx();
     void AddSC_boss_moam();
     void AddSC_ruins_of_ahnqiraj_trash();
+    void AddSC_ruins_of_ahnqiraj_guardian_tornado();
 }
 
 void Addmod_ruins_of_ahnqirajScripts()
@@ -22,5 +23,6 @@ void Addmod_ruins_of_ahnqirajScripts()
     mod_ruins_of_ahnqiraj::AddSC_boss_kurinnaxx();
     mod_ruins_of_ahnqiraj::AddSC_boss_moam();
     mod_ruins_of_ahnqiraj::AddSC_ruins_of_ahnqiraj_trash();
+    mod_ruins_of_ahnqiraj::AddSC_ruins_of_ahnqiraj_guardian_tornado();
     sLog.outString("[mod-ruins-of-ahnqiraj] Ruins Of Ahnqiraj's scripts registered from the module");
 }

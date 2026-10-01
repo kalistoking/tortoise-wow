@@ -9,6 +9,7 @@ Taken from the core:
 - `src/scripts/dungeons/ruins_of_ahnqiraj/boss_kurinnaxx.cpp`
 - `src/scripts/dungeons/ruins_of_ahnqiraj/boss_moam.cpp`
 - `src/scripts/dungeons/ruins_of_ahnqiraj/ruins_of_ahnqiraj_trash.cpp`
+- `src/scripts/dungeons/ruins_of_ahnqiraj/ruins_of_ahnqiraj_guardian_tornado.cpp`
 
 ## The switch
 
