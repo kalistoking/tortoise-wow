@@ -7,7 +7,12 @@
 -- (`module unload mod-blackwing-lair`, which gives every creature standing a new AI at once),
 -- the names find no script and the creatures run these rows (their ai_name).
 --
--- Map 469 keeps instance_blackwing_lair, Razorgore, Vaelastrasz with his Captain and Seethers, Chromaggus,
+-- Second pass: the Death Talon Captain and Seethers. The Captain keeps his pack's Aura of Flames by the second
+-- (the C++: every update); a player within 29 yd pulls him, as does the default aggro range beside it. A Seether's
+-- first Flame Buffet counts from aggro (the C++: from first reaching melee). Their own EventAI rules, dead under
+-- the C++ and unlike it, are taken away. Vaelastrasz (his quest binding the instance, a guid in a slot) and
+-- Nefarian's bones to constructs (inside Nefarian's own C++) stay for now.
+-- Map 469 keeps instance_blackwing_lair, Razorgore, Vaelastrasz, Chromaggus,
 -- Victor Nefarius and Nefarian (the core). Broodlord has no height leash (the C++ evaded below z 448.6);
 -- Firemaw does not Thrash (the C++ tried only while casting). A Death Talon picks its brood power and
 -- vulnerability again as it evades (the C++ kept them till death) and does not get them back if dispelled.
@@ -18,17 +23,24 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11983;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12017;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12460;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12461;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12464;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12467;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14022;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14023;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14024;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14025;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14601;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (469000);
+DELETE FROM `conditions` WHERE `condition_entry` IN (469000, 469100, 469101, 469103, 469104, 469105);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(469000, 34, 8, 3, 0, 0, 1);
+(469000, 34, 8, 3, 0, 0, 1),
+(469101, 38, 15, 2, 0, 0, 0),
+(469103, 1, 22436, 0, 0, 0, 3),
+(469100, -1, 469101, 1000, 469103, 0, 0),
+(469104, 38, 16, 1, 0, 0, 0),
+(469105, 1, 22436, 0, 0, 0, 1);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (469101);
 INSERT INTO `broadcast_text`
@@ -70,7 +82,19 @@ DELETE FROM `creature_ai_scripts` WHERE `id` = 1246112;
 DELETE FROM `creature_ai_scripts` WHERE `id` = 1246113;
 DELETE FROM `creature_ai_events` WHERE `creature_id` = 12460;
 DELETE FROM `creature_ai_events` WHERE `creature_id` = 12461;
-DELETE FROM `creature_ai_events` WHERE `id` IN (1198101, 1198102, 1198103, 1198106, 1198107, 1198191, 1198192, 1198193, 1198301, 1198302, 1198303, 1198304, 1198391, 1198392, 1198393, 1201701, 1201702, 1201703, 1201704, 1201705, 1201791, 1201792, 1201793, 1201794, 1201795, 1246051, 1246052, 1246053, 1246054, 1246055, 1246151, 1246152, 1246153, 1246154, 1460101, 1460102, 1460103, 1460104, 1460106, 1460191, 1460192, 1460193);
+DELETE FROM `creature_ai_events` WHERE `id` = 1246701;
+DELETE FROM `creature_ai_scripts` WHERE `id` = 1246701;
+DELETE FROM `creature_ai_events` WHERE `id` = 1246702;
+DELETE FROM `creature_ai_scripts` WHERE `id` = 1246702;
+DELETE FROM `creature_ai_events` WHERE `id` = 1246703;
+DELETE FROM `creature_ai_scripts` WHERE `id` = 1246703;
+DELETE FROM `creature_ai_events` WHERE `id` = 1246704;
+DELETE FROM `creature_ai_scripts` WHERE `id` = 1246704;
+DELETE FROM `creature_ai_events` WHERE `id` = 1246401;
+DELETE FROM `creature_ai_scripts` WHERE `id` = 1246401;
+DELETE FROM `creature_ai_events` WHERE `id` = 1246402;
+DELETE FROM `creature_ai_scripts` WHERE `id` = 1246402;
+DELETE FROM `creature_ai_events` WHERE `id` IN (1198101, 1198102, 1198103, 1198106, 1198107, 1198191, 1198192, 1198193, 1198301, 1198302, 1198303, 1198304, 1198391, 1198392, 1198393, 1201701, 1201702, 1201703, 1201704, 1201705, 1201791, 1201792, 1201793, 1201794, 1201795, 1246051, 1246052, 1246053, 1246054, 1246055, 1246151, 1246152, 1246153, 1246154, 1246411, 1246412, 1246711, 1246712, 1246713, 1246714, 1246715, 1246716, 1246721, 1246722, 1246723, 1246724, 1460101, 1460102, 1460103, 1460104, 1460106, 1460191, 1460192, 1460193);
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
@@ -115,9 +139,21 @@ VALUES
 (1246151, 12461, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1246151, 0, 0, 'Death Talon Overseer - its brood power and vulnerability'),
 (1246152, 12461, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1246152, 0, 0, 'Death Talon Overseer - its brood power and vulnerability'),
 (1246153, 12461, 0, 0, 0, 100, 9, 5000, 9000, 5000, 9000, 1246153, 0, 0, 'Death Talon Overseer - Cleave'),
-(1246154, 12461, 0, 0, 0, 100, 9, 8000, 8000, 10000, 10000, 1246154, 0, 0, 'Death Talon Overseer - Fire Blast at a random attacker');
+(1246154, 12461, 0, 0, 0, 100, 9, 8000, 8000, 10000, 10000, 1246154, 0, 0, 'Death Talon Overseer - Fire Blast at a random attacker'),
+(1246711, 12467, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1246711, 0, 0, 'Death Talon Captain - at rest: his Aura of Flames, his pack''s taken away'),
+(1246712, 12467, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1246712, 0, 0, 'Death Talon Captain - at rest: his Aura of Flames, his pack''s taken away'),
+(1246713, 12467, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246713, 0, 0, 'Death Talon Captain - dead: his pack''s Aura of Flames taken away'),
+(1246714, 12467, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1246714, 0, 0, 'Death Talon Captain - aggro: his Aura of Flames kept, Commanding Shout'),
+(1246715, 12467, 0, 10, 0, 100, 1, 1, 29, 1000, 1000, 1246715, 0, 0, 'Death Talon Captain - a player within 29 yd: the fight'),
+(1246716, 12467, 0, 0, 0, 100, 1, 1000, 1000, 1000, 1000, 1246716, 0, 0, 'Death Talon Captain - every second: the Aura of Flames on his pack within 15 yd'),
+(1246721, 12467, 0, 0, 0, 100, 9, 4000, 8000, 4000, 8000, 1246721, 0, 0, 'Death Talon Captain - Cleave'),
+(1246722, 12467, 0, 0, 0, 100, 9, 12000, 25000, 12000, 25000, 1246722, 0, 0, 'Death Talon Captain - Commanding Shout'),
+(1246723, 12467, 0, 0, 0, 100, 9, 6000, 6000, 15000, 15000, 1246723, 0, 0, 'Death Talon Captain - Mark of Flames at a random attacker'),
+(1246724, 12467, 0, 0, 0, 100, 1, 10000, 10000, 20000, 20000, 1246724, 0, 0, 'Death Talon Captain - Mark of Detonation, a random attacker on itself'),
+(1246411, 12464, 0, 0, 0, 100, 9, 15000, 15000, 15000, 15000, 1246411, 0, 0, 'Death Talon Seether - Frenzy, with its emote'),
+(1246412, 12464, 0, 0, 0, 100, 9, 5000, 10000, 8000, 12000, 1246412, 0, 0, 'Death Talon Seether - Flame Buffet');
 
-DELETE FROM `creature_ai_scripts` WHERE `id` IN (1198101, 1198102, 1198103, 1198106, 1198107, 1198191, 1198192, 1198193, 1198301, 1198302, 1198303, 1198304, 1198391, 1198392, 1198393, 1201701, 1201702, 1201703, 1201704, 1201705, 1201791, 1201792, 1201793, 1201794, 1201795, 1246051, 1246052, 1246053, 1246054, 1246055, 1246151, 1246152, 1246153, 1246154, 1460101, 1460102, 1460103, 1460104, 1460106, 1460191, 1460192, 1460193);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (1198101, 1198102, 1198103, 1198106, 1198107, 1198191, 1198192, 1198193, 1198301, 1198302, 1198303, 1198304, 1198391, 1198392, 1198393, 1201701, 1201702, 1201703, 1201704, 1201705, 1201791, 1201792, 1201793, 1201794, 1201795, 1246051, 1246052, 1246053, 1246054, 1246055, 1246151, 1246152, 1246153, 1246154, 1246411, 1246412, 1246711, 1246712, 1246713, 1246714, 1246715, 1246716, 1246721, 1246722, 1246723, 1246724, 1460101, 1460102, 1460103, 1460104, 1460106, 1460191, 1460192, 1460193);
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -182,9 +218,33 @@ VALUES
 (1246151, 0, 0, 39, 4690022, 4690023, 0, 0, 0, 0, 0, 0, 60, 40, 0, 0, 0, 0, 0, 0, 0, 'Death Talon - vulnerability, one of five'),
 (1246152, 0, 0, 39, 4690022, 4690023, 0, 0, 0, 0, 0, 0, 60, 40, 0, 0, 0, 0, 0, 0, 0, 'Death Talon - vulnerability, one of five'),
 (1246153, 0, 0, 15, 15284, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Cleave'),
-(1246154, 0, 0, 15, 20623, 0, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Fire Blast at a random attacker');
+(1246154, 0, 0, 15, 20623, 0, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Overseer - Fire Blast at a random attacker'),
+(1246711, 0, 0, 15, 22436, 32, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - Aura of Flames'),
+(1246711, 0, 1, 68, 4690025, 2, 12463, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - the pack''s Aura of Flames off (12463)'),
+(1246711, 0, 2, 68, 4690025, 2, 12465, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - the pack''s Aura of Flames off (12465)'),
+(1246711, 0, 3, 68, 4690025, 2, 12464, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - the pack''s Aura of Flames off (12464)'),
+(1246712, 0, 0, 15, 22436, 32, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - Aura of Flames'),
+(1246712, 0, 1, 68, 4690025, 2, 12463, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - the pack''s Aura of Flames off (12463)'),
+(1246712, 0, 2, 68, 4690025, 2, 12465, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - the pack''s Aura of Flames off (12465)'),
+(1246712, 0, 3, 68, 4690025, 2, 12464, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - the pack''s Aura of Flames off (12464)'),
+(1246713, 0, 0, 68, 4690025, 2, 12463, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - the pack''s Aura of Flames off (12463)'),
+(1246713, 0, 1, 68, 4690025, 2, 12465, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - the pack''s Aura of Flames off (12465)'),
+(1246713, 0, 2, 68, 4690025, 2, 12464, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - the pack''s Aura of Flames off (12464)'),
+(1246714, 0, 0, 74, 22436, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 469105, 'Death Talon Captain - Aura of Flames, if gone'),
+(1246714, 0, 1, 15, 22440, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - Commanding Shout'),
+(1246715, 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 85, 'Death Talon Captain - at the player seen'),
+(1246716, 0, 0, 68, 4690026, 2, 12463, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - the pack''s Aura of Flames by distance (12463)'),
+(1246716, 0, 1, 68, 4690026, 2, 12465, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - the pack''s Aura of Flames by distance (12465)'),
+(1246716, 0, 2, 68, 4690026, 2, 12464, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - the pack''s Aura of Flames by distance (12464)'),
+(1246721, 0, 0, 15, 15496, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - Cleave'),
+(1246722, 0, 0, 15, 22440, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - Commanding Shout'),
+(1246723, 0, 0, 15, 25050, 0, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - Mark of Flames at a random attacker'),
+(1246724, 0, 0, 15, 22438, 2, 0, 0, 0, 0, 4, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - Mark of Detonation (the attacker casts it on itself)'),
+(1246411, 0, 0, 15, 22428, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Seether - Frenzy, with its emote'),
+(1246411, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 7797, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Seether - "goes into a killing frenzy!"'),
+(1246412, 0, 0, 15, 22433, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Seether - Flame Buffet');
 
-DELETE FROM `generic_scripts` WHERE `id` IN (4690001, 4690002, 4690003, 4690004, 4690005, 4690006, 4690007, 4690008, 4690009, 4690010, 4690011, 4690012, 4690013, 4690014, 4690015, 4690016, 4690017, 4690018, 4690019, 4690020, 4690021, 4690022, 4690023, 4690024);
+DELETE FROM `generic_scripts` WHERE `id` IN (4690001, 4690002, 4690003, 4690004, 4690005, 4690006, 4690007, 4690008, 4690009, 4690010, 4690011, 4690012, 4690013, 4690014, 4690015, 4690016, 4690017, 4690018, 4690019, 4690020, 4690021, 4690022, 4690023, 4690024, 4690025, 4690026);
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -211,7 +271,10 @@ VALUES
 (4690021, 0, 0, 74, 22281, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon - vulnerability 22281'),
 (4690022, 0, 0, 39, 4690017, 4690018, 4690019, 0, 0, 0, 0, 0, 33, 33, 34, 0, 0, 0, 0, 0, 0, 'Death Talon - vulnerability, one of three'),
 (4690023, 0, 0, 39, 4690020, 4690021, 0, 0, 0, 0, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 0, 'Death Talon - vulnerability, one of two'),
-(4690024, 0, 0, 37, 8, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vael room - its event done (8 = 3): the technicians run');
+(4690024, 0, 0, 37, 8, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vael room - its event done (8 = 3): the technicians run'),
+(4690025, 0, 0, 14, 22436, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon pack - Aura of Flames off'),
+(4690026, 0, 0, 74, 22436, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 469100, 'Death Talon pack - Aura of Flames, within 15 yd of the Captain'),
+(4690026, 0, 1, 14, 22436, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 469104, 'Death Talon pack - Aura of Flames off, farther than 15 yd');
 
 DELETE FROM `areatrigger_generic_script` WHERE `trigger_id` = 3626 AND `script_id` = 4690024;
 INSERT INTO `areatrigger_generic_script`

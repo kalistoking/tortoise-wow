@@ -15,7 +15,7 @@
 UPDATE `creature_template` SET `ai_name` = 'EventAI', `gossip_menu_id` = 760400 WHERE `entry` = 7604;
 UPDATE `creature_template` SET `ai_name` = 'EventAI', `gossip_menu_id` = 760700 WHERE `entry` = 7607;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (209001, 209004, 209005, 209006, 209007, 209009, 209012, 209020, 209021, 209022);
+DELETE FROM `conditions` WHERE `condition_entry` IN (209001, 209004, 209005, 209006, 209007, 209012, 209020, 209021, 209022);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
@@ -24,7 +24,6 @@ VALUES
 (209006, 34, 1, 0, 0, 0, 1),
 (209007, 34, 1, 8, 0, 0, 1),
 (209005, -1, 209006, 209007, 0, 0, 0),
-(209009, -1, 1000, 999, 0, 0, 0),
 (209012, 38, 5, 1, 0, 0, 0),
 (209021, 20, 7271, 30, 0, 0, 0),
 (209022, 34, 4, 0, 0, 0, 0),
@@ -36,7 +35,8 @@ INSERT IGNORE INTO `conditions`
 VALUES
 (230000, 62, 0, 0, 0, 0, 1),
 (129001, 34, 1, 1, 0, 0, 0),
-(532001, 34, 1, 3, 0, 0, 0);
+(532001, 34, 1, 3, 0, 0, 0),
+(209009, -1, 1000, 999, 0, 0, 0);
 
 DELETE FROM `creature_ai_events` WHERE `id` IN (760401, 760402, 760701, 760702, 760703, 760704, 760705, 760706, 760711, 760712, 760713);
 INSERT INTO `creature_ai_events`

@@ -29,13 +29,18 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12118;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12259;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12264;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (409001, 409010, 409011, 409020);
+DELETE FROM `conditions` WHERE `condition_entry` IN (409001, 409010, 409011);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (409001, 38, 45, 1, 0, 0, 0),
 (409010, 20, 11671, 100, 0, 1, 2),
-(409011, 20, 11671, 100, 0, 1, 3),
+(409011, 20, 11671, 100, 0, 1, 3);
+
+-- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
+INSERT IGNORE INTO `conditions`
+(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
+VALUES
 (409020, 38, 5, 2, 0, 0, 0);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (409101, 409102, 409103);

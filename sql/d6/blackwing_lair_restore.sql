@@ -6,16 +6,18 @@ UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_firemaw', `
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_broodlord', `flags_extra` = 2129921 WHERE `entry` = 12017;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_death_talon', `flags_extra` = 2097152 WHERE `entry` = 12460;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_death_talon', `flags_extra` = 2097152 WHERE `entry` = 12461;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_death_talon_Seether', `flags_extra` = 2097152 WHERE `entry` = 12464;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_death_talon_Captain', `flags_extra` = 2101248 WHERE `entry` = 12467;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_corrupted_whelp', `flags_extra` = 0 WHERE `entry` = 14022;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_corrupted_whelp', `flags_extra` = 0 WHERE `entry` = 14023;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_corrupted_whelp', `flags_extra` = 0 WHERE `entry` = 14024;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_corrupted_whelp', `flags_extra` = 0 WHERE `entry` = 14025;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_ebonroc', `flags_extra` = 2129921 WHERE `entry` = 14601;
-DELETE FROM `conditions` WHERE `condition_entry` IN (469000);
+DELETE FROM `conditions` WHERE `condition_entry` IN (469000, 469100, 469101, 469103, 469104, 469105);
 DELETE FROM `broadcast_text` WHERE `entry` IN (469101);
-DELETE FROM `creature_ai_events` WHERE `id` IN (1198101, 1198102, 1198103, 1198106, 1198107, 1198191, 1198192, 1198193, 1198301, 1198302, 1198303, 1198304, 1198391, 1198392, 1198393, 1201701, 1201702, 1201703, 1201704, 1201705, 1201791, 1201792, 1201793, 1201794, 1201795, 1246051, 1246052, 1246053, 1246054, 1246055, 1246151, 1246152, 1246153, 1246154, 1460101, 1460102, 1460103, 1460104, 1460106, 1460191, 1460192, 1460193);
-DELETE FROM `creature_ai_scripts` WHERE `id` IN (1198101, 1198102, 1198103, 1198106, 1198107, 1198191, 1198192, 1198193, 1198301, 1198302, 1198303, 1198304, 1198391, 1198392, 1198393, 1201701, 1201702, 1201703, 1201704, 1201705, 1201791, 1201792, 1201793, 1201794, 1201795, 1246051, 1246052, 1246053, 1246054, 1246055, 1246151, 1246152, 1246153, 1246154, 1460101, 1460102, 1460103, 1460104, 1460106, 1460191, 1460192, 1460193);
-DELETE FROM `generic_scripts` WHERE `id` IN (4690001, 4690002, 4690003, 4690004, 4690005, 4690006, 4690007, 4690008, 4690009, 4690010, 4690011, 4690012, 4690013, 4690014, 4690015, 4690016, 4690017, 4690018, 4690019, 4690020, 4690021, 4690022, 4690023, 4690024);
+DELETE FROM `creature_ai_events` WHERE `id` IN (1198101, 1198102, 1198103, 1198106, 1198107, 1198191, 1198192, 1198193, 1198301, 1198302, 1198303, 1198304, 1198391, 1198392, 1198393, 1201701, 1201702, 1201703, 1201704, 1201705, 1201791, 1201792, 1201793, 1201794, 1201795, 1246051, 1246052, 1246053, 1246054, 1246055, 1246151, 1246152, 1246153, 1246154, 1246411, 1246412, 1246711, 1246712, 1246713, 1246714, 1246715, 1246716, 1246721, 1246722, 1246723, 1246724, 1460101, 1460102, 1460103, 1460104, 1460106, 1460191, 1460192, 1460193);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (1198101, 1198102, 1198103, 1198106, 1198107, 1198191, 1198192, 1198193, 1198301, 1198302, 1198303, 1198304, 1198391, 1198392, 1198393, 1201701, 1201702, 1201703, 1201704, 1201705, 1201791, 1201792, 1201793, 1201794, 1201795, 1246051, 1246052, 1246053, 1246054, 1246055, 1246151, 1246152, 1246153, 1246154, 1246411, 1246412, 1246711, 1246712, 1246713, 1246714, 1246715, 1246716, 1246721, 1246722, 1246723, 1246724, 1460101, 1460102, 1460103, 1460104, 1460106, 1460191, 1460192, 1460193);
+DELETE FROM `generic_scripts` WHERE `id` IN (4690001, 4690002, 4690003, 4690004, 4690005, 4690006, 4690007, 4690008, 4690009, 4690010, 4690011, 4690012, 4690013, 4690014, 4690015, 4690016, 4690017, 4690018, 4690019, 4690020, 4690021, 4690022, 4690023, 4690024, 4690025, 4690026);
 DELETE FROM `areatrigger_generic_script` WHERE `trigger_id` = 3626 AND `script_id` = 4690024;
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
@@ -235,4 +237,64 @@ VALUES
 (1246111, 12461, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246111, 0, 0, 'Death Talon Overseer - On Death resist shadow (Ustaag)'),
 (1246112, 12461, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1246112, 0, 0, 'Death Talon Overseer - On Death resist arcane (Ustaag)'),
 (1246113, 12461, 0, 11, 0, 100, 1, 0, 0, 0, 0, 1246113, 0, 0, 'Death Talon Overseer - On aggro set phase 0 (Ustaag)');
+
+INSERT INTO `creature_ai_events`
+(`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
+VALUES
+(1246701, 12467, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1246701, 0, 0, 'Death Talon Captain - Cast Commanding \n\n\nShout on aggro (Ustaag)');
+
+INSERT INTO `creature_ai_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(1246701, 0, 0, 15, 22440, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - Cast Spell Commanding Shout');
+
+INSERT INTO `creature_ai_events`
+(`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
+VALUES
+(1246702, 12467, 0, 0, 0, 85, 13, 4000, 4000, 5000, 5000, 1246702, 0, 0, 'Death Talon Captain - Cast \n\n\nCleave');
+
+INSERT INTO `creature_ai_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(1246702, 0, 0, 15, 19983, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - Cast Spell Cleave');
+
+INSERT INTO `creature_ai_events`
+(`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
+VALUES
+(1246703, 12467, 0, 0, 0, 80, 13, 20000, 20000, 20000, 20000, 1246703, 0, 0, 'Death Talon Captain - \n\n\nCast Mark of Detonation');
+
+INSERT INTO `creature_ai_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(1246703, 0, 0, 15, 22438, 36, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - Cast Spell Mark of Detonation');
+
+INSERT INTO `creature_ai_events`
+(`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
+VALUES
+(1246704, 12467, 0, 27, 0, 100, 1, 22436, 1, 0, 0, 1246704, 0, 0, 'Death Talon Captain - Cast Aura \n\n\nof flammes (Ustaag)');
+
+INSERT INTO `creature_ai_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(1246704, 0, 0, 15, 22436, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - Cast Spell Aura of Flames');
+
+INSERT INTO `creature_ai_events`
+(`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
+VALUES
+(1246401, 12464, 0, 0, 0, 100, 13, 15000, 15000, 15000, 15000, 1246401, 0, 0, 'Death Talon Seether - Cast Frenzy');
+
+INSERT INTO `creature_ai_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(1246401, 0, 0, 15, 22428, 7, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Seether - Cast Spell Frenzy');
+
+INSERT INTO `creature_ai_events`
+(`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
+VALUES
+(1246402, 12464, 0, 0, 0, 100, 13, 10000, 12000, 10000, 12000, 1246402, 0, 0, 'Death Talon Seether - Cast Mark of Flames');
+
+INSERT INTO `creature_ai_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(1246402, 0, 0, 15, 25050, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Seether - Cast Spell Mark of Flames');
 

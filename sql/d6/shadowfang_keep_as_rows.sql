@@ -12,11 +12,10 @@
 -- Needs the core of trt/module-structure with gameobject_spawn_state (AC3) and its SQL applied.
 
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (33003, 33004, 33005);
+DELETE FROM `conditions` WHERE `condition_entry` IN (33004, 33005);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(33003, 34, 4, 3, 0, 0, 0),
 (33004, 34, 5, 3, 0, 0, 0),
 (33005, 34, 7, 4, 1, 0, 0);
 
@@ -25,7 +24,8 @@ INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (532001, 34, 1, 3, 0, 0, 0),
-(532003, 34, 3, 3, 0, 0, 0);
+(532003, 34, 3, 3, 0, 0, 0),
+(33003, 34, 4, 3, 0, 0, 0);
 
 DELETE FROM `creature_ai_events` WHERE `id` IN (444408, 1000001);
 INSERT INTO `creature_ai_events`

@@ -17,18 +17,18 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12203;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12225;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 13282;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (349002, 349003);
+DELETE FROM `conditions` WHERE `condition_entry` IN (349002);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(349002, 34, 0, 3, 0, 0, 1),
-(349003, 34, 1, 3, 0, 0, 1);
+(349002, 34, 0, 3, 0, 0, 1);
 
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
 INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(532000, 34, 0, 3, 0, 0, 0);
+(532000, 34, 0, 3, 0, 0, 0),
+(349003, 34, 1, 3, 0, 0, 1);
 
 DELETE FROM `creature_ai_events` WHERE `id` IN (1220101, 1220102, 1220103, 1220104, 1220105, 1220301, 1220302, 1220303, 1222501, 1222502, 1222503, 1222504, 1222505, 1328201, 1328202, 1328203, 1328204, 1353304);
 INSERT INTO `creature_ai_events`
