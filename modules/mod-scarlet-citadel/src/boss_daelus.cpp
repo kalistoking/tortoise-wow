@@ -7,7 +7,11 @@
 
 #include "scriptPCH.h"
 #include "boss_daelus.hpp"
-#include "scarlet_citadel.h"
+#include "dungeons/scarlet_citadel/scarlet_citadel.h"
+
+namespace mod_scarlet_citadel
+{
+
 
 
 class boss_daelusAI : public ScriptedAI
@@ -636,3 +640,5 @@ void AddSC_boss_daelus()
     pNewscript->GetAI = &GetAI_npc_fallen_spirit;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_scarlet_citadel

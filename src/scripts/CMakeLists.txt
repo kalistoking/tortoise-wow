@@ -99,8 +99,6 @@ dungeons/ruins_of_ahnqiraj/ruins_of_ahnqiraj.cpp
 dungeons/ruins_of_ahnqiraj/ruins_of_ahnqiraj.h
 dungeons/scarlet_citadel/boss_ardaeus.cpp
 dungeons/scarlet_citadel/boss_ardaeus.hpp
-dungeons/scarlet_citadel/boss_daelus.cpp
-dungeons/scarlet_citadel/boss_daelus.hpp
 dungeons/scarlet_citadel/boss_mariella.cpp
 dungeons/scarlet_citadel/boss_mariella.hpp
 dungeons/scarlet_citadel/instance_scarlet_citadel.cpp

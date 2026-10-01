@@ -222,7 +222,6 @@ void AddSC_custom_exploration_triggers();
 
 // Scarlet Citadel
 void AddSC_boss_ardaeus();
-void AddSC_boss_daelus();
 void AddSC_boss_mariella();
 void AddSC_instance_scarlet_citadel();
 
@@ -495,7 +494,6 @@ void AddScripts()
 
     // Scarlet Citadel
     AddSC_boss_ardaeus();
-    AddSC_boss_daelus();
     AddSC_boss_mariella();
     AddSC_instance_scarlet_citadel();
 
