@@ -22,7 +22,11 @@ SDCategory: Ruins of Ahn'Qiraj
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "ruins_of_ahnqiraj.h"
+#include "dungeons/ruins_of_ahnqiraj/ruins_of_ahnqiraj.h"
+
+namespace mod_ruins_of_ahnqiraj
+{
+
 
 enum
 {
@@ -230,3 +234,5 @@ void AddSC_boss_moam()
     newscript->GetAI = &GetAI_boss_moam;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_ruins_of_ahnqiraj

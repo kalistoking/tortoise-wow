@@ -148,8 +148,6 @@ void AddSC_razorfen_downs_escort();                 // Belnistrasz's escort, sta
 void AddSC_razorfen_kraul_quests();                  // Willix and the gopher, stay in the core (trt A8)
 void AddSC_boss_ayamiss();                           //ruins_of_ahnqiraj
 void AddSC_boss_buru();
-void AddSC_boss_kurinnaxx();
-void AddSC_boss_moam();
 void AddSC_boss_ossirian();
 void AddSC_ruins_of_ahnqiraj();
 void AddSC_instance_ruins_of_ahnqiraj();
@@ -415,8 +413,6 @@ void AddScripts()
     AddSC_razorfen_kraul_quests();
     AddSC_boss_ayamiss();                                   //ruins_of_ahnqiraj
     AddSC_boss_buru();
-    AddSC_boss_kurinnaxx();
-    AddSC_boss_moam();
     AddSC_boss_ossirian();
     AddSC_ruins_of_ahnqiraj();
     AddSC_instance_ruins_of_ahnqiraj();
