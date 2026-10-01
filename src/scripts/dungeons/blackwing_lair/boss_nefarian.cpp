@@ -413,16 +413,24 @@ struct boss_nefarianAI : ScriptedAI
         {
             b_Phase3 = true;
 
-            DoScriptText(SAY_RAISE_SKELETONS, m_creature);
-
-            std::list<GameObject*> l_GObject;
-            static constexpr uint32 GO_DRAKINOID_BONES = 179804;
-            GetGameObjectListWithEntryInGrid(l_GObject, m_creature, GO_DRAKINOID_BONES, 200.0f);
-
-            for (const auto& itr : l_GObject)
+            // trt A28: the bones rise by rows -- his yell, each drakonid's bones a construct -- where the
+            // world has their generic script; the C++ below raises them where it does not.
+            static constexpr uint32 GENERIC_NEFARIAN_RAISES_BONES = 4690100;
+            if (sGenericScripts.find(GENERIC_NEFARIAN_RAISES_BONES) != sGenericScripts.end())
+                m_creature->GetMap()->ScriptsStart(sGenericScripts, GENERIC_NEFARIAN_RAISES_BONES, m_creature->GetObjectGuid(), m_creature->GetObjectGuid());
+            else
             {
-                m_creature->SummonCreature(NPC_BONE_CONSTRUCT, itr->GetPositionX(), itr->GetPositionY(), itr->GetPositionZ(), itr->GetOrientation(), TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 10000);
-                itr->DeleteLater();
+                DoScriptText(SAY_RAISE_SKELETONS, m_creature);
+
+                std::list<GameObject*> l_GObject;
+                static constexpr uint32 GO_DRAKINOID_BONES = 179804;
+                GetGameObjectListWithEntryInGrid(l_GObject, m_creature, GO_DRAKINOID_BONES, 200.0f);
+
+                for (const auto& itr : l_GObject)
+                {
+                    m_creature->SummonCreature(NPC_BONE_CONSTRUCT, itr->GetPositionX(), itr->GetPositionY(), itr->GetPositionZ(), itr->GetOrientation(), TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 10000);
+                    itr->DeleteLater();
+                }
             }
         }
 
