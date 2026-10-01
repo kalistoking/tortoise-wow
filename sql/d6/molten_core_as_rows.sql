@@ -7,8 +7,12 @@
 -- (`module unload mod-molten-core`, which gives every creature standing a new AI at once),
 -- the names find no script and the creatures run these rows (their ai_name).
 --
--- Map 409 keeps instance_molten_core with its runes, Majordomo, Ragnaros, Baron Geddon, Incindis, Sorcerer-Thane
--- and the twin golems (the core). Lucifron's Shadow Shock keeps its timer after a failed cast (the C++ lost it
+-- Second pass: Incindis and his eggs (Quaking Stomp's one target now its spell_template column), the runes.
+-- Fire Nova follows the stomp by 1 s, once (the C++ retried it until it took). A rune cannot be doused before
+-- its boss is dead (gameobject_requirement: the douse fails and the Aqual Quintessence is kept -- the C++ took
+-- it and did nothing); its circle is despawned for a week (the C++ deleted it for the instance's life).
+-- Map 409 keeps instance_molten_core (it douses the runes again as it loads), Majordomo, Ragnaros, Baron Geddon,
+-- Sorcerer-Thane and the twin golems (the core). Lucifron's Shadow Shock keeps its timer after a failed cast (the C++ lost it
 -- for the fight). A firesworn made to explode is picked whatever it is doing (the C++ skipped a banished one);
 -- a core rager is healed every second while under half health; a core hound rises if any other hound lives
 -- within 100 yd (the C++: one in combat), and lies dead at 1 hp (the C++: at a lethal blow); the ancient core
@@ -28,28 +32,45 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12101;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12118;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12259;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12264;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 52145;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 52146;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 52147;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (409001, 409010, 409011);
+DELETE FROM `conditions` WHERE `condition_entry` IN (409001, 409010, 409011, 409316, 409317, 409318, 409319, 409320, 409321, 409322, 409330, 409331, 409332, 409333);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (409001, 38, 45, 1, 0, 0, 0),
 (409010, 20, 11671, 100, 0, 1, 2),
-(409011, 20, 11671, 100, 0, 1, 3);
+(409011, 20, 11671, 100, 0, 1, 3),
+(409316, 34, 16, 3, 0, 0, 0),
+(409317, 34, 17, 3, 0, 0, 0),
+(409318, 34, 18, 3, 0, 0, 0),
+(409319, 34, 19, 3, 0, 0, 0),
+(409320, 34, 20, 3, 0, 0, 0),
+(409321, 34, 21, 3, 0, 0, 0),
+(409322, 34, 22, 3, 0, 0, 0),
+(409330, -1, 409316, 409317, 409318, 409319, 0),
+(409332, 34, 23, 3, 0, 0, 1),
+(409331, -1, 409320, 409321, 409322, 409332, 0),
+(409333, -1, 409330, 409331, 329004, 230000, 0);
 
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
 INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(409020, 38, 5, 2, 0, 0, 0);
+(409020, 38, 5, 2, 0, 0, 0),
+(230000, 62, 0, 0, 0, 0, 1),
+(329004, 34, 9, 3, 0, 0, 1);
 
-DELETE FROM `broadcast_text` WHERE `entry` IN (409101, 409102, 409103);
+DELETE FROM `broadcast_text` WHERE `entry` IN (409101, 409102, 409103, 409301);
 INSERT INTO `broadcast_text`
 (`entry`, `male_text`, `female_text`, `chat_type`, `sound_id`, `language_id`, `emote_id1`, `emote_id2`, `emote_id3`, `emote_delay1`, `emote_delay2`, `emote_delay3`)
 VALUES
 (409101, '%s refuses to die while its master is in trouble.', '%s refuses to die while its master is in trouble.', 2, 0, 0, 0, 0, 0, 0, 0, 0),
 (409102, 'Core Hound reignites from the heat of another Core Hound!', 'Core Hound reignites from the heat of another Core Hound!', 2, 0, 0, 0, 0, 0, 0, 0, 0),
-(409103, 'Core Hound collapses and begins to smolder.', 'Core Hound collapses and begins to smolder.', 2, 0, 0, 0, 0, 0, 0, 0, 0);
+(409103, 'Core Hound collapses and begins to smolder.', 'Core Hound collapses and begins to smolder.', 2, 0, 0, 0, 0, 0, 0, 0, 0),
+(409301, 'The runes of warding have been destroyed! Hunt down the infidels, my brethren!', 'The runes of warding have been destroyed! Hunt down the infidels, my brethren!', 6, 8039, 0, 0, 0, 0, 0, 0, 0);
 
 -- Existing rows taken away: the restore puts them back.
 DELETE FROM `creature_ai_events` WHERE `id` = 1166602;
@@ -62,7 +83,7 @@ DELETE FROM `creature_ai_events` WHERE `id` = 1166802;
 DELETE FROM `creature_ai_scripts` WHERE `id` = 1166802;
 DELETE FROM `creature_ai_events` WHERE `id` = 1210101;
 DELETE FROM `creature_ai_scripts` WHERE `id` = 1210101;
-DELETE FROM `creature_ai_events` WHERE `id` IN (1166611, 1166612, 1166613, 1166811, 1166812, 1166813, 1167101, 1167102, 1167103, 1167104, 1167201, 1167202, 1167203, 1167204, 1167301, 1167302, 1167311, 1167312, 1167313, 1167314, 1167315, 1167316, 1167321, 1167322, 1167323, 1167324, 1198201, 1198202, 1198203, 1198204, 1198211, 1198212, 1198291, 1198292, 1198293, 1198801, 1198802, 1198803, 1198804, 1198811, 1198812, 1198891, 1198892, 1198893, 1205701, 1205702, 1205703, 1205791, 1205792, 1205793, 1209801, 1209802, 1209803, 1209804, 1209805, 1209891, 1209892, 1209893, 1209901, 1209902, 1209903, 1209904, 1209905, 1210111, 1211801, 1211802, 1211803, 1211891, 1211892, 1211893, 1225901, 1225902, 1225903, 1225904, 1225991, 1225992, 1225993, 1226401, 1226402, 1226403, 1226404, 1226405, 1226491, 1226492, 1226493);
+DELETE FROM `creature_ai_events` WHERE `id` IN (1166611, 1166612, 1166613, 1166811, 1166812, 1166813, 1167101, 1167102, 1167103, 1167104, 1167201, 1167202, 1167203, 1167204, 1167301, 1167302, 1167311, 1167312, 1167313, 1167314, 1167315, 1167316, 1167321, 1167322, 1167323, 1167324, 1198201, 1198202, 1198203, 1198204, 1198211, 1198212, 1198291, 1198292, 1198293, 1198801, 1198802, 1198803, 1198804, 1198811, 1198812, 1198891, 1198892, 1198893, 1205701, 1205702, 1205703, 1205791, 1205792, 1205793, 1209801, 1209802, 1209803, 1209804, 1209805, 1209891, 1209892, 1209893, 1209901, 1209902, 1209903, 1209904, 1209905, 1210111, 1211801, 1211802, 1211803, 1211891, 1211892, 1211893, 1225901, 1225902, 1225903, 1225904, 1225991, 1225992, 1225993, 1226401, 1226402, 1226403, 1226404, 1226405, 1226491, 1226492, 1226493, 5214511, 5214512, 5214513, 5214514, 5214611, 5214612, 5214613, 5214711, 5214712, 5214713);
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
@@ -150,9 +171,19 @@ VALUES
 (1167321, 11673, 0, 0, 0, 100, 1, 4000, 7000, 6000, 8000, 1167321, 0, 0, 'Ancient Core Hound - Cone of Fire'),
 (1167322, 11673, 0, 0, 0, 100, 9, 4000, 4000, 6000, 6000, 1167322, 0, 0, 'Ancient Core Hound - Bite'),
 (1167323, 11673, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1167323, 0, 0, 'Ancient Core Hound - aggro: bites for blows'),
-(1167324, 11673, 409020, 0, 0, 100, 9, 2000, 2000, 2000, 2000, 1167324, 0, 0, 'Ancient Core Hound - Vicious Bite for a blow');
+(1167324, 11673, 409020, 0, 0, 100, 9, 2000, 2000, 2000, 2000, 1167324, 0, 0, 'Ancient Core Hound - Vicious Bite for a blow'),
+(5214511, 52145, 0, 0, 0, 100, 9, 6000, 6000, 6000, 6000, 5214511, 0, 0, 'Incindis - Molten Bite'),
+(5214512, 52145, 0, 0, 0, 100, 9, 24000, 30000, 24000, 30000, 5214512, 0, 0, 'Incindis - Quaking Stomp, then Fire Nova'),
+(5214513, 52145, 0, 2, 0, 100, 0, 50, 0, 0, 0, 5214513, 0, 0, 'Incindis - at half health: a large egg and two small ones within 15 yd'),
+(5214514, 52145, 0, 7, 0, 100, 0, 0, 0, 0, 0, 5214514, 0, 0, 'Incindis - home: his eggs gone'),
+(5214611, 52146, 0, 11, 0, 100, 0, 0, 0, 0, 0, 5214611, 0, 0, 'Small Incendic Egg - laid: never fighting, never moving'),
+(5214612, 52146, 0, 1, 2, 100, 9, 0, 0, 1000, 1000, 5214612, 0, 0, 'Small Incendic Egg - hatching until it takes (phase 0, then 1)'),
+(5214613, 52146, 0, 0, 2, 100, 9, 0, 0, 1000, 1000, 5214613, 0, 0, 'Small Incendic Egg - hatching until it takes (phase 0, then 1)'),
+(5214711, 52147, 0, 11, 0, 100, 0, 0, 0, 0, 0, 5214711, 0, 0, 'Large Incendic Egg - laid: never fighting, never moving'),
+(5214712, 52147, 0, 1, 2, 100, 9, 0, 0, 1000, 1000, 5214712, 0, 0, 'Large Incendic Egg - hatching until it takes (phase 0, then 1)'),
+(5214713, 52147, 0, 0, 2, 100, 9, 0, 0, 1000, 1000, 5214713, 0, 0, 'Large Incendic Egg - hatching until it takes (phase 0, then 1)');
 
-DELETE FROM `creature_ai_scripts` WHERE `id` IN (1166611, 1166612, 1166613, 1166811, 1166812, 1166813, 1167101, 1167102, 1167103, 1167104, 1167201, 1167202, 1167203, 1167204, 1167301, 1167302, 1167311, 1167312, 1167313, 1167314, 1167315, 1167316, 1167321, 1167322, 1167323, 1167324, 1198201, 1198202, 1198203, 1198204, 1198211, 1198212, 1198291, 1198292, 1198293, 1198801, 1198802, 1198803, 1198804, 1198811, 1198812, 1198891, 1198892, 1198893, 1205701, 1205702, 1205703, 1205791, 1205792, 1205793, 1209801, 1209802, 1209803, 1209804, 1209805, 1209891, 1209892, 1209893, 1209901, 1209902, 1209903, 1209904, 1209905, 1210111, 1211801, 1211802, 1211803, 1211891, 1211892, 1211893, 1225901, 1225902, 1225903, 1225904, 1225991, 1225992, 1225993, 1226401, 1226402, 1226403, 1226404, 1226405, 1226491, 1226492, 1226493);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (1166611, 1166612, 1166613, 1166811, 1166812, 1166813, 1167101, 1167102, 1167103, 1167104, 1167201, 1167202, 1167203, 1167204, 1167301, 1167302, 1167311, 1167312, 1167313, 1167314, 1167315, 1167316, 1167321, 1167322, 1167323, 1167324, 1198201, 1198202, 1198203, 1198204, 1198211, 1198212, 1198291, 1198292, 1198293, 1198801, 1198802, 1198803, 1198804, 1198811, 1198812, 1198891, 1198892, 1198893, 1205701, 1205702, 1205703, 1205791, 1205792, 1205793, 1209801, 1209802, 1209803, 1209804, 1209805, 1209891, 1209892, 1209893, 1209901, 1209902, 1209903, 1209904, 1209905, 1210111, 1211801, 1211802, 1211803, 1211891, 1211892, 1211893, 1225901, 1225902, 1225903, 1225904, 1225991, 1225992, 1225993, 1226401, 1226402, 1226403, 1226404, 1226405, 1226491, 1226492, 1226493, 5214511, 5214512, 5214513, 5214514, 5214611, 5214612, 5214613, 5214711, 5214712, 5214713);
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -260,9 +291,31 @@ VALUES
 (1167321, 0, 0, 15, 19630, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ancient Core Hound - Cone of Fire'),
 (1167322, 0, 0, 15, 19771, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ancient Core Hound - Bite'),
 (1167323, 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ancient Core Hound - no blows'),
-(1167324, 0, 0, 15, 19319, 2, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ancient Core Hound - Vicious Bite for a blow');
+(1167324, 0, 0, 15, 19319, 2, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ancient Core Hound - Vicious Bite for a blow'),
+(5214511, 0, 0, 15, 42040, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Incindis - Molten Bite'),
+(5214512, 0, 0, 15, 42036, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Incindis - Quaking Stomp, then Fire Nova'),
+(5214512, 0, 1, 39, 4090014, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Incindis - Fire Nova 1 s on'),
+(5214513, 0, 0, 10, 52147, 0, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 5, 15, 0, 0, 0, 0, 'Incindis - a large Incendic Egg'),
+(5214513, 0, 1, 10, 52146, 0, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 5, 15, 0, 0, 0, 0, 'Incindis - a small Incendic Egg'),
+(5214513, 0, 2, 10, 52146, 0, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 5, 15, 0, 0, 0, 0, 'Incindis - a small Incendic Egg'),
+(5214514, 0, 0, 68, 4090015, 2, 52146, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Incindis - his eggs gone (52146)'),
+(5214514, 0, 1, 68, 4090015, 2, 52147, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Incindis - his eggs gone (52147)'),
+(5214611, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Small Incendic Egg - passive'),
+(5214611, 0, 1, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Small Incendic Egg - standing'),
+(5214611, 0, 2, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Small Incendic Egg - no melee'),
+(5214612, 0, 0, 15, 42042, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Small Incendic Egg - Fiery Hatching'),
+(5214612, 0, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Small Incendic Egg - hatching (phase 1)'),
+(5214613, 0, 0, 15, 42042, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Small Incendic Egg - Fiery Hatching'),
+(5214613, 0, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Small Incendic Egg - hatching (phase 1)'),
+(5214711, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Large Incendic Egg - passive'),
+(5214711, 0, 1, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Large Incendic Egg - standing'),
+(5214711, 0, 2, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Large Incendic Egg - no melee'),
+(5214712, 0, 0, 15, 42044, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Large Incendic Egg - Fiery Hatching'),
+(5214712, 0, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Large Incendic Egg - hatching (phase 1)'),
+(5214713, 0, 0, 15, 42044, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Large Incendic Egg - Fiery Hatching'),
+(5214713, 0, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Large Incendic Egg - hatching (phase 1)');
 
-DELETE FROM `generic_scripts` WHERE `id` IN (4090001, 4090002, 4090003, 4090004, 4090005, 4090006, 4090007, 4090008, 4090009, 4090010, 4090011, 4090012, 4090013);
+DELETE FROM `generic_scripts` WHERE `id` IN (4090001, 4090002, 4090003, 4090004, 4090005, 4090006, 4090007, 4090008, 4090009, 4090010, 4090011, 4090012, 4090013, 4090014, 4090015, 4090016);
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -294,5 +347,84 @@ VALUES
 (4090010, 0, 0, 44, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ancient Core Hound - its breath 19369 (phase 5)'),
 (4090011, 0, 0, 44, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ancient Core Hound - its breath 19372 (phase 6)'),
 (4090012, 0, 0, 39, 4090006, 4090007, 4090008, 0, 0, 0, 0, 0, 33, 33, 34, 0, 0, 0, 0, 0, 0, 'Ancient Core Hound - one of three breaths (1 of 2)'),
-(4090013, 0, 0, 39, 4090009, 4090010, 4090011, 0, 0, 0, 0, 0, 33, 33, 34, 0, 0, 0, 0, 0, 0, 'Ancient Core Hound - one of three breaths (2 of 2)');
+(4090013, 0, 0, 39, 4090009, 4090010, 4090011, 0, 0, 0, 0, 0, 33, 33, 34, 0, 0, 0, 0, 0, 0, 'Ancient Core Hound - one of three breaths (2 of 2)'),
+(4090014, 1, 0, 15, 42037, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Incindis - Fire Nova, 1 s after his stomp'),
+(4090015, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Incendic Egg - gone'),
+(4090016, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 409301, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - "The runes of warding have been destroyed!"');
 
+DELETE FROM `gameobject_scripts` WHERE `id` IN (232212, 232213, 232214, 232215, 232216, 232217, 232218);
+INSERT INTO `gameobject_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(232212, 0, 0, 37, 16, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Koro (Sulfuron) - doused (16 = 3)'),
+(232212, 0, 1, 81, 43157, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Koro (Sulfuron) - its circle gone'),
+(232212, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 0, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Koro (Sulfuron) - the last: Majordomo Executus called'),
+(232212, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Koro (Sulfuron) - Majordomo called (23 = 3)'),
+(232213, 0, 0, 37, 17, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Zeth (Geddon) - doused (17 = 3)'),
+(232213, 0, 1, 81, 43158, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Zeth (Geddon) - its circle gone'),
+(232213, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 0, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Zeth (Geddon) - the last: Majordomo Executus called'),
+(232213, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Zeth (Geddon) - Majordomo called (23 = 3)'),
+(232216, 0, 0, 37, 18, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Mazj (Shazzrah) - doused (18 = 3)'),
+(232216, 0, 1, 81, 43159, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Mazj (Shazzrah) - its circle gone'),
+(232216, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 0, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Mazj (Shazzrah) - the last: Majordomo Executus called'),
+(232216, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Mazj (Shazzrah) - Majordomo called (23 = 3)'),
+(232215, 0, 0, 37, 19, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Theri (Golemagg) - doused (19 = 3)'),
+(232215, 0, 1, 81, 43160, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Theri (Golemagg) - its circle gone'),
+(232215, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 0, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Theri (Golemagg) - the last: Majordomo Executus called'),
+(232215, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Theri (Golemagg) - Majordomo called (23 = 3)'),
+(232217, 0, 0, 37, 20, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Blaz (Garr) - doused (20 = 3)'),
+(232217, 0, 1, 81, 43165, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Blaz (Garr) - its circle gone'),
+(232217, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 0, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Blaz (Garr) - the last: Majordomo Executus called'),
+(232217, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Blaz (Garr) - Majordomo called (23 = 3)'),
+(232214, 0, 0, 37, 21, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Kress (Magmadar) - doused (21 = 3)'),
+(232214, 0, 1, 81, 43161, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Kress (Magmadar) - its circle gone'),
+(232214, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 0, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Kress (Magmadar) - the last: Majordomo Executus called'),
+(232214, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Kress (Magmadar) - Majordomo called (23 = 3)'),
+(232218, 0, 0, 37, 22, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Mohn (Gehennas) - doused (22 = 3)'),
+(232218, 0, 1, 81, 43163, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Mohn (Gehennas) - its circle gone'),
+(232218, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 0, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Mohn (Gehennas) - the last: Majordomo Executus called'),
+(232218, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Mohn (Gehennas) - Majordomo called (23 = 3)');
+
+DELETE FROM `gameobject_requirement` WHERE `guid` = 232212;
+INSERT INTO `gameobject_requirement`
+(`guid`, `reqType`, `reqGuid`)
+VALUES
+(232212, 0, 56677);
+
+DELETE FROM `gameobject_requirement` WHERE `guid` = 232213;
+INSERT INTO `gameobject_requirement`
+(`guid`, `reqType`, `reqGuid`)
+VALUES
+(232213, 0, 56655);
+
+DELETE FROM `gameobject_requirement` WHERE `guid` = 232216;
+INSERT INTO `gameobject_requirement`
+(`guid`, `reqType`, `reqGuid`)
+VALUES
+(232216, 0, 56608);
+
+DELETE FROM `gameobject_requirement` WHERE `guid` = 232215;
+INSERT INTO `gameobject_requirement`
+(`guid`, `reqType`, `reqGuid`)
+VALUES
+(232215, 0, 56684);
+
+DELETE FROM `gameobject_requirement` WHERE `guid` = 232217;
+INSERT INTO `gameobject_requirement`
+(`guid`, `reqType`, `reqGuid`)
+VALUES
+(232217, 0, 56609);
+
+DELETE FROM `gameobject_requirement` WHERE `guid` = 232214;
+INSERT INTO `gameobject_requirement`
+(`guid`, `reqType`, `reqGuid`)
+VALUES
+(232214, 0, 56683);
+
+DELETE FROM `gameobject_requirement` WHERE `guid` = 232218;
+INSERT INTO `gameobject_requirement`
+(`guid`, `reqType`, `reqGuid`)
+VALUES
+(232218, 0, 56737);
+
+UPDATE `spell_template` SET `maxAffectedTargets` = 1 WHERE `entry` = 42036;

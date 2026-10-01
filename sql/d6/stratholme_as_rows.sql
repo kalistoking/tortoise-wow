@@ -31,13 +31,12 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11136;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11143;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 16387;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (329001, 329002, 329003, 329004, 329005, 329006, 329007, 329008, 329010, 329020, 329030, 329040, 329041, 329042, 329050);
+DELETE FROM `conditions` WHERE `condition_entry` IN (329001, 329002, 329003, 329005, 329006, 329007, 329008, 329010, 329020, 329030, 329040, 329041, 329042, 329050);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (329002, 34, 0, 0, 0, 0, 0),
 (329001, -1, 230000, 329002, 0, 0, 0),
-(329004, 34, 9, 3, 0, 0, 1),
 (329003, -1, 230000, 329004, 0, 0, 0),
 (329006, 34, 9, 4, 0, 0, 0),
 (329005, -1, 230000, 329006, 0, 0, 0),
@@ -56,6 +55,7 @@ INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (230000, 62, 0, 0, 0, 0, 1),
+(329004, 34, 9, 3, 0, 0, 1),
 (230040, 34, 6, 3, 0, 0, 0);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (329101, 329102, 329103, 329104, 329110);
