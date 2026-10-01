@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_blackrock_spire
+{
+
+
 enum
 {
     SPELL_BLASTWAVE = 11130,
@@ -159,3 +163,5 @@ void AddSC_boss_overlordwyrmthalak()
     newscript->GetAI = &GetAI_boss_overlordwyrmthalak;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_spire

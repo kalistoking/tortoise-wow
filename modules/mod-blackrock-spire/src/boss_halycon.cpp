@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_blackrock_spire
+{
+
+
 #define SPELL_CROWDPUMMEL 10887
 #define SPELL_MIGHTYBLOW 14099
 
@@ -96,3 +100,5 @@ void AddSC_boss_halycon()
     newscript->GetAI = &GetAI_boss_halycon;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_spire

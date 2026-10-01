@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_blackrock_spire
+{
+
+
 enum
 {
     SPELL_FLAMEBREAK = 16785,
@@ -164,3 +168,5 @@ void AddSC_boss_thebeast()
     newscript->GetAI = &GetAI_boss_thebeast;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_spire

@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_blackrock_spire
+{
+
+
 enum
 {
     SPELL_SHOOT          = 16496,
@@ -96,3 +100,5 @@ void AddSC_boss_quatermasterzigris()
     newscript->GetAI = &GetAI_boss_quatermasterzigris;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_spire

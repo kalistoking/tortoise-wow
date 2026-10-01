@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_blackrock_spire
+{
+
+
 enum
 {
     SPELL_CURSEOFBLOOD = 24673,
@@ -109,3 +113,5 @@ void AddSC_boss_shadowvosh()
     newscript->GetAI = &GetAI_boss_shadowvosh;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_spire

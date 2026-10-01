@@ -14,7 +14,6 @@ void AddSC_bg_alterac();
 void AddSC_bg_sunnyglade();
 
 //custom
-void AddSC_ubrs_trash();
 void AddSC_go_scripts();
 void AddSC_event_fireworks();
 
@@ -46,14 +45,7 @@ void AddSC_instance_blackrock_spire();
 void AddSC_blackrock_depths();                       //blackrock_depths
 void AddSC_boss_urok();
 void AddSC_instance_blackrock_depths();
-void AddSC_boss_halycon();
-void AddSC_boss_highlordomokk();
 //void AddSC_boss_mothersmolderweb();
-void AddSC_boss_overlordwyrmthalak();
-void AddSC_boss_shadowvosh();
-void AddSC_boss_thebeast();
-void AddSC_boss_warmastervoone();
-void AddSC_boss_quatermasterzigris();
 void AddSC_boss_pyroguard_emberseer();
 void AddSC_boss_razorgore();                         //blackwing_lair
 void AddSC_boss_vael();
@@ -324,7 +316,6 @@ void AddScripts()
     AddSC_bg_sunnyglade();
 
     //custom
-    AddSC_ubrs_trash();
     AddSC_go_scripts();
     AddSC_event_fireworks();
 
@@ -357,14 +348,7 @@ void AddScripts()
     AddSC_blackrock_depths();                               //blackrock_depths
     AddSC_boss_urok();
     AddSC_instance_blackrock_depths();
-    AddSC_boss_halycon();
-    AddSC_boss_highlordomokk();
     //AddSC_boss_mothersmolderweb();
-    AddSC_boss_overlordwyrmthalak();
-    AddSC_boss_shadowvosh();
-    AddSC_boss_thebeast();
-    AddSC_boss_warmastervoone();
-    AddSC_boss_quatermasterzigris();
 
     AddSC_instance_blackrock_spire();
     AddSC_boss_pyroguard_emberseer();

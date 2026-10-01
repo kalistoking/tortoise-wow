@@ -1,5 +1,9 @@
 #include "scriptPCH.h"
-#include "blackrock_spire.h"
+#include "dungeons/blackrock_spire/blackrock_spire.h"
+
+namespace mod_blackrock_spire
+{
+
 
 enum
 {
@@ -219,3 +223,5 @@ void AddSC_ubrs_trash()
 UPDATE creature_template SET script_name="npc_blackhand_summoner", ai_name="" WHERE entry=9818;
 UPDATE creature_template SET script_name="npc_blackhand_veteran", ai_name="" WHERE entry=9819;
 */
+
+} // namespace mod_blackrock_spire

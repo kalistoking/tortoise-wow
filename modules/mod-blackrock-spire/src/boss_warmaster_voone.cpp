@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_blackrock_spire
+{
+
+
 #define SPELL_SNAPKICK          15618
 #define SPELL_CLEAVE            15284
 #define SPELL_UPPERCUT          10966
@@ -155,3 +159,5 @@ void AddSC_boss_warmastervoone()
     newscript->GetAI = &GetAI_boss_warmastervoone;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_spire

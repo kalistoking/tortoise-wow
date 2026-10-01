@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_blackrock_spire
+{
+
+
 enum
 {
     SPELL_WARSTOMP    = 24375,
@@ -143,3 +147,5 @@ void AddSC_boss_highlordomokk()
     newscript->GetAI = &GetAI_boss_highlordomokk;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_spire
