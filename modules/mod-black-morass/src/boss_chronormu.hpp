@@ -1,3 +1,7 @@
+
+namespace mod_black_morass
+{
+
 /*
  * Copyright (C) 2021-2022 Nolin (nolin.nolin.nolin.nolin@gmail.org)
  *
@@ -17,3 +21,5 @@ static constexpr uint32 SPELL_PARTICLES_GREEN{ 18951 };
 static constexpr uint32 SPELL_SLEEP_VISUAL{ 25148 };
 
 static constexpr uint32 SOUND_CTHUNE_WOUND{ 8698 };
+
+} // namespace mod_black_morass

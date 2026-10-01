@@ -1,3 +1,7 @@
+
+namespace mod_black_morass
+{
+
 /*
  * Copyright (C) 2021-2022 Nolin (nolin.nolin.nolin.nolin@gmail.org)
  *
@@ -39,3 +43,5 @@ public:
 private:
     ObjectGuid unknownEntity{};
 };
+
+} // namespace mod_black_morass

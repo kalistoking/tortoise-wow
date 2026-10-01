@@ -10,14 +10,7 @@ scriptPCH.h
 battlegrounds/battleground.cpp
 battlegrounds/battleground_alterac.cpp
 battlegrounds/battleground_sunnyglade.cpp
-dungeons/black_morass/black_morass.h
-dungeons/black_morass/black_morass_trash.cpp
-dungeons/black_morass/black_morass_trash.hpp
-dungeons/black_morass/boss_chronormu.cpp
-dungeons/black_morass/boss_chronormu.hpp
-dungeons/black_morass/boss_gerastrasz.cpp
-dungeons/black_morass/boss_gerastrasz.hpp
-dungeons/black_morass/instance_black_morass.cpp
+dungeons/black_morass/black_morass_neto.cpp
 dungeons/blackrock_depths/blackrock_depths.cpp
 dungeons/blackrock_depths/blackrock_depths.h
 dungeons/blackrock_depths/instance_blackrock_depths.cpp

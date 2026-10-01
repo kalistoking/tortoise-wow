@@ -9,6 +9,10 @@
 #include "black_morass.h"
 #include <algorithm>
 
+namespace mod_black_morass
+{
+
+
 
 instance_black_morass::instance_black_morass(Map* pMap) : ScriptedInstance(pMap)
 {
@@ -60,3 +64,5 @@ void AddSC_instance_black_morass()
     pNewscript->GetInstanceData = &GetInstanceData_instance_black_morass;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_black_morass

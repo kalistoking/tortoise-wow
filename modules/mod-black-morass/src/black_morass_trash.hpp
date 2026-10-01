@@ -1,3 +1,7 @@
+
+namespace mod_black_morass
+{
+
 /*
  * Copyright (C) 2021-2022 Nolin (nolin.nolin.nolin.nolin@gmail.org)
  *
@@ -197,40 +201,6 @@ namespace nsInjuredDefender
 	};
 }
 
-namespace nsLogisticalOfficer
-{
-	static constexpr uint32 SPELL_ARCANE_CHANNEL{ 23017 };
-	static constexpr uint32 SPELL_TELEPORT{ 26638 };
-	static constexpr uint32 SPELL_SUBTLETY{ 28398 };
-
-	static constexpr uint32 NPC_DEFENDER{ 65001 };
-	static constexpr uint32 NPC_DRAGONSPAWN{ 65100 };
-
-	static constexpr uint32 GOB_GHOST_GATE{ 180322 };
-	static constexpr uint32 GOB_SAND_WALL{ 2010865 };
-	static constexpr uint32 GOB_PORTAL_GROUND_LEFT{ 5000099 };
-	static constexpr uint32 GOB_PORTAL_GROUND_RIGHT{ 5000101 };
-	static constexpr uint32 GOB_PORTAL_WATERFALL{ 2002582 };
-	static constexpr uint32 GOB_PORTAL_AZSHARA_BUILDING{ 2002578 };
-	static constexpr uint32 GOB_PORTAL_NAXX_ZIG{ 2002588 };
-	static constexpr uint32 GOB_PORTAL_THUNDERBLUFF{ 2002587 };
-	static constexpr uint32 GOB_PORTAL_STORMWIND{ 2002585 };
-	static constexpr uint32 GOB_PORTAL_ORG{ 2002583 };
-	static constexpr uint32 GOB_PORTAL_SUMMON{ 2010853 };
-	static constexpr uint32 GOB_PORTAL_UC{ 2002588 };
-
-	enum class Phase : uint8
-	{
-		ONE,
-		TWO,
-		THREE,
-		FOUR,
-		FIVE,
-		SIX,
-		SEVEN
-	};
-}
-
 namespace nsTemporalBronzeDisc
 {
 	static constexpr uint32 NPC_LARGE_TIME_RIFT{ 91001 };
@@ -246,3 +216,5 @@ namespace nsTemporalBronzeDisc
 
 	static cotDataStruct cotData{};
 }
+
+} // namespace mod_black_morass

@@ -1,3 +1,7 @@
+
+namespace mod_black_morass
+{
+
 /*
  * Copyright (C) 2021-2022 Nolin (nolin.nolin.nolin.nolin@gmail.org)
  *
@@ -14,3 +18,5 @@ static constexpr uint32 SPELL_TWIN_TELEPORT_VISUAL{ 26638 };
 static constexpr uint32 SPELL_FIRE_NOVA{ 18432 };
 
 static constexpr uint32 NPC_ECHO_OF_GERASTRASZ{ 50088 };
+
+} // namespace mod_black_morass

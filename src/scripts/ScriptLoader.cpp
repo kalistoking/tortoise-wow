@@ -232,10 +232,7 @@ void AddSC_boss_volkan_cruelblade();
 void AddSC_instance_stormwind_vaults();
 
 // Black Morass
-void AddSC_black_morass_trash();
-void AddSC_instance_black_morass();
-void AddSC_boss_gerastrasz();
-void AddSC_boss_chronormu();
+void AddSC_black_morass_neto();
 
 // Misc
 void AddSC_npc_loothelper();
@@ -497,10 +494,7 @@ void AddScripts()
     AddSC_hateforge_quarry_spells();
 
     // Black Morass
-    AddSC_black_morass_trash();
-    AddSC_instance_black_morass();
-    AddSC_boss_gerastrasz();
-    AddSC_boss_chronormu();
+    AddSC_black_morass_neto();
 
     // Misc
     AddSC_npc_loothelper();

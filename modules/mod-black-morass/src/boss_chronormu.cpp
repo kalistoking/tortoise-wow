@@ -9,6 +9,10 @@
 #include "black_morass.h"
 #include "boss_chronormu.hpp"
 
+namespace mod_black_morass
+{
+
+
 
 class boss_chronormuAI : public ScriptedAI
 {
@@ -139,3 +143,5 @@ void AddSC_boss_chronormu()
     pNewscript->GetAI = &GetAI_boss_chronormu;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_black_morass

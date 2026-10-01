@@ -9,6 +9,10 @@
 #include "black_morass.h"
 #include "boss_gerastrasz.hpp"
 
+namespace mod_black_morass
+{
+
+
 
 class boss_gerastraszAI : public ScriptedAI
 {
@@ -214,3 +218,5 @@ void AddSC_boss_gerastrasz()
     pNewscript->GetAI = &GetAI_boss_gerastrasz;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_black_morass
