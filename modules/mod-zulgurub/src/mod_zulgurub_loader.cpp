@@ -14,6 +14,7 @@ namespace mod_zulgurub
     void AddSC_boss_jeklik();
     void AddSC_zulgurub_brazier_tablets();
     void AddSC_zulgurub_shade_of_jindo();
+    void AddSC_zulgurub_ohgan();
 }
 
 void Addmod_zulgurubScripts()
@@ -32,5 +33,6 @@ void Addmod_zulgurubScripts()
     mod_zulgurub::AddSC_boss_jeklik();
     mod_zulgurub::AddSC_zulgurub_brazier_tablets();
     mod_zulgurub::AddSC_zulgurub_shade_of_jindo();
+    mod_zulgurub::AddSC_zulgurub_ohgan();
     sLog.outString("[mod-zulgurub] Zulgurub's scripts registered from the module");
 }

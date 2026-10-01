@@ -22,10 +22,6 @@ static constexpr uint32 SPELL_WATCH{ 24314 };
 static constexpr uint32 SPELL_DECAPITATE{ 24315 };
 static constexpr uint32 SPELL_LEVEL_UP{ 24312 };
 static constexpr uint32 SPELL_MOUNT{ 23243 };
-// Ohgans's spells
-static constexpr uint32 SPELL_SUNDERARMOR{ 24317 };
-static constexpr uint32 SPELL_THRASH{ 3391 };
-static constexpr uint32 SPELL_EXECUTE{ 7160 };
 // Chained Spirit's spells
 static constexpr uint32 SPELL_REVIVE{ 24341 };
 
@@ -134,6 +130,14 @@ struct boss_mandokirAI : public ScriptedAI
         DespawnSpirits();
 
         CheckVilebranchState(true);
+    }
+
+    // trt A25: Ohgan's rows tell him of a player Ohgan killed (script event 1, the player its invoker), as
+    // mob_ohgan's KilledUnit called his -- his level up, the player he raises and his lines stay his.
+    void OnScriptEventHappened(uint32 uiEvent, uint32 /*uiData*/, WorldObject* pInvoker) override
+    {
+        if (uiEvent == 1 && pInvoker && pInvoker->GetTypeId() == TYPEID_PLAYER)
+            KilledUnit(static_cast<Unit*>(pInvoker));
     }
 
     void KilledUnit(Unit* pVictim) override
@@ -651,124 +655,6 @@ CreatureAI* GetAI_boss_mandokir(Creature* pCreature)
 }
 
 
-struct mob_ohganAI : public ScriptedAI
-{
-    explicit mob_ohganAI(Creature* pCreature) : ScriptedAI(pCreature)
-    {
-        m_pInstance = static_cast<ScriptedInstance*>(pCreature->GetInstanceData());
-        mob_ohganAI::Reset();
-    }
-
-    uint32 m_uiSunderArmor_Timer{};
-    uint32 m_uiThrash_Timer{};
-    uint32 m_uiExecute_Timer{};
-
-    ScriptedInstance* m_pInstance{};
-
-    void Reset() override
-    {
-        m_uiSunderArmor_Timer = 5000;
-        m_uiThrash_Timer = urand(5000, 9000);
-        m_uiExecute_Timer = 1000;
-    }
-
-    void JustDied(Unit* /*pKiller*/) override
-    {
-        if (m_pInstance)
-            m_pInstance->SetData(TYPE_OHGAN, DONE);
-    }
-
-    void KilledUnit(Unit* pVictim) override
-    {
-        if (pVictim->GetTypeId() == TYPEID_PLAYER)
-        {
-            if (m_creature->IsInCombat())
-            {
-                if (Creature* pMandokir{ pVictim->FindNearestCreature(NPC_MANDOKIR, 100.f) })
-                {
-                    pMandokir->AI()->KilledUnit(pVictim);
-                }
-            }
-        }
-    }
-
-    void UpdateAI(const uint32 uiDiff) override
-    {
-        if (!m_creature->SelectHostileTarget() || !m_creature->GetVictim())
-        {
-            if (!m_creature->IsAlive()) // Is this necessary?
-                return;
-
-            if (Creature* pMandokir{ m_creature->FindNearestCreature(NPC_MANDOKIR, 100.f) })
-            {
-                if (pMandokir->IsAlive() && pMandokir->GetVictim())
-                {
-                    m_creature->AI()->AttackStart(pMandokir->GetVictim());
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else
-            {
-                return;
-            }
-        }
-
-        if (m_uiSunderArmor_Timer < uiDiff)
-        {
-            if (DoCastSpellIfCan(me->GetVictim(), SPELL_SUNDERARMOR) == CAST_OK)
-            {
-                m_uiSunderArmor_Timer = urand(10000, 15000);
-            }
-        }
-        else
-        {
-            m_uiSunderArmor_Timer -= uiDiff;
-        }
-
-        if (m_uiThrash_Timer < uiDiff)
-        {
-            if (DoCastSpellIfCan(me, SPELL_THRASH) == CAST_OK)
-            {
-                m_uiThrash_Timer = urand(5000, 9000);
-            }
-        }
-        else
-        {
-            m_uiThrash_Timer -= uiDiff;
-        }
-
-        if (me->GetVictim()->GetHealth() < (me->GetVictim()->GetMaxHealth() * .2f))
-        {
-            if (m_uiExecute_Timer < uiDiff)
-            {
-                if (DoCastSpellIfCan(me->GetVictim(), SPELL_EXECUTE) == CAST_OK)
-                {
-                    m_uiExecute_Timer = 10000;
-                }
-            }
-            else
-            {
-                m_uiExecute_Timer -= uiDiff;
-            }
-        }
-        else
-        {
-            m_uiExecute_Timer -= uiDiff;
-        }
-
-        DoMeleeAttackIfReady();
-    }
-};
-
-CreatureAI* GetAI_mob_ohgan(Creature* pCreature)
-{
-    return new mob_ohganAI(pCreature);
-}
-
-
 struct mob_chainedSpiritsAI : public ScriptedAI
 {
     explicit mob_chainedSpiritsAI(Creature* pCreature) : ScriptedAI(pCreature)
@@ -868,11 +754,6 @@ void AddSC_boss_mandokir()
     pNewScript = new Script;
     pNewScript->Name = "boss_mandokir";
     pNewScript->GetAI = &GetAI_boss_mandokir;
-    pNewScript->RegisterSelf();
-
-    pNewScript = new Script;
-    pNewScript->Name = "mob_ohgan";
-    pNewScript->GetAI = &GetAI_mob_ohgan;
     pNewScript->RegisterSelf();
 
     pNewScript = new Script;

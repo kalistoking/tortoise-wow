@@ -14,6 +14,7 @@ Taken from the core:
 - `src/scripts/dungeons/zulgurub/boss_jeklik.cpp`
 - `src/scripts/dungeons/zulgurub/zulgurub_brazier_tablets.cpp`
 - `src/scripts/dungeons/zulgurub/zulgurub_shade_of_jindo.cpp`
+- `src/scripts/dungeons/zulgurub/zulgurub_ohgan.cpp`
 
 ## The switch
 
