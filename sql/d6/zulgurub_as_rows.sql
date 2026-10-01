@@ -13,8 +13,11 @@
 -- take the zone into their own sight and throw at their own random attacker (the C++: Jeklik's); the Inferno
 -- lies 15 s. The Shade's hexed victim loses its threat within half a second. The brazier's lightning strikes
 -- on the half-second. The tablets' recipe is learned as their text shows (the C++: before it, even with none).
--- Ohgan stays C++: Mandokir levels up and raises its kills through his AI.
--- Map 309 keeps instance_zulgurub, Arlokk, Jeklik, Hakkar, Jin'do, Mandokir, Mar'li, Renataki, Thekal and the
+-- Third pass: Ohgan. A player it kills reaches Mandokir's KilledUnit by a script event, a seam in his C++ (the
+-- C++ asked the Mandokir nearest that player; the rows, the one within 100 yd of Ohgan, edge to edge). Its
+-- Execute waits for its victim at 19 % or under (the C++: under 20). Out of a fight it asks him for his victim
+-- every second (the C++: every update).
+-- Map 309 keeps instance_zulgurub, Arlokk, Hakkar, Jin'do, Mandokir, Mar'li, Renataki, Thekal and the
 -- Pile of Dirt (the core). The gong's event runs and is stopped at once while Arlokk is up or done (the C++ kept
 -- the gong from being struck). Venoxis keeps his size in the snake form and has no height leash; his parasitic
 -- serpents go at a random attacker. The doctor aims at a player out of melee (the C++: the farthest within
@@ -26,11 +29,12 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14507;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14517;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14965;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14986;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14988;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 15009;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 15114;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 987800;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (309011, 309310, 309311, 309312, 309330, 309331, 309332, 309350, 309352, 309354, 309356, 309357, 10309001, 10309004, 10309351, 10309353, 10309355);
+DELETE FROM `conditions` WHERE `condition_entry` IN (309011, 309310, 309311, 309312, 309330, 309331, 309332, 309350, 309352, 309354, 309356, 309357, 309401, 10309001, 10309004, 10309351, 10309353, 10309355);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
@@ -50,7 +54,8 @@ VALUES
 (10309353, -1, 309354, 309330, 309331, 0, 0),
 (309356, 12, 32, 0, 0, 0, 0),
 (10309355, -1, 309356, 309330, 309331, 309332, 0),
-(309357, -1, 351, 352, 0, 0, 2);
+(309357, -1, 351, 352, 0, 0, 2),
+(309401, 41, 19, 2, 0, 0, 0);
 
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
 INSERT IGNORE INTO `conditions`
@@ -87,7 +92,7 @@ DELETE FROM `creature_ai_events` WHERE `id` = 1475003;
 DELETE FROM `creature_ai_scripts` WHERE `id` = 1475003;
 DELETE FROM `creature_ai_events` WHERE `id` = 1475005;
 DELETE FROM `creature_ai_scripts` WHERE `id` = 1475005;
-DELETE FROM `creature_ai_events` WHERE `id` IN (1135211, 1135212, 1135213, 1135214, 1135215, 1183101, 1183102, 1183103, 1183104, 1183105, 1450701, 1450702, 1450703, 1450704, 1450705, 1450706, 1450711, 1450712, 1450713, 1450714, 1450715, 1450721, 1450722, 1450723, 1450724, 1451701, 1451702, 1451703, 1451704, 1451705, 1451706, 1451711, 1451712, 1451713, 1451714, 1451715, 1451721, 1451722, 1451723, 1451724, 1451725, 1451726, 1475011, 1475012, 1475013, 1475014, 1475015, 1496501, 1496502, 1496503, 1496504, 1496505, 1498601, 1498602, 1498603, 1498604, 1498605, 1500901, 1500902, 1511401, 1511402, 1511403, 1511404, 1511405, 1511406, 1511411, 1511412, 1511413, 3099001, 3099002, 3099003, 3099004);
+DELETE FROM `creature_ai_events` WHERE `id` IN (1135211, 1135212, 1135213, 1135214, 1135215, 1183101, 1183102, 1183103, 1183104, 1183105, 1450701, 1450702, 1450703, 1450704, 1450705, 1450706, 1450711, 1450712, 1450713, 1450714, 1450715, 1450721, 1450722, 1450723, 1450724, 1451701, 1451702, 1451703, 1451704, 1451705, 1451706, 1451711, 1451712, 1451713, 1451714, 1451715, 1451721, 1451722, 1451723, 1451724, 1451725, 1451726, 1475011, 1475012, 1475013, 1475014, 1475015, 1496501, 1496502, 1496503, 1496504, 1496505, 1498601, 1498602, 1498603, 1498604, 1498605, 1498801, 1498802, 1498803, 1498804, 1498805, 1498806, 1500901, 1500902, 1511401, 1511402, 1511403, 1511404, 1511405, 1511406, 1511411, 1511412, 1511413, 3099001, 3099002, 3099003, 3099004);
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
@@ -162,9 +167,15 @@ VALUES
 (3099001, 987800, 0, 1, 2, 100, 1, 0, 0, 1000, 1000, 3099001, 0, 0, 'Madness Trigger - its first 4 s: twelve strikes a second (phase 0)'),
 (3099002, 987800, 0, 1, 0, 100, 0, 3500, 3500, 0, 0, 3099002, 0, 0, 'Madness Trigger - 3.5 s on: four a second from then (phase 1)'),
 (3099003, 987800, 0, 1, 1, 100, 1, 500, 500, 1000, 1000, 3099003, 0, 0, 'Madness Trigger - four strikes a second (phase 1)'),
-(3099004, 987800, 0, 1, 0, 100, 0, 24500, 24500, 0, 0, 3099004, 0, 0, 'Madness Trigger - 24.5 s on: gone');
+(3099004, 987800, 0, 1, 0, 100, 0, 24500, 24500, 0, 0, 3099004, 0, 0, 'Madness Trigger - 24.5 s on: gone'),
+(1498801, 14988, 0, 5, 0, 100, 1, 0, 0, 0, 0, 1498801, 0, 0, 'Ohgan - a player killed: Mandokir told, as if he had killed him'),
+(1498802, 14988, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1498802, 0, 0, 'Ohgan - dead: done (5), Mandokir enraged by his own C++'),
+(1498803, 14988, 0, 0, 0, 100, 9, 5000, 5000, 10000, 15000, 1498803, 0, 0, 'Ohgan - Sunder Armor'),
+(1498804, 14988, 0, 0, 0, 100, 9, 5000, 9000, 5000, 9000, 1498804, 0, 0, 'Ohgan - Thrash'),
+(1498805, 14988, 309401, 0, 0, 100, 9, 1000, 1000, 10000, 10000, 1498805, 0, 0, 'Ohgan - Execute, his victim under 20 %'),
+(1498806, 14988, 0, 1, 0, 100, 1, 1000, 1000, 1000, 1000, 1498806, 0, 0, 'Ohgan - out of a fight, every second: Mandokir''s victim, if he has one');
 
-DELETE FROM `creature_ai_scripts` WHERE `id` IN (1135211, 1135212, 1135213, 1135214, 1135215, 1183101, 1183102, 1183103, 1183104, 1183105, 1450701, 1450702, 1450703, 1450704, 1450705, 1450706, 1450711, 1450712, 1450713, 1450714, 1450715, 1450721, 1450722, 1450723, 1450724, 1451701, 1451702, 1451703, 1451704, 1451705, 1451706, 1451711, 1451712, 1451713, 1451714, 1451715, 1451721, 1451722, 1451723, 1451724, 1451725, 1451726, 1475011, 1475012, 1475013, 1475014, 1475015, 1496501, 1496502, 1496503, 1496504, 1496505, 1498601, 1498602, 1498603, 1498604, 1498605, 1500901, 1500902, 1511401, 1511402, 1511403, 1511404, 1511405, 1511406, 1511411, 1511412, 1511413, 3099001, 3099002, 3099003, 3099004);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (1135211, 1135212, 1135213, 1135214, 1135215, 1183101, 1183102, 1183103, 1183104, 1183105, 1450701, 1450702, 1450703, 1450704, 1450705, 1450706, 1450711, 1450712, 1450713, 1450714, 1450715, 1450721, 1450722, 1450723, 1450724, 1451701, 1451702, 1451703, 1451704, 1451705, 1451706, 1451711, 1451712, 1451713, 1451714, 1451715, 1451721, 1451722, 1451723, 1451724, 1451725, 1451726, 1475011, 1475012, 1475013, 1475014, 1475015, 1496501, 1496502, 1496503, 1496504, 1496505, 1498601, 1498602, 1498603, 1498604, 1498605, 1498801, 1498802, 1498803, 1498804, 1498805, 1498806, 1500901, 1500902, 1511401, 1511402, 1511403, 1511404, 1511405, 1511406, 1511411, 1511412, 1511413, 3099001, 3099002, 3099003, 3099004);
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -304,13 +315,22 @@ VALUES
 (3099003, 0, 1, 13, 0, 0, 0, 0, 180252, 100, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Madness Trigger - a Troll Hero Lightning struck'),
 (3099003, 0, 2, 13, 0, 0, 0, 0, 180252, 100, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Madness Trigger - a Troll Hero Lightning struck'),
 (3099003, 0, 3, 13, 0, 0, 0, 0, 180252, 100, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Madness Trigger - a Troll Hero Lightning struck'),
-(3099004, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Madness Trigger - gone');
+(3099004, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Madness Trigger - gone'),
+(1498801, 0, 0, 68, 3090002, 2, 11382, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ohgan - Bloodlord Mandokir within 100 yd told'),
+(1498802, 0, 0, 37, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ohgan - done (5 = 3)'),
+(1498803, 0, 0, 15, 24317, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ohgan - Sunder Armor'),
+(1498804, 0, 0, 15, 3391, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ohgan - Thrash'),
+(1498805, 0, 0, 15, 7160, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ohgan - Execute'),
+(1498806, 0, 0, 68, 3090004, 2, 11382, 100, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ohgan - Bloodlord Mandokir within 100 yd asked');
 
-DELETE FROM `generic_scripts` WHERE `id` IN (3090001);
+DELETE FROM `generic_scripts` WHERE `id` IN (3090001, 3090002, 3090003, 3090004);
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(3090001, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Venoxis''s serpent - gone');
+(3090001, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Venoxis''s serpent - gone'),
+(3090002, 0, 0, 85, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 'Bloodlord Mandokir - told of the player Ohgan killed (1)'),
+(3090003, 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ohgan - attacks Mandokir''s victim'),
+(3090004, 0, 0, 68, 3090003, 2, 14988, 100, 0, 0, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Bloodlord Mandokir - his victim to Ohgan within 100 yd');
 
 DELETE FROM `gossip_scripts` WHERE `id` IN (309500);
 INSERT INTO `gossip_scripts`
