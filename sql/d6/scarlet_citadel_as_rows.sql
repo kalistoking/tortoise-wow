@@ -15,7 +15,17 @@
 -- hurt (the C++: the first on his threat list that was), his Drain Mana at a player with mana in sight (the
 -- C++: the first caster). His mana full kills every player within 150 yd (the C++: on the map). His spawn
 -- respawns in two hours; the C++'s week once Ardaeus is dead never came, Ardaeus being unkillable there.
--- Map 45 keeps instance_scarlet_citadel, Daelus, Mariella and Ardaeus (the core).
+-- Third pass: Sacred Fist Daelus and his Fallen Spirits leave the C++. His root is his combat movement off (rows
+-- have no root). His drain takes 10 % of every player's health within 200 yd each second his victim stands
+-- beyond 3 yd -- game masters too (the C++: every living player on the map but game masters); what it takes
+-- he gains by DEAL_DAMAGE's drain flag (datalong3, a core addition: trt A21). His shout comes as his Dark
+-- Channeling starts, so once per stretch, as the C++'s flag did. His Sunder Armor asks 3 yd in 3D (the C++:
+-- 2D). The red spirit's spot is one of six at 16.5/16.5/17 % (the C++: even); its scale 2 and run never took
+-- in the C++ (set before its aura) and do not here. A spirit is consumed within 4 yd of his middle (the C++:
+-- 1 yd edge to edge, about 3.6), re-sent to him every 0.5 s (the C++: every update). His curse skips a raid of
+-- one on his threat list (the C++: that one cursed). His fight is a map event of two hours at most, which
+-- carries the red one's spot. The C++'s achievement chest was game object 0: none, here as there.
+-- Map 45 keeps instance_scarlet_citadel, Mariella and Ardaeus (the core).
 -- The Chaplain starts the talk for a player within 35 yd of him (the C++: within 10 yd of the doorway, 34 yd
 -- off), and picks the conversation every time (the C++: once per server start). The Inquisitor counters his
 -- own victim's casts; the Valiant charges a player with mana and cleaves his victim, the Footman disarms his
@@ -23,9 +33,11 @@
 -- keeps its own 12.5 s timer (the C++ counted five Sinister Strikes). Abbendis's week-long respawn is her
 -- spawn's own now (the C++ set it as she died).
 
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `gossip_menu_id` = 2000000 WHERE `entry` = 2000000;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000003;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000004;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000005;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `speed_walk` = 0.48 WHERE `entry` = 2000013;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000014;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000015;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000033;
@@ -34,7 +46,7 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000035;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000036;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000037;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (450000, 450010, 450013, 450014, 450015, 10450011);
+DELETE FROM `conditions` WHERE `condition_entry` IN (450000, 450010, 450013, 450014, 450015, 450020, 450021, 450022, 450023, 450024, 450025, 450026, 450027, 450028, 450029, 450031, 450032, 450033, 450034, 450035, 450036, 10450011);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
@@ -43,7 +55,23 @@ VALUES
 (450013, 54, 129, -10, 16, 12, 0),
 (10450011, -1, 116, 450013, 0, 0, 0),
 (450014, 1, 25685, 0, 0, 0, 3),
-(450015, -1, 450014, 230003, 0, 0, 0);
+(450015, -1, 450014, 230003, 0, 0, 0),
+(450026, 38, 2, 2, 0, 0, 0),
+(450027, 1, 21157, -1, 0, 0, 3),
+(450031, 35, 2000000, 1, 1, 0, 0),
+(450032, 35, 2000000, 1, 2, 0, 0),
+(450033, 35, 2000000, 1, 3, 0, 0),
+(450034, 35, 2000000, 1, 4, 0, 0),
+(450035, 35, 2000000, 1, 5, 0, 0),
+(450036, 35, 2000000, 1, 6, 0, 0),
+(450029, 1, 22577, -1, 0, 0, 0),
+(450028, 38, 40, 2, 0, 0, 0),
+(450020, 1, 26235, -1, 0, 0, 0),
+(450021, 54, 67, 13, 17, 4, 0),
+(450022, 54, 67, 13, 17, 4, 1),
+(450023, 1, 26235, -1, 0, 0, 1),
+(450024, -1, 450021, 450020, 0, 0, 0),
+(450025, -1, 450021, 450023, 0, 0, 0);
 
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
 INSERT IGNORE INTO `conditions`
@@ -51,7 +79,7 @@ INSERT IGNORE INTO `conditions`
 VALUES
 (230003, 41, 99, 2, 0, 0, 0);
 
-DELETE FROM `broadcast_text` WHERE `entry` IN (450101, 450102, 450103, 450104, 450105, 450106, 450107, 450108, 450109, 450110, 450111, 450112, 450113, 450114, 450115, 450116, 450117, 450118, 450119, 450120);
+DELETE FROM `broadcast_text` WHERE `entry` IN (450101, 450102, 450103, 450104, 450105, 450106, 450107, 450108, 450109, 450110, 450111, 450112, 450113, 450114, 450115, 450116, 450117, 450118, 450119, 450120, 450121, 450122, 450123, 450124, 450125, 450126, 450127, 450128, 450129, 450130, 450131);
 INSERT INTO `broadcast_text`
 (`entry`, `male_text`, `female_text`, `chat_type`, `sound_id`, `language_id`, `emote_id1`, `emote_id2`, `emote_id3`, `emote_delay1`, `emote_delay2`, `emote_delay3`)
 VALUES
@@ -74,9 +102,20 @@ VALUES
 (450117, 'It’s too late to turn back now!', 'It’s too late to turn back now!', 0, 0, 0, 0, 0, 0, 0, 0, 0),
 (450118, 'Vile Scourge.', 'Vile Scourge.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
 (450119, 'Even the afterlife abandons mongrels like you!', 'Even the afterlife abandons mongrels like you!', 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(450120, 'If only I- I could <cough> .. glance upon an evening’s star <cough> one last time.', 'If only I- I could <cough> .. glance upon an evening’s star <cough> one last time.', 0, 0, 0, 0, 0, 0, 0, 0, 0);
+(450120, 'If only I- I could <cough> .. glance upon an evening’s star <cough> one last time.', 'If only I- I could <cough> .. glance upon an evening’s star <cough> one last time.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450121, 'You''re about to face the thickest wall the Scarlet Crusade has ever built!', 'You''re about to face the thickest wall the Scarlet Crusade has ever built!', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450122, 'With this fist, I become the impenetrable wall of the Crusade!', 'With this fist, I become the impenetrable wall of the Crusade!', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450123, 'Seems like luck favors the damned, but yours has run out!', 'Seems like luck favors the damned, but yours has run out!', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450124, 'Justice for the Scarlet Crusade, justice for Azeroth!', 'Justice for the Scarlet Crusade, justice for Azeroth!', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450125, 'Light… <gasp> d- damn you … all.', 'Light… <gasp> d- damn you … all.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450126, 'Has he sent nothing but mindless husks? Disappointing.', 'Has he sent nothing but mindless husks? Disappointing.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450127, 'I am not so easily crumbled!', 'I am not so easily crumbled!', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450128, 'The Light curses you, with every second your own flesh and blood burn your very being.', 'The Light curses you, with every second your own flesh and blood burn your very being.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450129, 'By my wrath your soul will succumb to the Light''s justice!', 'By my wrath your soul will succumb to the Light''s justice!', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450130, 'Your own mind will be your greatest enemy. The Light shall burn you!', 'Your own mind will be your greatest enemy. The Light shall burn you!', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450131, 'MY FIST FOR THE SCARLET CRUSADE!', 'MY FIST FOR THE SCARLET CRUSADE!', 1, 0, 0, 0, 0, 0, 0, 0, 0);
 
-DELETE FROM `creature_ai_events` WHERE `id` IN (4510001, 4510002, 4510003, 4510101, 4510102, 4510103, 4510104, 4510201, 4510202, 4510203, 4510204, 4510301, 4510302, 4510401, 4510402, 4510501, 4510502, 4510601, 4510602, 4510603, 4510604, 4510605, 4510606, 4510607, 4510608, 4510701, 4510801, 4510802, 4510811, 4510812, 4510813, 4510814, 4510901, 4510902, 4510903, 4510904, 4510905, 4510911, 4510912, 4510913, 4510914, 4510915, 4510916);
+DELETE FROM `creature_ai_events` WHERE `id` IN (4510001, 4510002, 4510003, 4510101, 4510102, 4510103, 4510104, 4510201, 4510202, 4510203, 4510204, 4510301, 4510302, 4510401, 4510402, 4510501, 4510502, 4510601, 4510602, 4510603, 4510604, 4510605, 4510606, 4510607, 4510608, 4510701, 4510801, 4510802, 4510811, 4510812, 4510813, 4510814, 4510901, 4510902, 4510903, 4510904, 4510905, 4510911, 4510912, 4510913, 4510914, 4510915, 4510916, 4511001, 4511002, 4511003, 4511004, 4511011, 4511012, 4511013, 4511014, 4511015, 4511021, 4511022, 4511023, 4511024, 4511025, 4511031, 4511101, 4511102, 4511103, 4511104, 4511105);
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
@@ -122,9 +161,29 @@ VALUES
 (4510915, 2000004, 450014, 0, 0, 100, 1, 30000, 30000, 30000, 30000, 4510915, 0, 0, 'Brother Eric Vesper - one of his four taunts every 30 s'),
 (4510916, 2000004, 0, 3, 0, 100, 1, 100, 100, 1000, 1000, 4510916, 0, 0, 'Brother Eric Vesper - his mana full: every player in the room killed, home'),
 (4510904, 2000004, 0, 21, 0, 100, 1, 0, 0, 0, 0, 4510904, 0, 0, 'Brother Eric Vesper - home: his guards gone, Energize off'),
-(4510905, 2000004, 0, 6, 0, 100, 0, 0, 0, 0, 0, 4510905, 0, 0, 'Brother Eric Vesper - dead: his guards gone, his last words');
+(4510905, 2000004, 0, 6, 0, 100, 0, 0, 0, 0, 0, 4510905, 0, 0, 'Brother Eric Vesper - dead: his guards gone, his last words'),
+(4511001, 2000000, 0, 11, 0, 100, 0, 0, 0, 0, 0, 4511001, 0, 0, 'Sacred Fist Daelus - spawned: kneeling, waiting for a player'),
+(4511002, 2000000, 0, 4, 0, 100, 0, 0, 0, 0, 0, 4511002, 0, 0, 'Sacred Fist Daelus - aggro: rooted, Carapace of C''Thun, the zone, in progress, his fight'),
+(4511003, 2000000, 0, 7, 0, 100, 1, 0, 0, 0, 0, 4511003, 0, 0, 'Sacred Fist Daelus - evading: his adds gone, his line, failed, kneeling again'),
+(4511004, 2000000, 0, 6, 0, 100, 0, 0, 0, 0, 0, 4511004, 0, 0, 'Sacred Fist Daelus - dead: his adds gone, his last words, done'),
+(4511011, 2000000, 450026, 0, 2, 100, 1, 10000, 10000, 10000, 10000, 4511011, 0, 0, 'Sacred Fist Daelus - phase 0: Sunder Armor every 10 s, his victim within 3 yd'),
+(4511012, 2000000, 0, 9, 2, 100, 1, 3, 200, 1000, 1000, 4511012, 0, 0, 'Sacred Fist Daelus - phase 0, his victim beyond 3 yd: Dark Channeling, the raid drained every second'),
+(4511013, 2000000, 0, 9, 2, 100, 1, 0, 3, 1000, 1000, 4511013, 0, 0, 'Sacred Fist Daelus - phase 0, his victim within 3 yd: Dark Channeling off'),
+(4511014, 2000000, 0, 0, 2, 100, 1, 5000, 5000, 30000, 30000, 4511014, 0, 0, 'Sacred Fist Daelus - phase 0: six Fallen Spirits, 5 s in, then every 30 s'),
+(4511015, 2000000, 0, 0, 2, 100, 1, 90000, 90000, 120000, 180000, 4511015, 0, 0, 'Sacred Fist Daelus - phase 0: the next wave''s red spirit chosen, 90 s in, then every 120-180 s'),
+(4511021, 2000000, 0, 31, 0, 100, 1, 1, 0, 0, 0, 4511021, 0, 0, 'Sacred Fist Daelus - a plain spirit consumed: 5 % healed'),
+(4511022, 2000000, 0, 31, 0, 100, 0, 1, 0, 0, 0, 4511022, 0, 0, 'Sacred Fist Daelus - the first plain spirit of a fight: he laughs, his line'),
+(4511023, 2000000, 0, 31, 0, 100, 1, 2, 0, 0, 0, 4511023, 0, 0, 'Sacred Fist Daelus - the red spirit consumed: 5 % healed'),
+(4511024, 2000000, 0, 31, 2, 100, 1, 2, 0, 0, 0, 4511024, 0, 0, 'Sacred Fist Daelus - phase 0, the red spirit consumed: vulnerable (phase 1)'),
+(4511025, 2000000, 0, 0, 1, 100, 1, 30000, 30000, 30000, 30000, 4511025, 0, 0, 'Sacred Fist Daelus - phase 1, 30 s on: the wall again (phase 0)'),
+(4511031, 2000000, 0, 0, 0, 100, 9, 10000, 10000, 60000, 60000, 4511031, 0, 0, 'Sacred Fist Daelus - a curse on a player within 40 yd, not his tank: 10 s in, then every 60 s'),
+(4511101, 2000013, 0, 11, 0, 100, 0, 0, 0, 0, 0, 4511101, 0, 0, 'Fallen Spirit - spawned: no melee, no chase, to Daelus'),
+(4511102, 2000013, 0, 4, 0, 100, 0, 0, 0, 0, 0, 4511102, 0, 0, 'Fallen Spirit - aggro: no melee, no chase'),
+(4511103, 2000013, 0, 1, 0, 100, 1, 500, 500, 500, 500, 4511103, 0, 0, 'Fallen Spirit - every 0.5 s out of a fight: on to Daelus, consumed at him'),
+(4511104, 2000013, 0, 0, 0, 100, 1, 500, 500, 500, 500, 4511104, 0, 0, 'Fallen Spirit - every 0.5 s in a fight: on to Daelus, consumed at him'),
+(4511105, 2000013, 0, 6, 0, 100, 0, 0, 0, 0, 0, 4511105, 0, 0, 'Fallen Spirit - dead: Sonic Burst, gone');
 
-DELETE FROM `creature_ai_scripts` WHERE `id` IN (4510001, 4510002, 4510003, 4510101, 4510102, 4510103, 4510104, 4510201, 4510202, 4510203, 4510204, 4510301, 4510302, 4510401, 4510402, 4510501, 4510502, 4510601, 4510602, 4510603, 4510604, 4510605, 4510606, 4510607, 4510608, 4510701, 4510801, 4510802, 4510811, 4510812, 4510813, 4510814, 4510901, 4510902, 4510903, 4510904, 4510905, 4510911, 4510912, 4510913, 4510914, 4510915, 4510916);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (4510001, 4510002, 4510003, 4510101, 4510102, 4510103, 4510104, 4510201, 4510202, 4510203, 4510204, 4510301, 4510302, 4510401, 4510402, 4510501, 4510502, 4510601, 4510602, 4510603, 4510604, 4510605, 4510606, 4510607, 4510608, 4510701, 4510801, 4510802, 4510811, 4510812, 4510813, 4510814, 4510901, 4510902, 4510903, 4510904, 4510905, 4510911, 4510912, 4510913, 4510914, 4510915, 4510916, 4511001, 4511002, 4511003, 4511004, 4511011, 4511012, 4511013, 4511014, 4511015, 4511021, 4511022, 4511023, 4511024, 4511025, 4511031, 4511101, 4511102, 4511103, 4511104, 4511105);
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -203,9 +262,83 @@ VALUES
 (4510905, 0, 0, 68, 450023, 2, 2000033, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper - his guards gone (2000033)'),
 (4510905, 0, 1, 68, 450023, 2, 2000034, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper - his guards gone (2000034)'),
 (4510905, 0, 2, 68, 450023, 2, 2000035, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper - his guards gone (2000035)'),
-(4510905, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450120, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper - his last words');
+(4510905, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450120, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper - his last words'),
+(4511001, 0, 0, 4, 46, 262146, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - unattackable and stunned'),
+(4511001, 0, 1, 4, 147, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - his gossip on'),
+(4511001, 0, 2, 28, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - kneels'),
+(4511001, 0, 3, 22, 189, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - neutral (189)'),
+(4511001, 0, 4, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - rooted: no combat movement'),
+(4511002, 0, 0, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - rooted: no combat movement'),
+(4511002, 0, 1, 15, 26156, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - Carapace of C''Thun'),
+(4511002, 0, 2, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the zone into the fight'),
+(4511002, 0, 3, 37, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - in progress (0 = 1)'),
+(4511002, 0, 4, 61, 2000000, 7200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - his fight, a map event (two hours at most)'),
+(4511003, 0, 0, 68, 450024, 2, 2000013, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - his Fallen Spirits gone'),
+(4511003, 0, 1, 68, 450024, 2, 16363, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the Poison Clouds gone'),
+(4511003, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450124, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - "Justice for the Scarlet Crusade, justice for Azeroth!"'),
+(4511003, 0, 3, 37, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - failed (0 = 2)'),
+(4511003, 0, 4, 62, 2000000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - his fight over'),
+(4511003, 0, 5, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - phase 0'),
+(4511003, 0, 6, 42, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - melee on'),
+(4511003, 0, 7, 4, 46, 262146, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - unattackable and stunned'),
+(4511003, 0, 8, 4, 147, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - his gossip on'),
+(4511003, 0, 9, 28, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - kneels'),
+(4511003, 0, 10, 22, 189, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - neutral (189)'),
+(4511003, 0, 11, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - rooted: no combat movement'),
+(4511004, 0, 0, 68, 450024, 2, 2000013, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - his Fallen Spirits gone'),
+(4511004, 0, 1, 68, 450024, 2, 16363, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the Poison Clouds gone'),
+(4511004, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450125, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - his last words'),
+(4511004, 0, 3, 37, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - done (0 = 3)'),
+(4511004, 0, 4, 62, 2000000, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - his fight over'),
+(4511011, 0, 0, 15, 25051, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - Sunder Armor'),
+(4511012, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450127, 0, 0, 0, 0, 0, 0, 0, 450027, 'Sacred Fist Daelus - "I am not so easily crumbled!", as he starts channelling'),
+(4511012, 0, 1, 15, 21157, 34, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - Dark Channeling'),
+(4511012, 0, 2, 68, 450025, 3, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the players within 200 yd drained'),
+(4511013, 0, 0, 14, 21157, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - Dark Channeling off'),
+(4511014, 0, 0, 10, 2000013, 0, 0, 0, 0, 0, 0, 0, 0, 450026, -1, 8, 36.207348, -17.218674, 16.87, 1.570526, 0, 'Sacred Fist Daelus - a Fallen Spirit at spot 1'),
+(4511014, 0, 1, 10, 2000013, 0, 0, 0, 0, 0, 0, 0, 0, 450027, -1, 8, 36.207348, 43.897984, 16.87, 4.69641, 0, 'Sacred Fist Daelus - a Fallen Spirit at spot 2'),
+(4511014, 0, 2, 10, 2000013, 0, 0, 0, 0, 0, 0, 0, 0, 450028, -1, 8, 67.414421, -17.218674, 16.87, 1.570526, 0, 'Sacred Fist Daelus - a Fallen Spirit at spot 3'),
+(4511014, 0, 3, 10, 2000013, 0, 0, 0, 0, 0, 0, 0, 0, 450029, -1, 8, 67.414421, 43.897984, 16.87, 4.69641, 0, 'Sacred Fist Daelus - a Fallen Spirit at spot 4'),
+(4511014, 0, 4, 10, 2000013, 0, 0, 0, 0, 0, 0, 0, 0, 450030, -1, 8, 98.575172, -17.218674, 16.87, 1.570526, 0, 'Sacred Fist Daelus - a Fallen Spirit at spot 5'),
+(4511014, 0, 5, 10, 2000013, 0, 0, 0, 0, 0, 0, 0, 0, 450031, -1, 8, 98.575172, 43.897984, 16.87, 4.69641, 0, 'Sacred Fist Daelus - a Fallen Spirit at spot 6'),
+(4511015, 0, 0, 39, 450038, 450039, 0, 0, 0, 0, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - one of six spots'),
+(4511021, 0, 0, 94, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - 5 % healed'),
+(4511022, 0, 0, 1, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - laughs'),
+(4511022, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450126, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - "Has he sent nothing but mindless husks? Disappointing."'),
+(4511023, 0, 0, 94, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - 5 % healed'),
+(4511024, 0, 0, 14, 21157, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - Dark Channeling off'),
+(4511024, 0, 1, 74, 26235, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - Cthun Vulnerable'),
+(4511024, 0, 2, 14, 26156, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - Carapace of C''Thun off'),
+(4511024, 0, 3, 4, 46, 262144, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - stunned'),
+(4511024, 0, 4, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - melee off'),
+(4511024, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450123, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - "Seems like luck favors the damned, but yours has run out!"'),
+(4511024, 0, 6, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - phase 1'),
+(4511025, 0, 0, 14, 26235, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - Cthun Vulnerable off'),
+(4511025, 0, 1, 15, 26156, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - Carapace of C''Thun'),
+(4511025, 0, 2, 4, 46, 262144, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - not stunned'),
+(4511025, 0, 3, 42, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - melee on'),
+(4511025, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450122, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - "With this fist, I become the impenetrable wall of the Crusade!"'),
+(4511025, 0, 5, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - phase 0'),
+(4511031, 0, 0, 39, 450040, 0, 0, 0, 2, 0, 5, 24, 100, 0, 0, 0, 0, 0, 0, 0, 450028, 'Sacred Fist Daelus - the curse'),
+(4511101, 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Fallen Spirit - no melee'),
+(4511101, 0, 1, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Fallen Spirit - no chase'),
+(4511101, 0, 2, 3, 0, 0, 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 67.3897, 13.3098, 16.8691, 0, 0, 'Fallen Spirit - walks to Daelus'),
+(4511102, 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Fallen Spirit - no melee'),
+(4511102, 0, 1, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Fallen Spirit - no chase'),
+(4511103, 0, 0, 94, 1, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 450020, 'Fallen Spirit - the red one kept at 1 %'),
+(4511103, 0, 1, 3, 0, 0, 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 67.3897, 13.3098, 16.8691, 0, 450022, 'Fallen Spirit - walks to Daelus'),
+(4511103, 0, 2, 85, 1, 0, 0, 0, 1300000, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 450025, 'Fallen Spirit - at Daelus, plain: he is told (1)'),
+(4511103, 0, 3, 85, 2, 0, 0, 0, 1300000, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 450024, 'Fallen Spirit - at Daelus, red: he is told (2)'),
+(4511103, 0, 4, 48, 100, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 450021, 'Fallen Spirit - at Daelus: consumed'),
+(4511104, 0, 0, 94, 1, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 450020, 'Fallen Spirit - the red one kept at 1 %'),
+(4511104, 0, 1, 3, 0, 0, 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 67.3897, 13.3098, 16.8691, 0, 450022, 'Fallen Spirit - walks to Daelus'),
+(4511104, 0, 2, 85, 1, 0, 0, 0, 1300000, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 450025, 'Fallen Spirit - at Daelus, plain: he is told (1)'),
+(4511104, 0, 3, 85, 2, 0, 0, 0, 1300000, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 450024, 'Fallen Spirit - at Daelus, red: he is told (2)'),
+(4511104, 0, 4, 48, 100, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 450021, 'Fallen Spirit - at Daelus: consumed'),
+(4511105, 0, 0, 15, 23918, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Fallen Spirit - Sonic Burst'),
+(4511105, 0, 1, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Fallen Spirit - gone');
 
-DELETE FROM `generic_scripts` WHERE `id` IN (450001, 450002, 450003, 450004, 450005, 450006, 450007, 450008, 450009, 450010, 450011, 450012, 450013, 450014, 450015, 450016, 450017, 450018, 450019, 450020, 450021, 450022, 450023);
+DELETE FROM `generic_scripts` WHERE `id` IN (450001, 450002, 450003, 450004, 450005, 450006, 450007, 450008, 450009, 450010, 450011, 450012, 450013, 450014, 450015, 450016, 450017, 450018, 450019, 450020, 450021, 450022, 450023, 450024, 450025, 450026, 450027, 450028, 450029, 450030, 450031, 450032, 450033, 450034, 450035, 450036, 450037, 450038, 450039, 450040);
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -278,9 +411,61 @@ VALUES
 (450020, 0, 1, 34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 132.826, 9.47718, 15.99, 1.55, 0, 'Brother Eric Vesper''s guard - home at its post 18'),
 (450020, 0, 2, 2, 148, 375, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper''s guard - ready, two-handed'),
 (450021, 0, 0, 85, 1, 0, 0, 0, 1300006, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 10450011, 'a player at the hall''s middle - Brother Eric Vesper told'),
-(450022, 0, 0, 48, 100, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 116, 'Brother Eric Vesper - a player in the room killed'),
-(450023, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper''s guard - gone');
+(450022, 0, 0, 48, 100, 1, 0, 0, 1300006, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 116, 'Brother Eric Vesper - a player in the room killed'),
+(450023, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper''s guard - gone'),
+(450024, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - a spirit or a cloud gone'),
+(450025, 0, 0, 48, 10, 1, 1, 0, 1300000, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - 10 % of a player''s health drained into his'),
+(450026, 0, 0, 74, 26235, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450031, 'Fallen Spirit - spot 1, the chosen one: red (Cthun Vulnerable)'),
+(450026, 0, 1, 65, 2000000, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450031, 'Fallen Spirit - spot 1, the chosen one: the choice spent'),
+(450027, 0, 0, 74, 26235, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450032, 'Fallen Spirit - spot 2, the chosen one: red (Cthun Vulnerable)'),
+(450027, 0, 1, 65, 2000000, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450032, 'Fallen Spirit - spot 2, the chosen one: the choice spent'),
+(450028, 0, 0, 74, 26235, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450033, 'Fallen Spirit - spot 3, the chosen one: red (Cthun Vulnerable)'),
+(450028, 0, 1, 65, 2000000, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450033, 'Fallen Spirit - spot 3, the chosen one: the choice spent'),
+(450029, 0, 0, 74, 26235, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450034, 'Fallen Spirit - spot 4, the chosen one: red (Cthun Vulnerable)'),
+(450029, 0, 1, 65, 2000000, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450034, 'Fallen Spirit - spot 4, the chosen one: the choice spent'),
+(450030, 0, 0, 74, 26235, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450035, 'Fallen Spirit - spot 5, the chosen one: red (Cthun Vulnerable)'),
+(450030, 0, 1, 65, 2000000, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450035, 'Fallen Spirit - spot 5, the chosen one: the choice spent'),
+(450031, 0, 0, 74, 26235, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450036, 'Fallen Spirit - spot 6, the chosen one: red (Cthun Vulnerable)'),
+(450031, 0, 1, 65, 2000000, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450036, 'Fallen Spirit - spot 6, the chosen one: the choice spent'),
+(450032, 0, 0, 65, 2000000, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the next wave''s spot 1 red'),
+(450033, 0, 0, 65, 2000000, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the next wave''s spot 2 red'),
+(450034, 0, 0, 65, 2000000, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the next wave''s spot 3 red'),
+(450035, 0, 0, 65, 2000000, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the next wave''s spot 4 red'),
+(450036, 0, 0, 65, 2000000, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the next wave''s spot 5 red'),
+(450037, 0, 0, 65, 2000000, 1, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the next wave''s spot 6 red'),
+(450038, 0, 0, 39, 450032, 450033, 450034, 0, 0, 0, 0, 0, 33, 33, 34, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - one of three spots'),
+(450039, 0, 0, 39, 450035, 450036, 450037, 0, 0, 0, 0, 0, 33, 33, 34, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - one of three spots'),
+(450040, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450128, 450129, 450130, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - one of his three curses'),
+(450040, 0, 1, 15, 22577, 2, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'the cursed player - Glowy (Green) on himself'),
+(450040, 6, 2, 15, 28240, 2, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 450029, 'the cursed player - Poison Cloud at his feet, Glowy still on him'),
+(450040, 6, 3, 14, 22577, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'the cursed player - Glowy (Green) off');
+
+DELETE FROM `gossip_scripts` WHERE `id` IN (2000000);
+INSERT INTO `gossip_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(2000000, 0, 0, 4, 147, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - his gossip off'),
+(2000000, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450121, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - "You''re about to face the thickest wall..."'),
+(2000000, 7, 2, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - stands'),
+(2000000, 7, 3, 4, 46, 262144, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - not stunned'),
+(2000000, 7, 4, 0, 1, 0, 0, 0, 0, 0, 0, 0, 450131, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - "MY FIST FOR THE SCARLET CRUSADE!"'),
+(2000000, 9, 5, 4, 46, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - attackable'),
+(2000000, 9, 6, 22, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - hostile (67)'),
+(2000000, 9, 7, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the zone into the fight');
+
+DELETE FROM `gossip_menu` WHERE `entry` = 2000000 AND `text_id` = 1000002;
+INSERT INTO `gossip_menu`
+(`entry`, `text_id`, `script_id`, `condition_id`)
+VALUES
+(2000000, 1000002, 0, 0);
+
+DELETE FROM `gossip_menu_option` WHERE `menu_id` = 2000000 AND `id` = 0;
+INSERT INTO `gossip_menu_option`
+(`menu_id`, `id`, `option_icon`, `option_text`, `option_broadcast_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `box_broadcast_text`, `condition_id`)
+VALUES
+(2000000, 0, 0, 'This will be your resting place, old-timer.', 0, 1, 1, -1, 0, 2000000, 0, 0, NULL, 0, 0);
 
 UPDATE `creature` SET `spawntimesecsmin` = 604800, `spawntimesecsmax` = 604800 WHERE `guid` = 1300003;
 UPDATE `creature` SET `spawntimesecsmin` = 604800, `spawntimesecsmax` = 604800 WHERE `guid` = 1300021;
 UPDATE `creature` SET `spawntimesecsmin` = 7200, `spawntimesecsmax` = 7200 WHERE `guid` = 1300006;
+UPDATE `creature` SET `spawntimesecsmin` = 604800, `spawntimesecsmax` = 604800 WHERE `guid` = 1300000;
