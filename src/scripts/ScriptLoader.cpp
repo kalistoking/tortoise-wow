@@ -46,7 +46,6 @@ void AddSC_blackrock_depths();                       //blackrock_depths
 void AddSC_boss_urok();
 void AddSC_instance_blackrock_depths();
 //void AddSC_boss_mothersmolderweb();
-void AddSC_boss_pyroguard_emberseer();
 void AddSC_boss_razorgore();                         //blackwing_lair
 void AddSC_boss_vael();
 void AddSC_boss_chromaggus();
@@ -310,7 +309,6 @@ void AddScripts()
     //AddSC_boss_mothersmolderweb();
 
     AddSC_instance_blackrock_spire();
-    AddSC_boss_pyroguard_emberseer();
     AddSC_boss_razorgore();                                 //blackwing_lair
     AddSC_boss_vael();
     AddSC_boss_chromaggus();

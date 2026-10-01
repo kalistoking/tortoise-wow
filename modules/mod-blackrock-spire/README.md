@@ -14,6 +14,7 @@ Taken from the core:
 - `src/scripts/dungeons/blackrock_spire/boss_the_beast.cpp`
 - `src/scripts/dungeons/blackrock_spire/boss_warmaster_voone.cpp`
 - `src/scripts/dungeons/blackrock_spire/ubrs_trash.cpp`
+- `src/scripts/dungeons/blackrock_spire/boss_pyroguard_emberseer.cpp`
 
 ## The switch
 

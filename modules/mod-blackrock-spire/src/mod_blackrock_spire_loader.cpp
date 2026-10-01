@@ -14,6 +14,7 @@ namespace mod_blackrock_spire
     void AddSC_boss_thebeast();
     void AddSC_boss_warmastervoone();
     void AddSC_ubrs_trash();
+    void AddSC_boss_pyroguard_emberseer();
 }
 
 void Addmod_blackrock_spireScripts()
@@ -32,5 +33,6 @@ void Addmod_blackrock_spireScripts()
     mod_blackrock_spire::AddSC_boss_thebeast();
     mod_blackrock_spire::AddSC_boss_warmastervoone();
     mod_blackrock_spire::AddSC_ubrs_trash();
+    mod_blackrock_spire::AddSC_boss_pyroguard_emberseer();
     sLog.outString("[mod-blackrock-spire] Blackrock Spire's scripts registered from the module");
 }

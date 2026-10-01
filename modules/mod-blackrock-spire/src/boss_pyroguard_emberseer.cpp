@@ -22,7 +22,11 @@ SDCategory: Blackrock Spire
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "blackrock_spire.h"
+#include "dungeons/blackrock_spire/blackrock_spire.h"
+
+namespace mod_blackrock_spire
+{
+
 
 enum
 {
@@ -447,3 +451,5 @@ void AddSC_boss_pyroguard_emberseer()
     pNewScript->pProcessEventId = &ProcessEventId_event_free_pyroguard_emberseer;
     pNewScript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_spire
