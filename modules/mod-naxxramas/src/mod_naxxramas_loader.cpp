@@ -14,6 +14,9 @@ namespace mod_naxxramas
     void AddSC_naxxramas_zombie_chow();
     void AddSC_naxxramas_gargoyles_warriors();
     void AddSC_naxxramas_maggots();
+    void AddSC_naxxramas_grobbulus();
+    void AddSC_naxxramas_faerlina();
+    void AddSC_naxxramas_omarion();
 }
 
 void Addmod_naxxramasScripts()
@@ -32,5 +35,8 @@ void Addmod_naxxramasScripts()
     mod_naxxramas::AddSC_naxxramas_zombie_chow();
     mod_naxxramas::AddSC_naxxramas_gargoyles_warriors();
     mod_naxxramas::AddSC_naxxramas_maggots();
+    mod_naxxramas::AddSC_naxxramas_grobbulus();
+    mod_naxxramas::AddSC_naxxramas_faerlina();
+    mod_naxxramas::AddSC_naxxramas_omarion();
     sLog.outString("[mod-naxxramas] Naxxramas's scripts registered from the module");
 }

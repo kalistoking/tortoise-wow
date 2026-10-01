@@ -14,6 +14,9 @@ Taken from the core:
 - `src/scripts/dungeons/naxxramas/naxxramas_zombie_chow.cpp`
 - `src/scripts/dungeons/naxxramas/naxxramas_gargoyles_warriors.cpp`
 - `src/scripts/dungeons/naxxramas/naxxramas_maggots.cpp`
+- `src/scripts/dungeons/naxxramas/naxxramas_grobbulus.cpp` (his spell scripts stay in the core's `boss_grobbulus.cpp`)
+- `src/scripts/dungeons/naxxramas/naxxramas_faerlina.cpp` (her spell script stays in the core's `boss_faerlina.cpp`)
+- `src/scripts/dungeons/naxxramas/naxxramas_omarion.cpp` (from `instance_naxxramas.cpp`, which stays)
 
 ## The switch
 
