@@ -1644,13 +1644,13 @@ class ScriptMgr
         // each script it registers is known as its own (`module unload` takes them out again).
         void BeginModuleScripts(char const* moduleName) { m_registeringModule = moduleName ? moduleName : ""; }
         void EndModuleScripts() { m_registeringModule.clear(); }
-        void NoteScriptOfModule(uint32 scriptId);
+        void NoteScriptOfModule(uint32 scriptId, Script* replaced);
 
         // A dynamic module's scripts taken out while the server runs: each script it registered
-        // no longer answers its script_name, and every creature running one gets a new AI -- the
-        // core's own, as with no module. Its library stays loaded (objects made from it may
-        // still run its code), and an instance made before keeps its instance script until it
-        // is made again. Only from the console, between map updates.
+        // no longer answers its script_name (or the core's script it replaced answers again), and
+        // every creature running one gets a new AI -- the core's own, as with no module. Its library
+        // stays loaded (objects made from it may still run its code), and an instance made before
+        // keeps its instance script until it is made again. Only from the console, between map updates.
         bool UnloadModuleWhileRunning(char const* moduleName, uint32& removedScripts, uint32& newCreatureAIs);
 
         void LoadScriptTexts();
@@ -1781,6 +1781,8 @@ class ScriptMgr
         ModuleLoaderCallbackType m_moduleLoaderCallback;
         std::string m_registeringModule;
         std::map<std::string, std::set<uint32>> m_moduleScripts;
+        // The core's scripts a module's replaced, by script id: they answer again as it is unloaded.
+        std::map<uint32, Script*> m_coreScriptsReplaced;
         // The script tables a reload replaced, kept: something may still point into them.
         std::list<ScriptMapMap> m_retiredScripts;
 };

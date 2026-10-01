@@ -13,6 +13,11 @@ Taken from the core:
 - `src/scripts/dungeons/blackwing_lair/boss_flamegor.cpp`
 - `src/scripts/dungeons/blackwing_lair/blackwing_lair_death_talon_captain.cpp`
 
+Copied from the core, which keeps a part under the same name:
+
+- `src/scripts/dungeons/blackwing_lair/boss_vaelastrasz.cpp` -- the core keeps his quest accept (it binds the
+  instance); loaded, the module's whole copy takes the name over, and unloaded, the core's part has it back.
+
 ## The switch
 
 - **loaded**: its C++ runs, as before;

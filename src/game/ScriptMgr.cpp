@@ -173,13 +173,22 @@ bool ScriptMgr::IsScriptLoaded(uint32 id) const
     return id && id < m_NPC_scripts.size() && m_NPC_scripts[id];
 }
 
-void ScriptMgr::NoteScriptOfModule(uint32 scriptId)
+void ScriptMgr::NoteScriptOfModule(uint32 scriptId, Script* replaced)
 {
     // The newest registration owns the name: a module's own, or the core's (no module).
+    bool replacedModule = false;
     for (auto& module : m_moduleScripts)
-        module.second.erase(scriptId);
-    if (!m_registeringModule.empty())
-        m_moduleScripts[m_registeringModule].insert(scriptId);
+        replacedModule |= module.second.erase(scriptId) != 0;
+    if (m_registeringModule.empty())
+    {
+        m_coreScriptsReplaced.erase(scriptId);
+        return;
+    }
+    m_moduleScripts[m_registeringModule].insert(scriptId);
+    // A module taking a name over from the core (a script split, the core keeping a part): the
+    // core's part is kept, to answer again as the module goes.
+    if (replaced && !replacedModule)
+        m_coreScriptsReplaced[scriptId] = replaced;
 }
 
 bool ScriptMgr::UnloadModuleWhileRunning(char const* moduleName, uint32& removedScripts, uint32& newCreatureAIs)
@@ -194,8 +203,14 @@ bool ScriptMgr::UnloadModuleWhileRunning(char const* moduleName, uint32& removed
     // instance made from them may still run their code.
     std::set<uint32> const removed = module->second;
     for (uint32 id : removed)
-        if (id < m_NPC_scripts.size())
-            m_NPC_scripts[id] = nullptr;
+    {
+        if (id >= m_NPC_scripts.size())
+            continue;
+        auto const core = m_coreScriptsReplaced.find(id);
+        m_NPC_scripts[id] = core == m_coreScriptsReplaced.end() ? nullptr : core->second;
+        if (core != m_coreScriptsReplaced.end())
+            m_coreScriptsReplaced.erase(core);
+    }
     m_moduleScripts.erase(module);
     removedScripts = uint32(removed.size());
 
@@ -3293,8 +3308,9 @@ void Script::RegisterSelf(bool bReportError)
     }
     else if (uint32 id = sScriptMgr.GetScriptId(Name.c_str()))
     {
+        Script* const replaced = m_NPC_scripts[id];
         m_NPC_scripts[id] = this;
-        sScriptMgr.NoteScriptOfModule(id);
+        sScriptMgr.NoteScriptOfModule(id, replaced);
         ++num_sc_scripts;
     }
     else
