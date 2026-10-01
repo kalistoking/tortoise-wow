@@ -20,39 +20,6 @@ bool GOHello_go_gong_of_bethekk(Player* pPlayer, GameObject* pGo)
     return false;
 }
 
-enum
-{
-    SAY_AGGRO                   = -1309011,
-    SAY_FEAST_PANTHER           = -1309012,
-    SAY_DEATH                   = -1309013,
-
-    SPELL_SHADOWWORDPAIN        = 24212, // Mot de l'ombre : douleur
-    SPELL_GOUGE                 = 12540, // Suriner
-    SPELL_MARK                  = 24210,
-    SPELL_CLEAVE                = 26350,                    //Perhaps not right. Not a red aura...
-    SPELL_PANTHER_TRANSFORM     = 24190,
-    SPELL_BACKSTAB              = 15582, // Attaque sournoise
-    SPELL_TOURBILLON            = 15589,
-    SPELL_ATTAQUE_MENTALE       = 15587,
-    SPELL_ROSSER                = 3391,
-    SPELL_RAVAGE                = 24213,
-
-    MODEL_ID_NORMAL             = 15218,
-    MODEL_ID_PANTHER            = 15215,
-    MODEL_ID_BLANK              = 11686,
-
-    NPC_ZULIAN_PROWLER          = 15101,
-//    NPC_ARLOKK                  = 14515, // zulgurub.h
-    MAX_PANTHER_COUNT           = 30,
-
-    GO_ARLOKK_FORCE_FIELD       = 180497,
-    GO_ARLOKK_GONG              = 180526
-};
-
-/*
-[SQL]
-INSERT INTO creature_template SET entry=14968, modelid_1=15013, modelid_2=15013, name="High Priestess Arlokk Transform Visual", faction=35
-*/
 
 void AddSC_zulgurub_gong()
 {
