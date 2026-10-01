@@ -7,12 +7,19 @@
 -- (`module unload mod-blackwing-lair`, which gives every creature standing a new AI at once),
 -- the names find no script and the creatures run these rows (their ai_name).
 --
+-- Second pass: Vaelastrasz the Corrupt; the core keeps his quest accept (one champion, the instance bound to
+-- him), the rest goes to mod-blackwing-lair. Nefarius's intro starts within a second of the room's event (the
+-- C++: a second on) and its lines fall on whole seconds; Banishment of Scale is cast thrice (10 s each) where the
+-- C++ held its channel for the 25 s. His quest is offered whether or not the Scepter run has started (the C++
+-- hid it; its accept still fails the late taker), and a game master is not let past Razorgore unbeaten. He comes
+-- back after a restart lying hurt with his intro again if no one had touched him (the C++: hostile, no gossip),
+-- and with his gossip if he had been corrupted. A mana user already burning is skipped for that turn (the C++
+-- picked another). His week-long respawn is the spawn's own.
 -- Second pass: the Death Talon Captain and Seethers. The Captain keeps his pack's Aura of Flames by the second
 -- (the C++: every update); a player within 29 yd pulls him, as does the default aggro range beside it. A Seether's
 -- first Flame Buffet counts from aggro (the C++: from first reaching melee). Their own EventAI rules, dead under
--- the C++ and unlike it, are taken away. Vaelastrasz (his quest binding the instance, a guid in a slot) and
--- Nefarian's bones to constructs (inside Nefarian's own C++) stay for now.
--- Map 469 keeps instance_blackwing_lair, Razorgore, Vaelastrasz, Chromaggus,
+-- the C++ and unlike it, are taken away. Nefarian's bones to constructs (inside Nefarian's own C++) stay.
+-- Map 469 keeps instance_blackwing_lair, Razorgore, Vaelastrasz's quest accept, Chromaggus,
 -- Victor Nefarius and Nefarian (the core). Broodlord has no height leash (the C++ evaded below z 448.6);
 -- Firemaw does not Thrash (the C++ tried only while casting). A Death Talon picks its brood power and
 -- vulnerability again as it evades (the C++ kept them till death) and does not get them back if dispelled.
@@ -25,28 +32,49 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12460;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12461;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12464;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12467;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `gossip_menu_id` = 1302000 WHERE `entry` = 13020;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14022;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14023;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14024;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14025;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14601;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (469000, 469101, 469103, 469104, 469105, 10469100);
+DELETE FROM `conditions` WHERE `condition_entry` IN (469101, 469103, 469104, 469105, 469110, 469113, 469115, 469118, 10469100);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(469000, 34, 8, 3, 0, 0, 1),
 (469101, 38, 15, 2, 0, 0, 0),
 (469103, 1, 22436, 0, 0, 0, 3),
 (10469100, -1, 469101, 1000, 469103, 0, 0),
 (469104, 38, 16, 1, 0, 0, 0),
-(469105, 1, 22436, 0, 0, 0, 1);
+(469105, 1, 22436, 0, 0, 0, 1),
+(469110, 34, 8, 3, 0, 0, 0),
+(469113, 34, 1, 2, 0, 0, 1),
+(469115, -1, 469110, 209001, 0, 0, 0),
+(469118, 1, 23620, 0, 0, 0, 1);
 
-DELETE FROM `broadcast_text` WHERE `entry` IN (469101);
+-- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
+INSERT IGNORE INTO `conditions`
+(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
+VALUES
+(469000, 34, 8, 3, 0, 0, 1),
+(209001, 34, 1, 0, 0, 0, 0),
+(209032, 34, 1, 4, 0, 0, 0),
+(532000, 34, 0, 3, 0, 0, 0),
+(229240, 34, 9, 0, 0, 0, 0);
+
+DELETE FROM `broadcast_text` WHERE `entry` IN (469101, 469102, 469103, 469104, 469105, 469106, 469107, 469108);
 INSERT INTO `broadcast_text`
 (`entry`, `male_text`, `female_text`, `chat_type`, `sound_id`, `language_id`, `emote_id1`, `emote_id2`, `emote_id3`, `emote_delay1`, `emote_delay2`, `emote_delay3`)
 VALUES
-(469101, 'None of your kind should be here! You''ve doomed only yourselves!', 'None of your kind should be here! You''ve doomed only yourselves!', 1, 8286, 0, 0, 0, 0, 0, 0, 0);
+(469101, 'None of your kind should be here! You''ve doomed only yourselves!', 'None of your kind should be here! You''ve doomed only yourselves!', 1, 8286, 0, 0, 0, 0, 0, 0, 0),
+(469102, 'Ah...the heroes. You are persistent, aren''t you? Your ally here attempted to match his power against mine - and paid the price. Now he shall serve me...by slaughtering you.', 'Ah...the heroes. You are persistent, aren''t you? Your ally here attempted to match his power against mine - and paid the price. Now he shall serve me...by slaughtering you.', 1, 8279, 0, 0, 0, 0, 0, 0, 0),
+(469103, 'Get up, little red wyrm...and destroy them!', 'Get up, little red wyrm...and destroy them!', 1, 0, 0, 1, 0, 0, 0, 0, 0),
+(469104, 'I beg you, mortals - FLEE! Flee before I lose all sense of control! The black fire rages within my heart! I MUST- release it!', 'I beg you, mortals - FLEE! Flee before I lose all sense of control! The black fire rages within my heart! I MUST- release it!', 1, 8282, 0, 1, 0, 0, 0, 0, 0),
+(469105, 'FLAME! DEATH! DESTRUCTION! Cower, mortals before the wrath of Lord...NO - I MUST fight this! Alexstrasza help me, I MUST fight it!', 'FLAME! DEATH! DESTRUCTION! Cower, mortals before the wrath of Lord...NO - I MUST fight this! Alexstrasza help me, I MUST fight it!', 1, 8283, 0, 15, 0, 0, 0, 0, 0),
+(469106, 'Too late, friends! Nefarius'' corruption has taken hold...I cannot...control myself.', 'Too late, friends! Nefarius'' corruption has taken hold...I cannot...control myself.', 1, 8281, 0, 1, 0, 0, 0, 0, 0),
+(469107, 'Forgive me, $N! Your death only adds to my failure!', 'Forgive me, $N! Your death only adds to my failure!', 1, 8284, 0, 0, 0, 0, 0, 0, 0),
+(469108, 'Nefarius'' hate has made me stronger than ever before! You should have fled while you could, mortals! The fury of Blackrock courses through my veins!', 'Nefarius'' hate has made me stronger than ever before! You should have fled while you could, mortals! The fury of Blackrock courses through my veins!', 1, 8285, 0, 0, 0, 0, 0, 0, 0);
 
 -- Existing rows taken away: the restore puts them back.
 DELETE FROM `creature_ai_scripts` WHERE `id` = 1246001;
@@ -94,7 +122,7 @@ DELETE FROM `creature_ai_events` WHERE `id` = 1246401;
 DELETE FROM `creature_ai_scripts` WHERE `id` = 1246401;
 DELETE FROM `creature_ai_events` WHERE `id` = 1246402;
 DELETE FROM `creature_ai_scripts` WHERE `id` = 1246402;
-DELETE FROM `creature_ai_events` WHERE `id` IN (1198101, 1198102, 1198103, 1198106, 1198107, 1198191, 1198192, 1198193, 1198301, 1198302, 1198303, 1198304, 1198391, 1198392, 1198393, 1201701, 1201702, 1201703, 1201704, 1201705, 1201791, 1201792, 1201793, 1201794, 1201795, 1246051, 1246052, 1246053, 1246054, 1246055, 1246151, 1246152, 1246153, 1246154, 1246411, 1246412, 1246711, 1246712, 1246713, 1246714, 1246715, 1246716, 1246721, 1246722, 1246723, 1246724, 1460101, 1460102, 1460103, 1460104, 1460106, 1460191, 1460192, 1460193);
+DELETE FROM `creature_ai_events` WHERE `id` IN (1198101, 1198102, 1198103, 1198106, 1198107, 1198191, 1198192, 1198193, 1198301, 1198302, 1198303, 1198304, 1198391, 1198392, 1198393, 1201701, 1201702, 1201703, 1201704, 1201705, 1201791, 1201792, 1201793, 1201794, 1201795, 1246051, 1246052, 1246053, 1246054, 1246055, 1246151, 1246152, 1246153, 1246154, 1246411, 1246412, 1246711, 1246712, 1246713, 1246714, 1246715, 1246716, 1246721, 1246722, 1246723, 1246724, 1302001, 1302002, 1302003, 1302004, 1302011, 1302012, 1302013, 1302014, 1302021, 1302022, 1302023, 1302024, 1302025, 1302026, 1460101, 1460102, 1460103, 1460104, 1460106, 1460191, 1460192, 1460193);
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
@@ -151,9 +179,23 @@ VALUES
 (1246723, 12467, 0, 0, 0, 100, 9, 6000, 6000, 15000, 15000, 1246723, 0, 0, 'Death Talon Captain - Mark of Flames at a random attacker'),
 (1246724, 12467, 0, 0, 0, 100, 1, 10000, 10000, 20000, 20000, 1246724, 0, 0, 'Death Talon Captain - Mark of Detonation, a random attacker on itself'),
 (1246411, 12464, 0, 0, 0, 100, 9, 15000, 15000, 15000, 15000, 1246411, 0, 0, 'Death Talon Seether - Frenzy, with its emote'),
-(1246412, 12464, 0, 0, 0, 100, 9, 5000, 10000, 8000, 12000, 1246412, 0, 0, 'Death Talon Seether - Flame Buffet');
+(1246412, 12464, 0, 0, 0, 100, 9, 5000, 10000, 8000, 12000, 1246412, 0, 0, 'Death Talon Seether - Flame Buffet'),
+(1302001, 13020, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1302001, 0, 0, 'Vaelastrasz - spawned: 30% health, at rest 2 s on'),
+(1302002, 13020, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1302002, 0, 0, 'Vaelastrasz - evading: 30% health'),
+(1302003, 13020, 0, 21, 0, 100, 0, 0, 0, 0, 0, 1302003, 0, 0, 'Vaelastrasz - home: failed (1), hostile and standing, no gossip'),
+(1302004, 13020, 469115, 1, 2, 100, 1, 1000, 1000, 1000, 1000, 1302004, 0, 0, 'Vaelastrasz - the room''s event done, he untouched: Nefarius''s intro (phase 1)'),
+(1302011, 13020, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1302011, 0, 0, 'Vaelastrasz - aggro: in progress (1), Essence of the Red, the zone into the fight'),
+(1302012, 13020, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1302012, 0, 0, 'Vaelastrasz - dead: done (1)'),
+(1302013, 13020, 0, 5, 0, 20, 1, 0, 0, 0, 0, 1302013, 0, 0, 'Vaelastrasz - a player killed: his line, one time in five'),
+(1302014, 13020, 0, 2, 0, 100, 0, 15, 0, 0, 0, 1302014, 0, 0, 'Vaelastrasz - under 15% health: his line'),
+(1302021, 13020, 0, 0, 0, 100, 9, 6000, 6000, 5000, 10000, 1302021, 0, 0, 'Vaelastrasz - Cleave'),
+(1302022, 13020, 0, 0, 0, 100, 9, 8000, 8000, 5000, 10000, 1302022, 0, 0, 'Vaelastrasz - Flame Breath'),
+(1302023, 13020, 0, 0, 0, 100, 9, 4000, 4000, 2000, 2000, 1302023, 0, 0, 'Vaelastrasz - Fire Nova'),
+(1302024, 13020, 0, 0, 0, 100, 9, 8000, 8000, 4000, 6000, 1302024, 0, 0, 'Vaelastrasz - Tail Sweep'),
+(1302025, 13020, 0, 0, 0, 100, 1, 15000, 15000, 15000, 15000, 1302025, 0, 0, 'Vaelastrasz - Burning Adrenaline, a random mana user on itself'),
+(1302026, 13020, 0, 0, 0, 100, 9, 45000, 45000, 45000, 45000, 1302026, 0, 0, 'Vaelastrasz - Burning Adrenaline, the tank on itself (retried till it takes)');
 
-DELETE FROM `creature_ai_scripts` WHERE `id` IN (1198101, 1198102, 1198103, 1198106, 1198107, 1198191, 1198192, 1198193, 1198301, 1198302, 1198303, 1198304, 1198391, 1198392, 1198393, 1201701, 1201702, 1201703, 1201704, 1201705, 1201791, 1201792, 1201793, 1201794, 1201795, 1246051, 1246052, 1246053, 1246054, 1246055, 1246151, 1246152, 1246153, 1246154, 1246411, 1246412, 1246711, 1246712, 1246713, 1246714, 1246715, 1246716, 1246721, 1246722, 1246723, 1246724, 1460101, 1460102, 1460103, 1460104, 1460106, 1460191, 1460192, 1460193);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (1198101, 1198102, 1198103, 1198106, 1198107, 1198191, 1198192, 1198193, 1198301, 1198302, 1198303, 1198304, 1198391, 1198392, 1198393, 1201701, 1201702, 1201703, 1201704, 1201705, 1201791, 1201792, 1201793, 1201794, 1201795, 1246051, 1246052, 1246053, 1246054, 1246055, 1246151, 1246152, 1246153, 1246154, 1246411, 1246412, 1246711, 1246712, 1246713, 1246714, 1246715, 1246716, 1246721, 1246722, 1246723, 1246724, 1302001, 1302002, 1302003, 1302004, 1302011, 1302012, 1302013, 1302014, 1302021, 1302022, 1302023, 1302024, 1302025, 1302026, 1460101, 1460102, 1460103, 1460104, 1460106, 1460191, 1460192, 1460193);
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -242,9 +284,32 @@ VALUES
 (1246724, 0, 0, 15, 22438, 2, 0, 0, 0, 0, 4, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Captain - Mark of Detonation (the attacker casts it on itself)'),
 (1246411, 0, 0, 15, 22428, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Seether - Frenzy, with its emote'),
 (1246411, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 7797, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Seether - "goes into a killing frenzy!"'),
-(1246412, 0, 0, 15, 22433, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Seether - Flame Buffet');
+(1246412, 0, 0, 15, 22433, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon Seether - Flame Buffet'),
+(1302001, 0, 0, 94, 30, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - 30% health'),
+(1302001, 0, 1, 39, 4690027, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - at rest'),
+(1302002, 0, 0, 94, 30, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - 30% health'),
+(1302003, 0, 0, 37, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - failed'),
+(1302003, 0, 1, 22, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - hostile'),
+(1302003, 0, 2, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - up'),
+(1302003, 0, 3, 4, 46, 512, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - immune to creatures'),
+(1302003, 0, 4, 4, 147, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - no gossip, no quest'),
+(1302003, 0, 5, 94, 30, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - 30% health'),
+(1302004, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - the intro playing'),
+(1302004, 0, 1, 39, 4690029, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - Nefarius''s intro'),
+(1302011, 0, 0, 37, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - in progress'),
+(1302011, 0, 1, 15, 23513, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - Essence of the Red'),
+(1302011, 0, 2, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - the zone into the fight'),
+(1302012, 0, 0, 37, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - done'),
+(1302013, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 469107, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - "Forgive me, $n!..."'),
+(1302014, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 469108, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - "Nefarius'' hate has made me stronger..."'),
+(1302021, 0, 0, 15, 19983, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - Cleave'),
+(1302022, 0, 0, 15, 23461, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - Flame Breath'),
+(1302023, 0, 0, 15, 23462, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - Fire Nova'),
+(1302024, 0, 0, 15, 15847, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - Tail Sweep'),
+(1302025, 0, 0, 15, 23620, 2, 0, 0, 6, 0, 4, 6, 0, 0, 0, 0, 0, 0, 0, 0, 469118, 'Vaelastrasz - Burning Adrenaline (a mana user without it casts it on itself)'),
+(1302026, 0, 0, 15, 23620, 2, 0, 0, 0, 0, 1, 14, 0, 0, 0, 0, 0, 0, 0, 0, 469118, 'Vaelastrasz - Burning Adrenaline (the tank, without it, casts it on itself)');
 
-DELETE FROM `generic_scripts` WHERE `id` IN (4690001, 4690002, 4690003, 4690004, 4690005, 4690006, 4690007, 4690008, 4690009, 4690010, 4690011, 4690012, 4690013, 4690014, 4690015, 4690016, 4690017, 4690018, 4690019, 4690020, 4690021, 4690022, 4690023, 4690024, 4690025, 4690026);
+DELETE FROM `generic_scripts` WHERE `id` IN (4690001, 4690002, 4690003, 4690004, 4690005, 4690006, 4690007, 4690008, 4690009, 4690010, 4690011, 4690012, 4690013, 4690014, 4690015, 4690016, 4690017, 4690018, 4690019, 4690020, 4690021, 4690022, 4690023, 4690024, 4690025, 4690026, 4690027, 4690028, 4690029, 4690030);
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -274,11 +339,67 @@ VALUES
 (4690024, 0, 0, 37, 8, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vael room - its event done (8 = 3): the technicians run'),
 (4690025, 0, 0, 14, 22436, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon pack - Aura of Flames off'),
 (4690026, 0, 0, 74, 22436, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10469100, 'Death Talon pack - Aura of Flames, within 15 yd of the Captain'),
-(4690026, 0, 1, 14, 22436, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 469104, 'Death Talon pack - Aura of Flames off, farther than 15 yd');
+(4690026, 0, 1, 14, 22436, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 469104, 'Death Talon pack - Aura of Flames off, farther than 15 yd'),
+(4690027, 2, 0, 22, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1112, 'Vaelastrasz - hostile after a failed fight'),
+(4690027, 2, 1, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1112, 'Vaelastrasz - up after a failed fight'),
+(4690027, 2, 2, 22, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 469113, 'Vaelastrasz - friendly'),
+(4690027, 2, 3, 28, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 469113, 'Vaelastrasz - lying hurt'),
+(4690027, 2, 4, 4, 46, 512, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - immune to creatures'),
+(4690027, 2, 5, 4, 147, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - no gossip, no quest'),
+(4690027, 2, 6, 4, 147, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 209032, 'Vaelastrasz - gossip and quest, Nefarius done with him'),
+(4690028, 0, 0, 4, 46, 33554432, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Lord Victor Nefarius - not selectable'),
+(4690028, 1, 1, 15, 16404, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Lord Victor Nefarius - Banishment of Scale on Vaelastrasz (10 s, cast again)'),
+(4690028, 11, 2, 15, 16404, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Lord Victor Nefarius - Banishment of Scale on Vaelastrasz (10 s, cast again)'),
+(4690028, 21, 3, 15, 16404, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Lord Victor Nefarius - Banishment of Scale on Vaelastrasz (10 s, cast again)'),
+(4690028, 1, 4, 0, 1, 0, 0, 0, 0, 0, 0, 0, 469102, 0, 0, 0, 0, 0, 0, 0, 0, 'Lord Victor Nefarius - "Ah...the heroes. You are persistent..."'),
+(4690028, 17, 5, 0, 1, 0, 0, 0, 0, 0, 0, 0, 469103, 0, 0, 0, 0, 0, 0, 0, 0, 'Lord Victor Nefarius - "Get up, little red wyrm...and destroy them!"'),
+(4690029, 1, 0, 10, 10162, 25000, 0, 0, 0, 0, 0, 4, 16, 4690028, -1, 3, -7466.16, -1040.8, 412.053, 2.14675, 0, 'Vaelastrasz - Lord Victor Nefarius at the throne for 25 s, no AI of his own'),
+(4690029, 2, 1, 74, 23642, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - Nefarius''s Corruption'),
+(4690029, 18, 2, 37, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - corrupted (1 = 4)'),
+(4690029, 26, 3, 14, 23642, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - Corruption gone (24 s)'),
+(4690029, 26, 4, 4, 147, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - gossip and quest'),
+(4690030, 10, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 469104, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - "I beg you, mortals - FLEE!..."'),
+(4690030, 26, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 469105, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - "FLAME! DEATH! DESTRUCTION!..."'),
+(4690030, 36, 2, 22, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - hostile'),
+(4690030, 36, 3, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - at the one who spoke to him');
+
+DELETE FROM `gossip_scripts` WHERE `id` IN (1302000);
+INSERT INTO `gossip_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(1302000, 0, 0, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - up'),
+(1302000, 0, 1, 4, 147, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - no gossip, no quest'),
+(1302000, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 469106, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - "Too late, friends!..."'),
+(1302000, 0, 3, 37, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 229240, 'Vaelastrasz - the Scepter run failed: no one took his quest'),
+(1302000, 0, 4, 39, 4690030, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - his speech, then the fight');
 
 DELETE FROM `areatrigger_generic_script` WHERE `trigger_id` = 3626 AND `script_id` = 4690024;
 INSERT INTO `areatrigger_generic_script`
 (`trigger_id`, `script_id`, `condition_id`, `flags`, `comment`)
 VALUES
 (3626, 4690024, 469000, 2, 'Vaelastrasz''s room: its event done as the first player walks in, no game master');
+
+DELETE FROM `gossip_menu` WHERE `entry` = 1302000 AND `text_id` = 7156;
+INSERT INTO `gossip_menu`
+(`entry`, `text_id`, `script_id`, `condition_id`)
+VALUES
+(1302000, 7156, 0, 532000);
+
+DELETE FROM `gossip_menu` WHERE `entry` = 1302001 AND `text_id` = 7256;
+INSERT INTO `gossip_menu`
+(`entry`, `text_id`, `script_id`, `condition_id`)
+VALUES
+(1302001, 7256, 0, 0);
+
+DELETE FROM `gossip_menu_option` WHERE `menu_id` = 1302000 AND `id` = 0;
+INSERT INTO `gossip_menu_option`
+(`menu_id`, `id`, `option_icon`, `option_text`, `option_broadcast_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `box_broadcast_text`, `condition_id`)
+VALUES
+(1302000, 0, 0, 'I cannot, Vaelastrasz! Surely something can be done to heal you!', 9847, 1, 1, 1302001, 0, 0, 0, 0, NULL, 0, 0);
+
+DELETE FROM `gossip_menu_option` WHERE `menu_id` = 1302001 AND `id` = 0;
+INSERT INTO `gossip_menu_option`
+(`menu_id`, `id`, `option_icon`, `option_text`, `option_broadcast_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `box_broadcast_text`, `condition_id`)
+VALUES
+(1302001, 0, 0, 'Vaelastrasz, no!!!', 10011, 1, 1, -1, 0, 1302000, 0, 0, NULL, 0, 0);
 
