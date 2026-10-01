@@ -1,0 +1,451 @@
+-- Stratholme (map 329), its bosses, the citizens, crystals, postboxes and crates: its C++ as rows -- EPIC10 tier 2.
+-- Written by the trt repo's scripts/tier2/a22_stratholme.py from t1_world; stratholme_restore.sql puts
+-- back what this replaces. R8: a person applies it, into the world database.
+--
+-- The C++ keeps its script names: mod-stratholme is the switch (AM1, handoff/manager-091).
+-- Loaded, the C++ runs as before -- a script found by name comes first. Unloaded
+-- (`module unload mod-stratholme`, which gives every creature standing a new AI at once),
+-- the names find no script and the creatures run these rows (their ai_name).
+--
+-- Map 329 keeps instance_stratholme, Aurius, the Haunting Phantoms aura, Baroness Anastari and Dathrohan (the
+-- core). The objects' rows wait for their C++ to go. Willey keeps chasing in melee (the C++ stood and shot
+-- from 8-27 yd); Barthilas's Furious Anger has no 26-cast cap; Maleki drains under 60 % only (the C++ also
+-- under half mana) and does not stand off; the crystal falls even if no acolyte was ever near (the C++ waited
+-- for one forever) and says its line itself (the C++: a hidden acolyte); a citizen dances once more instead
+-- of evading on a dance; Atiesh drops his staff to Disarm (676) only. The guardsmen's and Atiesh's own
+-- EventAI rules, dead under the C++ and different from it, are taken away; the courtyard guardsman brings
+-- Timmy whatever his evades (the C++ forgot after one).
+
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 10384;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 10385;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 10415;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 10418;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 10435;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 10437;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 10438;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 10439;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 10808;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 10997;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11122;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11136;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11143;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 16387;
+
+DELETE FROM `conditions` WHERE `condition_entry` IN (329001, 329002, 329003, 329004, 329005, 329006, 329007, 329008, 329010, 329020, 329030, 329040, 329041, 329042, 329050);
+INSERT INTO `conditions`
+(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
+VALUES
+(329002, 34, 0, 0, 0, 0, 0),
+(329001, -1, 230000, 329002, 0, 0, 0),
+(329004, 34, 9, 3, 0, 0, 1),
+(329003, -1, 230000, 329004, 0, 0, 0),
+(329006, 34, 9, 4, 0, 0, 0),
+(329005, -1, 230000, 329006, 0, 0, 0),
+(329008, 34, 9, 2, 2, 0, 0),
+(329007, -1, 230000, 329008, 0, 0, 0),
+(329010, 9, 5282, 1, 0, 0, 0),
+(329020, 20, 10399, 50, 0, 0, 3),
+(329030, 38, 8, 1, 0, 0, 0),
+(329040, 42, 1, 1, 0, 0, 0),
+(329041, 42, 1, 1, 0, 0, 1),
+(329042, 41, 59, 2, 0, 0, 2),
+(329050, 52, 54070, 0, 0, 0, 0);
+
+-- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
+INSERT IGNORE INTO `conditions`
+(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
+VALUES
+(230000, 62, 0, 0, 0, 0, 1),
+(230040, 34, 6, 3, 0, 0, 0);
+
+DELETE FROM `broadcast_text` WHERE `entry` IN (329101, 329102, 329103, 329104, 329110);
+INSERT INTO `broadcast_text`
+(`entry`, `male_text`, `female_text`, `chat_type`, `sound_id`, `language_id`, `emote_id1`, `emote_id2`, `emote_id3`, `emote_delay1`, `emote_delay2`, `emote_delay3`)
+VALUES
+(329101, 'Thanks to Egan', 'Thanks to Egan', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(329102, 'Rivendare must die', 'Rivendare must die', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(329103, 'Who you gonna call?', 'Who you gonna call?', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(329104, 'Don''t cross those beams!', 'Don''t cross those beams!', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(329110, 'An Ash''ari Crystal has been toppled! Restore the ziggurat before the Slaughterhouse is vulnerable!', 'An Ash''ari Crystal has been toppled! Restore the ziggurat before the Slaughterhouse is vulnerable!', 6, 0, 0, 0, 0, 0, 0, 0, 0);
+
+-- Existing rows taken away: the restore puts them back.
+DELETE FROM `creature_ai_events` WHERE `id` = 1638701;
+DELETE FROM `creature_ai_scripts` WHERE `id` = 1638701;
+DELETE FROM `creature_ai_events` WHERE `id` = 1638702;
+DELETE FROM `creature_ai_scripts` WHERE `id` = 1638702;
+DELETE FROM `creature_ai_events` WHERE `id` = 1638703;
+DELETE FROM `creature_ai_scripts` WHERE `id` = 1638703;
+DELETE FROM `creature_ai_events` WHERE `id` = 1041801;
+DELETE FROM `creature_ai_scripts` WHERE `id` = 1041801;
+DELETE FROM `creature_ai_events` WHERE `id` = 1041802;
+DELETE FROM `creature_ai_scripts` WHERE `id` = 1041802;
+DELETE FROM `creature_ai_events` WHERE `id` = 1041803;
+DELETE FROM `creature_ai_scripts` WHERE `id` = 1041803;
+DELETE FROM `creature_ai_events` WHERE `id` = 1041804;
+DELETE FROM `creature_ai_scripts` WHERE `id` = 1041804;
+DELETE FROM `creature_ai_events` WHERE `id` IN (1038401, 1038402, 1038403, 1038411, 1038412, 1038413, 1038414, 1038415, 1038501, 1038502, 1038503, 1038511, 1038512, 1038513, 1038514, 1038515, 1041501, 1041502, 1041811, 1041812, 1041813, 1041814, 1043501, 1043502, 1043503, 1043511, 1043512, 1043513, 1043514, 1043711, 1043712, 1043713, 1043714, 1043811, 1043812, 1043813, 1043814, 1043901, 1043902, 1043903, 1043911, 1043912, 1080811, 1080812, 1099701, 1099702, 1099703, 1099704, 1099711, 1099712, 1099713, 1099714, 1099715, 1112201, 1113601, 1113602, 1114301, 1114302, 1114311, 1114312, 1114313, 1114314, 1114315, 1638711, 1638712, 1638713, 1638714, 1638715, 1638716);
+INSERT INTO `creature_ai_events`
+(`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
+VALUES
+(1113601, 11136, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1113601, 0, 0, 'Freed Soul - one of his four lines'),
+(1113602, 11136, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1113602, 0, 0, 'Freed Soul - one of his four lines'),
+(1112201, 11122, 329010, 8, 2, 100, 0, 17368, -1, 0, 0, 1112201, 0, 0, 'Restless Soul - Egan''s Blaster from a player on The Restless Souls: freed in 5 s'),
+(1038401, 10384, 0, 0, 0, 100, 1, 20000, 20000, 20000, 20000, 1038401, 0, 0, 'Spectral Citizen - Haunting Phantoms'),
+(1038402, 10384, 0, 8, 2, 100, 0, 17368, -1, 0, 0, 1038402, 0, 0, 'Spectral Citizen - Egan''s Blaster: dead in 5 s, restless souls rising'),
+(1038403, 10384, 0, 6, 1, 100, 0, 0, 0, 0, 0, 1038403, 0, 0, 'Spectral Citizen - dead, tagged: restless souls (100, 50, 33, 25 %)'),
+(1038411, 10384, 0, 22, 0, 100, 1, 101, 0, 0, 0, 1038411, 0, 0, 'Spectral Citizen - waves back'),
+(1038412, 10384, 0, 22, 0, 100, 1, 17, 0, 0, 0, 1038412, 0, 0, 'Spectral Citizen - bows back'),
+(1038413, 10384, 0, 22, 0, 100, 1, 58, 0, 0, 0, 1038413, 0, 0, 'Spectral Citizen - flexes'),
+(1038414, 10384, 0, 22, 0, 100, 1, 34, 0, 0, 0, 1038414, 0, 0, 'Spectral Citizen - dances'),
+(1038415, 10384, 0, 22, 0, 100, 1, 77, 0, 0, 0, 1038415, 0, 0, 'Spectral Citizen - slaps the rude'),
+(1038501, 10385, 0, 0, 0, 100, 1, 20000, 20000, 20000, 20000, 1038501, 0, 0, 'Ghostly Citizen - Haunting Phantoms'),
+(1038502, 10385, 0, 8, 2, 100, 0, 17368, -1, 0, 0, 1038502, 0, 0, 'Ghostly Citizen - Egan''s Blaster: dead in 5 s, restless souls rising'),
+(1038503, 10385, 0, 6, 1, 100, 0, 0, 0, 0, 0, 1038503, 0, 0, 'Ghostly Citizen - dead, tagged: restless souls (100, 50, 33, 25 %)'),
+(1038511, 10385, 0, 22, 0, 100, 1, 101, 0, 0, 0, 1038511, 0, 0, 'Ghostly Citizen - waves back'),
+(1038512, 10385, 0, 22, 0, 100, 1, 17, 0, 0, 0, 1038512, 0, 0, 'Ghostly Citizen - bows back'),
+(1038513, 10385, 0, 22, 0, 100, 1, 58, 0, 0, 0, 1038513, 0, 0, 'Ghostly Citizen - flexes'),
+(1038514, 10385, 0, 22, 0, 100, 1, 34, 0, 0, 0, 1038514, 0, 0, 'Ghostly Citizen - dances'),
+(1038515, 10385, 0, 22, 0, 100, 1, 77, 0, 0, 0, 1038515, 0, 0, 'Ghostly Citizen - slaps the rude'),
+(1041501, 10415, 329020, 1, 0, 100, 1, 2000, 2000, 2000, 2000, 1041501, 0, 0, 'Ash''ari Crystal - its acolytes near all dead: it falls'),
+(1041502, 10415, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1041502, 0, 0, 'Ash''ari Crystal - fallen: the zone hears it (12 = 1)'),
+(1099701, 10997, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1099701, 0, 0, 'Cannon Master Willey - spawned: the gate open'),
+(1099702, 10997, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1099702, 0, 0, 'Cannon Master Willey - evading: the gate open'),
+(1099703, 10997, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1099703, 0, 0, 'Cannon Master Willey - aggro: the gate shut'),
+(1099704, 10997, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1099704, 0, 0, 'Cannon Master Willey - dead: the gate open'),
+(1099711, 10997, 0, 0, 0, 100, 9, 5000, 10000, 12000, 12000, 1099711, 0, 0, 'Cannon Master Willey - Pummel'),
+(1099712, 10997, 0, 0, 0, 100, 9, 15000, 20000, 15000, 20000, 1099712, 0, 0, 'Cannon Master Willey - Knock Away'),
+(1099713, 10997, 329030, 0, 0, 100, 9, 1000, 1000, 2500, 3500, 1099713, 0, 0, 'Cannon Master Willey - Shoot, his victim 8 yd off or more'),
+(1099714, 10997, 0, 0, 0, 100, 1, 5000, 5000, 10000, 10000, 1099714, 0, 0, 'Cannon Master Willey - his riflemen, every 10 s'),
+(1099715, 10997, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1099715, 0, 0, 'Cannon Master Willey - evading: his riflemen gone'),
+(1638711, 16387, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1638711, 0, 0, 'Atiesh - spawned: Red Lightning, his staff'),
+(1638712, 16387, 0, 0, 0, 100, 1, 1000, 1000, 1000, 1000, 1638712, 0, 0, 'Atiesh - 28340 kept up'),
+(1638713, 16387, 0, 0, 0, 100, 1, 1000, 1000, 1000, 1000, 1638713, 0, 0, 'Atiesh - 12787 kept up'),
+(1638714, 16387, 0, 0, 0, 100, 9, 15000, 15000, 15000, 25000, 1638714, 0, 0, 'Atiesh - Breath of Sargeras'),
+(1638715, 16387, 0, 0, 0, 100, 9, 1000, 1000, 13000, 18000, 1638715, 0, 0, 'Atiesh - Shadow Bolt at a random attacker'),
+(1638716, 16387, 0, 8, 0, 100, 0, 676, -1, 0, 0, 1638716, 0, 0, 'Atiesh - disarmed: the staff drops'),
+(1043501, 10435, 0, 10, 0, 100, 1, 1, 10, 1000, 1000, 1043501, 0, 0, 'Magistrate Barthilas - a player near: he wakes'),
+(1043502, 10435, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1043502, 0, 0, 'Magistrate Barthilas - his living form'),
+(1043503, 10435, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1043503, 0, 0, 'Magistrate Barthilas - his dead form'),
+(1043511, 10435, 0, 0, 0, 100, 1, 5000, 5000, 4000, 4000, 1043511, 0, 0, 'Magistrate Barthilas - Furious Anger'),
+(1043512, 10435, 0, 0, 0, 100, 1, 16000, 16000, 15000, 15000, 1043512, 0, 0, 'Magistrate Barthilas - Draining Blow'),
+(1043513, 10435, 0, 0, 0, 100, 1, 12000, 12000, 15000, 15000, 1043513, 0, 0, 'Magistrate Barthilas - Crowd Pummel'),
+(1043514, 10435, 0, 0, 0, 100, 1, 8000, 8000, 20000, 20000, 1043514, 0, 0, 'Magistrate Barthilas - Mighty Blow'),
+(1043811, 10438, 0, 0, 0, 100, 9, 1000, 1000, 3500, 4500, 1043811, 0, 0, 'Maleki the Pallid - Frostbolt'),
+(1043812, 10438, 0, 0, 0, 100, 9, 12000, 12000, 20000, 25000, 1043812, 0, 0, 'Maleki the Pallid - Ice Tomb, his victim''s threat dropped'),
+(1043813, 10438, 329042, 0, 0, 100, 1, 4000, 4000, 12000, 18000, 1043813, 0, 0, 'Maleki the Pallid - under 60 %: Drain Mana, or Drain Life at a victim without'),
+(1043814, 10438, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1043814, 0, 0, 'Maleki the Pallid - dead: done (3)'),
+(1043711, 10437, 0, 0, 0, 100, 9, 7000, 7000, 10000, 15000, 1043711, 0, 0, 'Nerub''enkan - Encasing Webs, his victim''s threat dropped'),
+(1043712, 10437, 0, 0, 0, 100, 9, 15000, 15000, 15000, 20000, 1043712, 0, 0, 'Nerub''enkan - Pierce Armor'),
+(1043713, 10437, 0, 0, 0, 100, 1, 3000, 3000, 6000, 10000, 1043713, 0, 0, 'Nerub''enkan - Raise Undead Scarab'),
+(1043714, 10437, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1043714, 0, 0, 'Nerub''enkan - dead: done (2)'),
+(1114301, 11143, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1114301, 0, 0, 'Postmaster Malown - aggro: his line'),
+(1114302, 11143, 0, 5, 0, 100, 1, 0, 0, 0, 0, 1114302, 0, 0, 'Postmaster Malown - a kill: his line'),
+(1114311, 11143, 0, 0, 0, 65, 1, 19000, 19000, 19000, 19000, 1114311, 0, 0, 'Postmaster Malown - Wailing Dead'),
+(1114312, 11143, 0, 0, 0, 45, 1, 8000, 8000, 8000, 8000, 1114312, 0, 0, 'Postmaster Malown - Backhand'),
+(1114313, 11143, 0, 0, 0, 3, 1, 20000, 20000, 20000, 20000, 1114313, 0, 0, 'Postmaster Malown - Curse of Weakness'),
+(1114314, 11143, 0, 0, 0, 3, 1, 22000, 22000, 22000, 22000, 1114314, 0, 0, 'Postmaster Malown - Curse of Tongues'),
+(1114315, 11143, 0, 0, 0, 5, 1, 25000, 25000, 25000, 25000, 1114315, 0, 0, 'Postmaster Malown - Call of the Grave'),
+(1043901, 10439, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1043901, 0, 0, 'Ramstein the Gorger - aggro: in progress (4)'),
+(1043902, 10439, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1043902, 0, 0, 'Ramstein the Gorger - evading: failed (4)'),
+(1043903, 10439, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1043903, 0, 0, 'Ramstein the Gorger - dead: done (4)'),
+(1043911, 10439, 0, 0, 0, 100, 1, 3000, 3000, 7000, 7000, 1043911, 0, 0, 'Ramstein the Gorger - Trample'),
+(1043912, 10439, 0, 0, 0, 100, 9, 12000, 12000, 10000, 10000, 1043912, 0, 0, 'Ramstein the Gorger - Knockout, his victim''s threat dropped'),
+(1080811, 10808, 0, 0, 0, 100, 9, 7000, 7000, 12000, 12000, 1080811, 0, 0, 'Timmy the Cruel - Ravenous Claw'),
+(1080812, 10808, 0, 2, 0, 100, 0, 9, 0, 0, 0, 1080812, 0, 0, 'Timmy the Cruel - Enrage under 10 %'),
+(1041811, 10418, 0, 0, 0, 100, 9, 1000, 1000, 12000, 12000, 1041811, 0, 0, 'Crimson Guardsman - Shield Charge'),
+(1041812, 10418, 0, 0, 0, 100, 9, 6000, 6000, 15000, 15000, 1041812, 0, 0, 'Crimson Guardsman - Disarm'),
+(1041813, 10418, 0, 0, 0, 100, 9, 4000, 4000, 8000, 8000, 1041813, 0, 0, 'Crimson Guardsman - Shield Bash'),
+(1041814, 10418, 329050, 6, 0, 100, 0, 0, 0, 0, 0, 1041814, 0, 0, 'Crimson Guardsman - the one at the courtyard dead: Timmy the Cruel');
+
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (1038401, 1038402, 1038403, 1038411, 1038412, 1038413, 1038414, 1038415, 1038501, 1038502, 1038503, 1038511, 1038512, 1038513, 1038514, 1038515, 1041501, 1041502, 1041811, 1041812, 1041813, 1041814, 1043501, 1043502, 1043503, 1043511, 1043512, 1043513, 1043514, 1043711, 1043712, 1043713, 1043714, 1043811, 1043812, 1043813, 1043814, 1043901, 1043902, 1043903, 1043911, 1043912, 1080811, 1080812, 1099701, 1099702, 1099703, 1099704, 1099711, 1099712, 1099713, 1099714, 1099715, 1112201, 1113601, 1113602, 1114301, 1114302, 1114311, 1114312, 1114313, 1114314, 1114315, 1638711, 1638712, 1638713, 1638714, 1638715, 1638716);
+INSERT INTO `creature_ai_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(1113601, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329101, 329102, 329103, 329104, 0, 0, 0, 0, 0, 'Freed Soul - one of four lines'),
+(1113602, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329101, 329102, 329103, 329104, 0, 0, 0, 0, 0, 'Freed Soul - one of four lines'),
+(1112201, 0, 0, 39, 3290003, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Restless Soul - freed'),
+(1112201, 0, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Restless Soul - tagged (phase 1)'),
+(1038401, 0, 0, 15, 16336, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Citizen - Haunting Phantoms'),
+(1038402, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Citizen - tagged (phase 1)'),
+(1038402, 0, 1, 39, 3290008, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Citizen - dies in 5 s'),
+(1038403, 0, 0, 39, 3290004, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Citizen - a restless soul, 100 %'),
+(1038403, 0, 1, 39, 3290005, 0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Citizen - a restless soul, 50 %'),
+(1038403, 0, 2, 39, 3290006, 0, 0, 0, 0, 0, 0, 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Citizen - a restless soul, 33 %'),
+(1038403, 0, 3, 39, 3290007, 0, 0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Citizen - a restless soul, 25 %'),
+(1038411, 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Citizen - waves back'),
+(1038412, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Citizen - bows back'),
+(1038413, 0, 0, 1, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Citizen - flexes'),
+(1038414, 0, 0, 1, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Citizen - dances'),
+(1038415, 0, 0, 15, 6754, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Citizen - Slap'),
+(1038501, 0, 0, 15, 16336, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ghostly Citizen - Haunting Phantoms'),
+(1038502, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ghostly Citizen - tagged (phase 1)'),
+(1038502, 0, 1, 39, 3290009, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Ghostly Citizen - dies in 5 s'),
+(1038503, 0, 0, 39, 3290004, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Ghostly Citizen - a restless soul, 100 %'),
+(1038503, 0, 1, 39, 3290005, 0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 'Ghostly Citizen - a restless soul, 50 %'),
+(1038503, 0, 2, 39, 3290006, 0, 0, 0, 0, 0, 0, 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 'Ghostly Citizen - a restless soul, 33 %'),
+(1038503, 0, 3, 39, 3290007, 0, 0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 'Ghostly Citizen - a restless soul, 25 %'),
+(1038511, 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ghostly Citizen - waves back'),
+(1038512, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ghostly Citizen - bows back'),
+(1038513, 0, 0, 1, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ghostly Citizen - flexes'),
+(1038514, 0, 0, 1, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ghostly Citizen - dances'),
+(1038515, 0, 0, 15, 6754, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ghostly Citizen - Slap'),
+(1041501, 0, 0, 48, 100, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ash''ari Crystal - falls'),
+(1041502, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 329110, 0, 0, 0, 0, 0, 0, 0, 0, 'Ash''ari Crystal - toppled'),
+(1041502, 0, 1, 37, 12, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ash''ari Crystal - one down (12 = 1)'),
+(1041502, 0, 2, 0, 6, 0, 0, 0, 0, 0, 0, 0, 6289, 0, 0, 0, 0, 0, 0, 0, 230040, 'Ash''ari Crystal - the slaughterhouse open'),
+(1099701, 0, 0, 11, 24059, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - the gate open'),
+(1099702, 0, 0, 11, 24059, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - the gate open'),
+(1099703, 0, 0, 12, 24059, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - the gate shut'),
+(1099704, 0, 0, 11, 24059, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - the gate open'),
+(1099711, 0, 0, 15, 15615, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - Pummel'),
+(1099712, 0, 0, 15, 10101, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - Knock Away'),
+(1099713, 0, 0, 15, 20463, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - Shoot, his victim 8 yd off or more'),
+(1099714, 0, 0, 39, 3290037, 3290038, 3290039, 0, 0, 0, 0, 0, 33, 33, 34, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - one of the nine rifle sets'),
+(1099715, 0, 0, 68, 3290040, 2, 11054, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - the riflemen gone'),
+(1638711, 0, 0, 15, 24240, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Atiesh - Red Lightning'),
+(1638711, 0, 1, 19, 0, 0, 0, 0, 0, 0, 0, 0, 22738, -1, -1, 0, 0, 0, 0, 0, 0, 'Atiesh - his staff'),
+(1638712, 0, 0, 15, 28340, 32, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Atiesh - 28340 kept up'),
+(1638713, 0, 0, 15, 12787, 32, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Atiesh - 12787 kept up'),
+(1638714, 0, 0, 15, 28352, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Atiesh - Breath of Sargeras'),
+(1638715, 0, 0, 15, 19729, 0, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Atiesh - Shadow Bolt at a random attacker'),
+(1638716, 0, 0, 15, 28355, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Atiesh - the staff on the ground'),
+(1638716, 0, 1, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 'Atiesh - unarmed'),
+(1043501, 0, 0, 4, 46, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Magistrate Barthilas - awake'),
+(1043502, 0, 0, 23, 10433, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Magistrate Barthilas - alive'),
+(1043503, 0, 0, 23, 3637, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Magistrate Barthilas - dead'),
+(1043511, 0, 0, 15, 16791, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Magistrate Barthilas - Furious Anger'),
+(1043512, 0, 0, 15, 16793, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Magistrate Barthilas - Draining Blow'),
+(1043513, 0, 0, 15, 10887, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Magistrate Barthilas - Crowd Pummel'),
+(1043514, 0, 0, 15, 14099, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Magistrate Barthilas - Mighty Blow'),
+(1043811, 0, 0, 15, 17503, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Maleki the Pallid - Frostbolt'),
+(1043812, 0, 0, 15, 16869, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Maleki the Pallid - Ice Tomb, his victim''s threat dropped'),
+(1043812, 0, 1, 29, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -100, 0, 0, 0, 0, 'Maleki the Pallid - his victim''s threat dropped'),
+(1043813, 0, 0, 15, 17243, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329040, 'Maleki the Pallid - Drain Mana'),
+(1043813, 0, 1, 15, 17238, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329041, 'Maleki the Pallid - Drain Life'),
+(1043814, 0, 0, 37, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Maleki the Pallid - done'),
+(1043711, 0, 0, 15, 4962, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Nerub''enkan - Encasing Webs, his victim''s threat dropped'),
+(1043711, 0, 1, 29, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -100, 0, 0, 0, 0, 'Nerub''enkan - his victim''s threat dropped'),
+(1043712, 0, 0, 15, 6016, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Nerub''enkan - Pierce Armor'),
+(1043713, 0, 0, 39, 3290045, 3290044, 0, 0, 0, 0, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 0, 'Nerub''enkan - crypt scarabs or an undead one'),
+(1043714, 0, 0, 37, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Nerub''enkan - done'),
+(1114301, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6504, 0, 0, 0, 0, 0, 0, 0, 0, 'Postmaster Malown - his aggro line'),
+(1114302, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6530, 0, 0, 0, 0, 0, 0, 0, 0, 'Postmaster Malown - his kill line'),
+(1114311, 0, 0, 15, 7713, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Postmaster Malown - Wailing Dead'),
+(1114312, 0, 0, 15, 6253, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Postmaster Malown - Backhand'),
+(1114313, 0, 0, 15, 8552, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Postmaster Malown - Curse of Weakness'),
+(1114314, 0, 0, 15, 12889, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Postmaster Malown - Curse of Tongues'),
+(1114315, 0, 0, 15, 17831, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Postmaster Malown - Call of the Grave'),
+(1043901, 0, 0, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ramstein - in progress'),
+(1043902, 0, 0, 37, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ramstein - failed'),
+(1043903, 0, 0, 37, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ramstein - done'),
+(1043911, 0, 0, 15, 5568, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ramstein the Gorger - Trample'),
+(1043912, 0, 0, 15, 17307, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ramstein the Gorger - Knockout, his victim''s threat dropped'),
+(1043912, 0, 1, 29, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -100, 0, 0, 0, 0, 'Ramstein the Gorger - his victim''s threat dropped'),
+(1080811, 0, 0, 15, 17470, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Timmy the Cruel - Ravenous Claw'),
+(1080812, 0, 0, 15, 8269, 34, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Timmy the Cruel - Enrage'),
+(1041811, 0, 0, 15, 15749, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Crimson Guardsman - Shield Charge'),
+(1041812, 0, 0, 15, 6713, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Crimson Guardsman - Disarm'),
+(1041813, 0, 0, 15, 11972, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Crimson Guardsman - Shield Bash'),
+(1041814, 0, 0, 10, 10808, 0, 0, 0, 0, 0, 0, 0, 0, 3290046, -1, 7, 3614.7, -3187.64, 131.406, 0, 0, 'Crimson Guardsman - Timmy the Cruel');
+
+DELETE FROM `generic_scripts` WHERE `id` IN (3290001, 3290002, 3290003, 3290004, 3290005, 3290006, 3290007, 3290008, 3290009, 3290010, 3290011, 3290012, 3290013, 3290014, 3290015, 3290016, 3290017, 3290018, 3290019, 3290020, 3290021, 3290022, 3290023, 3290024, 3290025, 3290026, 3290027, 3290028, 3290029, 3290030, 3290031, 3290032, 3290033, 3290034, 3290035, 3290036, 3290037, 3290038, 3290039, 3290040, 3290041, 3290042, 3290043, 3290044, 3290045, 3290046);
+INSERT INTO `generic_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(3290001, 0, 0, 10, 11142, 0, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 6, 0, 0, 0, 0, 'Postbox - an Undead Postman near the player (1 of 3)'),
+(3290001, 0, 1, 10, 11142, 0, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 6, 0, 0, 0, 0, 'Postbox - an Undead Postman near the player (2 of 3)'),
+(3290001, 0, 2, 10, 11142, 0, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 6, 0, 0, 0, 0, 'Postbox - an Undead Postman near the player (3 of 3)'),
+(3290002, 0, 0, 15, 17370, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Freed Soul - Soul Freed'),
+(3290002, 0, 1, 20, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1.57, 0, 'Freed Soul - follows the player'),
+(3290003, 5, 0, 8, 11122, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Restless Soul - the player''s credit'),
+(3290003, 5, 1, 10, 11136, 300000, 0, 0, 0, 0, 0, 0, 262144, 3290002, -1, 3, 0, 0, 0, 0, 0, 'Restless Soul - a Freed Soul'),
+(3290003, 5, 2, 48, 100, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Restless Soul - gone'),
+(3290004, 0, 0, 10, 11122, 600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 5, 20, 0, 0, 0, 0, 'Spectral Citizen - a Restless Soul (1)'),
+(3290005, 0, 0, 10, 11122, 600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 5, 20, 0, 0, 0, 0, 'Spectral Citizen - a Restless Soul (2)'),
+(3290006, 0, 0, 10, 11122, 600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 5, 20, 0, 0, 0, 0, 'Spectral Citizen - a Restless Soul (3)'),
+(3290007, 0, 0, 10, 11122, 600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 5, 20, 0, 0, 0, 0, 'Spectral Citizen - a Restless Soul (4)'),
+(3290008, 5, 0, 48, 100, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Citizen - dies'),
+(3290009, 5, 0, 48, 100, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ghostly Citizen - dies'),
+(3290010, 0, 0, 10, 10441, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Rat (1 of 1)'),
+(3290011, 0, 0, 10, 10441, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Rat (1 of 2)'),
+(3290011, 0, 1, 10, 10441, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Rat (2 of 2)'),
+(3290012, 0, 0, 10, 10441, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Rat (1 of 3)'),
+(3290012, 0, 1, 10, 10441, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Rat (2 of 3)'),
+(3290012, 0, 2, 10, 10441, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Rat (3 of 3)'),
+(3290013, 0, 0, 10, 10441, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Rat (1 of 4)'),
+(3290013, 0, 1, 10, 10441, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Rat (2 of 4)'),
+(3290013, 0, 2, 10, 10441, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Rat (3 of 4)'),
+(3290013, 0, 3, 10, 10441, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Rat (4 of 4)'),
+(3290014, 0, 0, 39, 3290010, 3290011, 3290012, 3290013, 0, 0, 0, 0, 25, 25, 25, 25, 0, 0, 0, 0, 0, 'Supply Crate - one to four of Plagued Rats'),
+(3290015, 0, 0, 10, 10461, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Insect (1 of 1)'),
+(3290016, 0, 0, 10, 10461, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Insect (1 of 2)'),
+(3290016, 0, 1, 10, 10461, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Insect (2 of 2)'),
+(3290017, 0, 0, 10, 10461, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Insect (1 of 3)'),
+(3290017, 0, 1, 10, 10461, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Insect (2 of 3)'),
+(3290017, 0, 2, 10, 10461, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Insect (3 of 3)'),
+(3290018, 0, 0, 10, 10461, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Insect (1 of 4)'),
+(3290018, 0, 1, 10, 10461, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Insect (2 of 4)'),
+(3290018, 0, 2, 10, 10461, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Insect (3 of 4)'),
+(3290018, 0, 3, 10, 10461, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Insect (4 of 4)'),
+(3290019, 0, 0, 39, 3290015, 3290016, 3290017, 3290018, 0, 0, 0, 0, 25, 25, 25, 25, 0, 0, 0, 0, 0, 'Supply Crate - one to four of Plagued Insects'),
+(3290020, 0, 0, 10, 10536, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Maggot (1 of 1)'),
+(3290021, 0, 0, 10, 10536, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Maggot (1 of 2)'),
+(3290021, 0, 1, 10, 10536, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Maggot (2 of 2)'),
+(3290022, 0, 0, 10, 10536, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Maggot (1 of 3)'),
+(3290022, 0, 1, 10, 10536, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Maggot (2 of 3)'),
+(3290022, 0, 2, 10, 10536, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Maggot (3 of 3)'),
+(3290023, 0, 0, 10, 10536, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Maggot (1 of 4)'),
+(3290023, 0, 1, 10, 10536, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Maggot (2 of 4)'),
+(3290023, 0, 2, 10, 10536, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Maggot (3 of 4)'),
+(3290023, 0, 3, 10, 10536, 3600000, 0, 0, 0, 0, 0, 0, 589824, 0, -1, 7, 2, 0, 0, 0, 0, 'Supply Crate - a Plagued Maggot (4 of 4)'),
+(3290024, 0, 0, 39, 3290020, 3290021, 3290022, 3290023, 0, 0, 0, 0, 25, 25, 25, 25, 0, 0, 0, 0, 0, 'Supply Crate - one to four of Plagued Maggots'),
+(3290025, 0, 0, 39, 3290014, 3290019, 3290024, 0, 0, 0, 0, 0, 33, 33, 34, 0, 0, 0, 0, 0, 0, 'Supply Crate - rats, insects or maggots'),
+(3290025, 0, 1, 81, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Supply Crate - spent'),
+(3290026, 0, 0, 15, 17278, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannonball - Cannon Fire'),
+(3290026, 0, 1, 18, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannonball - gone'),
+(3290027, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Crimson Rifleman - into the fight'),
+(3290028, 0, 0, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3537.2725, -2958.18, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 1, point 1)'),
+(3290028, 0, 1, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3542.206299, -2965.929932, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 1, point 2)'),
+(3290028, 0, 2, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3540.651855, -2964.519043, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 1, point 4)'),
+(3290029, 0, 0, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3542.206299, -2965.929932, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 2, point 2)'),
+(3290029, 0, 1, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3539.41748, -2959.667236, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 2, point 3)'),
+(3290029, 0, 2, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3531.927246, -2962.977295, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 2, point 5)'),
+(3290030, 0, 0, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3539.41748, -2959.667236, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 3, point 3)'),
+(3290030, 0, 1, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3540.651855, -2964.519043, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 3, point 4)'),
+(3290030, 0, 2, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3538.094697, -2963.123291, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 3, point 6)'),
+(3290031, 0, 0, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3540.651855, -2964.519043, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 4, point 4)'),
+(3290031, 0, 1, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3531.927246, -2962.977295, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 4, point 5)'),
+(3290031, 0, 2, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3535.727539, -2969.776123, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 4, point 7)'),
+(3290032, 0, 0, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3531.927246, -2962.977295, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 5, point 5)'),
+(3290032, 0, 1, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3538.094697, -2963.123291, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 5, point 6)'),
+(3290032, 0, 2, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3532.15625, -2966.162354, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 5, point 8)'),
+(3290033, 0, 0, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3538.094697, -2963.123291, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 6, point 6)'),
+(3290033, 0, 1, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3535.727539, -2969.776123, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 6, point 7)'),
+(3290033, 0, 2, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3533.202148, -2969.437744, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 6, point 9)'),
+(3290034, 0, 0, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3535.727539, -2969.776123, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 7, point 7)'),
+(3290034, 0, 1, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3532.15625, -2966.162354, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 7, point 8)'),
+(3290034, 0, 2, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3537.2725, -2958.18, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 7, point 1)'),
+(3290035, 0, 0, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3532.15625, -2966.162354, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 8, point 8)'),
+(3290035, 0, 1, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3533.202148, -2969.437744, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 8, point 9)'),
+(3290035, 0, 2, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3542.206299, -2965.929932, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 8, point 2)'),
+(3290036, 0, 0, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3533.202148, -2969.437744, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 9, point 9)'),
+(3290036, 0, 1, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3537.2725, -2958.18, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 9, point 1)'),
+(3290036, 0, 2, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3539.41748, -2959.667236, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 9, point 3)'),
+(3290037, 0, 0, 39, 3290028, 3290029, 3290030, 0, 0, 0, 0, 0, 33, 33, 34, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - one of three rifle sets (1 of 3)'),
+(3290038, 0, 0, 39, 3290031, 3290032, 3290033, 0, 0, 0, 0, 0, 33, 33, 34, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - one of three rifle sets (2 of 3)'),
+(3290039, 0, 0, 39, 3290034, 3290035, 3290036, 0, 0, 0, 0, 0, 33, 33, 34, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - one of three rifle sets (3 of 3)'),
+(3290040, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Crimson Rifleman - gone'),
+(3290041, 0, 0, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (1 of 4)'),
+(3290041, 0, 1, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (2 of 4)'),
+(3290041, 0, 2, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (3 of 4)'),
+(3290041, 0, 3, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (4 of 4)'),
+(3290042, 0, 0, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (1 of 6)'),
+(3290042, 0, 1, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (2 of 6)'),
+(3290042, 0, 2, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (3 of 6)'),
+(3290042, 0, 3, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (4 of 6)'),
+(3290042, 0, 4, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (5 of 6)'),
+(3290042, 0, 5, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (6 of 6)'),
+(3290043, 0, 0, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (1 of 8)'),
+(3290043, 0, 1, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (2 of 8)'),
+(3290043, 0, 2, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (3 of 8)'),
+(3290043, 0, 3, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (4 of 8)'),
+(3290043, 0, 4, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (5 of 8)'),
+(3290043, 0, 5, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (6 of 8)'),
+(3290043, 0, 6, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (7 of 8)'),
+(3290043, 0, 7, 10, 10577, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - a Crypt Scarab (8 of 8)'),
+(3290044, 0, 0, 10, 10876, 10000, 0, 0, 0, 0, 0, 0, 589824, 0, 4, 4, 10, 0, 0, 0, 0, 'Nerub''enkan - an Undead Scarab'),
+(3290045, 0, 0, 39, 3290041, 3290042, 3290043, 0, 0, 0, 0, 0, 33, 33, 34, 0, 0, 0, 0, 0, 0, 'Nerub''enkan - four, six or eight crypt scarabs'),
+(3290046, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 6150, 0, 0, 0, 0, 0, 0, 0, 0, 'Timmy the Cruel - "TIMMY!"');
+
+DELETE FROM `gameobject_scripts` WHERE `id` IN (20761, 20768, 45220, 47273, 47274, 47275, 47276, 47277, 49592, 399000, 399001, 399002, 399003, 399004, 399005, 399006, 399007, 399008, 399009, 399010, 399011, 399012, 399013, 399014, 399015, 399016, 399017, 399018, 399019, 399020, 399021, 399022, 399023, 399024, 399025, 399026, 399027, 399028, 399029, 399030, 399031, 399032, 399033, 399034, 399035, 399039, 399040, 399041, 399042, 399043, 399044, 399045, 399046, 399047, 399048, 399049, 399050, 399051, 399052, 399053, 399054, 399055, 399056, 399057, 399058, 399059, 399060, 399061, 399062);
+INSERT INTO `gameobject_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(49592, 0, 0, 37, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329001, 'Gauntlet Gate - opened first: the Baron run (0 = 1)'),
+(45220, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 329003, 'Postbox - opened: three postmen'),
+(45220, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the third: the player summons Postmaster Malown'),
+(45220, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the postmaster come (9 = 3)'),
+(45220, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329007, 'Postbox - one more box (9 = 1, the instance counts)'),
+(47273, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 329003, 'Postbox - opened: three postmen'),
+(47273, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the third: the player summons Postmaster Malown'),
+(47273, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the postmaster come (9 = 3)'),
+(47273, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329007, 'Postbox - one more box (9 = 1, the instance counts)'),
+(47274, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 329003, 'Postbox - opened: three postmen'),
+(47274, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the third: the player summons Postmaster Malown'),
+(47274, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the postmaster come (9 = 3)'),
+(47274, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329007, 'Postbox - one more box (9 = 1, the instance counts)'),
+(47275, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 329003, 'Postbox - opened: three postmen'),
+(47275, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the third: the player summons Postmaster Malown'),
+(47275, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the postmaster come (9 = 3)'),
+(47275, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329007, 'Postbox - one more box (9 = 1, the instance counts)'),
+(47276, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 329003, 'Postbox - opened: three postmen'),
+(47276, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the third: the player summons Postmaster Malown'),
+(47276, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the postmaster come (9 = 3)'),
+(47276, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329007, 'Postbox - one more box (9 = 1, the instance counts)'),
+(47277, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 329003, 'Postbox - opened: three postmen'),
+(47277, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the third: the player summons Postmaster Malown'),
+(47277, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the postmaster come (9 = 3)'),
+(47277, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329007, 'Postbox - one more box (9 = 1, the instance counts)'),
+(399000, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399001, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399002, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399003, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399004, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399005, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399006, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399007, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399008, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399009, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399010, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399011, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399012, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399013, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399014, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399015, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399016, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399017, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399018, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399019, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399020, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399021, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399022, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399023, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399024, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399025, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399026, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399027, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399028, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399029, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399030, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399031, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399032, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399033, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399034, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399035, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399039, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399040, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399041, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399042, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399043, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399044, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399045, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399046, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399047, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399048, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399049, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399050, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399051, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399052, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399053, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399054, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399055, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399056, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399057, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399058, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399059, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399060, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399061, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(399062, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
+(20761, 0, 0, 10, 160018, 5000, 0, 0, 0, 0, 0, 0, 0, 3290026, -1, 3, 3534.661, -2966.512, 125.001, 0.592, 230000, 'Scarlet Cannon - fired: a cannonball'),
+(20768, 0, 0, 10, 160018, 5000, 0, 0, 0, 0, 0, 0, 0, 3290026, -1, 3, 3534.661, -2966.512, 125.001, 0.592, 230000, 'Scarlet Cannon - fired: a cannonball');
+
