@@ -6,8 +6,12 @@
  */
 
 #include "scriptPCH.h"
-#include "scarlet_citadel.h"
+#include "dungeons/scarlet_citadel/scarlet_citadel.h"
 #include "boss_mariella.hpp"
+
+namespace mod_scarlet_citadel
+{
+
 
 
 class boss_mariellaAI : public ScriptedAI
@@ -882,3 +886,5 @@ void AddSC_boss_mariella()
     pNewscript->GetAI = &GetAI_npc_felhound;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_scarlet_citadel

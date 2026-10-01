@@ -14,6 +14,8 @@ Taken from the core:
 - `src/scripts/dungeons/scarlet_citadel/trashbosses_scarlet_citadel.hpp`
 - `src/scripts/dungeons/scarlet_citadel/boss_daelus.cpp`
 - `src/scripts/dungeons/scarlet_citadel/boss_daelus.hpp`
+- `src/scripts/dungeons/scarlet_citadel/boss_mariella.cpp`
+- `src/scripts/dungeons/scarlet_citadel/boss_mariella.hpp`
 
 ## The switch
 

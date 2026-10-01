@@ -1,3 +1,7 @@
+
+namespace mod_scarlet_citadel
+{
+
 /*
  * Copyright (C) 2021-2022 Nolin (nolin.nolin.nolin.nolin@gmail.org)
  *
@@ -182,3 +186,5 @@ namespace nsMariella
         }
     }
 }
+
+} // namespace mod_scarlet_citadel

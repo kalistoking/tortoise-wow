@@ -10,6 +10,7 @@ namespace mod_scarlet_citadel
     void AddSC_trash_mobs_scarlet_citadel();
     void AddSC_trash_bosses_scarlet_citadel();
     void AddSC_boss_daelus();
+    void AddSC_boss_mariella();
 }
 
 void Addmod_scarlet_citadelScripts()
@@ -24,5 +25,6 @@ void Addmod_scarlet_citadelScripts()
     mod_scarlet_citadel::AddSC_trash_mobs_scarlet_citadel();
     mod_scarlet_citadel::AddSC_trash_bosses_scarlet_citadel();
     mod_scarlet_citadel::AddSC_boss_daelus();
+    mod_scarlet_citadel::AddSC_boss_mariella();
     sLog.outString("[mod-scarlet-citadel] Scarlet Citadel's scripts registered from the module");
 }
