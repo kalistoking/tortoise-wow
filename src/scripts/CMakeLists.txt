@@ -127,8 +127,7 @@ dungeons/naxxramas/instance_naxxramas.cpp
 dungeons/naxxramas/naxxramas.h
 dungeons/onyxias_lair/boss_onyxia.cpp
 dungeons/onyxias_lair/instance_onyxia_lair.h
-dungeons/razorfen_downs/instance_razorfen_downs.cpp
-dungeons/razorfen_downs/razorfen_downs.cpp
+dungeons/razorfen_downs/razorfen_downs_escort.cpp
 dungeons/razorfen_downs/razorfen_downs.h
 dungeons/razorfen_kraul/razorfen_kraul_quests.cpp
 dungeons/ruins_of_ahnqiraj/boss_ayamiss.cpp

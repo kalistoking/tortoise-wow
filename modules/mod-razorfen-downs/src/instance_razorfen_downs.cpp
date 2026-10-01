@@ -17,7 +17,11 @@
  */
 
 #include "scriptPCH.h"
-#include "razorfen_downs.h"
+#include "dungeons/razorfen_downs/razorfen_downs.h"
+
+namespace mod_razorfen_downs
+{
+
 
 #define    MAX_ENCOUNTER  1
 
@@ -240,3 +244,5 @@ void AddSC_instance_razorfen_downs()
     newscript->GetInstanceData = &GetInstanceData_instance_razorfen_downs;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_razorfen_downs

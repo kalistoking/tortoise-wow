@@ -193,9 +193,8 @@ void AddSC_wetlands();
 //kalimdor
 void AddSC_celebras_spirit();                        // Celebras the Redeemed, stays in the core (trt A7)
 void AddSC_boss_onyxia();                            //onyxias_lair
-void AddSC_razorfen_downs();
+void AddSC_razorfen_downs_escort();                 // Belnistrasz's escort, stays in the core (trt A35)
 void AddSC_razorfen_kraul_quests();                  // Willix and the gopher, stay in the core (trt A8)
-void AddSC_instance_razorfen_downs();
 void AddSC_boss_ayamiss();                           //ruins_of_ahnqiraj
 void AddSC_boss_buru();
 void AddSC_boss_kurinnaxx();
@@ -518,9 +517,8 @@ void AddScripts()
     //kalimdor
     AddSC_celebras_spirit();
     AddSC_boss_onyxia();                                    //onyxias_lair
-    AddSC_razorfen_downs();
+    AddSC_razorfen_downs_escort();
     AddSC_razorfen_kraul_quests();
-    AddSC_instance_razorfen_downs();
     AddSC_boss_ayamiss();                                   //ruins_of_ahnqiraj
     AddSC_boss_buru();
     AddSC_boss_kurinnaxx();
