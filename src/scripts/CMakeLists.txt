@@ -158,7 +158,6 @@ dungeons/zulfarrak/farraki_arena.cpp
 dungeons/zulfarrak/zulfarrak_tablet_ward.cpp
 dungeons/zulfarrak/zulfarrak.h
 dungeons/zulgurub/boss_arlokk.cpp
-dungeons/zulgurub/boss_gahzranka.cpp
 dungeons/zulgurub/boss_grilek.cpp
 dungeons/zulgurub/boss_hakkar.cpp
 dungeons/zulgurub/boss_hazzarah.cpp
@@ -168,11 +167,10 @@ dungeons/zulgurub/boss_mandokir.cpp
 dungeons/zulgurub/boss_marli.cpp
 dungeons/zulgurub/boss_renataki.cpp
 dungeons/zulgurub/boss_thekal.cpp
-dungeons/zulgurub/boss_venoxis.cpp
 dungeons/zulgurub/boss_wushoolay.cpp
 dungeons/zulgurub/instance_zulgurub.cpp
 dungeons/zulgurub/zulgurub.h
-dungeons/zulgurub/zulgurub_trash.cpp
+dungeons/zulgurub/zulgurub_pile_dechets.cpp
 events/boss_dark_reaver.cpp
 events/boss_emeriss.cpp
 events/boss_lethon.cpp

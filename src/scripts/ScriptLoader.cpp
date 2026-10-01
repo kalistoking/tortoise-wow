@@ -101,7 +101,6 @@ void AddSC_instance_uldaman();                       //uldaman
 void AddSC_uldaman();                                //uldaman
 void AddSC_boss_archaedas();
 void AddSC_boss_arlokk();                            //zulgurub
-void AddSC_boss_gahzranka();
 //void AddSC_boss_grilek();
 void AddSC_boss_hakkar();
 //void AddSC_boss_hazzarah();
@@ -112,10 +111,9 @@ void AddSC_boss_marli();
 void AddSC_boss_ouro();
 void AddSC_boss_renataki();
 void AddSC_boss_thekal();
-void AddSC_boss_venoxis();
 //void AddSC_boss_wushoolay();
 void AddSC_instance_zulgurub();
-void AddSC_zg_trash();
+void AddSC_zulgurub_pile_dechets();
 void AddSC_boss_omen();
 
 //void AddSC_alterac_mountains();
@@ -370,7 +368,6 @@ void AddScripts()
     AddSC_uldaman();
     AddSC_boss_archaedas();
     AddSC_boss_arlokk();                                    //zulgurub
-    AddSC_boss_gahzranka();
     //AddSC_boss_grilek();
     AddSC_boss_hakkar();
     //AddSC_boss_hazzarah();
@@ -381,10 +378,9 @@ void AddScripts()
     AddSC_boss_ouro();
     AddSC_boss_renataki();
     AddSC_boss_thekal();
-    AddSC_boss_venoxis();
     //AddSC_boss_wushoolay();
     AddSC_instance_zulgurub();
-    AddSC_zg_trash();
+    AddSC_zulgurub_pile_dechets();
     AddSC_boss_omen();
 
     //AddSC_alterac_mountains();
