@@ -1963,24 +1963,105 @@ void ScriptMgr::StartAreaTriggerGenericScripts(Player* pPlayer, uint32 triggerId
             continue;
         if (row.conditionId && !IsConditionSatisfied(row.conditionId, pPlayer, pPlayer->GetMap(), pPlayer, CONDITION_FROM_AREATRIGGER))
             continue;
-        // The steps due at once run now, as a rule's do (trt AC8): a claim written by the first of
-        // two players stepping in on one tick is read by the second's condition, not a map update
-        // later. The later ones are scheduled; a step at once that aborts stops the rest.
+        StartGenericScriptOnPlayer(pPlayer, pPlayer->GetMap(), row.scriptId, false);
+    }
+}
+
+bool ScriptMgr::StartGenericScriptOnPlayer(Player* pPlayer, Map* pMap, uint32 scriptId, bool atOnceOnly) const
+{
+    // The steps due at once run now, as a rule's do (trt AC8): a claim written by the first of
+    // two players stepping in on one tick is read by the second's condition, not a map update
+    // later. The later ones are scheduled; a step at once that aborts stops the rest.
+    auto const script = sGenericScripts.find(scriptId);
+    if (script == sGenericScripts.end())
+        return false;
+    bool aborted = false;
+    for (auto const& step : script->second)
+    {
+        if (aborted)
+            break;
+        if (step.first == 0)
+            aborted = pMap->ScriptCommandStartDirect(step.second, pPlayer, pPlayer);
+        else if (!atOnceOnly)
+            pMap->ScriptCommandStart(step.second, step.first, pPlayer->GetObjectGuid(), pPlayer->GetObjectGuid());
+    }
+    return true;
+}
+
+void ScriptMgr::LoadMapPlayerScripts()
+{
+    m_mapPlayerScripts.clear();
+
+    std::unique_ptr<QueryResult> result(WorldDatabase.Query("SELECT `map_id`, `event`, `script_id`, `condition_id`, `flags` FROM `map_player_script`"));
+    if (!result)
+    {
+        sLog.outString(">> Loaded 0 map player scripts");
+        return;
+    }
+
+    uint32 count = 0;
+    do
+    {
+        Field* fields = result->Fetch();
+
+        uint32 mapId = fields[0].GetUInt32();
+        uint32 event = fields[1].GetUInt32();
+        AreaTriggerGenericScript row;
+        row.scriptId = fields[2].GetUInt32();
+        row.conditionId = fields[3].GetUInt32();
+        row.flags = fields[4].GetUInt32();
+
+        if (!sMapStorage.LookupEntry<MapEntry>(mapId))
+        {
+            sLog.outErrorDb("Table `map_player_script` has map %u not in `map_template`, skipped.", mapId);
+            continue;
+        }
+        if (event != MAP_PLAYER_ENTER && event != MAP_PLAYER_LEAVE)
+        {
+            sLog.outErrorDb("Table `map_player_script` has event %u for map %u, neither 0 (enter) nor 1 (leave), skipped.", event, mapId);
+            continue;
+        }
         auto const script = sGenericScripts.find(row.scriptId);
         if (script == sGenericScripts.end())
-            continue;
-        Map* map = pPlayer->GetMap();
-        bool aborted = false;
-        for (auto const& step : script->second)
         {
-            if (step.first == 0)
-            {
-                if (!aborted && map->ScriptCommandStartDirect(step.second, pPlayer, pPlayer))
-                    aborted = true;
-            }
-            else if (!aborted)
-                map->ScriptCommandStart(step.second, step.first, pPlayer->GetObjectGuid(), pPlayer->GetObjectGuid());
+            sLog.outErrorDb("Table `map_player_script` has script %u for map %u, not in `generic_scripts`, skipped.", row.scriptId, mapId);
+            continue;
         }
+        if (row.conditionId && !sConditionStorage.LookupEntry<ConditionEntry>(row.conditionId))
+        {
+            sLog.outErrorDb("Table `map_player_script` has condition %u for map %u, not in `conditions`, skipped.", row.conditionId, mapId);
+            continue;
+        }
+        if (row.flags & ~uint32(AT_GENERIC_ALIVE_ONLY | AT_GENERIC_NOT_GM))
+            sLog.outErrorDb("Table `map_player_script` has unknown flags %u for map %u.", row.flags, mapId);
+        // A leaving player is on another map by a later step's time: those steps would not find him.
+        if (event == MAP_PLAYER_LEAVE && script->second.rbegin()->first != 0)
+            sLog.outErrorDb("Table `map_player_script` has script %u for a player leaving map %u with steps after a delay: only the steps at once run.", row.scriptId, mapId);
+
+        m_mapPlayerScripts.emplace(mapId * 2 + event, row);
+        ++count;
+    }
+    while (result->NextRow());
+
+    sLog.outString(">> Loaded %u map player scripts", count);
+}
+
+void ScriptMgr::StartMapPlayerScripts(Player* pPlayer, Map* pMap, MapPlayerScriptEvent event) const
+{
+    if (m_mapPlayerScripts.empty())
+        return;
+
+    auto const range = m_mapPlayerScripts.equal_range(pMap->GetId() * 2 + event);
+    for (auto itr = range.first; itr != range.second; ++itr)
+    {
+        AreaTriggerGenericScript const& row = itr->second;
+        if ((row.flags & AT_GENERIC_ALIVE_ONLY) && !pPlayer->IsAlive())
+            continue;
+        if ((row.flags & AT_GENERIC_NOT_GM) && pPlayer->IsGameMaster())
+            continue;
+        if (row.conditionId && !IsConditionSatisfied(row.conditionId, pPlayer, pMap, pPlayer, CONDITION_FROM_MAP_PLAYER))
+            continue;
+        StartGenericScriptOnPlayer(pPlayer, pMap, row.scriptId, event == MAP_PLAYER_LEAVE);
     }
 }
 
@@ -3000,6 +3081,16 @@ void ScriptMgr::CollectPossibleGenericIds(std::set<uint32>& genericIds)
 
     // trt E22, AC8: an area trigger's rows.
     std::unique_ptr<QueryResult> result(WorldDatabase.Query("SELECT `script_id` FROM `areatrigger_generic_script`"));
+    if (result)
+    {
+        do
+        {
+            genericIds.insert(result->Fetch()[0].GetUInt32());
+        } while (result->NextRow());
+    }
+
+    // trt E22, AC9: a map's rows for a player entering or leaving it.
+    result.reset(WorldDatabase.Query("SELECT `script_id` FROM `map_player_script`"));
     if (result)
     {
         do

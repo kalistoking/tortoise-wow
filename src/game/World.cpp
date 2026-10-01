@@ -2251,6 +2251,8 @@ void LoadPlayerEggLoot();
     sObjectMgr.LoadGameObjectSpawnStates();
     sLog.outString("Loading area trigger generic scripts...");       // after the generic scripts it starts
     sScriptMgr.LoadAreaTriggerGenericScripts();
+    sLog.outString("Loading map player scripts...");                // after the generic scripts it starts
+    sScriptMgr.LoadMapPlayerScripts();
     sLog.outString("Loading creature EventAI scripts...");
     sScriptMgr.LoadCreatureEventAIScripts();
     sScriptMgr.CheckAllScriptTexts();

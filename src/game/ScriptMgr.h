@@ -1625,11 +1625,21 @@ class ScriptMgr
         void LoadScriptNames();
         void LoadAreaTriggerScripts();
         void LoadAreaTriggerGenericScripts();
+        void LoadMapPlayerScripts();
         void LoadEventIdScripts();
 
         // trt E22, AC8: an area trigger's rows -- generic scripts started with the player stepping in
         // as source and target, where no C++ took the trigger.
         void StartAreaTriggerGenericScripts(Player* pPlayer, uint32 triggerId) const;
+
+        // trt E22, AC9: a map's rows for a player entering or leaving it -- generic scripts started with
+        // the player as source and target, beside the instance's C++ (OnPlayerEnter, OnPlayerLeave).
+        enum MapPlayerScriptEvent
+        {
+            MAP_PLAYER_ENTER = 0,                           // at Map::Add, the player in the world
+            MAP_PLAYER_LEAVE = 1,                           // at Map::Remove, the player still on it: the steps at once only
+        };
+        void StartMapPlayerScripts(Player* pPlayer, Map* pMap, MapPlayerScriptEvent event) const;
 
         uint32 GetAreaTriggerScriptId(uint32 triggerId) const;
         uint32 GetEventIdScriptId(uint32 eventId) const;
@@ -1771,6 +1781,11 @@ class ScriptMgr
             uint32 flags;
         };
         std::unordered_multimap<uint32, AreaTriggerGenericScript> m_areaTriggerGenericScripts;
+        // A map's rows (AC9), keyed map id * 2 + event; the flags are the area trigger's.
+        std::unordered_multimap<uint32, AreaTriggerGenericScript> m_mapPlayerScripts;
+        // A generic script on a player, its steps at once run now, its later ones scheduled unless
+        // atOnceOnly (AC8, AC9); false when it was not found.
+        bool StartGenericScriptOnPlayer(Player* pPlayer, Map* pMap, uint32 scriptId, bool atOnceOnly) const;
         typedef std::unordered_map<uint32, uint32> EventIdScriptMap;
         
         //Maps and lists

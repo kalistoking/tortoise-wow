@@ -412,6 +412,9 @@ bool Map::Add(Player *player)
     if (i_data)
         i_data->OnPlayerEnter(player);
 
+    // trt E22, AC9: the map's rows for a player entering it, beside its C++.
+    sScriptMgr.StartMapPlayerScripts(player, this, ScriptMgr::MAP_PLAYER_ENTER);
+
     // Remove any buffs defined in instance_aura_removal for the new map
     sAuraRemovalMgr.PlayerEnterMap(i_id, player);
 
@@ -1140,6 +1143,9 @@ void Map::Remove(Player *player, bool remove)
     {
         script->OnPlayerLeaveAll(this, player);
     });
+
+    // trt E22, AC9: the map's rows for a player leaving it, while he is still on it.
+    sScriptMgr.StartMapPlayerScripts(player, this, ScriptMgr::MAP_PLAYER_LEAVE);
 
     if (i_data)
         i_data->OnPlayerLeave(player, remove);

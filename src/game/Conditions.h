@@ -288,6 +288,7 @@ enum ConditionSource                                        // From where was th
     CONDITION_FROM_AREATRIGGER      = 10,                   // Used to check a condition from areatrigger_teleport table
     CONDITION_FROM_QUEST            = 11,                   // Used to check a condition from quest_template
     CONDITION_FROM_GO_SPAWN_STATE   = 12,                   // Used to check a condition from gameobject_spawn_state (trt E22, AC3)
+    CONDITION_FROM_MAP_PLAYER       = 13,                   // Used to check a condition from map_player_script (trt E22, AC9)
 };
 
 enum ConditionRequirement
