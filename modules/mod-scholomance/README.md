@@ -15,6 +15,8 @@ Taken from the core:
 - `src/scripts/dungeons/scholomance/boss_ras_frostwhisper.cpp`
 - `src/scripts/dungeons/scholomance/boss_the_ravenian.cpp`
 - `src/scripts/dungeons/scholomance/scholo_trash.cpp`
+- `src/scripts/dungeons/scholomance/boss_jandice_barov.cpp`
+- `src/scripts/dungeons/scholomance/scholomance_herald_blackwood_door.cpp`
 
 ## The switch
 

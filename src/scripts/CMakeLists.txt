@@ -113,7 +113,6 @@ dungeons/scarlet_monastery/boss_azshir_the_sleepless.cpp
 dungeons/scarlet_monastery/boss_headless_horseman.cpp
 dungeons/scarlet_monastery/instance_scarlet_monastery.cpp
 dungeons/scarlet_monastery/scarlet_monastery.h
-dungeons/scholomance/boss_jandice_barov.cpp
 dungeons/scholomance/boss_kormok.cpp
 dungeons/scholomance/boss_vectus.cpp
 dungeons/scholomance/instance_scholomance.cpp

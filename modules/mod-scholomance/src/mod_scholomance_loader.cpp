@@ -15,6 +15,8 @@ namespace mod_scholomance
     void AddSC_boss_rasfrost();
     void AddSC_boss_theravenian();
     void AddSC_scholo_trash();
+    void AddSC_boss_jandicebarov();
+    void AddSC_scholomance_herald_blackwood_door();
 }
 
 void Addmod_scholomanceScripts()
@@ -34,5 +36,7 @@ void Addmod_scholomanceScripts()
     mod_scholomance::AddSC_boss_rasfrost();
     mod_scholomance::AddSC_boss_theravenian();
     mod_scholomance::AddSC_scholo_trash();
+    mod_scholomance::AddSC_boss_jandicebarov();
+    mod_scholomance::AddSC_scholomance_herald_blackwood_door();
     sLog.outString("[mod-scholomance] Scholomance's scripts registered from the module");
 }

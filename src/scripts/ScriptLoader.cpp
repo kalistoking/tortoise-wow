@@ -86,7 +86,6 @@ void AddSC_boss_sapphiron();
 void AddSC_instance_naxxramas();
 //void AddSC_boss_azshir_the_sleepless();
 void AddSC_instance_scarlet_monastery();
-void AddSC_boss_jandicebarov();
 //void AddSC_boss_kormok();
 void AddSC_boss_vectus();
 //void AddSC_boss_lordblackwood();
@@ -349,7 +348,6 @@ void AddScripts()
     AddSC_instance_naxxramas();
     //AddSC_boss_azshir_the_sleepless();
     AddSC_instance_scarlet_monastery();
-    AddSC_boss_jandicebarov();
     //AddSC_boss_kormok();
     AddSC_boss_vectus();
     //AddSC_boss_lordblackwood();

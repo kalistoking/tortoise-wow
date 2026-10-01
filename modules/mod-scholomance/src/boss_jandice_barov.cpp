@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_scholomance
+{
+
+
 enum
 {
     SPELL_CURSEOFBLOOD = 16098,
@@ -231,3 +235,5 @@ void AddSC_boss_jandicebarov()
     newscript->GetAI = &GetAI_mob_illusionofjandicebarov;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_scholomance
