@@ -154,8 +154,7 @@ void AddSC_boss_skeram();
 void AddSC_boss_twinemperors();
 void AddSC_mob_anubisath_sentinel();
 void AddSC_instance_temple_of_ahnqiraj();
-void AddSC_instance_wailing_caverns();               //Wailing caverns
-void AddSC_wailing_caverns();
+void AddSC_wailing_caverns_disciple();               // the Disciple of Naralex, stays in the core (trt A36)
 void AddSC_zulfarrak_tablet_ward();               // the tablet and the ward (trt A37)
 
 void AddSC_ashenvale();
@@ -407,8 +406,7 @@ void AddScripts()
     AddSC_boss_twinemperors();
     AddSC_mob_anubisath_sentinel();
     AddSC_instance_temple_of_ahnqiraj();
-    AddSC_wailing_caverns();                               //Wailing caverns
-    AddSC_instance_wailing_caverns();
+    AddSC_wailing_caverns_disciple();
     AddSC_zulfarrak_tablet_ward();
 
     AddSC_ashenvale();

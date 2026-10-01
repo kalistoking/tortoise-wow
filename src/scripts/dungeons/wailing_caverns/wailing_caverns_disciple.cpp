@@ -1,32 +1,8 @@
-/*
- * Scripted for --> Mangos-Zero Special Thanks for VladimirMangos, Yehonal, Theluda, Drkotas, Shin, Wrath Team.
- * Copyright (C) 2006 - 2009 ScriptDev2 <https://scriptdev2.svn.sourceforge.net/>
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-
-/* ScriptData
-SDName: Wailing Caverns
-SD%Complete:
-SDComment:
-SDCategory: Wailing Caverns
-EndScriptData */
-
-/* ContentData
-npc_disciple_of_naralex
-EndContentData */
-
+// The Disciple of Naralex's escort and the awakening, taken out of wailing_caverns.cpp: an escort
+// that summons its waves, waits on Mutanus and flies off with Naralex stays in the core while the rest
+// of the dungeon is mod-wailing-caverns's and its rows (trt A36, AM1). It reads and writes the
+// encounters through the map's data -- the instance script's or the rows' generic store (AC7), the
+// types the same slots -- and finds Naralex and its summons itself.
 #include "scriptPCH.h"
 #include "def_wailing_caverns.h"
 
@@ -65,9 +41,13 @@ enum
     MOB_DEVIATE_MOCCASIN = 5762,
     MOB_NIGHTMARE_ECTOPLASM = 5763,
     MOB_MUTANUS_DEVOURER = 3654,
+    NPC_NARALEX = 3679,
 
     POINT_LAST_POINT = 0xFFFFFF
 };
+
+// The Disciple's spawn is some 280 yd from Naralex's.
+static constexpr float NARALEX_SEARCH_RANGE = 350.0f;
 
 float Position [10][3] =
 {
@@ -93,7 +73,9 @@ struct npc_disciple_of_naralexAI : public npc_escortAI
 
     ScriptedInstance* m_pInstance;
     ObjectGuid m_playerGuid;
-    std::vector<uint64> vSummoned;
+    ObjectGuid m_naralexGuid;
+    uint32 m_naralexSearchTimer = 0;
+    std::vector<ObjectGuid> vSummoned;
 
     uint32 Event_Timer;
     uint32 Sleep_Timer;
@@ -105,6 +87,24 @@ struct npc_disciple_of_naralexAI : public npc_escortAI
 
     bool Yelled;
     bool isAggro;
+
+    // Naralex as the Disciple finds him -- not through the instance script, which went to
+    // mod-wailing-caverns: his last guid, else the nearest within his chamber's reach, sought once
+    // a second until found (his cell may not be loaded yet).
+    Creature* GetNaralex(uint32 const diff = 0)
+    {
+        if (Creature* pNaralex = m_creature->GetMap()->GetCreature(m_naralexGuid))
+            return pNaralex;
+        if (m_naralexSearchTimer > diff)
+        {
+            m_naralexSearchTimer -= diff;
+            return nullptr;
+        }
+        m_naralexSearchTimer = 1000;
+        Creature* pNaralex = GetClosestCreatureWithEntry(m_creature, NPC_NARALEX, NARALEX_SEARCH_RANGE);
+        m_naralexGuid = pNaralex ? pNaralex->GetObjectGuid() : ObjectGuid();
+        return pNaralex;
+    }
 
     void Reset() override
     {
@@ -190,9 +190,10 @@ struct npc_disciple_of_naralexAI : public npc_escortAI
                 m_creature->HandleEmoteCommand(EMOTE_ONESHOT_POINT);
                 break;
             case 30:
-                if (Creature* Naralex = m_pInstance->GetCreature(m_pInstance->GetData64(DATA_NARALEX)))
+                if (Creature* Naralex = GetNaralex())
                     m_creature->SetFacingToObject(Naralex);
-                m_pInstance->SetData(TYPE_DISCIPLE, IN_PROGRESS);
+                if (m_pInstance)
+                    m_pInstance->SetData(TYPE_DISCIPLE, IN_PROGRESS);
                 Event_Timer = 1000;
                 Subevent_Phase = 0;
                 Point = i;
@@ -211,7 +212,7 @@ struct npc_disciple_of_naralexAI : public npc_escortAI
         if (uiMoveType != POINT_MOTION_TYPE)
             return;
 
-        Creature* Naralex = m_pInstance->GetCreature(m_pInstance->GetData64(DATA_NARALEX));
+        Creature* Naralex = GetNaralex();
 
         switch (uiPointId)
         {
@@ -261,7 +262,7 @@ struct npc_disciple_of_naralexAI : public npc_escortAI
         if (!pSummoned)
             return;
         pSummoned->GetMotionMaster()->MoveIdle();
-        vSummoned.push_back(pSummoned->GetGUID());
+        vSummoned.push_back(pSummoned->GetObjectGuid());
     }
 
     // if the disciple dies his alive summons disappear
@@ -270,7 +271,7 @@ struct npc_disciple_of_naralexAI : public npc_escortAI
         auto it = vSummoned.begin();
         while (it != vSummoned.end())
         {
-            if (Creature* pSummon = m_pInstance->GetCreature(*it))
+            if (Creature* pSummon = m_creature->GetMap()->GetCreature(*it))
                 if (pSummon->IsAlive())
                     pSummon->ForcedDespawn();
             it = vSummoned.erase(it);
@@ -282,7 +283,7 @@ struct npc_disciple_of_naralexAI : public npc_escortAI
     {
         if (!pCreature)
             return;
-        auto it = std::find(vSummoned.begin(), vSummoned.end(), pCreature->GetGUID());
+        auto it = std::find(vSummoned.begin(), vSummoned.end(), pCreature->GetObjectGuid());
         if (it != vSummoned.end())
             vSummoned.erase(it);
     }
@@ -329,13 +330,13 @@ struct npc_disciple_of_naralexAI : public npc_escortAI
         if (!m_pInstance)
             return;
 
-        Creature* Naralex = m_pInstance->GetCreature(m_pInstance->GetData64(DATA_NARALEX));
+        Creature* Naralex = GetNaralex(diff);
         if (!Naralex)
             return;
 
         for (const auto& guid : vSummoned)
         {
-            if (Creature* pSummon = m_pInstance->GetCreature(guid))
+            if (Creature* pSummon = m_creature->GetMap()->GetCreature(guid))
             {
                 if (!pSummon->GetVictim() && m_creature->IsAlive())
                 {
@@ -607,100 +608,9 @@ CreatureAI* GetAI_npc_disciple_of_naralex(Creature* pCreature)
     return new npc_disciple_of_naralexAI(pCreature);
 }
 
-enum
+void AddSC_wailing_caverns_disciple()
 {
-    SPELL_IMMUNE_FIRE    =   7942,
-    SPELL_IMMUNE_FROST   =   7940,
-    SPELL_IMMUNE_NATURE  =   7941,
-    SPELL_IMMUNE_SHADOW  =   7743,
-};
-
-struct EvolvingEctoplasmAI : public ScriptedAI
-{
-    EvolvingEctoplasmAI(Creature* pCreature) : ScriptedAI(pCreature)
-    {
-        Reset();
-    }
-
-    uint32 m_uiImmuneTimer;
-    bool   isImmune;
-
-    void Reset() override
-    {
-        m_creature->RemoveAllAuras();
-        m_uiImmuneTimer = 0;
-        isImmune = false;
-    }
-
-    void SpellHit(WorldObject* pCaster, const SpellEntry* pSpell) override
-    {
-        if (!isImmune)
-        {
-            if (pSpell->School == SPELL_SCHOOL_FROST)
-            {
-//                m_creature->SetDisplayId(1751);
-                DoCastSpellIfCan(m_creature, SPELL_IMMUNE_FROST, CF_AURA_NOT_PRESENT);
-                m_uiImmuneTimer = 10000;
-                isImmune = true;
-            }
-            else if (pSpell->School == SPELL_SCHOOL_FIRE)
-            {
-//                m_creature->SetDisplayId(11138);
-                DoCastSpellIfCan(m_creature, SPELL_IMMUNE_FIRE, CF_AURA_NOT_PRESENT);
-                m_uiImmuneTimer = 10000;
-                isImmune = true;
-            }
-            else if (pSpell->School == SPELL_SCHOOL_NATURE)
-            {
-//                m_creature->SetDisplayId(4266);
-                DoCastSpellIfCan(m_creature, SPELL_IMMUNE_NATURE, CF_AURA_NOT_PRESENT);
-                m_uiImmuneTimer = 10000;
-                isImmune = true;
-            }
-            else if (pSpell->School == SPELL_SCHOOL_SHADOW)
-            {
-//                m_creature->SetDisplayId(767);
-                DoCastSpellIfCan(m_creature, SPELL_IMMUNE_SHADOW, CF_AURA_NOT_PRESENT);
-                m_uiImmuneTimer = 10000;
-                isImmune = true;
-            }
-        }
-    }
-
-    void UpdateAI(const uint32 uiDiff) override
-    {
-        if (m_uiImmuneTimer < uiDiff)
-        {
-//            m_creature->SetDisplayId(1751);
-            m_creature->RemoveAurasDueToSpell(SPELL_IMMUNE_SHADOW);
-            m_creature->RemoveAurasDueToSpell(SPELL_IMMUNE_FROST);
-            m_creature->RemoveAurasDueToSpell(SPELL_IMMUNE_FIRE);
-            m_creature->RemoveAurasDueToSpell(SPELL_IMMUNE_NATURE);
-            isImmune = false;
-        }
-        else
-            m_uiImmuneTimer -= uiDiff;
-
-        if (!m_creature->SelectHostileTarget() || !m_creature->GetVictim())
-            return;
-
-        DoMeleeAttackIfReady();
-    }
-};
-
-CreatureAI* GetAI_EvolvingEctoplasmAI(Creature* pCreature)
-{
-    return new EvolvingEctoplasmAI(pCreature);
-}
-
-void AddSC_wailing_caverns()
-{
-    Script *newscript;
-
-    newscript = new Script;
-    newscript->Name = "npc_evolving_ectoplasm";
-    newscript->GetAI = &GetAI_EvolvingEctoplasmAI;
-    newscript->RegisterSelf();
+    Script* newscript;
 
     newscript = new Script;
     newscript->Name = "npc_disciple_of_naralex";

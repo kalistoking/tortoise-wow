@@ -24,7 +24,11 @@ SDCategory: Wailing Caverns
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "def_wailing_caverns.h"
+#include "dungeons/wailing_caverns/def_wailing_caverns.h"
+
+namespace mod_wailing_caverns
+{
+
 
 struct instance_wailing_caverns : public ScriptedInstance
 {
@@ -260,3 +264,5 @@ void AddSC_instance_wailing_caverns()
     newscript->GetInstanceData = &GetInstanceData_instance_wailing_caverns;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_wailing_caverns

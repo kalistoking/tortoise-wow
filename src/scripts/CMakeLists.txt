@@ -137,8 +137,7 @@ dungeons/uldaman/instance_uldaman.cpp
 dungeons/uldaman/uldaman.cpp
 dungeons/uldaman/uldaman.h
 dungeons/wailing_caverns/def_wailing_caverns.h
-dungeons/wailing_caverns/instance_wailing_caverns.cpp
-dungeons/wailing_caverns/wailing_caverns.cpp
+dungeons/wailing_caverns/wailing_caverns_disciple.cpp
 dungeons/zulfarrak/zulfarrak_tablet_ward.cpp
 dungeons/zulfarrak/zulfarrak.h
 dungeons/zulgurub/boss_arlokk.cpp
