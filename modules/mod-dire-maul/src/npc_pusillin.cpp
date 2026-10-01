@@ -3,7 +3,11 @@
  * All rights reserved */
 
 #include "scriptPCH.h"
-#include "dire_maul.h"
+#include "dungeons/dire_maul/dire_maul.h"
+
+namespace mod_dire_maul
+{
+
 
 #define ME m_creature
 
@@ -204,3 +208,5 @@ void AddSC_npc_pusillin()
     pNewScript->pGossipSelect  = &GossipSelect_npc_pusillin;
     pNewScript->RegisterSelf();
 }
+
+} // namespace mod_dire_maul

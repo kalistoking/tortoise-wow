@@ -1,5 +1,9 @@
 #include "scriptPCH.h"
-#include "dire_maul.h"
+#include "dungeons/dire_maul/dire_maul.h"
+
+namespace mod_dire_maul
+{
+
 
 
 enum
@@ -519,3 +523,5 @@ void AddSC_npc_king_gordok()
     pNewScript->GetAI = &GetAI_boss_chorush;
     pNewScript->RegisterSelf();
 }
+
+} // namespace mod_dire_maul

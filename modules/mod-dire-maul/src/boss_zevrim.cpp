@@ -3,7 +3,11 @@
  * All rights reserved */
 
 #include "scriptPCH.h"
-#include "dire_maul.h"
+#include "dungeons/dire_maul/dire_maul.h"
+
+namespace mod_dire_maul
+{
+
 
 
 enum
@@ -79,3 +83,5 @@ void AddSC_boss_zevrim()
     pNewScript->GetAI = &GetAI_boss_zevrim;
     pNewScript->RegisterSelf();
 }
+
+} // namespace mod_dire_maul
