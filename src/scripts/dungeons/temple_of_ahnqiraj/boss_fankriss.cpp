@@ -117,84 +117,6 @@ struct creature_spawn_fankrissAI : public ScriptedAI
     }
 };
 
-struct creature_vekniss_hatchlingAI : public ScriptedAI
-{
-    ScriptedInstance* m_pInstance;
-    uint32 engageTimer;
-    bool hasEngaged;
-    bool wasAttacked;
-    creature_vekniss_hatchlingAI(Creature* pCreature) : ScriptedAI(pCreature)
-    {
-        m_pInstance = (ScriptedInstance*)pCreature->GetInstanceData();
-        Reset();
-    }
-
-    void Reset() override
-    {
-        engageTimer = HATCHLINGS_ATTACK_DELAY;
-        hasEngaged = false;
-        wasAttacked = false;
-    }
-
-    void AttackedBy(Unit* attacker) override
-    {
-        engageTimer = 0;
-        wasAttacked = true;
-        ScriptedAI::AttackedBy(attacker);
-    }
-    void AttackStart(Unit* u) override
-    {
-        if (hasEngaged)
-            ScriptedAI::AttackStart(u);
-    }
-    void EnterCombat(Unit* u) override
-    {
-        if (hasEngaged)
-            ScriptedAI::EnterCombat(u);
-    }
-    void MoveInLineOfSight(Unit* u) override
-    {
-        if (hasEngaged)
-            ScriptedAI::MoveInLineOfSight(u);
-    }
-    void Aggro(Unit* u) override
-    {
-        if (hasEngaged)
-            ScriptedAI::Aggro(u);
-    }
-
-    void UpdateAI(const uint32 diff) override
-    {
-        if (engageTimer <= diff && !hasEngaged)
-        {
-            hasEngaged = true;
-            m_creature->SetInCombatWithZone();
-            if (!wasAttacked)
-            {
-                if (Unit* pTarget = m_creature->SelectAttackingTarget(AttackingTarget::ATTACKING_TARGET_NEAREST, 0))
-                {
-                    if (m_creature->GetDistance(pTarget) > 200) {
-                        return; //avoid running after people far off in the instance somewhere
-                    }
-                    m_creature->GetThreatManager().addThreat(pTarget, 1);
-                    AttackStart(pTarget);
-
-                }
-            }
-        }
-        else if(!hasEngaged) {
-            engageTimer -= diff;
-            return;
-        }
-
-        if (!m_creature->SelectHostileTarget() || !m_creature->GetVictim()) {
-            return;
-        }
-        DoMeleeAttackIfReady();
-    }
-
-};
-
 struct boss_fankrissAI : public ScriptedAI
 {
     boss_fankrissAI(Creature* pCreature) : 
@@ -531,11 +453,6 @@ CreatureAI* GetAI_creature_spawn_fankriss(Creature* pCreature)
     return new creature_spawn_fankrissAI(pCreature);
 }
 
-CreatureAI* GetAI_creature_vekniss_hatchling(Creature* pCreature)
-{
-    return new creature_vekniss_hatchlingAI(pCreature);
-}
-
 void AddSC_boss_fankriss()
 {
     Script* pNewScript;
@@ -549,11 +466,6 @@ void AddSC_boss_fankriss()
     pNewScript = new Script;
     pNewScript->Name = "creature_spawn_fankriss";
     pNewScript->GetAI = &GetAI_creature_spawn_fankriss;
-    pNewScript->RegisterSelf();
-
-    pNewScript = new Script;
-    pNewScript->Name = "creature_vekniss_hatchling";
-    pNewScript->GetAI = &GetAI_creature_vekniss_hatchling;
     pNewScript->RegisterSelf();
 
     

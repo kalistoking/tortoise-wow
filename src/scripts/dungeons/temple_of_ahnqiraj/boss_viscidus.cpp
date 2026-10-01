@@ -87,101 +87,6 @@ enum
 static const uint32 auiGlobSummonSpells[MAX_VISCIDUS_GLOBS] = { 25865, 25866, 25867, 25868, 25869, 25870, 25871, 25872, 25873, 25874, 25875, 25876, 25877, 25878, 25879, 25880, 25881, 25882, 25883, 25884 };
 
 //-----------------------------------------------------------------------------
-// mob_viscidus_globAI
-//-----------------------------------------------------------------------------
-struct mob_viscidus_globAI : public ScriptedAI
-{
-    // Acceleration delay
-    uint32 m_uiGlobStartAccelerationTimer;
-    // prevents SPELL_GLOB_SPEED casting multiple times
-    bool m_spellCasted;
-
-    // Everything is an approximated here. Need data from official.
-    // Initial glob speed is 0.335625. They start acceleration with 4 seconds delay timer.
-    // Each tick of the aura(id:26634) doubles their speed.
-    // This solution gives smooth movement and acceleration.
-
-    mob_viscidus_globAI(Creature* pCreature)
-        : ScriptedAI(pCreature), m_uiGlobStartAccelerationTimer(4000), m_spellCasted(false)
-    { }
-
-    // dummy methods
-    void Reset() override { }
-    void AttackStart(Unit* /*pWho*/) override { }
-    void MoveInLineOfSight(Unit* /*pWho*/) override { }
-
-    // Implements acceleration on timer, prevents combat.
-    void UpdateAI(const uint32 uiDiff) override
-    {
-        if (m_uiGlobStartAccelerationTimer <= uiDiff)
-        {
-            // SPELL_GLOB_SPEED should be casted only once
-            if (!m_spellCasted)
-            {
-                m_spellCasted = true;
-                m_creature->CastSpell(m_creature, SPELL_GLOB_SPEED, true);
-            }
-        }
-        else
-        {
-            m_uiGlobStartAccelerationTimer -= uiDiff;
-        }
-    }
-};
-
-CreatureAI* GetAI_mob_viscidus_glob(Creature* pCreature)
-{
-    return new mob_viscidus_globAI(pCreature);
-}
-
-//-----------------------------------------------------------------------------
-// mob_viscidus_triggerAI
-//-----------------------------------------------------------------------------
-struct mob_viscidus_triggerAI : public ScriptedAI
-{
-    // Acceleration delay
-    uint32 m_uiToxinDelayTimer;
-    bool m_spellCasted;
-
-    mob_viscidus_triggerAI(Creature* pCreature)
-     : ScriptedAI(pCreature), m_uiToxinDelayTimer(3000), m_spellCasted(false)
-    { }
-
-    // dummy methods
-    void Reset() override { }
-    void AttackStart(Unit* /*pWho*/) override { }
-    void MoveInLineOfSight(Unit* /*pWho*/) override { }
-    // Implements toxin cloud on timer, prevents combat.
-    void UpdateAI(const uint32 uiDiff) override
-    {
-        if (m_uiToxinDelayTimer <= uiDiff)
-        {
-            if (!m_spellCasted)
-            {
-                // set faction and flags before toxin cloud, so it won't damage a boss.
-                m_creature->SetFactionTemplateId(14); // 14 is a hostile faction
-                m_creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_ATTACKABLE_1);
-
-                m_spellCasted = true;
-                // cast spell instantly, only once
-                m_creature->CastSpell(m_creature, SPELL_TOXIN_CLOUD, true);
-                // apply an aura, which will continously repeat this spell.
-                m_creature->CastSpell(m_creature, SPELL_TOXIN, true);
-            }
-        }
-        else
-        {
-            m_uiToxinDelayTimer -= uiDiff;
-        }
-    }
-};
-
-CreatureAI* GetAI_mob_viscidus_trigger(Creature* pCreature)
-{
-    return new mob_viscidus_triggerAI(pCreature);
-}
-
-//-----------------------------------------------------------------------------
 // boss_viscidusAI
 //-----------------------------------------------------------------------------
 struct boss_viscidusAI : public ScriptedAI
@@ -603,13 +508,4 @@ void AddSC_boss_viscidus()
     pNewScript->pEffectAuraDummy = &EffectAuraDummy_spell_aura_dummy_viscidus_freeze;
     pNewScript->RegisterSelf();
 
-    pNewScript = new Script;
-    pNewScript->Name = "mob_viscidus_glob";
-    pNewScript->GetAI = &GetAI_mob_viscidus_glob;
-    pNewScript->RegisterSelf();
-
-    pNewScript = new Script;
-    pNewScript->Name = "mob_viscidus_trigger";
-    pNewScript->GetAI = &GetAI_mob_viscidus_trigger;
-    pNewScript->RegisterSelf();
 }
