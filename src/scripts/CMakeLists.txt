@@ -65,7 +65,6 @@ dungeons/gilneas_city/boss_celia.cpp
 dungeons/gilneas_city/boss_lord_mortimer.cpp
 dungeons/maraudon/celebras_spirit.cpp
 dungeons/molten_core/boss_baron_geddon.cpp
-dungeons/molten_core/boss_incindis.cpp
 dungeons/molten_core/boss_majordomo_executus.cpp
 dungeons/molten_core/boss_ragnaros.cpp
 dungeons/molten_core/boss_thane.cpp

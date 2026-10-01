@@ -14,6 +14,8 @@ namespace mod_molten_core
     void AddSC_boss_shazzrah();
     void AddSC_boss_sulfuron();
     void AddSC_molten_core();
+    void AddSC_boss_incindis();
+    void AddSC_molten_core_runes();
 }
 
 void Addmod_molten_coreScripts()
@@ -32,5 +34,7 @@ void Addmod_molten_coreScripts()
     mod_molten_core::AddSC_boss_shazzrah();
     mod_molten_core::AddSC_boss_sulfuron();
     mod_molten_core::AddSC_molten_core();
+    mod_molten_core::AddSC_boss_incindis();
+    mod_molten_core::AddSC_molten_core_runes();
     sLog.outString("[mod-molten-core] Molten Core's scripts registered from the module");
 }

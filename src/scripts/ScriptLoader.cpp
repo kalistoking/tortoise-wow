@@ -62,7 +62,6 @@ void AddSC_boss_thermaplugg();
 void AddSC_instance_gnomeregan();
 
 void AddSC_boss_baron_geddon();
-void AddSC_boss_incindis();
 void AddSC_boss_thane();
 void AddSC_boss_twin_golems();
 void AddSC_boss_majordomo();
@@ -324,7 +323,6 @@ void AddScripts()
     AddSC_boss_thermaplugg();
     AddSC_instance_gnomeregan();
     AddSC_boss_baron_geddon();
-    AddSC_boss_incindis();
     AddSC_boss_thane();
     AddSC_boss_twin_golems();
     AddSC_boss_majordomo();

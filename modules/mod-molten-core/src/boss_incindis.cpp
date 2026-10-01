@@ -1,5 +1,9 @@
 #include "scriptPCH.h"
 
+namespace mod_molten_core
+{
+
+
 namespace
 {
 template <class T>
@@ -193,3 +197,5 @@ void AddSC_boss_incindis()
 
     RegisterSpellScript("spell_incindis_quaking_stomp", &GetSpellScript<spell_incindis_quaking_stomp>);
 }
+
+} // namespace mod_molten_core

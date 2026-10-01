@@ -14,6 +14,8 @@ Taken from the core:
 - `src/scripts/dungeons/molten_core/boss_shazzrah.cpp`
 - `src/scripts/dungeons/molten_core/boss_sulfuron_harbinger.cpp`
 - `src/scripts/dungeons/molten_core/molten_core.cpp`
+- `src/scripts/dungeons/molten_core/boss_incindis.cpp`
+- `src/scripts/dungeons/molten_core/molten_core_runes.cpp`
 
 ## The switch
 
