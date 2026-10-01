@@ -1,6 +1,10 @@
 #ifndef DEF_LOWER_KARAZHAN_HALLS_H
 #define DEF_LOWER_KARAZHAN_HALLS_H
 
+namespace mod_lower_karazhan_halls
+{
+
+
 enum
 {
 	DATA_BROOD_QUEEN_ARAXXNA,
@@ -51,5 +55,7 @@ protected:
 	uint32 m_uiMoroesStage{};
 	std::string m_strInstData{};
 };
+
+} // namespace mod_lower_karazhan_halls
 
 #endif

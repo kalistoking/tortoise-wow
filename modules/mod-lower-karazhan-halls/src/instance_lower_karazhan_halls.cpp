@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "lower_karazhan_halls.h"
 
+namespace mod_lower_karazhan_halls
+{
+
+
 static const float g_lordBlackwaldPos[4] = { -11088.2f, -1995.74f, 76.1774f, 1.72157f };
 
 instance_lower_karazhan_halls::instance_lower_karazhan_halls(Map* p_Map) : ScriptedInstance(p_Map)
@@ -1299,3 +1303,5 @@ void AddSC_instance_lower_karazhan_halls()
 	newscript->GetAI = &GetAI_dark_rider_apprentice;
 	newscript->RegisterSelf();
 }
+
+} // namespace mod_lower_karazhan_halls

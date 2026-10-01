@@ -73,13 +73,6 @@ dungeons/gnomeregan/gnomeregan.h
 dungeons/gnomeregan/instance_gnomeregan.cpp
 dungeons/hateforge_quarry/hateforge_quarry_spells.cpp
 dungeons/karazhan_crypt/instance_karazhan_crypt.cpp
-dungeons/lower_karazhan_halls/boss_brood_queen_araxxna.cpp
-dungeons/lower_karazhan_halls/boss_blackwald_ii.cpp
-dungeons/lower_karazhan_halls/boss_clawlord_howlfang.cpp
-dungeons/lower_karazhan_halls/boss_grizikil.cpp
-dungeons/lower_karazhan_halls/boss_moroes.cpp
-dungeons/lower_karazhan_halls/instance_lower_karazhan_halls.cpp
-dungeons/lower_karazhan_halls/lower_karazhan_halls.h
 dungeons/upper_karazhan_halls/boss_anomalus.cpp
 dungeons/upper_karazhan_halls/boss_echo_of_medivh.cpp
 dungeons/upper_karazhan_halls/boss_incantagos.cpp

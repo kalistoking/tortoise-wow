@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "lower_karazhan_halls.h"
 
+namespace mod_lower_karazhan_halls
+{
+
+
 struct boss_brood_queen_araxxnaAI : public ScriptedAI
 {
 	boss_brood_queen_araxxnaAI(Creature* pCreature) : ScriptedAI(pCreature)
@@ -185,3 +189,5 @@ void AddSC_boss_brood_queen_araxxna()
 	newscript->GetAI = &GetAI_skitterweb_egg;
 	newscript->RegisterSelf();
 }
+
+} // namespace mod_lower_karazhan_halls

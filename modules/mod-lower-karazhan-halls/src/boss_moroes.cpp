@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "lower_karazhan_halls.h"
 
+namespace mod_lower_karazhan_halls
+{
+
+
 enum MoroesStuff
 {
 	SPELL_GLITTERING_DUST = 57095,
@@ -574,3 +578,5 @@ void AddSC_boss_moroes()
 	newscript->pGossipSelect = &OnGossipSelect_boss_moroes;
 	newscript->RegisterSelf();
 }
+
+} // namespace mod_lower_karazhan_halls

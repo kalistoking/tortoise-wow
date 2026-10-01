@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "lower_karazhan_halls.h"
 
+namespace mod_lower_karazhan_halls
+{
+
+
 struct boss_blackwald_iiAI : public ScriptedAI
 {
 	boss_blackwald_iiAI(Creature* pCreature) : ScriptedAI(pCreature)
@@ -148,3 +152,5 @@ void AddSC_boss_blackwald_ii()
 	newscript->GetAI = &GetAI_boss_blackwald_ii;
 	newscript->RegisterSelf();
 }
+
+} // namespace mod_lower_karazhan_halls
