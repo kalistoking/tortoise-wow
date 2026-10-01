@@ -1,0 +1,29 @@
+-- Puts back what scholomance_as_rows.sql replaced, as t1_world had it when the migration
+-- was written (scripts/tier2/a23_scholomance.py). The rows the migration added are removed.
+
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_darkmaster_gandling', `flags_extra` = 2097152 WHERE `entry` = 1853;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_unstable_corpse', `flags_extra` = 0 WHERE `entry` = 10480;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_reanimated_corpse', `flags_extra` = 0 WHERE `entry` = 10481;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_illucia_barov', `flags_extra` = 0 WHERE `entry` = 10502;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_lord_alexei_barov', `flags_extra` = 0 WHERE `entry` = 10504;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_instructor_malicia', `flags_extra` = 0 WHERE `entry` = 10505;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_the_ravenian', `flags_extra` = 0 WHERE `entry` = 10507;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_boss_ras_frostwhisper', `flags_extra` = 0 WHERE `entry` = 10508;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_lorekeeper_polkelt', `flags_extra` = 0 WHERE `entry` = 10901;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_doctor_theolen_krastinov', `flags_extra` = 2 WHERE `entry` = 11261;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_spectral_projection', `flags_extra` = 0 WHERE `entry` = 11263;
+DELETE FROM `conditions` WHERE `condition_entry` IN (289000);
+DELETE FROM `broadcast_text` WHERE `entry` IN (289101);
+DELETE FROM `creature_ai_events` WHERE `id` IN (185301, 185302, 185303, 185321, 185322, 185323, 185324, 1048001, 1048002, 1048101, 1048102, 1048103, 1050201, 1050202, 1050203, 1050204, 1050220, 1050401, 1050402, 1050420, 1050501, 1050502, 1050503, 1050504, 1050511, 1050520, 1050701, 1050702, 1050703, 1050704, 1050720, 1050801, 1050802, 1050803, 1050804, 1050805, 1050806, 1050811, 1050812, 1090101, 1090102, 1090103, 1090111, 1090120, 1126101, 1126111, 1126112, 1126120, 1126311);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (185301, 185302, 185303, 185321, 185322, 185323, 185324, 1048001, 1048002, 1048101, 1048102, 1048103, 1050201, 1050202, 1050203, 1050204, 1050220, 1050401, 1050402, 1050420, 1050501, 1050502, 1050503, 1050504, 1050511, 1050520, 1050701, 1050702, 1050703, 1050704, 1050720, 1050801, 1050802, 1050803, 1050804, 1050805, 1050806, 1050811, 1050812, 1090101, 1090102, 1090103, 1090111, 1090120, 1126101, 1126111, 1126112, 1126120, 1126311);
+DELETE FROM `generic_scripts` WHERE `id` IN (2890001, 2890002, 2890003, 2890004, 2890005, 2890006, 2890007, 2890008, 2890009, 2890010, 2890011);
+INSERT INTO `creature_ai_events`
+(`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
+VALUES
+(1126301, 11263, 0, 0, 0, 100, 1, 6000, 6000, 0, 0, 1126301, 0, 0, 'Spectral Projection - Despawn After 6 sec (Ustaag)');
+
+INSERT INTO `creature_ai_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(1126301, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Spectral Projection - Despawn Self');
+
