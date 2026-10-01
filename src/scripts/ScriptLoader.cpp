@@ -190,9 +190,6 @@ void AddSC_boss_rares();
 void AddSC_boss_avatar_of_pompa();
 void AddSC_boss_turtlhu();
 void AddSC_karazhan_crypt_triggers();             // the trigger objects and the gate (trt A31)
-void AddSC_instance_gilneas_city();
-void AddSC_boss_celia();
-void AddSC_boss_lord_mortimer();
 void AddSC_boss_xmas_wolf();
 void AddSC_boss_nerubian_overseer();
 void AddSC_mirage_raceway();
@@ -443,9 +440,6 @@ void AddScripts()
     AddSC_boss_avatar_of_pompa();
     AddSC_boss_turtlhu();
     AddSC_karazhan_crypt_triggers();
-    AddSC_instance_gilneas_city();
-    AddSC_boss_celia();
-    AddSC_boss_lord_mortimer();
     AddSC_boss_xmas_wolf();
     AddSC_boss_nerubian_overseer();
     AddSC_mirage_raceway();

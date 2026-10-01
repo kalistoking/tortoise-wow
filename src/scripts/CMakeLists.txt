@@ -50,10 +50,6 @@ dungeons/upper_karazhan_halls/boss_keeper_gnarlmoon.cpp
 dungeons/upper_karazhan_halls/boss_kings_council.cpp
 dungeons/upper_karazhan_halls/boss_kruul.cpp
 dungeons/upper_karazhan_halls/boss_sanv_tasdal.cpp
-dungeons/gilneas_city/instance_gilneas_city.h
-dungeons/gilneas_city/instance_gilneas_city.cpp
-dungeons/gilneas_city/boss_celia.cpp
-dungeons/gilneas_city/boss_lord_mortimer.cpp
 dungeons/maraudon/celebras_spirit.cpp
 dungeons/molten_core/boss_baron_geddon.cpp
 dungeons/molten_core/boss_ragnaros.cpp

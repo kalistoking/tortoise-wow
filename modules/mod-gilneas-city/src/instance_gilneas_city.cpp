@@ -2,6 +2,10 @@
 #include "instance_gilneas_city.h"
 #include <random>
 
+namespace mod_gilneas_city
+{
+
+
 struct instance_gilneas_city : public ScriptedInstance
 {
     explicit instance_gilneas_city(Map* p_Map) : ScriptedInstance(p_Map)
@@ -365,3 +369,5 @@ void AddSC_instance_gilneas_city()
     newscript->GetAI = &GetAI_greymane_noble;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_gilneas_city

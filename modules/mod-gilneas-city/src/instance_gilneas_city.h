@@ -1,6 +1,10 @@
 #ifndef DEF_GILNEAS_CITY_H
 #define DEF_GILNEAS_CITY_H
 
+namespace mod_gilneas_city
+{
+
+
 enum
 {
 	DATA_CELIA = 1,
@@ -27,5 +31,7 @@ enum
 
     GO_HARLOW_FAMILY_CHEST = 2020027,
 };
+
+} // namespace mod_gilneas_city
 
 #endif

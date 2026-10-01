@@ -1,6 +1,10 @@
 #include "scriptPCH.h"
 #include "instance_gilneas_city.h"
 
+namespace mod_gilneas_city
+{
+
+
 struct boss_celiaAI : public ScriptedAI
 {
 	boss_celiaAI(Creature* pCreature) : ScriptedAI(pCreature)
@@ -97,3 +101,5 @@ void AddSC_boss_celia()
 	newscript->GetAI = &GetAI_boss_celia;
 	newscript->RegisterSelf();
 }
+
+} // namespace mod_gilneas_city
