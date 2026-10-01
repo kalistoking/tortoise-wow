@@ -168,6 +168,11 @@ bool ScriptMgr::LoadModuleWhileRunning(char const* moduleName, uint32& replacedS
     return true;
 }
 
+bool ScriptMgr::IsScriptLoaded(uint32 id) const
+{
+    return id && id < m_NPC_scripts.size() && m_NPC_scripts[id];
+}
+
 void ScriptMgr::NoteScriptOfModule(uint32 scriptId)
 {
     // The newest registration owns the name: a module's own, or the core's (no module).

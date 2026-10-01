@@ -261,6 +261,10 @@ enum ConditionType
     CONDITION_LUNATIC               = 61,                   // Checks the player's Level One Lunatic challenge mode.
                                                             // Requirement: Player Target
                                                             // Value1: 0 = target player, 1 = target player and reward-distance group members
+    CONDITION_SCRIPT_LOADED         = 62,                   // Checks if a C++ script answers to the target's script name now (trt A12):
+                                                            // a creature's AI, a gameobject's use. A module unloaded takes its own away,
+                                                            // so rows standing in for a module's C++ can wait for it to go (reversed).
+                                                            // Requirement: Creature or GameObject Target
 };
 
 enum ConditionFlags

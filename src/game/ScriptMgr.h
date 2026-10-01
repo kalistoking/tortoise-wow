@@ -1620,6 +1620,8 @@ class ScriptMgr
         const char* GetScriptName(uint32 id) const { return id < m_scriptNames.size() ? m_scriptNames[id].c_str() : ""; }
         uint32 GetScriptId(const char *name) const;
         uint32 GetScriptIdsCount() const { return m_scriptNames.size(); }
+        // trt A12: whether a C++ script answers to this id now -- a module unloaded takes its own away.
+        bool IsScriptLoaded(uint32 id) const;
         
         void Initialize();
         void LoadDatabase();

@@ -29,6 +29,7 @@
 #include "CreatureGroups.h"
 #include "Group.h"
 #include "ScriptObjects.h"
+#include "ScriptMgr.h"
 
 char const* conditionSourceToStr[] =
         {
@@ -116,6 +117,7 @@ uint8 const ConditionTargetsInternal[] =
         CONDITION_REQ_MAP_OR_WORLDOBJECT, //  59
         CONDITION_REQ_TARGET_UNIT,        //  60
         CONDITION_REQ_TARGET_PLAYER,      //  61
+        CONDITION_REQ_TARGET_WORLDOBJECT, //  62
 };
 
 // Starts from 4th element so that -3 will return first element.
@@ -671,6 +673,14 @@ bool inline ConditionEntry::Evaluate(WorldObject const* target, Map const* map, 
         case CONDITION_STAND_STATE:
         {
             return target->ToUnit()->GetStandState() == m_value1;
+        }
+        case CONDITION_SCRIPT_LOADED:
+        {
+            if (Creature const* pCreature = target->ToCreature())
+                return sScriptMgr.IsScriptLoaded(pCreature->GetScriptId());
+            if (GameObject const* pGo = target->ToGameObject())
+                return sScriptMgr.IsScriptLoaded(pGo->GetGOInfo()->ScriptId);
+            return false;
         }
         case CONDITION_LUNATIC:
         {
@@ -1349,6 +1359,15 @@ bool ConditionEntry::IsValid()
             if (m_value2 || m_value3 || m_value4)
             {
                 sLog.outErrorDb("CONDITION_LUNATIC (entry %u, type %u) has unused data in value2, value3, or value4, skipped", m_entry, m_condition);
+                return false;
+            }
+            break;
+        }
+        case CONDITION_SCRIPT_LOADED:
+        {
+            if (m_value1 || m_value2 || m_value3 || m_value4)
+            {
+                sLog.outErrorDb("CONDITION_SCRIPT_LOADED (entry %u, type %u) has unused data in value1-4, skipped", m_entry, m_condition);
                 return false;
             }
             break;
