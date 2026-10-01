@@ -1,5 +1,8 @@
 #include "scriptPCH.h"
-#include "molten_core.h"
+#include "dungeons/molten_core/molten_core.h"
+
+namespace mod_molten_core
+{
 
 enum
 {
@@ -484,3 +487,5 @@ void AddSC_boss_majordomo()
     newscript->pGossipSelect = &GossipSelect_event_domo;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_molten_core

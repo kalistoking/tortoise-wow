@@ -16,6 +16,7 @@ namespace mod_molten_core
     void AddSC_molten_core();
     void AddSC_boss_incindis();
     void AddSC_molten_core_runes();
+    void AddSC_boss_majordomo();
 }
 
 void Addmod_molten_coreScripts()
@@ -36,5 +37,6 @@ void Addmod_molten_coreScripts()
     mod_molten_core::AddSC_molten_core();
     mod_molten_core::AddSC_boss_incindis();
     mod_molten_core::AddSC_molten_core_runes();
+    mod_molten_core::AddSC_boss_majordomo();
     sLog.outString("[mod-molten-core] Molten Core's scripts registered from the module");
 }

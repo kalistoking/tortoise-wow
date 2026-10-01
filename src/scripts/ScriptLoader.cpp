@@ -62,7 +62,6 @@ void AddSC_instance_gnomeregan();
 void AddSC_boss_baron_geddon();
 void AddSC_boss_thane();
 void AddSC_boss_twin_golems();
-void AddSC_boss_majordomo();
 void AddSC_boss_ragnaros();
 void AddSC_instance_molten_core();
 void AddSC_boss_anubrekhan();                        //naxxramas
@@ -318,7 +317,6 @@ void AddScripts()
     AddSC_boss_baron_geddon();
     AddSC_boss_thane();
     AddSC_boss_twin_golems();
-    AddSC_boss_majordomo();
     AddSC_boss_ragnaros();
     AddSC_instance_molten_core();
     AddSC_boss_anubrekhan();                                //naxxramas

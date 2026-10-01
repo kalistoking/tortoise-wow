@@ -16,6 +16,7 @@ Taken from the core:
 - `src/scripts/dungeons/molten_core/molten_core.cpp`
 - `src/scripts/dungeons/molten_core/boss_incindis.cpp`
 - `src/scripts/dungeons/molten_core/molten_core_runes.cpp`
+- `src/scripts/dungeons/molten_core/boss_majordomo_executus.cpp`
 
 ## The switch
 
