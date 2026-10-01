@@ -709,14 +709,29 @@ void ScriptMgr::LoadScripts(ScriptMapMap& scripts, const char* tablename)
             case SCRIPT_COMMAND_SET_HEALTH:
             {
                 uint32 const mode = tmp.setHealth.mode;
-                bool const percent = mode == SET_HEALTH_PERCENT || mode == SET_HEALTH_RAISE_PERCENT || mode == SET_HEALTH_LOWER_PERCENT;
+                bool const percent = mode == SET_HEALTH_PERCENT || mode == SET_HEALTH_RAISE_PERCENT || mode == SET_HEALTH_LOWER_PERCENT
+                                  || mode == SET_HEALTH_OF_CURRENT;
+                bool const mana = tmp.setHealth.power == SET_HEALTH_POWER_MANA;
                 if (mode >= SET_HEALTH_MODE_MAX)
                 {
                     sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_SET_HEALTH has unknown mode (datalong2 = %u) for script id %u",
                                     tablename, mode, tmp.id);
                     continue;
                 }
-                if (!tmp.setHealth.amount && (mode == SET_HEALTH_VALUE || mode == SET_HEALTH_PERCENT || mode == SET_HEALTH_MAX))
+                if (tmp.setHealth.power >= SET_HEALTH_POWER_MAX)
+                {
+                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_SET_HEALTH has datalong4 = %u -- 0 health, 1 mana -- for script id %u",
+                                    tablename, tmp.setHealth.power, tmp.id);
+                    continue;
+                }
+                if (mana && mode == SET_HEALTH_MAX)
+                {
+                    sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_SET_HEALTH sets the maximum of mana for script id %u -- SET_HEALTH_MAX is health only",
+                                    tablename, tmp.id);
+                    continue;
+                }
+                if (!mana && !tmp.setHealth.amount
+                    && (mode == SET_HEALTH_VALUE || mode == SET_HEALTH_PERCENT || mode == SET_HEALTH_MAX || mode == SET_HEALTH_OF_CURRENT))
                 {
                     sLog.outErrorDb("Table `%s` SCRIPT_COMMAND_SET_HEALTH sets health to 0 (datalong = 0) for script id %u -- it never kills",
                                     tablename, tmp.id);

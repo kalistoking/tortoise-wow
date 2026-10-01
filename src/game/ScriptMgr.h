@@ -384,10 +384,11 @@ enum eScriptCommand
                                                             // datalong2 = zone_id
     SCRIPT_COMMAND_TAKE_MONEY               = 93,           // source = Player (from provided source or target)
                                                             // datalong = copper amount
-    SCRIPT_COMMAND_SET_HEALTH               = 94,           // source = Creature
-                                                            // datalong = amount (hit points, or a percent of the maximum)
+    SCRIPT_COMMAND_SET_HEALTH               = 94,           // source = Creature (any Unit, for mana)
+                                                            // datalong = amount (points, or a percent of the maximum or the current)
                                                             // datalong2 = eSetHealthModes
                                                             // datalong3 = (bool) keep_percent, with SET_HEALTH_MAX
+                                                            // datalong4 = eSetHealthPowers: 0 health, 1 mana (trt A20)
     SCRIPT_COMMAND_UNIT_STATE               = 95,           // source = Creature
                                                             // datalong = (bool) add, else clear
                                                             // datalong2 = unit state mask: can't rotate, ignore pathfinding, allow incomplete path, allow LoS attack
@@ -407,8 +408,18 @@ enum eSetHealthModes
     SET_HEALTH_RAISE_PERCENT  = 3,                          // up by datalong % of the maximum
     SET_HEALTH_LOWER          = 4,                          // down by datalong hit points
     SET_HEALTH_LOWER_PERCENT  = 5,                          // down by datalong % of the maximum
-    SET_HEALTH_MAX            = 6,                          // the maximum to datalong hit points
+    SET_HEALTH_MAX            = 6,                          // the maximum to datalong hit points (health only)
+    SET_HEALTH_OF_CURRENT     = 7,                          // to datalong % of the current value (trt A20)
     SET_HEALTH_MODE_MAX
+};
+
+// Possible datalong4 values for SCRIPT_COMMAND_SET_HEALTH (trt A20): what the mode works on.
+// Mana may be set to 0 and its source may be any unit; a unit without mana is left alone.
+enum eSetHealthPowers
+{
+    SET_HEALTH_POWER_HEALTH   = 0,
+    SET_HEALTH_POWER_MANA     = 1,
+    SET_HEALTH_POWER_MAX
 };
 
 #define MAX_TEXT_ID 4                                       // used for SCRIPT_COMMAND_TALK
@@ -1184,6 +1195,7 @@ struct ScriptInfo
             uint32 amount;                                  // datalong
             uint32 mode;                                    // datalong2
             uint32 keepPercent;                             // datalong3
+            uint32 power;                                   // datalong4, eSetHealthPowers (trt A20)
         } setHealth;
 
         struct                                              // SCRIPT_COMMAND_UNIT_STATE (95)
