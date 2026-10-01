@@ -3,15 +3,36 @@
 
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_hakkari_doctor', `flags_extra` = 0 WHERE `entry` = 11831;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_venoxis', `flags_extra` = 2129921 WHERE `entry` = 14507;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_jeklik', `flags_extra` = 2129921 WHERE `entry` = 14517;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'mob_batrider', `flags_extra` = 536870912 WHERE `entry` = 14965;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'mob_shade_of_jindo', `flags_extra` = 536870912 WHERE `entry` = 14986;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_esprit_vaudou', `flags_extra` = 536870912 WHERE `entry` = 15009;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_gahzranka', `flags_extra` = 32769 WHERE `entry` = 15114;
-DELETE FROM `conditions` WHERE `condition_entry` IN (309001, 309004, 309010, 309011);
-DELETE FROM `broadcast_text` WHERE `entry` IN (309101, 309102, 309103, 309104);
-DELETE FROM `creature_ai_events` WHERE `id` IN (1135211, 1135212, 1135213, 1135214, 1135215, 1183101, 1183102, 1183103, 1183104, 1183105, 1450701, 1450702, 1450703, 1450704, 1450705, 1450706, 1450711, 1450712, 1450713, 1450714, 1450715, 1450721, 1450722, 1450723, 1450724, 1475011, 1475012, 1475013, 1475014, 1475015, 1500901, 1500902, 1511401, 1511402, 1511403, 1511404, 1511405, 1511406, 1511411, 1511412, 1511413);
-DELETE FROM `creature_ai_scripts` WHERE `id` IN (1135211, 1135212, 1135213, 1135214, 1135215, 1183101, 1183102, 1183103, 1183104, 1183105, 1450701, 1450702, 1450703, 1450704, 1450705, 1450706, 1450711, 1450712, 1450713, 1450714, 1450715, 1450721, 1450722, 1450723, 1450724, 1475011, 1475012, 1475013, 1475014, 1475015, 1500901, 1500902, 1511401, 1511402, 1511403, 1511404, 1511405, 1511406, 1511411, 1511412, 1511413);
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_brazier', `flags_extra` = 128 WHERE `entry` = 987800;
+DELETE FROM `conditions` WHERE `condition_entry` IN (309001, 309004, 309010, 309011, 309310, 309311, 309312, 309330, 309331, 309332, 309350, 309351, 309352, 309353, 309354, 309355, 309356, 309357);
+DELETE FROM `broadcast_text` WHERE `entry` IN (309101, 309102, 309103, 309104, 309201, 309202, 309203, 309204, 309205);
+DELETE FROM `creature_ai_events` WHERE `id` IN (1135211, 1135212, 1135213, 1135214, 1135215, 1183101, 1183102, 1183103, 1183104, 1183105, 1450701, 1450702, 1450703, 1450704, 1450705, 1450706, 1450711, 1450712, 1450713, 1450714, 1450715, 1450721, 1450722, 1450723, 1450724, 1451701, 1451702, 1451703, 1451704, 1451705, 1451706, 1451711, 1451712, 1451713, 1451714, 1451715, 1451721, 1451722, 1451723, 1451724, 1451725, 1451726, 1475011, 1475012, 1475013, 1475014, 1475015, 1496501, 1496502, 1496503, 1496504, 1496505, 1498601, 1498602, 1498603, 1498604, 1498605, 1500901, 1500902, 1511401, 1511402, 1511403, 1511404, 1511405, 1511406, 1511411, 1511412, 1511413, 3099001, 3099002, 3099003, 3099004);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (1135211, 1135212, 1135213, 1135214, 1135215, 1183101, 1183102, 1183103, 1183104, 1183105, 1450701, 1450702, 1450703, 1450704, 1450705, 1450706, 1450711, 1450712, 1450713, 1450714, 1450715, 1450721, 1450722, 1450723, 1450724, 1451701, 1451702, 1451703, 1451704, 1451705, 1451706, 1451711, 1451712, 1451713, 1451714, 1451715, 1451721, 1451722, 1451723, 1451724, 1451725, 1451726, 1475011, 1475012, 1475013, 1475014, 1475015, 1496501, 1496502, 1496503, 1496504, 1496505, 1498601, 1498602, 1498603, 1498604, 1498605, 1500901, 1500902, 1511401, 1511402, 1511403, 1511404, 1511405, 1511406, 1511411, 1511412, 1511413, 3099001, 3099002, 3099003, 3099004);
 DELETE FROM `generic_scripts` WHERE `id` IN (3090001);
+DELETE FROM `gossip_scripts` WHERE `id` IN (309500);
 DELETE FROM `event_scripts` WHERE `id` = 9066 AND `command` = 32 AND `comments` = 'Gong of Bethekk - Arlokk up or done: no more';
 DELETE FROM `event_scripts` WHERE `id` = 9066 AND `command` = 37 AND `comments` = 'Gong of Bethekk - Arlokk called (1 = 1)';
+UPDATE `gameobject_template` SET `data3` = 309501 WHERE `entry` = 180358;
+UPDATE `gameobject_template` SET `data3` = 309501 WHERE `entry` = 987654;
+UPDATE `gameobject_template` SET `data3` = 309502 WHERE `entry` = 180364;
+UPDATE `gameobject_template` SET `data3` = 309502 WHERE `entry` = 987655;
+UPDATE `gameobject_template` SET `data3` = 309503 WHERE `entry` = 180365;
+UPDATE `gameobject_template` SET `data3` = 309503 WHERE `entry` = 987656;
+UPDATE `gameobject_template` SET `data3` = 309504 WHERE `entry` = 180393;
+UPDATE `gameobject_template` SET `data3` = 309504 WHERE `entry` = 987657;
+DELETE FROM `gossip_menu` WHERE `entry` = 309501 AND `text_id` = 7643;
+DELETE FROM `gossip_menu` WHERE `entry` = 309501 AND `text_id` = 7669;
+DELETE FROM `gossip_menu` WHERE `entry` = 309502 AND `text_id` = 7670;
+DELETE FROM `gossip_menu` WHERE `entry` = 309502 AND `text_id` = 7675;
+DELETE FROM `gossip_menu` WHERE `entry` = 309503 AND `text_id` = 7672;
+DELETE FROM `gossip_menu` WHERE `entry` = 309503 AND `text_id` = 7673;
+DELETE FROM `gossip_menu` WHERE `entry` = 309504 AND `text_id` = 7674;
+DELETE FROM `gossip_menu` WHERE `entry` = 309504 AND `text_id` = 7682;
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
