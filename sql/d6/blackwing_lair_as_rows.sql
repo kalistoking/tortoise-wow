@@ -15,10 +15,14 @@
 -- back after a restart lying hurt with his intro again if no one had touched him (the C++: hostile, no gossip),
 -- and with his gossip if he had been corrupted. A mana user already burning is skipped for that turn (the C++
 -- picked another). His week-long respawn is the spawn's own.
+-- Second pass: Nefarian's bones. Under 20% his C++ starts generic script 4690100 where the world has it (a seam
+-- in boss_nefarian.cpp, his old loop where it has not): his yell, and each drakonid's bones within 200 yd a Bone
+-- Construct where they lie, the zone pulled into the fight, gone 10 s out of combat; the bones gone. The
+-- constructs are the bones' summons, not his.
 -- Second pass: the Death Talon Captain and Seethers. The Captain keeps his pack's Aura of Flames by the second
 -- (the C++: every update); a player within 29 yd pulls him, as does the default aggro range beside it. A Seether's
 -- first Flame Buffet counts from aggro (the C++: from first reaching melee). Their own EventAI rules, dead under
--- the C++ and unlike it, are taken away. Nefarian's bones to constructs (inside Nefarian's own C++) stay.
+-- the C++ and unlike it, are taken away.
 -- Map 469 keeps instance_blackwing_lair, Razorgore, Vaelastrasz's quest accept, Chromaggus,
 -- Victor Nefarius and Nefarian (the core). Broodlord has no height leash (the C++ evaded below z 448.6);
 -- Firemaw does not Thrash (the C++ tried only while casting). A Death Talon picks its brood power and
@@ -309,7 +313,7 @@ VALUES
 (1302025, 0, 0, 15, 23620, 2, 0, 0, 6, 0, 4, 6, 0, 0, 0, 0, 0, 0, 0, 0, 469118, 'Vaelastrasz - Burning Adrenaline (a mana user without it casts it on itself)'),
 (1302026, 0, 0, 15, 23620, 2, 0, 0, 0, 0, 1, 14, 0, 0, 0, 0, 0, 0, 0, 0, 469118, 'Vaelastrasz - Burning Adrenaline (the tank, without it, casts it on itself)');
 
-DELETE FROM `generic_scripts` WHERE `id` IN (4690001, 4690002, 4690003, 4690004, 4690005, 4690006, 4690007, 4690008, 4690009, 4690010, 4690011, 4690012, 4690013, 4690014, 4690015, 4690016, 4690017, 4690018, 4690019, 4690020, 4690021, 4690022, 4690023, 4690024, 4690025, 4690026, 4690027, 4690028, 4690029, 4690030);
+DELETE FROM `generic_scripts` WHERE `id` IN (4690001, 4690002, 4690003, 4690004, 4690005, 4690006, 4690007, 4690008, 4690009, 4690010, 4690011, 4690012, 4690013, 4690014, 4690015, 4690016, 4690017, 4690018, 4690019, 4690020, 4690021, 4690022, 4690023, 4690024, 4690025, 4690026, 4690027, 4690028, 4690029, 4690030, 4690031, 4690032, 4690100);
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -361,7 +365,12 @@ VALUES
 (4690030, 10, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 469104, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - "I beg you, mortals - FLEE!..."'),
 (4690030, 26, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 469105, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - "FLAME! DEATH! DESTRUCTION!..."'),
 (4690030, 36, 2, 22, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - hostile'),
-(4690030, 36, 3, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - at the one who spoke to him');
+(4690030, 36, 3, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - at the one who spoke to him'),
+(4690031, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Bone Construct - the zone into the fight'),
+(4690032, 0, 0, 10, 14605, 10000, 0, 0, 0, 0, 0, 0, 262144, 4690031, -1, 4, 0, 0, 0, 0, 0, 'Drakonid Bones - a Bone Construct where they lie, gone 10 s out of combat'),
+(4690032, 0, 1, 81, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Drakonid Bones - gone'),
+(4690100, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 9883, 0, 0, 0, 0, 0, 0, 0, 0, 'Nefarian - "Impossible! Rise my minions! Serve your master once more!"'),
+(4690100, 0, 1, 68, 4690032, 0, 179804, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Nefarian - each drakonid''s bones within 200 yd rise');
 
 DELETE FROM `gossip_scripts` WHERE `id` IN (1302000);
 INSERT INTO `gossip_scripts`
