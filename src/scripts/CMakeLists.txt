@@ -120,7 +120,6 @@ dungeons/stormwind_vaults/boss_damian_the_ripper.cpp
 dungeons/stormwind_vaults/boss_volkan_cruelblade.cpp
 dungeons/stormwind_vaults/instance_stormwind_vaults.cpp
 dungeons/stratholme/boss_baroness_anastari.cpp
-dungeons/stratholme/boss_dathrohan_balnazzar.cpp
 dungeons/stratholme/boss_order_of_silver_hand.cpp
 dungeons/stratholme/boss_sc_attunement.cpp
 dungeons/stratholme/instance_stratholme.cpp

@@ -15,6 +15,7 @@ namespace mod_stratholme
     void AddSC_boss_ramstein_the_gorger();
     void AddSC_boss_timmy_the_cruel();
     void AddSC_stratholme();
+    void AddSC_boss_dathrohan_balnazzar();
 }
 
 void Addmod_stratholmeScripts()
@@ -34,5 +35,6 @@ void Addmod_stratholmeScripts()
     mod_stratholme::AddSC_boss_ramstein_the_gorger();
     mod_stratholme::AddSC_boss_timmy_the_cruel();
     mod_stratholme::AddSC_stratholme();
+    mod_stratholme::AddSC_boss_dathrohan_balnazzar();
     sLog.outString("[mod-stratholme] Stratholme's scripts registered from the module");
 }

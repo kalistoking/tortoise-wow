@@ -15,6 +15,7 @@ Taken from the core:
 - `src/scripts/dungeons/stratholme/boss_ramstein_the_gorger.cpp`
 - `src/scripts/dungeons/stratholme/boss_timmy_the_cruel.cpp`
 - `src/scripts/dungeons/stratholme/stratholme.cpp`
+- `src/scripts/dungeons/stratholme/boss_dathrohan_balnazzar.cpp`
 
 ## The switch
 

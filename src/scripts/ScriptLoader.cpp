@@ -91,7 +91,6 @@ void AddSC_boss_vectus();
 void AddSC_instance_scholomance();
 void AddSC_boss_baroness_anastari();
 void AddSC_boss_sc_attunement();
-void AddSC_boss_dathrohan_balnazzar();
 void AddSC_instance_stratholme();
 void AddSC_stratholme_aurius_phantoms();          // Aurius and the phantoms aura (trt A22)
 void AddSC_instance_sunken_temple();                 //sunken_temple
@@ -352,7 +351,6 @@ void AddScripts()
     AddSC_instance_scholomance();
     AddSC_boss_baroness_anastari();
     AddSC_boss_sc_attunement();
-    AddSC_boss_dathrohan_balnazzar();
     AddSC_instance_stratholme();
     AddSC_stratholme_aurius_phantoms();
     AddSC_instance_sunken_temple();                         //sunken_temple

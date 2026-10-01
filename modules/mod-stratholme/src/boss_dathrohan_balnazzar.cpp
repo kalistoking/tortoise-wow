@@ -15,7 +15,11 @@
  */
 
 #include "scriptPCH.h"
-#include "stratholme.h"
+#include "dungeons/stratholme/stratholme.h"
+
+namespace mod_stratholme
+{
+
 
 enum
 {
@@ -391,3 +395,5 @@ void AddSC_boss_dathrohan_balnazzar()
     newscript->GetAI = &GetAI_boss_dathrohan_balnazzar;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_stratholme
