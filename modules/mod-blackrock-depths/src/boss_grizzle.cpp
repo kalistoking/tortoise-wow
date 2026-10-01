@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_blackrock_depths
+{
+
+
 #define EMOTE_GENERIC_FRENZY_KILL 7797
 
 #define SPELL_GROUNDTREMOR 6524
@@ -91,3 +95,5 @@ void AddSC_boss_grizzle()
     newscript->GetAI = &GetAI_boss_grizzle;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_depths

@@ -22,7 +22,11 @@ SDCategory: Blackrock Depths
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "blackrock_depths.h"
+#include "dungeons/blackrock_depths/blackrock_depths.h"
+
+namespace mod_blackrock_depths
+{
+
 
 enum
 {
@@ -113,3 +117,5 @@ void AddSC_boss_magmus()
     newscript->GetAI = &GetAI_boss_magmus;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_depths

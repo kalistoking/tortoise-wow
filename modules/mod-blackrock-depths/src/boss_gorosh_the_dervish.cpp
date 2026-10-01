@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_blackrock_depths
+{
+
+
 #define SPELL_WHIRLWIND 15589
 #define SPELL_MORTALSTRIKE 15708
 #define SPELL_BLOODLUST 21049
@@ -99,3 +103,5 @@ void AddSC_boss_gorosh_the_dervish()
     newscript->GetAI = &GetAI_boss_gorosh_the_dervish;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_depths

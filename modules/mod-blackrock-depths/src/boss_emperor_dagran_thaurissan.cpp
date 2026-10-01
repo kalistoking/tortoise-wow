@@ -22,7 +22,11 @@ SDCategory: Blackrock Depths
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "blackrock_depths.h"
+#include "dungeons/blackrock_depths/blackrock_depths.h"
+
+namespace mod_blackrock_depths
+{
+
 
 enum eEmperor
 {
@@ -247,3 +251,5 @@ void AddSC_boss_draganthaurissan()
     newscript->GetAI = &GetAI_boss_moira_bronzebeard;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_depths

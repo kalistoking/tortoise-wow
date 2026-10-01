@@ -10,7 +10,11 @@ npc_va_jashni
 */
 
 #include "scriptPCH.h"
-#include "blackrock_depths.h"
+#include "dungeons/blackrock_depths/blackrock_depths.h"
+
+namespace mod_blackrock_depths
+{
+
 
 /*######
 ## npc_theldren
@@ -542,3 +546,5 @@ void AddSC_blackrock_depths_arena_challenge()
     newscript->GetAI = &GetAI_npc_malgen_longspear;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_depths

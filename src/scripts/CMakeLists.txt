@@ -18,17 +18,8 @@ dungeons/black_morass/boss_chronormu.hpp
 dungeons/black_morass/boss_gerastrasz.cpp
 dungeons/black_morass/boss_gerastrasz.hpp
 dungeons/black_morass/instance_black_morass.cpp
-dungeons/blackrock_depths/arena_challenge_ai.cpp
 dungeons/blackrock_depths/blackrock_depths.cpp
 dungeons/blackrock_depths/blackrock_depths.h
-dungeons/blackrock_depths/boss_anubshiah.cpp
-dungeons/blackrock_depths/boss_emperor_dagran_thaurissan.cpp
-dungeons/blackrock_depths/boss_general_angerforge.cpp
-dungeons/blackrock_depths/boss_gorosh_the_dervish.cpp
-dungeons/blackrock_depths/boss_grizzle.cpp
-dungeons/blackrock_depths/boss_high_interrogator_gerstahn.cpp
-dungeons/blackrock_depths/boss_magmus.cpp
-dungeons/blackrock_depths/boss_tomb_of_seven.cpp
 dungeons/blackrock_depths/instance_blackrock_depths.cpp
 dungeons/blackrock_spire/blackrock_spire.h
 dungeons/blackrock_spire/boss_halycon.cpp

@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_blackrock_depths
+{
+
+
 #define SPELL_SHADOWBOLT            15472
 #define SPELL_CURSEOFTONGUES        15470
 #define SPELL_CURSEOFWEAKNESS       12493
@@ -117,3 +121,5 @@ void AddSC_boss_anubshiah()
     newscript->GetAI = &GetAI_boss_anubshiah;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_depths

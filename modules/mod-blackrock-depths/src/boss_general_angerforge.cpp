@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_blackrock_depths
+{
+
+
 enum
 {
     EMOTE_ALARM = 5286,
@@ -123,3 +127,5 @@ void AddSC_boss_general_angerforge()
     newscript->GetAI = &GetAI_boss_general_angerforge;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_depths

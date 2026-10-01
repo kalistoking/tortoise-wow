@@ -44,15 +44,6 @@ void AddSC_event_scourge_invasion();
 //eastern kingdoms
 void AddSC_instance_blackrock_spire();
 void AddSC_blackrock_depths();                       //blackrock_depths
-void AddSC_blackrock_depths_arena_challenge();
-void AddSC_boss_anubshiah();
-void AddSC_boss_draganthaurissan();
-void AddSC_boss_general_angerforge();
-void AddSC_boss_gorosh_the_dervish();
-void AddSC_boss_grizzle();
-void AddSC_boss_high_interrogator_gerstahn();
-void AddSC_boss_magmus();
-void AddSC_boss_tomb_of_seven();
 void AddSC_boss_urok();
 void AddSC_instance_blackrock_depths();
 void AddSC_boss_halycon();
@@ -364,15 +355,6 @@ void AddScripts()
 
     //eastern kingdoms
     AddSC_blackrock_depths();                               //blackrock_depths
-    AddSC_blackrock_depths_arena_challenge();
-    AddSC_boss_anubshiah();
-    AddSC_boss_draganthaurissan();
-    AddSC_boss_general_angerforge();
-    AddSC_boss_gorosh_the_dervish();
-    AddSC_boss_grizzle();
-    AddSC_boss_high_interrogator_gerstahn();
-    AddSC_boss_magmus();
-    AddSC_boss_tomb_of_seven();
     AddSC_boss_urok();
     AddSC_instance_blackrock_depths();
     AddSC_boss_halycon();
