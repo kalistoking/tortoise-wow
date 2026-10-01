@@ -242,6 +242,7 @@ enum eScriptCommand
                                                             // target = Unit
                                                             // datalong = damage
                                                             // datalong2 = (bool) is_percent
+                                                            // datalong3 = (bool) drain: the source gains what it dealt (trt A21)
     SCRIPT_COMMAND_ZONE_COMBAT_PULSE        = 49,           // source = Creature
                                                             // datalong = (bool) initialPulse
     SCRIPT_COMMAND_CALL_FOR_HELP            = 50,           // source = Creature
@@ -905,6 +906,7 @@ struct ScriptInfo
         {
             uint32 damage;                                  // datalong
             uint32 isPercent;                               // datalong2
+            uint32 drain;                                   // datalong3 (trt A21)
         } dealDamage;
 
         struct                                              // SCRIPT_COMMAND_ZONE_COMBAT_PULSE (49)

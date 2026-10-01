@@ -1728,6 +1728,11 @@ bool Map::ScriptCommand_DealDamage(const ScriptInfo& script, WorldObject* source
     uint32 damage = script.dealDamage.isPercent ? pTarget->GetMaxHealth()*(script.dealDamage.damage / 100.0f) : script.dealDamage.damage;
     pSource->DealDamage(pTarget, damage, nullptr, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, nullptr, false);
 
+    // A drain (trt A21): the source gains the damage reckoned, as a boss's own drain of the raid did --
+    // not a heal (no threat, no healing done), its health raised up to its maximum.
+    if (script.dealDamage.drain && pSource->IsAlive())
+        pSource->SetHealth(std::min<uint64>(uint64(pSource->GetHealth()) + damage, pSource->GetMaxHealth()));
+
     return false;
 }
 
