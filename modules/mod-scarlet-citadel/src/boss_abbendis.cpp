@@ -6,8 +6,12 @@
  */
 
 #include "scriptPCH.h"
-#include "scarlet_citadel.h"
+#include "dungeons/scarlet_citadel/scarlet_citadel.h"
 #include "boss_abbendis.hpp"
+
+namespace mod_scarlet_citadel
+{
+
 
 
 class boss_abbendisAI : public ScriptedAI
@@ -78,3 +82,5 @@ void AddSC_boss_abbendis()
     pNewscript->GetAI = &GetAI_boss_abbendis;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_scarlet_citadel

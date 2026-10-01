@@ -6,8 +6,12 @@
  */
 
 #include "scriptPCH.h"
-#include "scarlet_citadel.h"
+#include "dungeons/scarlet_citadel/scarlet_citadel.h"
 #include "trashmobs_scarlet_citadel.hpp"
+
+namespace mod_scarlet_citadel
+{
+
 
 
 //////////////////////////////////////////
@@ -705,3 +709,5 @@ void AddSC_trash_mobs_scarlet_citadel()
     pNewscript->GetAI = &GetAI_npc_citadel_anti_exploit;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_scarlet_citadel
