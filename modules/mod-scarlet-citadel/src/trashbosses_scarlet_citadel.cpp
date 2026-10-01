@@ -6,8 +6,12 @@
  */
 
 #include "scriptPCH.h"
-#include "scarlet_citadel.h"
+#include "dungeons/scarlet_citadel/scarlet_citadel.h"
 #include "trashbosses_scarlet_citadel.hpp"
+
+namespace mod_scarlet_citadel
+{
+
 
 
 class npc_eric_vesper_AI : public ScriptedAI
@@ -508,3 +512,5 @@ void AddSC_trash_bosses_scarlet_citadel()
     pNewscript->GetAI = &GetAI_npc_darkcaller_rayn;
     pNewscript->RegisterSelf();
 }
+
+} // namespace mod_scarlet_citadel

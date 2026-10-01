@@ -10,6 +10,8 @@ Taken from the core:
 - `src/scripts/dungeons/scarlet_citadel/boss_abbendis.hpp`
 - `src/scripts/dungeons/scarlet_citadel/trashmobs_scarlet_citadel.cpp`
 - `src/scripts/dungeons/scarlet_citadel/trashmobs_scarlet_citadel.hpp`
+- `src/scripts/dungeons/scarlet_citadel/trashbosses_scarlet_citadel.cpp`
+- `src/scripts/dungeons/scarlet_citadel/trashbosses_scarlet_citadel.hpp`
 
 ## The switch
 

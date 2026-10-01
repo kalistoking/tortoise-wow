@@ -234,7 +234,6 @@ void AddSC_boss_ardaeus();
 void AddSC_boss_daelus();
 void AddSC_boss_mariella();
 void AddSC_instance_scarlet_citadel();
-void AddSC_trash_bosses_scarlet_citadel();
 
 // Hateforge Quarry
 void AddSC_hateforge_quarry_spells();                // the dispel counterpart, stays in the core (trt A6)
@@ -517,7 +516,6 @@ void AddScripts()
     AddSC_boss_daelus();
     AddSC_boss_mariella();
     AddSC_instance_scarlet_citadel();
-    AddSC_trash_bosses_scarlet_citadel();
 
     // Hateforge Quarry
     AddSC_hateforge_quarry_spells();

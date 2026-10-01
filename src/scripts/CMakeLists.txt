@@ -108,8 +108,6 @@ dungeons/scarlet_citadel/boss_daelus.hpp
 dungeons/scarlet_citadel/boss_mariella.cpp
 dungeons/scarlet_citadel/boss_mariella.hpp
 dungeons/scarlet_citadel/instance_scarlet_citadel.cpp
-dungeons/scarlet_citadel/trashbosses_scarlet_citadel.cpp
-dungeons/scarlet_citadel/trashbosses_scarlet_citadel.hpp
 dungeons/scarlet_citadel/scarlet_citadel.h
 dungeons/scarlet_monastery/boss_azshir_the_sleepless.cpp
 dungeons/scarlet_monastery/boss_headless_horseman.cpp
