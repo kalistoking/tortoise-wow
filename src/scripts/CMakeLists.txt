@@ -166,7 +166,6 @@ dungeons/stratholme/instance_stratholme.cpp
 dungeons/stratholme/stratholme.cpp
 dungeons/stratholme/stratholme.h
 dungeons/sunken_temple/instance_sunken_temple.cpp
-dungeons/sunken_temple/sunken_temple.cpp
 dungeons/sunken_temple/sunken_temple.h
 dungeons/temple_of_ahnqiraj/boss_bug_trio.cpp
 dungeons/temple_of_ahnqiraj/boss_cthun.cpp

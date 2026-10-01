@@ -31,7 +31,11 @@ event_antalarion_statue_activation
 EndContentData */
 
 #include "scriptPCH.h"
-#include "sunken_temple.h"
+#include "dungeons/sunken_temple/sunken_temple.h"
+
+namespace mod_sunken_temple
+{
+
 
 enum
 {
@@ -213,3 +217,5 @@ void AddSC_sunken_temple()
     pNewScript->GOGetAI = &GetAIgo_atalai_light;
     pNewScript->RegisterSelf();
 }
+
+} // namespace mod_sunken_temple
