@@ -22,7 +22,11 @@ SDCategory: Blackwing Lair
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "blackwing_lair.h"
+#include "dungeons/blackwing_lair/blackwing_lair.h"
+
+namespace mod_blackwing_lair
+{
+
 
 enum
 {
@@ -213,3 +217,5 @@ void AddSC_boss_broodlord()
     pNewScript->GetAI = &GetAI_boss_broodlord;
     pNewScript->RegisterSelf();
 }
+
+} // namespace mod_blackwing_lair

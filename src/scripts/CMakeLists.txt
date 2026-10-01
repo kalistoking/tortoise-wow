@@ -27,11 +27,7 @@ dungeons/blackrock_spire/boss_pyroguard_emberseer.cpp
 dungeons/blackrock_spire/boss_urok.cpp
 dungeons/blackrock_spire/instance_blackrock_spire.cpp
 dungeons/blackwing_lair/blackwing_lair.h
-dungeons/blackwing_lair/boss_broodlord_lashlayer.cpp
 dungeons/blackwing_lair/boss_chromaggus.cpp
-dungeons/blackwing_lair/boss_ebonroc.cpp
-dungeons/blackwing_lair/boss_firemaw.cpp
-dungeons/blackwing_lair/boss_flamegor.cpp
 dungeons/blackwing_lair/boss_nefarian.cpp
 dungeons/blackwing_lair/boss_razorgore.cpp
 dungeons/blackwing_lair/boss_vaelastrasz.cpp

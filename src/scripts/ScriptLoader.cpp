@@ -49,10 +49,6 @@ void AddSC_instance_blackrock_depths();
 void AddSC_boss_pyroguard_emberseer();
 void AddSC_boss_razorgore();                         //blackwing_lair
 void AddSC_boss_vael();
-void AddSC_boss_broodlord();
-void AddSC_boss_firemaw();
-void AddSC_boss_ebonroc();
-void AddSC_boss_flamegor();
 void AddSC_boss_chromaggus();
 void AddSC_boss_nefarian();
 void AddSC_boss_victor_nefarius();
@@ -326,10 +322,6 @@ void AddScripts()
     AddSC_boss_pyroguard_emberseer();
     AddSC_boss_razorgore();                                 //blackwing_lair
     AddSC_boss_vael();
-    AddSC_boss_broodlord();
-    AddSC_boss_firemaw();
-    AddSC_boss_ebonroc();
-    AddSC_boss_flamegor();
     AddSC_boss_chromaggus();
     AddSC_boss_nefarian();
     AddSC_boss_victor_nefarius();

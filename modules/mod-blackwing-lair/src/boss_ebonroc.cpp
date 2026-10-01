@@ -15,26 +15,30 @@
  */
 
 /* ScriptData
-SDName: Boss_Firemaw
-SD%Complete: 80
-SDComment: Thrash missing
+SDName: Boss_Ebonroc
+SD%Complete: 90
+SDComment: Thrash is missing
 SDCategory: Blackwing Lair
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "blackwing_lair.h"
+#include "dungeons/blackwing_lair/blackwing_lair.h"
+
+namespace mod_blackwing_lair
+{
+
 
 enum
 {
     SPELL_SHADOW_FLAME          = 22539,
     SPELL_WING_BUFFET           = 23339,
-    SPELL_FLAME_BUFFET          = 23341,
-    SPELL_THRASH                = 3391,
+    SPELL_SHADOW_OF_EBONROC     = 23340,
+    SPELL_THRASH                = 3391,                     // TODO missing
 };
 
-struct boss_firemawAI : public ScriptedAI
+struct boss_ebonrocAI : public ScriptedAI
 {
-    boss_firemawAI(Creature* pCreature) : ScriptedAI(pCreature)
+    boss_ebonrocAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
         m_pInstance = (ScriptedInstance*)pCreature->GetInstanceData();
         Reset();
@@ -44,19 +48,19 @@ struct boss_firemawAI : public ScriptedAI
 
     uint32 m_uiShadowFlameTimer;
     uint32 m_uiWingBuffetTimer;
-    uint32 m_uiFlameBuffetTimer;
+    uint32 m_uiShadowOfEbonrocTimer;
 
     void Reset() override
     {
-        m_uiShadowFlameTimer = 16000;
+        m_uiShadowFlameTimer = 16000;                // These times are probably wrong
         m_uiWingBuffetTimer = 30000;
-        m_uiFlameBuffetTimer = 2000;
+        m_uiShadowOfEbonrocTimer = 8000;
     }
 
     void Aggro(Unit* /*pWho*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FIREMAW, IN_PROGRESS);
+            m_pInstance->SetData(TYPE_EBONROC, IN_PROGRESS);
 
         m_creature->SetInCombatWithZone();
     }
@@ -64,13 +68,13 @@ struct boss_firemawAI : public ScriptedAI
     void JustDied(Unit* /*pKiller*/) override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FIREMAW, DONE);
+            m_pInstance->SetData(TYPE_EBONROC, DONE);
     }
 
     void JustReachedHome() override
     {
         if (m_pInstance)
-            m_pInstance->SetData(TYPE_FIREMAW, FAIL);
+            m_pInstance->SetData(TYPE_EBONROC, FAIL);
     }
 
     void SpellHitTarget(Unit* pCaster, const SpellEntry* pSpell) override
@@ -107,35 +111,35 @@ struct boss_firemawAI : public ScriptedAI
         else
             m_uiWingBuffetTimer -= uiDiff;
 
-        // Flame Buffet Timer
-        if (m_uiFlameBuffetTimer < uiDiff)
+        // Shadow of Ebonroc Timer
+        if (m_uiShadowOfEbonrocTimer < uiDiff)
         {
-            if (DoCastSpellIfCan(m_creature, SPELL_FLAME_BUFFET) == CAST_OK)
-                m_uiFlameBuffetTimer = urand(1800, 3000);
+            if (DoCastSpellIfCan(m_creature->GetVictim(), SPELL_SHADOW_OF_EBONROC, CF_AURA_NOT_PRESENT) == CAST_OK)
+                m_uiShadowOfEbonrocTimer = 8000;
         }
         else
-            m_uiFlameBuffetTimer -= uiDiff;
+            m_uiShadowOfEbonrocTimer -= uiDiff;
 
-        if (m_creature->IsAttackReady() && m_creature->IsNonMeleeSpellCasted(true))
-        {
-            if (urand(0, 100) < 34)
-                DoCastSpellIfCan(m_creature, SPELL_THRASH);
-        }
+        if (m_creature->IsAttackReady() && !urand(0, 2))
+            DoCastSpellIfCan(m_creature, SPELL_THRASH);
 
         DoMeleeAttackIfReady();
     }
 };
 
-CreatureAI* GetAI_boss_firemaw(Creature* pCreature)
+CreatureAI* GetAI_boss_ebonroc(Creature* pCreature)
 {
-    return new boss_firemawAI(pCreature);
+    return new boss_ebonrocAI(pCreature);
 }
 
-void AddSC_boss_firemaw()
+void AddSC_boss_ebonroc()
 {
-    Script *newscript;
-    newscript = new Script;
-    newscript->Name = "boss_firemaw";
-    newscript->GetAI = &GetAI_boss_firemaw;
-    newscript->RegisterSelf();
+    Script* pNewScript;
+
+    pNewScript = new Script;
+    pNewScript->Name = "boss_ebonroc";
+    pNewScript->GetAI = &GetAI_boss_ebonroc;
+    pNewScript->RegisterSelf();
 }
+
+} // namespace mod_blackwing_lair
