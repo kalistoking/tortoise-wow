@@ -477,7 +477,8 @@ enum ePlaySoundFlags
 {
     SF_PLAYSOUND_ONLY_TO_TARGET     = 0x1,
     SF_PLAYSOUND_DISTANCE_DEPENDENT = 0x2,
-    SF_PLAYSOUND_TO_ALL_IN_ZONE     = 0x4
+    SF_PLAYSOUND_TO_ALL_IN_ZONE     = 0x4,
+    SF_PLAYSOUND_MUSIC              = 0x8                   // as music (SMSG_PLAY_MUSIC), as PlayDirectMusic -- trt A14
 };
 
 // Possible datalong values for SCRIPT_COMMAND_MODIFY_THREAT

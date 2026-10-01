@@ -747,7 +747,9 @@ bool Map::ScriptCommand_PlaySound(const ScriptInfo& script, WorldObject* source,
         return ShouldAbortScript(script);
     }
 
-    if (script.playSound.flags & SF_PLAYSOUND_DISTANCE_DEPENDENT)
+    if (script.playSound.flags & SF_PLAYSOUND_MUSIC)
+        pSource->PlayDirectMusic(script.playSound.soundId, pTarget);
+    else if (script.playSound.flags & SF_PLAYSOUND_DISTANCE_DEPENDENT)
         pSource->PlayDistanceSound(script.playSound.soundId, pTarget);
     else if (script.playSound.flags & SF_PLAYSOUND_TO_ALL_IN_ZONE)
         PlayDirectSoundToMap(script.playSound.soundId, IsContinent() ? pSource->GetZoneId() : 0);
