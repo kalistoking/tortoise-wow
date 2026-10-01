@@ -70,83 +70,6 @@ struct EyeStalkInfo
 };
 
 
-struct mob_rottingMaggotAI : public ScriptedAI
-{
-    mob_rottingMaggotAI(Creature* pCreature, bool isDiseased) :
-        ScriptedAI(pCreature),
-        isDiseased(isDiseased)
-    {
-        m_pInstance = (instance_naxxramas*)pCreature->GetInstanceData();
-        m_creature->SetNoCallAssistance(true);
-        Reset();
-    }
-    const bool isDiseased;
-    WorldLocation aggroPossition;
-    static constexpr uint32 SPELL_RETCHING_PLAGUE = 30079;
-
-    instance_naxxramas* m_pInstance;
-
-    void Reset() override
-    {
-    }
-
-    void MoveInLineOfSight(Unit* pWho) override
-    {
-        if (!pWho)
-            return;
-
-        if (pWho->GetTypeId() == TYPEID_PLAYER
-            && !m_creature->IsInCombat()
-            && m_creature->IsWithinDistInMap(pWho, 1.5f) // Custom, tiny aggro radius
-            && m_creature->IsWithinLOSInMap(pWho)
-            && !pWho->HasAuraType(SPELL_AURA_FEIGN_DEATH)
-            && !pWho->HasAuraType(SPELL_AURA_MOD_UNATTACKABLE))
-        {
-            m_creature->SetNoCallAssistance(true);
-
-            if (!m_creature->GetVictim())
-                AttackStart(pWho);
-            else if (m_creature->GetMap()->IsDungeon())
-            {
-                pWho->SetInCombatWith(m_creature);
-                m_creature->AddThreat(pWho);
-            }
-        }
-    }
-
-    void Aggro(Unit*) override
-    {
-        m_creature->SetNoCallAssistance(true);
-        m_creature->GetPosition(aggroPossition);
-    }
-
-    void UpdateAI(const uint32 uiDiff) override
-    {
-        if (m_pInstance->GetData(TYPE_HEIGAN) == DONE)
-        {
-            m_creature->ForcedDespawn();
-        }
-
-        if (!m_creature->SelectHostileTarget() || !m_creature->GetVictim())
-            return;
-
-        if (isDiseased)
-        {
-            if (!m_creature->HasAura(SPELL_RETCHING_PLAGUE))
-                m_creature->CastSpell(m_creature, SPELL_RETCHING_PLAGUE, true);
-        }
-
-        if (m_creature->GetDistance(aggroPossition) > 40.0f)
-        {
-            EnterEvadeMode();
-        }
-        else
-        {
-            DoMeleeAttackIfReady();
-        }
-    }
-};
-
 struct mob_eyeStalkAI : public ScriptedAI
 {
     mob_eyeStalkAI(Creature* pCreature) :
@@ -528,14 +451,6 @@ CreatureAI* GetAI_boss_loatheb(Creature* pCreature)
     return new boss_loathebAI(pCreature);
 }
 
-CreatureAI* GetAI_mob_rottingMaggot(Creature* pCreature)
-{
-    return new mob_rottingMaggotAI(pCreature, false);
-}
-CreatureAI* GetAI_mob_diseasedMaggot(Creature* pCreature)
-{
-    return new mob_rottingMaggotAI(pCreature, true);
-}
 CreatureAI* GetAI_mob_eyeStalk(Creature* pCreature)
 {
     return new mob_eyeStalkAI(pCreature);
@@ -596,16 +511,6 @@ void AddSC_boss_loatheb()
     NewScript = new Script;
     NewScript->Name = "boss_loatheb";
     NewScript->GetAI = &GetAI_boss_loatheb;
-    NewScript->RegisterSelf();
-
-    NewScript = new Script;
-    NewScript->Name = "mob_rotting_maggot";
-    NewScript->GetAI = &GetAI_mob_rottingMaggot;
-    NewScript->RegisterSelf();
-
-    NewScript = new Script;
-    NewScript->Name = "mob_diseased_maggot";
-    NewScript->GetAI = &GetAI_mob_diseasedMaggot;
     NewScript->RegisterSelf();
 
     NewScript = new Script;

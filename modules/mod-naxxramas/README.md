@@ -12,6 +12,8 @@ Taken from the core:
 - `src/scripts/dungeons/naxxramas/naxxramas_shadow_fissure.cpp`
 - `src/scripts/dungeons/naxxramas/naxxramas_spirits_slimes.cpp`
 - `src/scripts/dungeons/naxxramas/naxxramas_zombie_chow.cpp`
+- `src/scripts/dungeons/naxxramas/naxxramas_gargoyles_warriors.cpp`
+- `src/scripts/dungeons/naxxramas/naxxramas_maggots.cpp`
 
 ## The switch
 
