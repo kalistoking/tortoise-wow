@@ -13,23 +13,31 @@
 -- core's own leash stays. The Veteran's Shield Bash goes at his victim while it casts, one time in four (the
 -- C++ looked for any caster among his attackers); the Summoner's summon timer re-arms whether the cast took.
 -- Voone's axes come back as he evades (the C++ never gave them back).
+-- Second pass: Pyroguard Emberseer. The freed incarcerators go into the fight with the whole zone (the C++
+-- sent each at a random one of the altar's users); Emberseer, freed, joins the zone's fight (the C++
+-- attacked the players within 50 yd). The altar's own row for event 4884, a second Emberseer summoned at
+-- his place, never ran under the C++ and is taken away; the restore puts it back.
 
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 9196;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 9236;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 9237;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 9568;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 9736;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 9816;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 9818;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 9819;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 10220;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 10316;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 10430;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (229000, 229010);
+DELETE FROM `conditions` WHERE `condition_entry` IN (229000, 229010, 229100, 229101);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (229000, 1, 16076, 0, 0, 0, 3),
-(229010, 38, 10, 2, 0, 0, 0);
+(229010, 38, 10, 2, 0, 0, 0),
+(229100, 34, 1, 4, 0, 0, 1),
+(229101, 20, 10316, 60, 0, 0, 3);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (229101, 229102);
 INSERT INTO `broadcast_text`
@@ -47,7 +55,8 @@ DELETE FROM `creature_ai_events` WHERE `id` = 981903;
 DELETE FROM `creature_ai_scripts` WHERE `id` = 981903;
 DELETE FROM `creature_ai_events` WHERE `id` = 981904;
 DELETE FROM `creature_ai_scripts` WHERE `id` = 981904;
-DELETE FROM `creature_ai_events` WHERE `id` IN (919601, 919602, 919603, 919604, 919605, 919606, 923601, 923602, 923603, 923701, 923702, 923703, 923704, 923705, 923711, 923712, 923713, 923714, 956801, 956802, 956803, 956804, 956811, 973601, 973602, 981801, 981802, 981803, 981811, 981911, 981921, 981922, 981923, 981924, 1022001, 1022002, 1022011, 1043001, 1043002, 1043003, 1043004, 1043005, 1043011, 1043012, 1043021, 1043022, 1043023, 1043024);
+DELETE FROM `event_scripts` WHERE `id` = 4884;
+DELETE FROM `creature_ai_events` WHERE `id` IN (919601, 919602, 919603, 919604, 919605, 919606, 923601, 923602, 923603, 923701, 923702, 923703, 923704, 923705, 923711, 923712, 923713, 923714, 956801, 956802, 956803, 956804, 956811, 973601, 973602, 981601, 981602, 981603, 981604, 981611, 981612, 981613, 981801, 981802, 981803, 981811, 981911, 981921, 981922, 981923, 981924, 1022001, 1022002, 1022011, 1031601, 1031602, 1031603, 1031611, 1031612, 1031613, 1031614, 1043001, 1043002, 1043003, 1043004, 1043005, 1043011, 1043012, 1043021, 1043022, 1043023, 1043024);
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
@@ -98,9 +107,23 @@ VALUES
 (981921, 9819, 0, 4, 0, 100, 0, 0, 0, 0, 0, 981921, 0, 0, 'Blackhand Veteran - aggro: Shield Charge at his victim'),
 (981922, 9819, 0, 0, 0, 100, 9, 8000, 14000, 8000, 14000, 981922, 0, 0, 'Blackhand Veteran - Shield Charge at a random attacker'),
 (981923, 9819, 0, 13, 0, 25, 9, 10000, 10000, 0, 0, 981923, 0, 0, 'Blackhand Veteran - Shield Bash his casting victim, one time in four'),
-(981924, 9819, 0, 0, 0, 100, 9, 5000, 5000, 6000, 6000, 981924, 0, 0, 'Blackhand Veteran - Strike at a random attacker');
+(981924, 9819, 0, 0, 0, 100, 9, 5000, 5000, 6000, 6000, 981924, 0, 0, 'Blackhand Veteran - Strike at a random attacker'),
+(981601, 9816, 0, 11, 0, 100, 0, 0, 0, 0, 0, 981601, 0, 0, 'Pyroguard Emberseer - spawned: caged'),
+(981602, 9816, 0, 7, 0, 100, 0, 0, 0, 0, 0, 981602, 0, 0, 'Pyroguard Emberseer - evading: caged'),
+(981603, 9816, 0, 4, 0, 100, 0, 0, 0, 0, 0, 981603, 0, 0, 'Pyroguard Emberseer - aggro: his encounter in progress'),
+(981604, 9816, 0, 6, 0, 100, 0, 0, 0, 0, 0, 981604, 0, 0, 'Pyroguard Emberseer - dead: his encounter done'),
+(981611, 9816, 0, 0, 0, 100, 1, 6000, 6000, 6000, 6000, 981611, 0, 0, 'Pyroguard Emberseer - Fire Nova'),
+(981612, 9816, 0, 0, 0, 100, 1, 3000, 3000, 14000, 14000, 981612, 0, 0, 'Pyroguard Emberseer - Flame Buffet'),
+(981613, 9816, 0, 0, 0, 100, 1, 14000, 14000, 15000, 15000, 981613, 0, 0, 'Pyroguard Emberseer - Pyroblast at a random attacker'),
+(1031601, 10316, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1031601, 0, 0, 'Blackhand Incarcerator - spawned: not to be attacked'),
+(1031602, 10316, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1031602, 0, 0, 'Blackhand Incarcerator - evading: not to be attacked'),
+(1031603, 10316, 229100, 1, 0, 100, 5, 1000, 1000, 1000, 1000, 1031603, 0, 0, 'Blackhand Incarcerator - Encage Emberseer, while the altar has not freed him'),
+(1031611, 10316, 0, 0, 0, 100, 9, 5000, 40000, 20000, 40000, 1031611, 0, 0, 'Blackhand Incarcerator - Encage at a random attacker without it'),
+(1031612, 10316, 0, 0, 0, 100, 9, 2000, 12100, 7900, 14000, 1031612, 0, 0, 'Blackhand Incarcerator - Strike'),
+(1031613, 10316, 0, 2, 0, 100, 0, 14, 0, 0, 0, 1031613, 0, 0, 'Blackhand Incarcerator - under 15 %: flees'),
+(1031614, 10316, 229101, 6, 0, 100, 0, 0, 0, 0, 0, 1031614, 0, 0, 'Blackhand Incarcerator - the last dead: Emberseer free');
 
-DELETE FROM `creature_ai_scripts` WHERE `id` IN (919601, 919602, 919603, 919604, 919605, 919606, 923601, 923602, 923603, 923701, 923702, 923703, 923704, 923705, 923711, 923712, 923713, 923714, 956801, 956802, 956803, 956804, 956811, 973601, 973602, 981801, 981802, 981803, 981811, 981911, 981921, 981922, 981923, 981924, 1022001, 1022002, 1022011, 1043001, 1043002, 1043003, 1043004, 1043005, 1043011, 1043012, 1043021, 1043022, 1043023, 1043024);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (919601, 919602, 919603, 919604, 919605, 919606, 923601, 923602, 923603, 923701, 923702, 923703, 923704, 923705, 923711, 923712, 923713, 923714, 956801, 956802, 956803, 956804, 956811, 973601, 973602, 981601, 981602, 981603, 981604, 981611, 981612, 981613, 981801, 981802, 981803, 981811, 981911, 981921, 981922, 981923, 981924, 1022001, 1022002, 1022011, 1031601, 1031602, 1031603, 1031611, 1031612, 1031613, 1031614, 1043001, 1043002, 1043003, 1043004, 1043005, 1043011, 1043012, 1043021, 1043022, 1043023, 1043024);
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -156,9 +179,27 @@ VALUES
 (981921, 0, 0, 15, 15749, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Veteran - Shield Charge at his victim'),
 (981922, 0, 0, 15, 15749, 0, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Veteran - Shield Charge at a random attacker'),
 (981923, 0, 0, 15, 11972, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Veteran - Shield Bash'),
-(981924, 0, 0, 15, 14516, 0, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Veteran - Strike at a random attacker');
+(981924, 0, 0, 15, 14516, 0, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Veteran - Strike at a random attacker'),
+(981601, 0, 0, 4, 46, 33555200, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - not to be attacked'),
+(981601, 0, 1, 15, 15282, 32, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - his cage'),
+(981602, 0, 0, 4, 46, 33555200, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - not to be attacked'),
+(981602, 0, 1, 15, 15282, 32, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - his cage'),
+(981602, 0, 2, 37, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - his encounter 2'),
+(981602, 0, 3, 68, 2290007, 2, 10316, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - the dead incarcerators back'),
+(981603, 0, 0, 37, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - his encounter 1'),
+(981604, 0, 0, 37, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - his encounter 3'),
+(981611, 0, 0, 15, 23462, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - Fire Nova'),
+(981612, 0, 0, 15, 23341, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - Flame Buffet'),
+(981613, 0, 0, 15, 20228, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - Pyroblast at a random attacker'),
+(1031601, 0, 0, 4, 46, 768, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Incarcerator - not to be attacked'),
+(1031602, 0, 0, 4, 46, 768, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Incarcerator - not to be attacked'),
+(1031603, 0, 0, 15, 15281, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Incarcerator - Encage Emberseer'),
+(1031611, 0, 0, 15, 16045, 32, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Incarcerator - Encage at a random attacker without it'),
+(1031612, 0, 0, 15, 15580, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Incarcerator - Strike'),
+(1031613, 0, 0, 47, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Incarcerator - flees'),
+(1031614, 0, 0, 68, 2290006, 2, 9816, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Incarcerator - Emberseer liberated');
 
-DELETE FROM `generic_scripts` WHERE `id` IN (2290001, 2290002, 2290003);
+DELETE FROM `generic_scripts` WHERE `id` IN (2290001, 2290002, 2290003, 2290004, 2290005, 2290006, 2290007);
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -167,5 +208,30 @@ VALUES
 (2290002, 0, 0, 15, 15794, 0, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Summoner - Summon Blackhand Dreadweaver'),
 (2290002, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 229101, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Summoner - "%s begins to summon in a Blackhand Dreadweaver!"'),
 (2290003, 0, 0, 15, 15792, 0, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Summoner - Summon Blackhand Veteran'),
-(2290003, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 229102, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Summoner - "%s begins to summon in a Blackhand Veteran!"');
+(2290003, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 229102, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Summoner - "%s begins to summon in a Blackhand Veteran!"'),
+(2290004, 0, 0, 4, 46, 768, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Incarcerator - attackable'),
+(2290004, 0, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Incarcerator - his channel broken'),
+(2290004, 0, 2, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Incarcerator - into the fight'),
+(2290005, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Emberseer rune - lit'),
+(2290006, 0, 0, 14, 15282, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - out of his cage'),
+(2290006, 0, 1, 15, 16047, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - Fiery Burst (liberation)'),
+(2290006, 0, 2, 15, 16048, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - Growth'),
+(2290006, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5268, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - "Thank you for freeing me, fools..."'),
+(2290006, 0, 4, 4, 46, 33555200, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - attackable'),
+(2290006, 0, 5, 68, 2290005, 0, 175187, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - rune 175187 lit'),
+(2290006, 0, 6, 68, 2290005, 0, 175267, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - rune 175267 lit'),
+(2290006, 0, 7, 68, 2290005, 0, 175268, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - rune 175268 lit'),
+(2290006, 0, 8, 68, 2290005, 0, 175269, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - rune 175269 lit'),
+(2290006, 0, 9, 68, 2290005, 0, 175270, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - rune 175270 lit'),
+(2290006, 0, 10, 68, 2290005, 0, 175271, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - rune 175271 lit'),
+(2290006, 0, 11, 68, 2290005, 0, 175272, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - rune 175272 lit'),
+(2290006, 0, 12, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Pyroguard Emberseer - at the players'),
+(2290007, 0, 0, 71, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackhand Incarcerator - back, if dead');
+
+DELETE FROM `event_scripts` WHERE `id` IN (4884);
+INSERT INTO `event_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(4884, 0, 0, 37, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackrock Altar - Emberseer''s guards freed (1 = SPECIAL)'),
+(4884, 0, 1, 68, 2290004, 2, 10316, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackrock Altar - the incarcerators into the fight');
 
