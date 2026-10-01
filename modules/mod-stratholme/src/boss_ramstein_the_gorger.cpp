@@ -22,7 +22,11 @@ SDCategory: Stratholme
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "stratholme.h"
+#include "dungeons/stratholme/stratholme.h"
+
+namespace mod_stratholme
+{
+
 
 enum
 {
@@ -115,3 +119,5 @@ void AddSC_boss_ramstein_the_gorger()
     newscript->GetAI = &GetAI_boss_ramstein_the_gorger;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_stratholme

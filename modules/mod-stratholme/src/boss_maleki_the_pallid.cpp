@@ -22,7 +22,11 @@ SDCategory: Stratholme
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "stratholme.h"
+#include "dungeons/stratholme/stratholme.h"
+
+namespace mod_stratholme
+{
+
 
 #define SPELL_FROSTBOLT     17503
 #define SPELL_DRAIN_LIFE    17238
@@ -170,3 +174,5 @@ void AddSC_boss_maleki_the_pallid()
     newscript->GetAI = &GetAI_boss_maleki_the_pallid;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_stratholme

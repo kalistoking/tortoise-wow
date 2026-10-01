@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_stratholme
+{
+
+
 #define SAY_SPAWN               -1900160
 
 #define SPELL_RAVENOUSCLAW      17470
@@ -171,3 +175,5 @@ void AddSC_boss_timmy_the_cruel()
     newscript->GetAI = &GetAI_npc_crimson_guardsman;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_stratholme

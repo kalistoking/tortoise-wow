@@ -16,6 +16,10 @@
 
 #include "scriptPCH.h"
 
+namespace mod_stratholme
+{
+
+
 
 enum eSpells
 {
@@ -134,3 +138,5 @@ void AddSC_boss_atiesh()
     newscript->GetAI = &GetAI_boss_atiesh;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_stratholme

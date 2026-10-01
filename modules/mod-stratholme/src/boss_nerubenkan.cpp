@@ -22,7 +22,11 @@ SDCategory: Stratholme
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "stratholme.h"
+#include "dungeons/stratholme/stratholme.h"
+
+namespace mod_stratholme
+{
+
 
 #define SPELL_ENCASINGWEBS 4962
 #define SPELL_PIERCEARMOR 6016
@@ -171,3 +175,5 @@ void AddSC_boss_nerubenkan()
     newscript->GetAI = &GetAI_boss_nerubenkan;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_stratholme

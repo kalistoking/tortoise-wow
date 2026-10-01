@@ -23,6 +23,10 @@ EndScriptData */
 
 #include "scriptPCH.h"
 
+namespace mod_stratholme
+{
+
+
 //front, left
 //previously
 //3536.851807f -17
@@ -308,3 +312,5 @@ void AddSC_boss_cannon_master_willey()
     newscript->pGOHello = &GO_scarlet_cannon;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_stratholme

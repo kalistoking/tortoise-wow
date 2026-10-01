@@ -103,19 +103,11 @@ void AddSC_boss_jandicebarov();
 void AddSC_boss_vectus();
 //void AddSC_boss_lordblackwood();
 void AddSC_instance_scholomance();
-void AddSC_boss_magistrate_barthilas();              //stratholme
-void AddSC_boss_maleki_the_pallid();
-void AddSC_boss_nerubenkan();
-void AddSC_boss_cannon_master_willey();
 void AddSC_boss_baroness_anastari();
-void AddSC_boss_ramstein_the_gorger();
 void AddSC_boss_sc_attunement();
-void AddSC_boss_timmy_the_cruel();
-void AddSC_boss_postmaster_malown();
 void AddSC_boss_dathrohan_balnazzar();
-void AddSC_boss_atiesh();
 void AddSC_instance_stratholme();
-void AddSC_stratholme();
+void AddSC_stratholme_aurius_phantoms();          // Aurius and the phantoms aura (trt A22)
 void AddSC_instance_sunken_temple();                 //sunken_temple
 void AddSC_instance_uldaman();                       //uldaman
 void AddSC_uldaman();                                //uldaman
@@ -392,19 +384,11 @@ void AddScripts()
     AddSC_boss_vectus();
     //AddSC_boss_lordblackwood();
     AddSC_instance_scholomance();
-    AddSC_boss_magistrate_barthilas();                      //stratholme
-    AddSC_boss_maleki_the_pallid();
-    AddSC_boss_nerubenkan();
-    AddSC_boss_cannon_master_willey();
     AddSC_boss_baroness_anastari();
-    AddSC_boss_ramstein_the_gorger();
     AddSC_boss_sc_attunement();
-    AddSC_boss_timmy_the_cruel();
-    AddSC_boss_postmaster_malown();
     AddSC_boss_dathrohan_balnazzar();
-    AddSC_boss_atiesh();
     AddSC_instance_stratholme();
-    AddSC_stratholme();
+    AddSC_stratholme_aurius_phantoms();
     AddSC_instance_sunken_temple();                         //sunken_temple
     AddSC_instance_uldaman();
     AddSC_uldaman();

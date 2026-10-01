@@ -1,5 +1,9 @@
 #include "scriptPCH.h"
-#include "stratholme.h"
+#include "dungeons/stratholme/stratholme.h"
+
+namespace mod_stratholme
+{
+
 
 #define SPELL_DRAININGBLOW      16793
 #define SPELL_CROWDPUMMEL       10887
@@ -117,3 +121,5 @@ void AddSC_boss_magistrate_barthilas()
     newscript->GetAI = &GetAI_boss_magistrate_barthilas;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_stratholme
