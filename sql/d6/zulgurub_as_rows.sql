@@ -139,7 +139,7 @@ VALUES
 (1475015, 14750, 0, 0, 0, 100, 9, 6000, 6000, 6000, 6000, 1475015, 0, 0, 'Gurubashi Bat Rider - Thrash'),
 (1451701, 14517, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1451701, 0, 0, 'High Priestess Jeklik - at rest: channeling, her size, failed (2)'),
 (1451702, 14517, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1451702, 0, 0, 'High Priestess Jeklik - at rest: channeling, her size, failed (2)'),
-(1451703, 14517, 0, 21, 0, 100, 1, 0, 0, 0, 0, 1451703, 0, 0, 'High Priestess Jeklik - home: channeling, her own size'),
+(1451703, 14517, 0, 21, 0, 100, 0, 0, 0, 0, 0, 1451703, 0, 0, 'High Priestess Jeklik - home: channeling, her own size'),
 (1451704, 14517, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1451704, 0, 0, 'High Priestess Jeklik - aggro: her bat form, flying, in progress (2)'),
 (1451705, 14517, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1451705, 0, 0, 'High Priestess Jeklik - dead: her line, done (2), Hakkar weakened'),
 (1451706, 14517, 0, 2, 0, 100, 0, 49, 0, 0, 0, 1451706, 0, 0, 'High Priestess Jeklik - under half: her troll form, every threat wiped (phase 1)'),
