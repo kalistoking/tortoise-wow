@@ -26,7 +26,11 @@ EndScriptData */
 */
 
 #include "scriptPCH.h"
-#include "molten_core.h"
+#include "dungeons/molten_core/molten_core.h"
+
+namespace mod_molten_core
+{
+
 
 #define SPELL_DARKSTRIKE            19777
 #define SPELL_DEMORALIZINGSHOUT     19778
@@ -155,3 +159,5 @@ void AddSC_boss_sulfuron()
     newscript->GetAI = &GetAI_boss_sulfuron;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_molten_core

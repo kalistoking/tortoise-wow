@@ -3,7 +3,11 @@
  */
 
 #include "scriptPCH.h"
-#include "molten_core.h"
+#include "dungeons/molten_core/molten_core.h"
+
+namespace mod_molten_core
+{
+
 
 enum
 {
@@ -279,3 +283,5 @@ void AddSC_boss_garr()
     newscript->GetAI = &GetAI_mob_firesworn;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_molten_core

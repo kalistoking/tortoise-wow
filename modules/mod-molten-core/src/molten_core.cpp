@@ -26,7 +26,11 @@ mob_ancient_core_hound
 EndContentData */
 
 #include "scriptPCH.h"
-#include "molten_core.h"
+#include "dungeons/molten_core/molten_core.h"
+
+namespace mod_molten_core
+{
+
 
 /*######
 ## mob_firewalker
@@ -549,3 +553,5 @@ void AddSC_molten_core()
 	newscript->GetAI = &GetAI_mob_firelord;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_molten_core

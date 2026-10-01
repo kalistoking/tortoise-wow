@@ -65,21 +65,13 @@ void AddSC_gnomeregan();                             //gnomeregan
 void AddSC_boss_thermaplugg();
 void AddSC_instance_gnomeregan();
 
-void AddSC_boss_lucifron();                          //molten_core
-void AddSC_boss_magmadar();
-void AddSC_boss_gehennas();
-void AddSC_boss_garr();
 void AddSC_boss_baron_geddon();
-void AddSC_boss_shazzrah();
-void AddSC_boss_golemagg();
 void AddSC_boss_incindis();
-void AddSC_boss_sulfuron();
 void AddSC_boss_thane();
 void AddSC_boss_twin_golems();
 void AddSC_boss_majordomo();
 void AddSC_boss_ragnaros();
 void AddSC_instance_molten_core();
-void AddSC_molten_core();
 void AddSC_boss_anubrekhan();                        //naxxramas
 void AddSC_boss_four_horsemen();
 void AddSC_boss_faerlina();
@@ -346,21 +338,13 @@ void AddScripts()
     AddSC_gnomeregan();                                     //gnomeregan
     AddSC_boss_thermaplugg();
     AddSC_instance_gnomeregan();
-    AddSC_boss_lucifron();                                  //molten_core
-    AddSC_boss_magmadar();
-    AddSC_boss_gehennas();
-    AddSC_boss_garr();
     AddSC_boss_baron_geddon();
-    AddSC_boss_shazzrah();
-    AddSC_boss_golemagg();
     AddSC_boss_incindis();
-    AddSC_boss_sulfuron();
     AddSC_boss_thane();
     AddSC_boss_twin_golems();
     AddSC_boss_majordomo();
     AddSC_boss_ragnaros();
     AddSC_instance_molten_core();
-    AddSC_molten_core();
     AddSC_boss_anubrekhan();                                //naxxramas
     AddSC_boss_four_horsemen();
     AddSC_boss_faerlina();

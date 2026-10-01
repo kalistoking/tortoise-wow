@@ -10,7 +10,11 @@
  */
 
 #include "scriptPCH.h"
-#include "molten_core.h"
+#include "dungeons/molten_core/molten_core.h"
+
+namespace mod_molten_core
+{
+
 
 enum eSpells
 {
@@ -117,3 +121,5 @@ void AddSC_boss_lucifron()
     newscript->GetAI = &GetAI_boss_lucifron;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_molten_core
