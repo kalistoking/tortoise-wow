@@ -22,7 +22,7 @@ SDCategory: Blackrock Spire
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "blackrock_spire.h"
+#include "dungeons/blackrock_spire/blackrock_spire.h"
 #include "WaypointManager.h"
 
 //#define DEBUG_ON
@@ -906,6 +906,11 @@ void instance_blackrock_spire::DoSortRoomEventMobs()
     SetData(TYPE_ROOM_EVENT, IN_PROGRESS);
 }
 
+// The class is blackrock_spire.h's, declared outside the namespace: only what the loader
+// registers goes in it.
+namespace mod_blackrock_spire
+{
+
 InstanceData* GetInstanceData_instance_blackrock_spire(Map* pMap)
 {
     return new instance_blackrock_spire(pMap);
@@ -981,29 +986,6 @@ bool AreaTrigger_at_ubrs_the_beast(Player* pPlayer, AreaTriggerEntry const* pAt)
     return false;
 }
 
-struct spell_ubrs_freeze_rookery_egg : public SpellScript
-{
-    bool OnEffectExecute(Spell* spell, SpellEffectIndex effIdx) const override
-    {
-        if (effIdx != EFFECT_INDEX_0)
-            return true;
-
-        GameObject* go = spell->GetGOTarget();
-        if (!go)
-            return false;
-
-        if (go->getLootState() == GO_READY)
-            go->UseDoorOrButton(0, true);
-
-        return false;
-    }
-};
-
-SpellScript* GetScript_UBRSFreezeRookeryEgg(SpellEntry const*)
-{
-    return new spell_ubrs_freeze_rookery_egg();
-}
-
 void AddSC_instance_blackrock_spire()
 {
     Script* pNewScript;
@@ -1026,9 +1008,6 @@ void AddSC_instance_blackrock_spire()
     pNewScript->Name = "at_ubrs_the_beast";
     pNewScript->pAreaTrigger = &AreaTrigger_at_ubrs_the_beast;
     pNewScript->RegisterSelf();
-
-    pNewScript = new Script;
-    pNewScript->Name = "spell_ubrs_freeze_rookery_egg";
-    pNewScript->GetSpellScript = &GetScript_UBRSFreezeRookeryEgg;
-    pNewScript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_spire

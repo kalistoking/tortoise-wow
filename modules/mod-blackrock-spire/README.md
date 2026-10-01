@@ -15,6 +15,8 @@ Taken from the core:
 - `src/scripts/dungeons/blackrock_spire/boss_warmaster_voone.cpp`
 - `src/scripts/dungeons/blackrock_spire/ubrs_trash.cpp`
 - `src/scripts/dungeons/blackrock_spire/boss_pyroguard_emberseer.cpp`
+- `src/scripts/dungeons/blackrock_spire/instance_blackrock_spire.cpp` (its rookery egg spell stays, `blackrock_spire_rookery_egg.cpp`)
+- `src/scripts/dungeons/blackrock_spire/boss_urok.cpp`
 
 ## The switch
 

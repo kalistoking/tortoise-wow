@@ -23,8 +23,7 @@ dungeons/blackrock_depths/blackrock_depths.h
 dungeons/blackrock_depths/instance_blackrock_depths.cpp
 dungeons/blackrock_spire/blackrock_spire.h
 dungeons/blackrock_spire/boss_mother_smolderweb.cpp
-dungeons/blackrock_spire/boss_urok.cpp
-dungeons/blackrock_spire/instance_blackrock_spire.cpp
+dungeons/blackrock_spire/blackrock_spire_rookery_egg.cpp
 dungeons/blackwing_lair/blackwing_lair.h
 dungeons/blackwing_lair/boss_chromaggus.cpp
 dungeons/blackwing_lair/boss_nefarian.cpp

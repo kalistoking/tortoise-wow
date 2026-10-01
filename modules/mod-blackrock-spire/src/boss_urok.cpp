@@ -1,5 +1,8 @@
 #include "scriptPCH.h"
 
+namespace mod_blackrock_spire
+{
+
 enum
 {
     GO_SUMMON_CIRCLE        = 175571,
@@ -386,3 +389,5 @@ void AddSC_boss_urok() // Permet l'int�gration dans la DB.
     newscript->pProcessEventId = &ProcessEventId_event_banner_destroyed;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_blackrock_spire

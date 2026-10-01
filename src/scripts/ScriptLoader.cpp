@@ -41,9 +41,8 @@ void AddSC_world_event_naxxramas();
 void AddSC_event_scourge_invasion();
 
 //eastern kingdoms
-void AddSC_instance_blackrock_spire();
+void AddSC_blackrock_spire_rookery_egg();         // the egg's spell (trt A18)
 void AddSC_blackrock_depths();                       //blackrock_depths
-void AddSC_boss_urok();
 void AddSC_instance_blackrock_depths();
 //void AddSC_boss_mothersmolderweb();
 void AddSC_boss_razorgore();                         //blackwing_lair
@@ -302,11 +301,10 @@ void AddScripts()
 
     //eastern kingdoms
     AddSC_blackrock_depths();                               //blackrock_depths
-    AddSC_boss_urok();
     AddSC_instance_blackrock_depths();
     //AddSC_boss_mothersmolderweb();
 
-    AddSC_instance_blackrock_spire();
+    AddSC_blackrock_spire_rookery_egg();
     AddSC_boss_razorgore();                                 //blackwing_lair
     AddSC_boss_vael();
     AddSC_boss_chromaggus();
