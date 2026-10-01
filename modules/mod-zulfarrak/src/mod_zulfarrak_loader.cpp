@@ -7,6 +7,8 @@
 namespace mod_zulfarrak
 {
     void AddSC_zulfarrak();
+    void AddSC_instance_zulfarrak();
+    void AddSC_farraki_arena();
 }
 
 void Addmod_zulfarrakScripts()
@@ -18,5 +20,7 @@ void Addmod_zulfarrakScripts()
         return;
     }
     mod_zulfarrak::AddSC_zulfarrak();
+    mod_zulfarrak::AddSC_instance_zulfarrak();
+    mod_zulfarrak::AddSC_farraki_arena();
     sLog.outString("[mod-zulfarrak] Zulfarrak's scripts registered from the module");
 }

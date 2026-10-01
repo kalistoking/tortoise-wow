@@ -7,6 +7,8 @@ its files are gone from the core, with their lines in `src/scripts/CMakeLists.tx
 Taken from the core:
 
 - `src/scripts/dungeons/zulfarrak/zulfarrak.cpp`
+- `src/scripts/dungeons/zulfarrak/instance_zulfarrak.cpp`
+- `src/scripts/dungeons/zulfarrak/farraki_arena.cpp`
 
 ## The switch
 

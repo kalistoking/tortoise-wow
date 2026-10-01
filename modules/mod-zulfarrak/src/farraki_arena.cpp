@@ -3,9 +3,12 @@
  */
 
 #include "scriptPCH.h"
-#include "zulfarrak.h"
+#include "dungeons/zulfarrak/zulfarrak.h"
 #include "Group.h"
 #include "GroupReference.h"
+
+namespace mod_zulfarrak
+{
 
 namespace
 {
@@ -682,3 +685,5 @@ void AddSC_farraki_arena()
     newscript->pGossipSelect = &OnGossipSelect_npc_champion_razjal_the_quick;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_zulfarrak

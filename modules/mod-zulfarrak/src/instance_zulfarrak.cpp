@@ -16,7 +16,10 @@
 */
 
 #include "scriptPCH.h"
-#include "zulfarrak.h"
+#include "dungeons/zulfarrak/zulfarrak.h"
+
+namespace mod_zulfarrak
+{
 
 #define NPC_GAHZRILLA 7273
 #define PATH_ADDS 81553
@@ -263,8 +266,10 @@ public:
         if (type == EVENT_END_DOOR && data == DONE)
         {
             OUT_SAVE_INST_DATA;
+            // The generic store's layout, a token per slot (trt A37): the end door is slot 3, the rest
+            // are not kept -- so the rows (mod-zulfarrak unloaded) read the same save.
             std::ostringstream saveStream;
-            saveStream << EndDoorEncounter;
+            saveStream << "0 0 0 " << EndDoorEncounter;
             strInstData = saveStream.str();
             SaveToDB();
             OUT_SAVE_INST_DATA_COMPLETE;
@@ -435,8 +440,13 @@ public:
         }
 
         OUT_LOAD_INST_DATA(chrIn);
+        // The generic layout (slot 3, the 4th token); a save from before it, the door alone (trt A37).
         std::istringstream loadStream(chrIn);
-        loadStream >> EndDoorEncounter;
+        std::vector<uint32> tokens;
+        uint32 token;
+        while (loadStream >> token)
+            tokens.push_back(token);
+        EndDoorEncounter = tokens.size() > EVENT_END_DOOR ? tokens[EVENT_END_DOOR] : (tokens.empty() ? 0 : tokens[0]);
         if (EndDoorEncounter != DONE)
             EndDoorEncounter = NOT_STARTED;
         OUT_LOAD_INST_DATA_COMPLETE;
@@ -457,3 +467,5 @@ void AddSC_instance_zulfarrak()
     newscript->GetInstanceData = &GetInstanceData_instance_zulfarak;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_zulfarrak

@@ -159,8 +159,6 @@ void AddSC_instance_temple_of_ahnqiraj();
 void AddSC_instance_wailing_caverns();               //Wailing caverns
 void AddSC_wailing_caverns();
 void AddSC_zulfarrak_tablet_ward();               // the tablet and the ward (trt A37)
-void AddSC_farraki_arena();
-void AddSC_instance_zulfarrak();
 
 void AddSC_ashenvale();
 void AddSC_alahthalas();
@@ -418,8 +416,6 @@ void AddScripts()
     AddSC_wailing_caverns();                               //Wailing caverns
     AddSC_instance_wailing_caverns();
     AddSC_zulfarrak_tablet_ward();
-    AddSC_farraki_arena();
-    AddSC_instance_zulfarrak();
 
     AddSC_ashenvale();
     AddSC_alahthalas();
