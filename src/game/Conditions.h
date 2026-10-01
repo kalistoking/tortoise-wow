@@ -265,6 +265,10 @@ enum ConditionType
                                                             // a creature's AI, a gameobject's use. A module unloaded takes its own away,
                                                             // so rows standing in for a module's C++ can wait for it to go (reversed).
                                                             // Requirement: Creature or GameObject Target
+    CONDITION_INSTANCE_SCRIPTED     = 63,                   // Checks if the map's data is its C++ instance script's, not the rows' generic store
+                                                            // (trt A36, AC7). A map keeps the data it was made with, a module unloaded or not,
+                                                            // so rows standing in for an instance script wait for a map made without it (reversed).
+                                                            // Requirement: Map
 };
 
 enum ConditionFlags

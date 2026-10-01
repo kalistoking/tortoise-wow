@@ -30,6 +30,7 @@
 #include "Group.h"
 #include "ScriptObjects.h"
 #include "ScriptMgr.h"
+#include "ScriptedInstance.h"
 
 char const* conditionSourceToStr[] =
         {
@@ -118,6 +119,7 @@ uint8 const ConditionTargetsInternal[] =
         CONDITION_REQ_TARGET_UNIT,        //  60
         CONDITION_REQ_TARGET_PLAYER,      //  61
         CONDITION_REQ_TARGET_WORLDOBJECT, //  62
+        CONDITION_REQ_MAP_OR_WORLDOBJECT, //  63
 };
 
 // Starts from 4th element so that -3 will return first element.
@@ -681,6 +683,12 @@ bool inline ConditionEntry::Evaluate(WorldObject const* target, Map const* map, 
             if (GameObject const* pGo = target->ToGameObject())
                 return sScriptMgr.IsScriptLoaded(pGo->GetGOInfo()->ScriptId);
             return false;
+        }
+        case CONDITION_INSTANCE_SCRIPTED:
+        {
+            Map const* pMap = map ? map : (source ? source->GetMap() : target->GetMap());
+            InstanceData const* data = pMap->GetInstanceData();
+            return data && !dynamic_cast<GenericInstanceData const*>(data);
         }
         case CONDITION_LUNATIC:
         {
@@ -1368,6 +1376,15 @@ bool ConditionEntry::IsValid()
             if (m_value1 || m_value2 || m_value3 || m_value4)
             {
                 sLog.outErrorDb("CONDITION_SCRIPT_LOADED (entry %u, type %u) has unused data in value1-4, skipped", m_entry, m_condition);
+                return false;
+            }
+            break;
+        }
+        case CONDITION_INSTANCE_SCRIPTED:
+        {
+            if (m_value1 || m_value2 || m_value3 || m_value4)
+            {
+                sLog.outErrorDb("CONDITION_INSTANCE_SCRIPTED (entry %u, type %u) has unused data in value1-4, skipped", m_entry, m_condition);
                 return false;
             }
             break;

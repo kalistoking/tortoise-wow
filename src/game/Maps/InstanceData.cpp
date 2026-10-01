@@ -98,6 +98,8 @@ void GenericInstanceData::SetData(uint32 slot, uint32 value)
     }
     if (slot >= m_slots.size())
         m_slots.resize(slot + 1, 0);
+    else if (m_slots[slot] == value)
+        return;                         // a rule writing its value again and again (a timer's) saves nothing new
     m_slots[slot] = value;
     // Saved as written: an instance unloading does not save (Map's destructor), and a store written
     // by rows is written rarely.
