@@ -104,7 +104,6 @@ void AddSC_boss_arlokk();                            //zulgurub
 //void AddSC_boss_grilek();
 void AddSC_boss_hakkar();
 //void AddSC_boss_hazzarah();
-void AddSC_boss_jeklik();
 void AddSC_boss_jindo();
 void AddSC_boss_mandokir();
 void AddSC_boss_marli();
@@ -368,7 +367,6 @@ void AddScripts()
     //AddSC_boss_grilek();
     AddSC_boss_hakkar();
     //AddSC_boss_hazzarah();
-    AddSC_boss_jeklik();
     AddSC_boss_jindo();
     AddSC_boss_mandokir();
     AddSC_boss_marli();

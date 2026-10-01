@@ -22,7 +22,11 @@ SDCategory: Zul'Gurub
 EndScriptData */
 
 #include "scriptPCH.h"
-#include "zulgurub.h"
+#include "dungeons/zulgurub/zulgurub.h"
+
+namespace mod_zulgurub
+{
+
 
 enum
 {
@@ -486,3 +490,5 @@ void AddSC_boss_jeklik()
     newscript->RegisterSelf();
 
 }
+
+} // namespace mod_zulgurub

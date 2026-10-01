@@ -11,6 +11,9 @@ namespace mod_zulgurub
     void AddSC_zulgurub_bat_rider();
     void AddSC_zulgurub_gong();
     void AddSC_zg_trash();
+    void AddSC_boss_jeklik();
+    void AddSC_zulgurub_brazier_tablets();
+    void AddSC_zulgurub_shade_of_jindo();
 }
 
 void Addmod_zulgurubScripts()
@@ -26,5 +29,8 @@ void Addmod_zulgurubScripts()
     mod_zulgurub::AddSC_zulgurub_bat_rider();
     mod_zulgurub::AddSC_zulgurub_gong();
     mod_zulgurub::AddSC_zg_trash();
+    mod_zulgurub::AddSC_boss_jeklik();
+    mod_zulgurub::AddSC_zulgurub_brazier_tablets();
+    mod_zulgurub::AddSC_zulgurub_shade_of_jindo();
     sLog.outString("[mod-zulgurub] Zulgurub's scripts registered from the module");
 }

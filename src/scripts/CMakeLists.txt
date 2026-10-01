@@ -157,7 +157,6 @@ dungeons/zulgurub/boss_arlokk.cpp
 dungeons/zulgurub/boss_grilek.cpp
 dungeons/zulgurub/boss_hakkar.cpp
 dungeons/zulgurub/boss_hazzarah.cpp
-dungeons/zulgurub/boss_jeklik.cpp
 dungeons/zulgurub/boss_jindo.cpp
 dungeons/zulgurub/boss_mandokir.cpp
 dungeons/zulgurub/boss_marli.cpp

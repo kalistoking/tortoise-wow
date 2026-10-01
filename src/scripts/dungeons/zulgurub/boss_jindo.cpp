@@ -305,51 +305,6 @@ struct boss_jindoAI : public ScriptedAI
 };
 
 //Shade of Jindo
-struct mob_shade_of_jindoAI : public ScriptedAI
-{
-    mob_shade_of_jindoAI(Creature* pCreature) : ScriptedAI(pCreature)
-    {
-        m_pInstance = (ScriptedInstance*)pCreature->GetInstanceData();
-        Reset();
-    }
-
-    ScriptedInstance* m_pInstance;
-
-    uint32 ShadowShock_Timer;
-
-    void Reset() override
-    {
-        ShadowShock_Timer = 1000;
-        m_creature->AddAura(SPELL_INVISIBLE, ADD_AURA_PERMANENT);
-    }
-
-    void DamageTaken(Unit *done_by, uint32 &damage) override
-    {
-        if (done_by && !done_by->HasAura(SPELL_DELUSIONS_OF_JINDO))
-            damage = 0;
-    }
-
-    void UpdateAI(uint32 const diff) override
-    {
-        if (!m_creature->SelectHostileTarget() || !m_creature->GetVictim())
-            return;
-
-        if (m_creature->GetVictim()->HasAura(SPELL_HEX))
-            m_creature->GetThreatManager().modifyThreatPercent(m_creature->GetVictim(), -100);
-
-        //ShadowShock_Timer
-        if (ShadowShock_Timer < diff)
-        {
-            DoCastSpellIfCan(m_creature->GetVictim(), SPELL_SHADOWSHOCK);
-            ShadowShock_Timer = 2000;
-        }
-        else
-            ShadowShock_Timer -= diff;
-
-        DoMeleeAttackIfReady();
-    }
-};
-
 struct mob_brain_wash_totemAI : public ScriptedAI
 {
     mob_brain_wash_totemAI(Creature* pCreature) : ScriptedAI(pCreature)
@@ -421,11 +376,6 @@ CreatureAI* GetAI_boss_jindo(Creature* pCreature)
     return new boss_jindoAI(pCreature);
 }
 
-CreatureAI* GetAI_mob_shade_of_jindo(Creature* pCreature)
-{
-    return new mob_shade_of_jindoAI(pCreature);
-}
-
 CreatureAI* GetAI_mob_brain_wash(Creature* pCreature)
 {
     return new mob_brain_wash_totemAI(pCreature);
@@ -439,11 +389,6 @@ void AddSC_boss_jindo()
     newscript = new Script;
     newscript->Name = "boss_jindo";
     newscript->GetAI = &GetAI_boss_jindo;
-    newscript->RegisterSelf();
-
-    newscript = new Script;
-    newscript->Name = "mob_shade_of_jindo";
-    newscript->GetAI = &GetAI_mob_shade_of_jindo;
     newscript->RegisterSelf();
 
     newscript = new Script;

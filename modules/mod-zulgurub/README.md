@@ -11,6 +11,9 @@ Taken from the core:
 - `src/scripts/dungeons/zulgurub/zulgurub_bat_rider.cpp`
 - `src/scripts/dungeons/zulgurub/zulgurub_gong.cpp`
 - `src/scripts/dungeons/zulgurub/zulgurub_trash.cpp`
+- `src/scripts/dungeons/zulgurub/boss_jeklik.cpp`
+- `src/scripts/dungeons/zulgurub/zulgurub_brazier_tablets.cpp`
+- `src/scripts/dungeons/zulgurub/zulgurub_shade_of_jindo.cpp`
 
 ## The switch
 
