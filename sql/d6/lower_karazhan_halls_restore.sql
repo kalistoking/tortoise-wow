@@ -1,0 +1,45 @@
+-- Puts back what lower_karazhan_halls_as_rows.sql replaced, as t1_world had it when the migration
+-- was written (scripts/tier2/a14_lower_karazhan_halls.py). The rows the migration added are removed.
+
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'skitterweb_egg', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 30008;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'shadowbane_alpha', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61191;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'shadowbane_darkcaster', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61192;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'shadowbane_ambusher', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61193;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'shadowbane_ragefang', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61194;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'grellkin_shadow_weaver', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61195;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'grellkin_primalist', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61196;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'grellkin_channeler', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61197;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'shattercage_spearman', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61198;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'shattercage_magiskull', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61199;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'phantom_guardsman', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61200;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'haunted_stable_tender', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61201;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'haunted_blacksmith', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61202;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'dark_rider_apprentice', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61203;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'dark_rider_champion', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61204;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'phantom_servant', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61205;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'skitterweb_crawler', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61206;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'skitterweb_darkfang', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61207;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'skitterweb_venomfang', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61208;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'skitterweb_leaper', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61209;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'phantom_cook', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61210;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'shadowbane_glutton', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 61211;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_brood_queen_araxxna', `flags_extra` = 1, `gossip_menu_id` = 0 WHERE `entry` = 61221;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_blackwald_ii', `flags_extra` = 1, `gossip_menu_id` = 0 WHERE `entry` = 61222;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_clawlord_howlfang', `flags_extra` = 1, `gossip_menu_id` = 0 WHERE `entry` = 61223;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_grizikil', `flags_extra` = 1, `gossip_menu_id` = 0 WHERE `entry` = 61224;
+UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_moroes', `flags_extra` = 1, `gossip_menu_id` = 0 WHERE `entry` = 61225;
+DELETE FROM `conditions` WHERE `condition_entry` IN (532000, 532001, 532003, 532004);
+DELETE FROM `broadcast_text` WHERE `entry` IN (532101, 532102, 532103, 532104, 532105, 532106, 532107, 532108, 532109, 532110, 532111, 532112, 532113, 532114, 532115, 532116);
+DELETE FROM `creature_ai_events` WHERE `id` IN (3000801, 6119101, 6119110, 6119111, 6119201, 6119301, 6119310, 6119401, 6119410, 6119501, 6119502, 6119601, 6119602, 6119603, 6119701, 6119702, 6119710, 6119801, 6119901, 6120001, 6120002, 6120101, 6120201, 6120301, 6120401, 6120402, 6120403, 6120410, 6120411, 6120501, 6120510, 6120601, 6120701, 6120702, 6120710, 6120801, 6120802, 6120910, 6121001, 6121101, 6121102, 6122101, 6122102, 6122103, 6122104, 6122105, 6122106, 6122201, 6122202, 6122203, 6122204, 6122205, 6122206, 6122207, 6122301, 6122302, 6122303, 6122304, 6122305, 6122306, 6122307, 6122308, 6122401, 6122402, 6122403, 6122404, 6122405, 6122406, 6122407, 6122501, 6122502, 6122503, 6122504, 6122505, 6122506, 6122507, 6122508, 6122509, 6122510, 6122511, 6122512, 6122513, 6122514);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (3000801, 6119101, 6119110, 6119111, 6119201, 6119301, 6119310, 6119401, 6119410, 6119501, 6119502, 6119601, 6119602, 6119603, 6119701, 6119702, 6119710, 6119801, 6119901, 6120001, 6120002, 6120101, 6120201, 6120301, 6120401, 6120402, 6120403, 6120410, 6120411, 6120501, 6120510, 6120601, 6120701, 6120702, 6120710, 6120801, 6120802, 6120910, 6121001, 6121101, 6121102, 6122101, 6122102, 6122103, 6122104, 6122105, 6122106, 6122201, 6122202, 6122203, 6122204, 6122205, 6122206, 6122207, 6122301, 6122302, 6122303, 6122304, 6122305, 6122306, 6122307, 6122308, 6122401, 6122402, 6122403, 6122404, 6122405, 6122406, 6122407, 6122501, 6122502, 6122503, 6122504, 6122505, 6122506, 6122507, 6122508, 6122509, 6122510, 6122511, 6122512, 6122513, 6122514);
+DELETE FROM `generic_scripts` WHERE `id` IN (3000830, 3000831, 3000832, 3000833, 3000834, 6120430, 6120431, 6120432, 6122130, 6122230, 6122231, 6122232, 6122233, 6122430);
+DELETE FROM `gossip_scripts` WHERE `id` IN (6122530);
+DELETE FROM `instance_data_slot` WHERE `map` = 532 AND `slot` = 0;
+DELETE FROM `instance_data_slot` WHERE `map` = 532 AND `slot` = 1;
+DELETE FROM `instance_data_slot` WHERE `map` = 532 AND `slot` = 2;
+DELETE FROM `instance_data_slot` WHERE `map` = 532 AND `slot` = 3;
+DELETE FROM `instance_data_slot` WHERE `map` = 532 AND `slot` = 4;
+DELETE FROM `instance_data_slot` WHERE `map` = 532 AND `slot` = 5;
+DELETE FROM `gossip_menu` WHERE `entry` = 6122500 AND `text_id` = 61225;
+DELETE FROM `gossip_menu` WHERE `entry` = 6122500 AND `text_id` = 61226;
+DELETE FROM `gossip_menu_option` WHERE `menu_id` = 6122500 AND `id` = 0;
