@@ -25,7 +25,24 @@
 -- 1 yd edge to edge, about 3.6), re-sent to him every 0.5 s (the C++: every update). His curse skips a raid of
 -- one on his threat list (the C++: that one cursed). His fight is a map event of two hours at most, which
 -- carries the red one's spot. The C++'s achievement chest was game object 0: none, here as there.
--- Map 45 keeps instance_scarlet_citadel, Mariella and Ardaeus (the core).
+-- Fourth pass: High Inquisitor Mariella and her adds leave the C++. Her root is her combat movement off; she
+-- stays stunned through her fight, as the C++ left her. Her sacrifices are her EventAI phases 1, 3 and 5,
+-- under 75, 50 and 25 % (her normal phases 0, 2, 4 and 6 keep her volley, void zones and felhounds, their
+-- timers paused through a sacrifice, as the C++'s were); the players she marks are the targets of a map event
+-- (two hours at most), any one of them dead failing it, its failure script ending the sacrifice. She marks
+-- the living players within 32 yd 2D, edge to edge -- game masters too (the C++: 3D, to her middle, no game
+-- masters); a sacrifice outlasting two hours ends as a death would. Her void zones go under three random
+-- players not her tank within 32 yd, one player twice at times (the C++: three different ones); a void zone
+-- hits within 2 yd, edge to edge (about 2.4 to its middle; the C++: 2.85), game masters too, as the C++. The
+-- kill zone kills within 5 yd edge to edge (about 5.5; the C++: 5.7) -- game masters too, whom `.god on`
+-- keeps alive (the C++ spared them). A Felhound goes to a random player with mana on her threat list (the
+-- C++: the map's first), 1000000 threat on that player by ADD_THREAT's new amount, its mana taken by
+-- DEAL_DAMAGE's new mana (datalong4) -- both core additions: trt A21; its beam shows on a victim without mana
+-- too (the C++: only one with mana). Her enrage yell comes once (the C++ yelled it every update). Her
+-- achievement chest, game object 5000013, was set at 0, 0, 0 (a TODO in the C++): none here; a void zone's
+-- first hit still makes her laugh. The C++'s 32 yd check on her aggro sent her home and pulled her back in at
+-- once: no rule for it.
+-- Map 45 keeps instance_scarlet_citadel and Ardaeus (the core).
 -- The Chaplain starts the talk for a player within 35 yd of him (the C++: within 10 yd of the doorway, 34 yd
 -- off), and picks the conversation every time (the C++: once per server start). The Inquisitor counters his
 -- own victim's casts; the Valiant charges a player with mana and cleaves his victim, the Footman disarms his
@@ -34,19 +51,23 @@
 -- spawn's own now (the C++ set it as she died).
 
 UPDATE `creature_template` SET `ai_name` = 'EventAI', `gossip_menu_id` = 2000000 WHERE `entry` = 2000000;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `gossip_menu_id` = 2000002 WHERE `entry` = 2000002;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000003;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000004;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000005;
 UPDATE `creature_template` SET `ai_name` = 'EventAI', `speed_walk` = 0.48 WHERE `entry` = 2000013;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000014;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000015;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000016;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000017;
+UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000018;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000033;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000034;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000035;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000036;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000037;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (450000, 450010, 450013, 450014, 450015, 450020, 450021, 450022, 450023, 450024, 450025, 450026, 450027, 450028, 450029, 450031, 450032, 450033, 450034, 450035, 450036, 10450011);
+DELETE FROM `conditions` WHERE `condition_entry` IN (450000, 450010, 450013, 450014, 450015, 450020, 450021, 450022, 450023, 450024, 450025, 450026, 450027, 450028, 450029, 450031, 450032, 450033, 450034, 450035, 450036, 450040, 450041, 450042, 10450011);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
@@ -71,15 +92,19 @@ VALUES
 (450022, 54, 67, 13, 17, 4, 1),
 (450023, 1, 26235, -1, 0, 0, 1),
 (450024, -1, 450021, 450020, 0, 0, 0),
-(450025, -1, 450021, 450023, 0, 0, 0);
+(450025, -1, 450021, 450023, 0, 0, 0),
+(450040, 35, 2000002, 1, 0, 0, 0),
+(450041, 35, 2000002, 1, 1, 0, 0),
+(450042, 38, 32, 2, 0, 0, 0);
 
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
 INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(230003, 41, 99, 2, 0, 0, 0);
+(230003, 41, 99, 2, 0, 0, 0),
+(409020, 38, 5, 2, 0, 0, 0);
 
-DELETE FROM `broadcast_text` WHERE `entry` IN (450101, 450102, 450103, 450104, 450105, 450106, 450107, 450108, 450109, 450110, 450111, 450112, 450113, 450114, 450115, 450116, 450117, 450118, 450119, 450120, 450121, 450122, 450123, 450124, 450125, 450126, 450127, 450128, 450129, 450130, 450131);
+DELETE FROM `broadcast_text` WHERE `entry` IN (450101, 450102, 450103, 450104, 450105, 450106, 450107, 450108, 450109, 450110, 450111, 450112, 450113, 450114, 450115, 450116, 450117, 450118, 450119, 450120, 450121, 450122, 450123, 450124, 450125, 450126, 450127, 450128, 450129, 450130, 450131, 450132, 450133, 450134, 450135, 450136, 450137, 450138, 450139, 450140, 450141, 450142, 450143, 450144, 450145, 450146, 450147);
 INSERT INTO `broadcast_text`
 (`entry`, `male_text`, `female_text`, `chat_type`, `sound_id`, `language_id`, `emote_id1`, `emote_id2`, `emote_id3`, `emote_delay1`, `emote_delay2`, `emote_delay3`)
 VALUES
@@ -113,9 +138,25 @@ VALUES
 (450128, 'The Light curses you, with every second your own flesh and blood burn your very being.', 'The Light curses you, with every second your own flesh and blood burn your very being.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
 (450129, 'By my wrath your soul will succumb to the Light''s justice!', 'By my wrath your soul will succumb to the Light''s justice!', 0, 0, 0, 0, 0, 0, 0, 0, 0),
 (450130, 'Your own mind will be your greatest enemy. The Light shall burn you!', 'Your own mind will be your greatest enemy. The Light shall burn you!', 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(450131, 'MY FIST FOR THE SCARLET CRUSADE!', 'MY FIST FOR THE SCARLET CRUSADE!', 1, 0, 0, 0, 0, 0, 0, 0, 0);
+(450131, 'MY FIST FOR THE SCARLET CRUSADE!', 'MY FIST FOR THE SCARLET CRUSADE!', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+(450132, 'I will have you confess!', 'I will have you confess!', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450133, 'Only through sacrifice can one achieve victory.', 'Only through sacrifice can one achieve victory.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450134, 'Persistent, are we?', 'Persistent, are we?', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450135, 'What an utter waste of my time.', 'What an utter waste of my time.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450136, 'No! This is not... how it should have ended.', 'No! This is not... how it should have ended.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450137, 'It seems I have nothing to worry about, you will not touch my treasure.', 'It seems I have nothing to worry about, you will not touch my treasure.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450138, 'Unworthy.', 'Unworthy.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450139, 'As expected.', 'As expected.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450140, 'Pathetic.', 'Pathetic.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450141, 'How easily you crumble.', 'How easily you crumble.', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(450142, 'In Lady Whitemane''s name!', 'In Lady Whitemane''s name!', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+(450143, 'Die for the glory of the crusade!', 'Die for the glory of the crusade!', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+(450144, 'You worms! I will not fall to the likes of you!', 'You worms! I will not fall to the likes of you!', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+(450145, 'That''s enough! Now DIE!', 'That''s enough! Now DIE!', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+(450146, 'Feed my pets! Feed on the blasphemers!', 'Feed my pets! Feed on the blasphemers!', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+(450147, 'Only the darkness awaits the heretics.', 'Only the darkness awaits the heretics.', 1, 0, 0, 0, 0, 0, 0, 0, 0);
 
-DELETE FROM `creature_ai_events` WHERE `id` IN (4510001, 4510002, 4510003, 4510101, 4510102, 4510103, 4510104, 4510201, 4510202, 4510203, 4510204, 4510301, 4510302, 4510401, 4510402, 4510501, 4510502, 4510601, 4510602, 4510603, 4510604, 4510605, 4510606, 4510607, 4510608, 4510701, 4510801, 4510802, 4510811, 4510812, 4510813, 4510814, 4510901, 4510902, 4510903, 4510904, 4510905, 4510911, 4510912, 4510913, 4510914, 4510915, 4510916, 4511001, 4511002, 4511003, 4511004, 4511011, 4511012, 4511013, 4511014, 4511015, 4511021, 4511022, 4511023, 4511024, 4511025, 4511031, 4511101, 4511102, 4511103, 4511104, 4511105);
+DELETE FROM `creature_ai_events` WHERE `id` IN (4510001, 4510002, 4510003, 4510101, 4510102, 4510103, 4510104, 4510201, 4510202, 4510203, 4510204, 4510301, 4510302, 4510401, 4510402, 4510501, 4510502, 4510601, 4510602, 4510603, 4510604, 4510605, 4510606, 4510607, 4510608, 4510701, 4510801, 4510802, 4510811, 4510812, 4510813, 4510814, 4510901, 4510902, 4510903, 4510904, 4510905, 4510911, 4510912, 4510913, 4510914, 4510915, 4510916, 4511001, 4511002, 4511003, 4511004, 4511011, 4511012, 4511013, 4511014, 4511015, 4511021, 4511022, 4511023, 4511024, 4511025, 4511031, 4511101, 4511102, 4511103, 4511104, 4511105, 4511201, 4511202, 4511203, 4511204, 4511205, 4511211, 4511212, 4511213, 4511214, 4511215, 4511216, 4511217, 4511218, 4511221, 4511222, 4511223, 4511224, 4511301, 4511302, 4511303, 4511401, 4511402, 4511403, 4511501, 4511502);
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
@@ -181,9 +222,34 @@ VALUES
 (4511102, 2000013, 0, 4, 0, 100, 0, 0, 0, 0, 0, 4511102, 0, 0, 'Fallen Spirit - aggro: no melee, no chase'),
 (4511103, 2000013, 0, 1, 0, 100, 1, 500, 500, 500, 500, 4511103, 0, 0, 'Fallen Spirit - every 0.5 s out of a fight: on to Daelus, consumed at him'),
 (4511104, 2000013, 0, 0, 0, 100, 1, 500, 500, 500, 500, 4511104, 0, 0, 'Fallen Spirit - every 0.5 s in a fight: on to Daelus, consumed at him'),
-(4511105, 2000013, 0, 6, 0, 100, 0, 0, 0, 0, 0, 4511105, 0, 0, 'Fallen Spirit - dead: Sonic Burst, gone');
+(4511105, 2000013, 0, 6, 0, 100, 0, 0, 0, 0, 0, 4511105, 0, 0, 'Fallen Spirit - dead: Sonic Burst, gone'),
+(4511201, 2000002, 0, 11, 0, 100, 0, 0, 0, 0, 0, 4511201, 0, 0, 'High Inquisitor Mariella - spawned: waiting for a player'),
+(4511202, 2000002, 0, 4, 0, 100, 0, 0, 0, 0, 0, 4511202, 0, 0, 'High Inquisitor Mariella - aggro: rooted, the zone, in progress, her fight'),
+(4511203, 2000002, 0, 7, 0, 100, 1, 0, 0, 0, 0, 4511203, 0, 0, 'High Inquisitor Mariella - evading: her adds gone, she laughs, failed, waiting again'),
+(4511204, 2000002, 0, 6, 0, 100, 0, 0, 0, 0, 0, 4511204, 0, 0, 'High Inquisitor Mariella - dead: her adds gone, her last words, done'),
+(4511205, 2000002, 0, 5, 0, 100, 1, 0, 0, 0, 0, 4511205, 0, 0, 'High Inquisitor Mariella - a kill: she asks, one of her four lines'),
+(4511211, 2000002, 450040, 0, 42, 100, 1, 3500, 3500, 3500, 3500, 4511211, 0, 0, 'High Inquisitor Mariella - a normal phase: Shadow Bolt Volley every 3.5 s'),
+(4511212, 2000002, 450041, 0, 42, 100, 1, 1000, 1000, 1000, 1000, 4511212, 0, 0, 'High Inquisitor Mariella - a normal phase, enraged: Shadow Bolt Volley every second'),
+(4511213, 2000002, 0, 0, 42, 100, 9, 2500, 2500, 10000, 10000, 4511213, 0, 0, 'High Inquisitor Mariella - a normal phase: three void zones, 2.5 s in, then every 10 s, once two are on her threat list'),
+(4511214, 2000002, 0, 0, 42, 100, 1, 1000, 1000, 15000, 15000, 4511214, 0, 0, 'High Inquisitor Mariella - a normal phase: a Felhound at a player with mana, 1 s in, then every 15 s, 50 at most'),
+(4511215, 2000002, 0, 17, 0, 100, 0, 2000016, 0, 0, 0, 4511215, 0, 0, 'High Inquisitor Mariella - her first void zone of a fight: her yell'),
+(4511216, 2000002, 0, 17, 0, 100, 0, 2000017, 0, 0, 0, 4511216, 0, 0, 'High Inquisitor Mariella - her first Felhound of a fight: she exclaims, her yell'),
+(4511217, 2000002, 0, 31, 0, 100, 0, 1, 0, 0, 0, 4511217, 0, 0, 'High Inquisitor Mariella - a void zone hit a player, the first of a fight: she laughs, her line'),
+(4511218, 2000002, 0, 0, 0, 100, 0, 480000, 480000, 0, 0, 4511218, 0, 0, 'High Inquisitor Mariella - 8 min in: enraged, her volley every second'),
+(4511221, 2000002, 0, 2, 126, 100, 0, 74, 0, 0, 0, 4511221, 0, 0, 'High Inquisitor Mariella - phase 0, under 75 %: her sacrifice'),
+(4511222, 2000002, 0, 2, 123, 100, 0, 49, 0, 0, 0, 4511222, 0, 0, 'High Inquisitor Mariella - phase 2, under 50 %: her sacrifice'),
+(4511223, 2000002, 0, 2, 111, 100, 0, 24, 0, 0, 0, 4511223, 0, 0, 'High Inquisitor Mariella - phase 4, under 25 %: her sacrifice'),
+(4511224, 2000002, 0, 0, 85, 100, 1, 1000, 1000, 1000, 1000, 4511224, 0, 0, 'High Inquisitor Mariella - a sacrifice: 1 % healed every second'),
+(4511301, 2000016, 0, 11, 0, 100, 0, 0, 0, 0, 0, 4511301, 0, 0, 'Void Zone - spawned: unselectable, unattackable, still'),
+(4511302, 2000016, 0, 1, 0, 100, 1, 2000, 2000, 2000, 2000, 4511302, 0, 0, 'Void Zone - every 2 s: the players within 2 yd'),
+(4511303, 2000016, 0, 0, 0, 100, 1, 2000, 2000, 2000, 2000, 4511303, 0, 0, 'Void Zone - every 2 s: the players within 2 yd'),
+(4511401, 2000018, 0, 11, 0, 100, 0, 0, 0, 0, 0, 4511401, 0, 0, 'Kill Zone - spawned: unselectable, unattackable, still'),
+(4511402, 2000018, 0, 1, 0, 100, 1, 500, 500, 500, 500, 4511402, 0, 0, 'Kill Zone - every 0.5 s: the players within 5 yd'),
+(4511403, 2000018, 0, 0, 0, 100, 1, 500, 500, 500, 500, 4511403, 0, 0, 'Kill Zone - every 0.5 s: the players within 5 yd'),
+(4511501, 2000017, 0, 4, 0, 100, 0, 0, 0, 0, 0, 4511501, 0, 0, 'Felhound - aggro: no melee, as the C++ had none'),
+(4511502, 2000017, 409020, 0, 0, 100, 1, 1500, 1500, 1500, 1500, 4511502, 0, 0, 'Felhound - every 1.5 s, its victim within 5 yd: 1250 of its mana drained');
 
-DELETE FROM `creature_ai_scripts` WHERE `id` IN (4510001, 4510002, 4510003, 4510101, 4510102, 4510103, 4510104, 4510201, 4510202, 4510203, 4510204, 4510301, 4510302, 4510401, 4510402, 4510501, 4510502, 4510601, 4510602, 4510603, 4510604, 4510605, 4510606, 4510607, 4510608, 4510701, 4510801, 4510802, 4510811, 4510812, 4510813, 4510814, 4510901, 4510902, 4510903, 4510904, 4510905, 4510911, 4510912, 4510913, 4510914, 4510915, 4510916, 4511001, 4511002, 4511003, 4511004, 4511011, 4511012, 4511013, 4511014, 4511015, 4511021, 4511022, 4511023, 4511024, 4511025, 4511031, 4511101, 4511102, 4511103, 4511104, 4511105);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (4510001, 4510002, 4510003, 4510101, 4510102, 4510103, 4510104, 4510201, 4510202, 4510203, 4510204, 4510301, 4510302, 4510401, 4510402, 4510501, 4510502, 4510601, 4510602, 4510603, 4510604, 4510605, 4510606, 4510607, 4510608, 4510701, 4510801, 4510802, 4510811, 4510812, 4510813, 4510814, 4510901, 4510902, 4510903, 4510904, 4510905, 4510911, 4510912, 4510913, 4510914, 4510915, 4510916, 4511001, 4511002, 4511003, 4511004, 4511011, 4511012, 4511013, 4511014, 4511015, 4511021, 4511022, 4511023, 4511024, 4511025, 4511031, 4511101, 4511102, 4511103, 4511104, 4511105, 4511201, 4511202, 4511203, 4511204, 4511205, 4511211, 4511212, 4511213, 4511214, 4511215, 4511216, 4511217, 4511218, 4511221, 4511222, 4511223, 4511224, 4511301, 4511302, 4511303, 4511401, 4511402, 4511403, 4511501, 4511502);
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -336,9 +402,87 @@ VALUES
 (4511104, 0, 3, 85, 2, 0, 0, 0, 1300000, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 450024, 'Fallen Spirit - at Daelus, red: he is told (2)'),
 (4511104, 0, 4, 48, 100, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 450021, 'Fallen Spirit - at Daelus: consumed'),
 (4511105, 0, 0, 15, 23918, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Fallen Spirit - Sonic Burst'),
-(4511105, 0, 1, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Fallen Spirit - gone');
+(4511105, 0, 1, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Fallen Spirit - gone'),
+(4511201, 0, 0, 4, 46, 262146, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - unattackable and stunned'),
+(4511201, 0, 1, 4, 147, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her gossip on'),
+(4511201, 0, 2, 22, 189, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - neutral (189)'),
+(4511201, 0, 3, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - rooted: no combat movement'),
+(4511202, 0, 0, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - rooted: no combat movement'),
+(4511202, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - the zone into the fight'),
+(4511202, 0, 2, 37, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - in progress (2 = 1)'),
+(4511202, 0, 3, 61, 2000002, 7200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her fight, a map event (two hours at most)'),
+(4511203, 0, 0, 68, 450041, 2, 2000016, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her Void Zones gone'),
+(4511203, 0, 1, 68, 450041, 2, 2000018, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her Kill Zone gone'),
+(4511203, 0, 2, 68, 450041, 2, 2000017, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her Felhounds gone'),
+(4511203, 0, 3, 68, 450042, 0, 5000012, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her summoning circles gone'),
+(4511203, 0, 4, 14, 22518, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - Glowy (Red) off'),
+(4511203, 0, 5, 62, 2000102, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - a sacrifice over, not ended by a death'),
+(4511203, 0, 6, 1, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - laughs'),
+(4511203, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450135, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - "What an utter waste of my time."'),
+(4511203, 0, 8, 37, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - failed (2 = 2)'),
+(4511203, 0, 9, 62, 2000002, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her fight over'),
+(4511203, 0, 10, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - phase 0'),
+(4511203, 0, 11, 4, 46, 262146, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - unattackable and stunned'),
+(4511203, 0, 12, 4, 147, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her gossip on'),
+(4511203, 0, 13, 22, 189, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - neutral (189)'),
+(4511203, 0, 14, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - rooted: no combat movement'),
+(4511204, 0, 0, 68, 450041, 2, 2000016, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her Void Zones gone'),
+(4511204, 0, 1, 68, 450041, 2, 2000018, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her Kill Zone gone'),
+(4511204, 0, 2, 68, 450041, 2, 2000017, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her Felhounds gone'),
+(4511204, 0, 3, 68, 450042, 0, 5000012, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her summoning circles gone'),
+(4511204, 0, 4, 14, 22518, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - Glowy (Red) off'),
+(4511204, 0, 5, 62, 2000102, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - a sacrifice over, not ended by a death'),
+(4511204, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450136, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her last words'),
+(4511204, 0, 7, 37, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - done (2 = 3)'),
+(4511204, 0, 8, 62, 2000002, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her fight over'),
+(4511205, 0, 0, 1, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - asks'),
+(4511205, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450138, 450139, 450140, 450141, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - one of her four lines on a kill'),
+(4511211, 0, 0, 15, 21341, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - Shadow Bolt Volley'),
+(4511212, 0, 0, 15, 21341, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - Shadow Bolt Volley'),
+(4511213, 0, 0, 10, 2000016, 0, 0, 0, 514, 0, 5, 24, 65536, 0, -1, 8, 0, 0, 0.25, 0, 450042, 'High Inquisitor Mariella - void zone 1 under a player within 32 yd, not her tank'),
+(4511213, 0, 1, 10, 2000016, 0, 0, 0, 514, 0, 5, 16, 65536, 0, -1, 8, 0, 0, 0.25, 0, 450042, 'High Inquisitor Mariella - void zone 2 under a player within 32 yd, not her tank'),
+(4511213, 0, 2, 10, 2000016, 0, 0, 0, 514, 0, 5, 16, 65536, 0, -1, 8, 0, 0, 0.25, 0, 450042, 'High Inquisitor Mariella - void zone 3 under a player within 32 yd, not her tank'),
+(4511214, 0, 0, 39, 450044, 450045, 450046, 450047, 518, 0, 4, 16, 25, 25, 25, 25, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - one of four spots'),
+(4511215, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 450147, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - "Only the darkness awaits the heretics."'),
+(4511216, 0, 0, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - exclaims'),
+(4511216, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 450146, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - "Feed my pets! Feed on the blasphemers!"'),
+(4511217, 0, 0, 1, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - laughs'),
+(4511217, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450137, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - "It seems I have nothing to worry about, you will not touch my treasure."'),
+(4511218, 0, 0, 1, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - roars'),
+(4511218, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 450145, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - "That''s enough! Now DIE!"'),
+(4511218, 0, 2, 65, 2000002, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her fight: enraged'),
+(4511221, 0, 0, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - exclaims'),
+(4511221, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450133, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - "Only through sacrifice can one achieve victory."'),
+(4511221, 0, 2, 74, 22518, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - Glowy (Red)'),
+(4511221, 0, 3, 61, 2000102, 7200, 0, 0, 0, 0, 0, 4, 0, 0, 0, 450048, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - a sacrifice, a map event (two hours at most), ended by a marked player''s death'),
+(4511221, 0, 4, 68, 450049, 3, 0, 32, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - the players within 32 yd marked'),
+(4511221, 0, 5, 44, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her sacrifice phase'),
+(4511222, 0, 0, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - exclaims'),
+(4511222, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 450143, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - "Die for the glory of the crusade!"'),
+(4511222, 0, 2, 74, 22518, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - Glowy (Red)'),
+(4511222, 0, 3, 61, 2000102, 7200, 0, 0, 0, 0, 0, 4, 0, 0, 0, 450048, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - a sacrifice, a map event (two hours at most), ended by a marked player''s death'),
+(4511222, 0, 4, 68, 450049, 3, 0, 32, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - the players within 32 yd marked'),
+(4511222, 0, 5, 44, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her sacrifice phase'),
+(4511223, 0, 0, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - kneels'),
+(4511223, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450134, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - "Persistent, are we?"'),
+(4511223, 0, 2, 74, 22518, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - Glowy (Red)'),
+(4511223, 0, 3, 61, 2000102, 7200, 0, 0, 0, 0, 0, 4, 0, 0, 0, 450048, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - a sacrifice, a map event (two hours at most), ended by a marked player''s death'),
+(4511223, 0, 4, 68, 450049, 3, 0, 32, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - the players within 32 yd marked'),
+(4511223, 0, 5, 44, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her sacrifice phase'),
+(4511224, 0, 0, 94, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - 1 % healed'),
+(4511301, 0, 0, 4, 46, 33554434, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Void Zone - unselectable and unattackable'),
+(4511301, 0, 1, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Void Zone - no combat movement'),
+(4511302, 0, 0, 68, 450050, 3, 0, 2, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Void Zone - the players within 2 yd'),
+(4511303, 0, 0, 68, 450050, 3, 0, 2, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Void Zone - the players within 2 yd'),
+(4511401, 0, 0, 4, 46, 33554434, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kill Zone - unselectable and unattackable'),
+(4511401, 0, 1, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kill Zone - no combat movement'),
+(4511402, 0, 0, 68, 450051, 3, 0, 5, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kill Zone - the players within 5 yd'),
+(4511403, 0, 0, 68, 450051, 3, 0, 5, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kill Zone - the players within 5 yd'),
+(4511501, 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Felhound - no melee'),
+(4511502, 0, 0, 15, 25676, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Felhound - Drain Mana (the beam)'),
+(4511502, 0, 1, 48, 1250, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Felhound - 1250 of its victim''s mana taken');
 
-DELETE FROM `generic_scripts` WHERE `id` IN (450001, 450002, 450003, 450004, 450005, 450006, 450007, 450008, 450009, 450010, 450011, 450012, 450013, 450014, 450015, 450016, 450017, 450018, 450019, 450020, 450021, 450022, 450023, 450024, 450025, 450026, 450027, 450028, 450029, 450030, 450031, 450032, 450033, 450034, 450035, 450036, 450037, 450038, 450039, 450040);
+DELETE FROM `generic_scripts` WHERE `id` IN (450001, 450002, 450003, 450004, 450005, 450006, 450007, 450008, 450009, 450010, 450011, 450012, 450013, 450014, 450015, 450016, 450017, 450018, 450019, 450020, 450021, 450022, 450023, 450024, 450025, 450026, 450027, 450028, 450029, 450030, 450031, 450032, 450033, 450034, 450035, 450036, 450037, 450038, 450039, 450040, 450041, 450042, 450043, 450044, 450045, 450046, 450047, 450048, 450049, 450050, 450051);
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -438,9 +582,26 @@ VALUES
 (450040, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450128, 450129, 450130, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - one of his three curses'),
 (450040, 0, 1, 15, 22577, 2, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'the cursed player - Glowy (Green) on himself'),
 (450040, 6, 2, 15, 28240, 2, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 450029, 'the cursed player - Poison Cloud at his feet, Glowy still on him'),
-(450040, 6, 3, 14, 22577, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'the cursed player - Glowy (Green) off');
+(450040, 6, 3, 14, 22577, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'the cursed player - Glowy (Green) off'),
+(450041, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - a void zone, her kill zone or a felhound gone'),
+(450042, 0, 0, 81, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - a summoning circle gone'),
+(450043, 0, 0, 15, 7741, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Felhound - Summoned Demon'),
+(450043, 0, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Felhound - no melee, as the C++ had none'),
+(450043, 0, 2, 75, 1000000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Felhound - held to its player: 1000000 threat'),
+(450044, 0, 0, 10, 2000017, 0, 50, 150, 0, 0, 0, 0, 4, 450043, 0, 8, 178.621826, 57.703217, 33.25, 5.535669, 0, 'High Inquisitor Mariella - a Felhound at spot 1, sent at the player'),
+(450045, 0, 0, 10, 2000017, 0, 50, 150, 0, 0, 0, 0, 4, 450043, 0, 8, 178.621826, 38.533649, 33.55, 0.755342, 0, 'High Inquisitor Mariella - a Felhound at spot 2, sent at the player'),
+(450046, 0, 0, 10, 2000017, 0, 50, 150, 0, 0, 0, 0, 4, 450043, 0, 8, 197.66568, 38.533649, 32.88, 2.328107, 0, 'High Inquisitor Mariella - a Felhound at spot 3, sent at the player'),
+(450047, 0, 0, 10, 2000017, 0, 50, 150, 0, 0, 0, 0, 4, 450043, 0, 8, 197.66568, 57.703217, 33.45, 2.35979, 0, 'High Inquisitor Mariella - a Felhound at spot 4, sent at the player'),
+(450048, 0, 0, 14, 22518, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - a marked player dead: Glowy (Red) off'),
+(450048, 0, 1, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - exclaims'),
+(450048, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 450144, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - "You worms! I will not fall to the likes of you!"'),
+(450048, 0, 3, 44, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - the next normal phase'),
+(450049, 0, 0, 63, 2000102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 121, 0, 0, 0, 0, 0, 1000, 'a living player within 32 yd - marked for her sacrifice'),
+(450050, 0, 0, 85, 1, 0, 0, 0, 1300002, 0, 9, 18, 0, 0, 0, 0, 0, 0, 0, 0, 116, 'a player in a void zone - High Inquisitor Mariella told (1)'),
+(450050, 0, 1, 48, 3000, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Void Zone - 3000 to a player in it'),
+(450051, 0, 0, 48, 100, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kill Zone - a player in it killed');
 
-DELETE FROM `gossip_scripts` WHERE `id` IN (2000000);
+DELETE FROM `gossip_scripts` WHERE `id` IN (2000000, 2000002);
 INSERT INTO `gossip_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -451,7 +612,20 @@ VALUES
 (2000000, 7, 4, 0, 1, 0, 0, 0, 0, 0, 0, 0, 450131, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - "MY FIST FOR THE SCARLET CRUSADE!"'),
 (2000000, 9, 5, 4, 46, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - attackable'),
 (2000000, 9, 6, 22, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - hostile (67)'),
-(2000000, 9, 7, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the zone into the fight');
+(2000000, 9, 7, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the zone into the fight'),
+(2000002, 0, 0, 4, 147, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her gossip off'),
+(2000002, 1, 1, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - exclaims'),
+(2000002, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450132, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - "I will have you confess!"'),
+(2000002, 2, 3, 76, 5000012, 1800000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 178.621826, 57.703217, 33.25, 5.535669, 0, 'High Inquisitor Mariella - a summoning circle at spot 1'),
+(2000002, 2, 4, 76, 5000012, 1800000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 178.621826, 38.533649, 33.55, 0.755342, 0, 'High Inquisitor Mariella - a summoning circle at spot 2'),
+(2000002, 2, 5, 76, 5000012, 1800000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 197.66568, 38.533649, 32.88, 2.328107, 0, 'High Inquisitor Mariella - a summoning circle at spot 3'),
+(2000002, 2, 6, 76, 5000012, 1800000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 197.66568, 57.703217, 33.45, 2.35979, 0, 'High Inquisitor Mariella - a summoning circle at spot 4'),
+(2000002, 6, 7, 1, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - roars'),
+(2000002, 6, 8, 0, 1, 0, 0, 0, 0, 0, 0, 0, 450142, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - "In Lady Whitemane''s name!"'),
+(2000002, 8, 9, 10, 2000018, 0, 0, 0, 0, 0, 0, 0, 262144, 0, -1, 8, 0, 0, 0.25, 0, 0, 'High Inquisitor Mariella - her Kill Zone at her feet'),
+(2000002, 10, 10, 4, 46, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - attackable (still stunned, as the C++ left her)'),
+(2000002, 10, 11, 22, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - hostile (67)'),
+(2000002, 10, 12, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - the zone into the fight');
 
 DELETE FROM `gossip_menu` WHERE `entry` = 2000000 AND `text_id` = 1000002;
 INSERT INTO `gossip_menu`
@@ -465,7 +639,20 @@ INSERT INTO `gossip_menu_option`
 VALUES
 (2000000, 0, 0, 'This will be your resting place, old-timer.', 0, 1, 1, -1, 0, 2000000, 0, 0, NULL, 0, 0);
 
+DELETE FROM `gossip_menu` WHERE `entry` = 2000002 AND `text_id` = 1000000;
+INSERT INTO `gossip_menu`
+(`entry`, `text_id`, `script_id`, `condition_id`)
+VALUES
+(2000002, 1000000, 0, 0);
+
+DELETE FROM `gossip_menu_option` WHERE `menu_id` = 2000002 AND `id` = 0;
+INSERT INTO `gossip_menu_option`
+(`menu_id`, `id`, `option_icon`, `option_text`, `option_broadcast_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `box_broadcast_text`, `condition_id`)
+VALUES
+(2000002, 0, 0, 'We will see who ends who.', 0, 1, 1, -1, 0, 2000002, 0, 0, NULL, 0, 0);
+
 UPDATE `creature` SET `spawntimesecsmin` = 604800, `spawntimesecsmax` = 604800 WHERE `guid` = 1300003;
 UPDATE `creature` SET `spawntimesecsmin` = 604800, `spawntimesecsmax` = 604800 WHERE `guid` = 1300021;
 UPDATE `creature` SET `spawntimesecsmin` = 7200, `spawntimesecsmax` = 7200 WHERE `guid` = 1300006;
 UPDATE `creature` SET `spawntimesecsmin` = 604800, `spawntimesecsmax` = 604800 WHERE `guid` = 1300000;
+UPDATE `creature` SET `spawntimesecsmin` = 604800, `spawntimesecsmax` = 604800 WHERE `guid` = 1300002;
