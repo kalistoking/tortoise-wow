@@ -233,7 +233,7 @@ void AddSC_arena_tournament();
 void AddSC_boss_rares();
 void AddSC_boss_avatar_of_pompa();
 void AddSC_boss_turtlhu();
-void AddSC_instance_karazhan_crypt();
+void AddSC_karazhan_crypt_triggers();             // the trigger objects and the gate (trt A31)
 void AddSC_instance_gilneas_city();
 void AddSC_boss_celia();
 void AddSC_boss_lord_mortimer();
@@ -538,7 +538,7 @@ void AddScripts()
     AddSC_boss_rares();
     AddSC_boss_avatar_of_pompa();
     AddSC_boss_turtlhu();
-    AddSC_instance_karazhan_crypt();
+    AddSC_karazhan_crypt_triggers();
     AddSC_instance_gilneas_city();
     AddSC_boss_celia();
     AddSC_boss_lord_mortimer();
