@@ -1725,6 +1725,21 @@ bool Map::ScriptCommand_DealDamage(const ScriptInfo& script, WorldObject* source
     if (!pTarget->IsAlive())
         return ShouldAbortScript(script);
 
+    // Mana (trt A21): taken, not hit -- a unit without mana loses nothing -- and, drained, the source's to gain.
+    if (script.dealDamage.power == SO_DEALDAMAGE_MANA)
+    {
+        if (pTarget->GetPowerType() != POWER_MANA)
+            return false;
+
+        uint32 const amount = script.dealDamage.isPercent ? pTarget->GetMaxPower(POWER_MANA) * (script.dealDamage.damage / 100.0f) : script.dealDamage.damage;
+        int32 const taken = -pTarget->ModifyPower(POWER_MANA, -int32(amount));
+
+        if (script.dealDamage.drain && pSource->IsAlive() && pSource->GetPowerType() == POWER_MANA)
+            pSource->ModifyPower(POWER_MANA, taken);
+
+        return false;
+    }
+
     uint32 damage = script.dealDamage.isPercent ? pTarget->GetMaxHealth()*(script.dealDamage.damage / 100.0f) : script.dealDamage.damage;
     pSource->DealDamage(pTarget, damage, nullptr, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, nullptr, false);
 
@@ -2373,8 +2388,9 @@ bool Map::ScriptCommand_AddThreat(const ScriptInfo& script, WorldObject* source,
         return ShouldAbortScript(script);
     }
 
+    // datalong: how much (trt A21) -- a summoned add held to the player it was sent at, as a boss's own did.
     if (pSource->IsValidAttackTarget(pTarget) && pSource->IsInMap(pTarget))
-        pSource->AddThreat(pTarget);
+        pSource->AddThreat(pTarget, float(script.addThreat.threat));
 
     return false;
 }

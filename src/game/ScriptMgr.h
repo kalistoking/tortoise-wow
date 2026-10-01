@@ -243,6 +243,7 @@ enum eScriptCommand
                                                             // datalong = damage
                                                             // datalong2 = (bool) is_percent
                                                             // datalong3 = (bool) drain: the source gains what it dealt (trt A21)
+                                                            // datalong4 = what is dealt: 0 health, 1 mana (trt A21)
     SCRIPT_COMMAND_ZONE_COMBAT_PULSE        = 49,           // source = Creature
                                                             // datalong = (bool) initialPulse
     SCRIPT_COMMAND_CALL_FOR_HELP            = 50,           // source = Creature
@@ -336,6 +337,7 @@ enum eScriptCommand
                                                             // datalong2 = flags
     SCRIPT_COMMAND_ADD_THREAT               = 75,           // source = Creature
                                                             // target = Unit
+                                                            // datalong = threat added (trt A21; 0: only put on the threat list)
     SCRIPT_COMMAND_SUMMON_OBJECT            = 76,           // source = WorldObject
                                                             // datalong = gameobject_entry
                                                             // datalong2 = respawn_time
@@ -534,6 +536,15 @@ enum eSetInstData64Options
     SO_INSTDATA64_SOURCE_GUID = 1,
 
     SO_INSTDATA64_MAX
+};
+
+// Possible datalong4 values for SCRIPT_COMMAND_DEAL_DAMAGE (trt A21): what the damage is taken from.
+enum eDealDamagePowers
+{
+    SO_DEALDAMAGE_HEALTH = 0,                               // health, as a hit
+    SO_DEALDAMAGE_MANA   = 1,                               // mana, as a boss's own drain took it: no hit, no threat
+
+    SO_DEALDAMAGE_MAX
 };
 
 // Possible datalong values for SCRIPT_COMMAND_SET_PHASE
@@ -907,6 +918,7 @@ struct ScriptInfo
             uint32 damage;                                  // datalong
             uint32 isPercent;                               // datalong2
             uint32 drain;                                   // datalong3 (trt A21)
+            uint32 power;                                   // datalong4, eDealDamagePowers (trt A21)
         } dealDamage;
 
         struct                                              // SCRIPT_COMMAND_ZONE_COMBAT_PULSE (49)
@@ -1081,7 +1093,10 @@ struct ScriptInfo
             uint32 flags;                                   // datalong2
         } addAura;
 
-                                                            // SCRIPT_COMMAND_ADD_THREAT (75)
+        struct                                              // SCRIPT_COMMAND_ADD_THREAT (75)
+        {
+            uint32 threat;                                  // datalong (trt A21)
+        } addThreat;
 
         struct                                              // SCRIPT_COMMAND_SUMMON_OBJECT (76)
         {

@@ -1094,6 +1094,11 @@ void ScriptMgr::LoadScripts(ScriptMapMap& scripts, const char* tablename)
                         continue;
                     }
                 }
+                if (tmp.dealDamage.power >= SO_DEALDAMAGE_MAX)
+                {
+                    sLog.outErrorDb("Table `%s` has datalong4 = %u in SCRIPT_COMMAND_DEAL_DAMAGE -- 0 health, 1 mana -- for script id %u.", tablename, tmp.dealDamage.power, tmp.id);
+                    continue;
+                }
                 break;
             }
             case SCRIPT_COMMAND_SET_SHEATH:
