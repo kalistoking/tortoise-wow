@@ -11,6 +11,7 @@ namespace mod_blackwing_lair
     void AddSC_boss_ebonroc();
     void AddSC_boss_firemaw();
     void AddSC_boss_flamegor();
+    void AddSC_blackwing_lair_death_talon_captain();
 }
 
 void Addmod_blackwing_lairScripts()
@@ -26,5 +27,6 @@ void Addmod_blackwing_lairScripts()
     mod_blackwing_lair::AddSC_boss_ebonroc();
     mod_blackwing_lair::AddSC_boss_firemaw();
     mod_blackwing_lair::AddSC_boss_flamegor();
+    mod_blackwing_lair::AddSC_blackwing_lair_death_talon_captain();
     sLog.outString("[mod-blackwing-lair] Blackwing Lair's scripts registered from the module");
 }

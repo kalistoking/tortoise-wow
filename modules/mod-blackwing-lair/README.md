@@ -11,6 +11,7 @@ Taken from the core:
 - `src/scripts/dungeons/blackwing_lair/boss_ebonroc.cpp`
 - `src/scripts/dungeons/blackwing_lair/boss_firemaw.cpp`
 - `src/scripts/dungeons/blackwing_lair/boss_flamegor.cpp`
+- `src/scripts/dungeons/blackwing_lair/blackwing_lair_death_talon_captain.cpp`
 
 ## The switch
 
