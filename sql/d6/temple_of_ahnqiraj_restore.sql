@@ -11,6 +11,7 @@ DELETE FROM `conditions` WHERE `condition_entry` IN (531001, 531002);
 DELETE FROM `broadcast_text` WHERE `entry` IN (531101);
 DELETE FROM `creature_ai_events` WHERE `id` IN (1524611, 1524612, 1524613, 1524614, 1550901, 1550902, 1550903, 1550904, 1550911, 1550912, 1550913, 1550914, 1550915, 1566701, 1571211, 1571212, 1571213, 1571811, 1571812, 1592201, 1595701, 1595702, 1595703, 1596201, 1596202, 1596203);
 DELETE FROM `creature_ai_scripts` WHERE `id` IN (1524611, 1524612, 1524613, 1524614, 1550901, 1550902, 1550903, 1550904, 1550911, 1550912, 1550913, 1550914, 1550915, 1566701, 1571211, 1571212, 1571213, 1571811, 1571812, 1592201, 1595701, 1595702, 1595703, 1596201, 1596202, 1596203);
+DELETE FROM `generic_scripts` WHERE `id` IN (5310001, 5310002, 5310003, 5310004);
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES

@@ -121,15 +121,24 @@ VALUES
 (1571211, 0, 1, 15, 26092, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - Dirtmound Passive'),
 (1571211, 0, 2, 20, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - wandering'),
 (1571212, 0, 0, 20, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - following the player seen'),
-(1571213, 30, 0, 15, 26060, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - Summon Ouro Scarabs'),
-(1571213, 30, 1, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - gone'),
-(1571811, 45, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ouro Scarab - gone'),
+(1571213, 0, 0, 39, 5310001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - what comes later'),
+(1571811, 0, 0, 39, 5310002, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Ouro Scarab - what comes later'),
 (1571812, 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ouro Scarab - at the player seen'),
 (1566701, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Glob of Viscidus - passive'),
-(1566701, 4, 1, 15, 26633, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Glob of Viscidus - Glob Speed'),
+(1566701, 0, 1, 39, 5310003, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Glob of Viscidus - what comes later'),
 (1592201, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Viscidus Trigger - passive'),
-(1592201, 3, 1, 22, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Viscidus Trigger - hostile'),
-(1592201, 3, 2, 4, 46, 128, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Viscidus Trigger - not attackable'),
-(1592201, 3, 3, 15, 25989, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Viscidus Trigger - Toxin Cloud'),
-(1592201, 3, 4, 15, 26575, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Viscidus Trigger - Toxin');
+(1592201, 0, 1, 39, 5310004, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Viscidus Trigger - what comes later');
+
+DELETE FROM `generic_scripts` WHERE `id` IN (5310001, 5310002, 5310003, 5310004);
+INSERT INTO `generic_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(5310001, 30, 0, 15, 26060, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - Summon Ouro Scarabs'),
+(5310001, 30, 1, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - gone'),
+(5310002, 45, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ouro Scarab - gone'),
+(5310003, 4, 0, 15, 26633, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Glob of Viscidus - Glob Speed'),
+(5310004, 3, 0, 22, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Viscidus Trigger - hostile'),
+(5310004, 3, 1, 4, 46, 128, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Viscidus Trigger - not attackable'),
+(5310004, 3, 2, 15, 25989, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Viscidus Trigger - Toxin Cloud'),
+(5310004, 3, 3, 15, 26575, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Viscidus Trigger - Toxin');
 
