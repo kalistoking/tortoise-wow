@@ -487,33 +487,9 @@ struct boss_heiganAI : public ScriptedAI
     }
 };
 
-struct mob_plague_cloudAI : public ScriptedAI
-{
-    mob_plague_cloudAI(Creature* pCreature) : ScriptedAI(pCreature)
-    {
-        Reset();
-    }
-    void Reset() override
-    {
-        m_creature->AddUnitState(UNIT_STAT_ROOT);
-        m_creature->StopMoving();
-        m_creature->SetRooted(true);
-    }
-
-    void AttackStart(Unit*) override { }
-    void MoveInLineOfSight(Unit*) override { }
-
-    void UpdateAI(const uint32) override { }
-};
-
 CreatureAI* GetAI_boss_heigan(Creature* pCreature)
 {
     return new boss_heiganAI(pCreature);
-}
-
-CreatureAI* GetAI_mob_plagueCloud(Creature* pCreature)
-{
-    return new mob_plague_cloudAI(pCreature);
 }
 
 namespace
@@ -547,11 +523,6 @@ void AddSC_boss_heigan()
     NewScript = new Script;
     NewScript->Name = "boss_heigan";
     NewScript->GetAI = &GetAI_boss_heigan;
-    NewScript->RegisterSelf();
-
-    NewScript = new Script;
-    NewScript->Name = "mob_plague_cloud";
-    NewScript->GetAI = &GetAI_mob_plagueCloud;
     NewScript->RegisterSelf();
 
     RegisterSpellScript("spell_heigan_mana_burn", &GetSpellScript<spell_heigan_mana_burn>);

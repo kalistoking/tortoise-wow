@@ -1201,45 +1201,6 @@ struct mob_guardian_icecrownAI : public ScriptedAI
     }
 };
 
-struct mob_shadow_fissureAI : public ScriptedAI
-{
-    mob_shadow_fissureAI(Creature* pCreature) : ScriptedAI(pCreature)
-    {
-        Reset();
-    }
-    uint32 timer;
-    bool haveCasted;
-    void Reset() override
-    {
-        timer = 3000;
-        haveCasted = false;
-    }
-
-    void Aggro(Unit*) override
-    {
-    }
-    void AttackStart(Unit*) override
-    {
-    }
-    void MoveInLineOfSight(Unit* pWho) override
-    {
-    }
-
-    void UpdateAI(const uint32 diff) override
-    {
-        if (haveCasted)
-            return;
-        if (timer < diff)
-        {
-            m_creature->CastSpell(m_creature, SPELL_VOID_BLAST, true);
-            haveCasted = true;
-            m_creature->ForcedDespawn(2250);
-        }
-        else
-            timer -= diff;
-    }
-};
-
 CreatureAI* GetAI_boss_kelthuzad(Creature* pCreature)
 {
     return new boss_kelthuzadAI(pCreature);
@@ -1263,11 +1224,6 @@ CreatureAI* GetAI_mob_soulweaver(Creature* pCreature)
 CreatureAI* GetAI_mob_guardian_icecrown(Creature* pCreature)
 {
     return new mob_guardian_icecrownAI(pCreature);
-}
-
-CreatureAI* GetAI_mob_shadow_fissure(Creature* pCreature)
-{
-    return new mob_shadow_fissureAI(pCreature);
 }
 
 void instance_naxxramas::OnKTAreaTrigger(const AreaTriggerEntry* pAT)
@@ -1340,11 +1296,6 @@ void AddSC_boss_kelthuzad()
     NewScript = new Script;
     NewScript->Name = "mob_guardian_icecrownAI";
     NewScript->GetAI = &GetAI_mob_guardian_icecrown;
-    NewScript->RegisterSelf();
-
-    NewScript = new Script;
-    NewScript->Name = "mob_shadow_fissure";
-    NewScript->GetAI = &GetAI_mob_shadow_fissure;
     NewScript->RegisterSelf();
 
     RegisterSpellScript("spell_kelthuzad_void_blast", &GetSpellScript<spell_kelthuzad_void_blast>);

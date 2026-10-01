@@ -321,82 +321,9 @@ struct boss_gluthAI : public ScriptedAI
     }
 };
 
-struct mob_zombieChow : public ScriptedAI
-{
-    explicit mob_zombieChow(Creature* pCreature) : ScriptedAI(pCreature)
-    {
-        m_pInstance = static_cast<instance_naxxramas*>(pCreature->GetInstanceData());
-        Reset();
-    }
-
-    instance_naxxramas* m_pInstance;
-    bool isHitByDecimate;
-
-    void Reset() override
-    {
-        isHitByDecimate = false;
-        m_creature->CastSpell(m_creature, SPELL_INFECTED_WOUND, true);
-    }
-
-    bool ChaseGluth()
-    {
-        if (Creature* pGluth = m_pInstance->GetSingleCreatureFromStorage(NPC_GLUTH))
-        {
-            m_creature->GetMotionMaster()->Clear();
-            m_creature->GetMotionMaster()->MoveFollow(pGluth, ATTACK_DISTANCE, 0.0f);
-            m_creature->SetTargetGuid(0);
-            return true;
-        }
-
-        return false;
-    }
-
-    void SpellHit(WorldObject* pWho, SpellEntry const* pSpell) override
-    {
-        ScriptedAI::SpellHit(pWho, pSpell);
-        if (pWho->GetEntry() == NPC_GLUTH && pSpell->Id == SPELL_DECIMATE)
-        {
-            if (ChaseGluth())
-            {
-                DoCastSpellIfCan(m_creature, SPELL_DECIMATE_OTHER, CF_TRIGGERED);
-                isHitByDecimate = true;
-            }
-        }
-    }
-
-    void AttackStart(Unit* pWho) override
-    {
-        if (isHitByDecimate)
-            return;
-
-        ScriptedAI::AttackStart(pWho);
-    }
-
-    void UpdateAI(uint32 const diff) override
-    {
-        if (isHitByDecimate)
-        {
-            if (m_creature->GetMotionMaster()->GetCurrentMovementGeneratorType() != CHASE_MOTION_TYPE)
-                ChaseGluth();
-
-            return;
-        }
-
-        if (!m_creature->SelectHostileTarget() || !m_creature->GetVictim())
-            return;
-
-        DoMeleeAttackIfReady();
-    }
-};
-
 CreatureAI* GetAI_boss_gluth(Creature* pCreature)
 {
     return new boss_gluthAI(pCreature);
-}
-
-CreatureAI* GetAI_mob_zombieChow(Creature* pCreature)
-{
-    return new mob_zombieChow(pCreature);
 }
 
 namespace
@@ -438,11 +365,6 @@ void AddSC_boss_gluth()
     NewScript = new Script;
     NewScript->Name = "boss_gluth";
     NewScript->GetAI = &GetAI_boss_gluth;
-    NewScript->RegisterSelf();
-
-    NewScript = new Script;
-    NewScript->Name = "mob_zombie_chow";
-    NewScript->GetAI = &GetAI_mob_zombieChow;
     NewScript->RegisterSelf();
 
     RegisterSpellScript("spell_gluth_decimate", &GetSpellScript<spell_gluth_decimate>);
