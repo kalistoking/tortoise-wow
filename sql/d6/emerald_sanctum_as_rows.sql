@@ -12,12 +12,17 @@
 -- fight once under half health (the C++ counted those seconds only under half health).
 
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (807002, 807003);
+DELETE FROM `conditions` WHERE `condition_entry` IN (807003);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(807002, 34, 1, 1, 0, 0, 0),
 (807003, 41, 49, 2, 0, 0, 2);
+
+-- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
+INSERT IGNORE INTO `conditions`
+(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
+VALUES
+(129001, 34, 1, 1, 0, 0, 0);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (6074750);
 INSERT INTO `broadcast_text`
@@ -53,8 +58,8 @@ VALUES
 (6074707, 60747, 0, 0, 0, 100, 9, 7000, 7000, 7000, 7000, 6074707, 0, 0, 'Erennius - Call of Nightmare'),
 (6074708, 60747, 0, 0, 0, 100, 9, 9000, 13000, 9000, 13000, 6074708, 0, 0, 'Erennius - Poison Bolt Volley'),
 (6074709, 60747, 0, 0, 0, 100, 9, 37000, 37000, 30000, 33000, 6074709, 0, 0, 'Erennius - Howl of Erennius'),
-(6074710, 60747, 807002, 0, 0, 100, 9, 35000, 35000, 35000, 35000, 6074710, 0, 0, 'Erennius - Wall of Erennius, Solnius fighting'),
-(6074711, 60747, 807002, 0, 0, 100, 9, 70000, 70000, 70000, 70000, 6074711, 0, 0, 'Erennius - Green Dragon Binding on Solnius, Solnius fighting'),
+(6074710, 60747, 129001, 0, 0, 100, 9, 35000, 35000, 35000, 35000, 6074710, 0, 0, 'Erennius - Wall of Erennius, Solnius fighting'),
+(6074711, 60747, 129001, 0, 0, 100, 9, 70000, 70000, 70000, 70000, 6074711, 0, 0, 'Erennius - Green Dragon Binding on Solnius, Solnius fighting'),
 (6074712, 60747, 807003, 0, 0, 100, 8, 81000, 92000, 0, 0, 6074712, 0, 0, 'Erennius - Curse of Erennius once, under half health');
 
 DELETE FROM `creature_ai_scripts` WHERE `id` IN (6074201, 6074202, 6074301, 6074302, 6074401, 6074402, 6074403, 6074501, 6074502, 6074505, 6074601, 6074602, 6074603, 6074701, 6074702, 6074703, 6074704, 6074705, 6074706, 6074707, 6074708, 6074709, 6074710, 6074711, 6074712, 6121201, 6121202);

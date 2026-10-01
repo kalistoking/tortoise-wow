@@ -40,14 +40,19 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 61223;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 61224;
 UPDATE `creature_template` SET `ai_name` = 'EventAI', `gossip_menu_id` = 6122500 WHERE `entry` = 61225;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (532000, 532001, 532003, 532004);
+DELETE FROM `conditions` WHERE `condition_entry` IN (532004);
 INSERT INTO `conditions`
+(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
+VALUES
+(532004, -1, 532000, 532001, 3704, 532003, 0);
+
+-- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
+INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (532000, 34, 0, 3, 0, 0, 0),
 (532001, 34, 1, 3, 0, 0, 0),
-(532003, 34, 3, 3, 0, 0, 0),
-(532004, -1, 532000, 532001, 3704, 532003, 0);
+(532003, 34, 3, 3, 0, 0, 0);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (532101, 532102, 532103, 532104, 532105, 532106, 532107, 532108, 532109, 532110, 532111, 532112, 532113, 532114, 532115, 532116);
 INSERT INTO `broadcast_text`

@@ -5,7 +5,7 @@ UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_tomb_creatur
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_tomb_creature', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 7351;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_henry_stern', `flags_extra` = 2, `gossip_menu_id` = 0 WHERE `entry` = 8696;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_lady_faltheress', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 14686;
-DELETE FROM `conditions` WHERE `condition_entry` IN (129001, 129009, 129010, 129014, 129015, 129030, 129031, 129032, 129033, 129034, 129035);
+DELETE FROM `conditions` WHERE `condition_entry` IN (129009, 129010, 129014, 129015, 129030, 129031, 129032, 129033, 129034, 129035);
 DELETE FROM `creature_ai_events` WHERE `id` IN (734901, 735101, 1468601);
 DELETE FROM `creature_ai_scripts` WHERE `id` IN (734901, 735101, 1468601);
 DELETE FROM `generic_scripts` WHERE `id` IN (734950, 734951);
@@ -16,3 +16,5 @@ DELETE FROM `gossip_menu` WHERE `entry` = 869601 AND `text_id` = 2114;
 DELETE FROM `gossip_menu_option` WHERE `menu_id` = 869600 AND `id` = 0;
 DELETE FROM `gossip_menu` WHERE `entry` = 869602 AND `text_id` = 2115;
 DELETE FROM `gossip_menu_option` WHERE `menu_id` = 869600 AND `id` = 1;
+-- The shared conditions go only once nothing names them: the other migration that writes them is then not applied either.
+DELETE FROM `conditions` WHERE `condition_entry` = 129001 AND NOT EXISTS (SELECT 1 FROM `creature_ai_events` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM `creature_ai_scripts` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM `generic_scripts` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM `gameobject_scripts` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM `gossip_scripts` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM `event_scripts` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM `creature_movement_scripts` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM `quest_start_scripts` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM `quest_end_scripts` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM `spell_scripts` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM `gossip_menu` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM `gossip_menu_option` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM `gameobject_spawn_state` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM `areatrigger_generic_script` WHERE `condition_id` = 129001) AND NOT EXISTS (SELECT 1 FROM (SELECT * FROM `conditions`) c WHERE c.`type` < 0 AND 129001 IN (c.`value1`, c.`value2`, c.`value3`, c.`value4`));

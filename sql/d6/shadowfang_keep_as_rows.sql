@@ -12,15 +12,20 @@
 -- Needs the core of trt/module-structure with gameobject_spawn_state (AC3) and its SQL applied.
 
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (33001, 33002, 33003, 33004, 33005);
+DELETE FROM `conditions` WHERE `condition_entry` IN (33003, 33004, 33005);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(33001, 34, 1, 3, 0, 0, 0),
-(33002, 34, 3, 3, 0, 0, 0),
 (33003, 34, 4, 3, 0, 0, 0),
 (33004, 34, 5, 3, 0, 0, 0),
 (33005, 34, 7, 4, 1, 0, 0);
+
+-- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
+INSERT IGNORE INTO `conditions`
+(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
+VALUES
+(532001, 34, 1, 3, 0, 0, 0),
+(532003, 34, 3, 3, 0, 0, 0);
 
 DELETE FROM `creature_ai_events` WHERE `id` IN (444408, 1000001);
 INSERT INTO `creature_ai_events`
@@ -62,7 +67,7 @@ DELETE FROM `gameobject_spawn_state` WHERE `guid` = 33241 AND `ord` = 0;
 INSERT INTO `gameobject_spawn_state`
 (`guid`, `ord`, `condition_id`, `state`, `flags_set`, `flags_clear`, `despawn`, `script_id`, `comment`)
 VALUES
-(20835, 0, 33001, 0, 0, 0, 0, 0, 'Courtyard Door: open once the prisoners are freed (1 = 3)'),
-(33785, 0, 33002, 0, 0, 0, 0, 0, 'Sorcerer''s Door: open once Fenrus is dead (3 = 3)'),
+(20835, 0, 532001, 0, 0, 0, 0, 0, 'Courtyard Door: open once the prisoners are freed (1 = 3)'),
+(33785, 0, 532003, 0, 0, 0, 0, 0, 'Sorcerer''s Door: open once Fenrus is dead (3 = 3)'),
 (33241, 0, 33003, 0, 0, 0, 0, 0, 'Arugal''s Door: open once Nandos is dead (4 = 3)');
 

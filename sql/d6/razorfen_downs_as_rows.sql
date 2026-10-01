@@ -16,11 +16,10 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 7351;
 UPDATE `creature_template` SET `gossip_menu_id` = 869600 WHERE `entry` = 8696;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14686;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (129001, 129009, 129010, 129014, 129015, 129030, 129031, 129032, 129033, 129034, 129035);
+DELETE FROM `conditions` WHERE `condition_entry` IN (129009, 129010, 129014, 129015, 129030, 129031, 129032, 129033, 129034, 129035);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(129001, 34, 1, 1, 0, 0, 0),
 (129009, 34, 1, 9, 0, 0, 0),
 (129010, 34, 1, 10, 0, 0, 0),
 (129014, 34, 1, 14, 0, 0, 0),
@@ -31,6 +30,12 @@ VALUES
 (129033, 7, 171, 180, 0, 0, 0),
 (129034, 17, 3451, 1, 0, 0, 0),
 (129035, -1, 129033, 129034, 0, 0, 0);
+
+-- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
+INSERT IGNORE INTO `conditions`
+(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
+VALUES
+(129001, 34, 1, 1, 0, 0, 0);
 
 DELETE FROM `creature_ai_events` WHERE `id` IN (734901, 735101, 1468601);
 INSERT INTO `creature_ai_events`

@@ -17,19 +17,24 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12203;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12225;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 13282;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (349001, 349002, 349003);
+DELETE FROM `conditions` WHERE `condition_entry` IN (349002, 349003);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(349001, 34, 0, 3, 0, 0, 0),
 (349002, 34, 0, 3, 0, 0, 1),
 (349003, 34, 1, 3, 0, 0, 1);
+
+-- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
+INSERT IGNORE INTO `conditions`
+(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
+VALUES
+(532000, 34, 0, 3, 0, 0, 0);
 
 DELETE FROM `creature_ai_events` WHERE `id` IN (1220101, 1220102, 1220103, 1220104, 1220105, 1220301, 1220302, 1220303, 1222501, 1222502, 1222503, 1222504, 1222505, 1328201, 1328202, 1328203, 1328204, 1353304);
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
-(1353304, 13533, 349001, 11, 0, 100, 0, 0, 0, 0, 0, 1353304, 0, 0, 'Spewed Larva - gone as it spawns once the spewer is disarmed'),
+(1353304, 13533, 532000, 11, 0, 100, 0, 0, 0, 0, 0, 1353304, 0, 0, 'Spewed Larva - gone as it spawns once the spewer is disarmed'),
 (1222501, 12225, 349003, 11, 0, 100, 0, 0, 0, 0, 0, 1222501, 0, 0, 'Celebras the Cursed - the Redeemed hidden while he lives'),
 (1222502, 12225, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1222502, 0, 0, 'Celebras the Cursed - done; the Redeemed appears'),
 (1222503, 12225, 0, 0, 0, 100, 1, 8000, 8000, 8000, 8000, 1222503, 0, 0, 'Celebras the Cursed - Wrath on a random attacker'),
@@ -108,5 +113,5 @@ DELETE FROM `gameobject_spawn_state` WHERE `guid` = 32892 AND `ord` = 0;
 INSERT INTO `gameobject_spawn_state`
 (`guid`, `ord`, `condition_id`, `state`, `flags_set`, `flags_clear`, `despawn`, `script_id`, `comment`)
 VALUES
-(32892, 0, 349001, 2, 0, 0, 0, 0, 'Larva Spewer: destroyed once disarmed (0 = 3)');
+(32892, 0, 532000, 2, 0, 0, 0, 0, 'Larva Spewer: destroyed once disarmed (0 = 3)');
 
