@@ -188,7 +188,7 @@ dungeons/wailing_caverns/instance_wailing_caverns.cpp
 dungeons/wailing_caverns/wailing_caverns.cpp
 dungeons/zulfarrak/instance_zulfarrak.cpp
 dungeons/zulfarrak/farraki_arena.cpp
-dungeons/zulfarrak/zulfarrak.cpp
+dungeons/zulfarrak/zulfarrak_tablet_ward.cpp
 dungeons/zulfarrak/zulfarrak.h
 dungeons/zulgurub/boss_arlokk.cpp
 dungeons/zulgurub/boss_gahzranka.cpp
