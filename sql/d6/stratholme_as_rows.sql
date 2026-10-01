@@ -36,17 +36,16 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11136;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11143;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 16387;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (329001, 329002, 329003, 329005, 329006, 329007, 329008, 329010, 329020, 329030, 329040, 329041, 329042, 329050, 329060, 329061, 329062, 329063, 329064, 329065, 329066);
+DELETE FROM `conditions` WHERE `condition_entry` IN (329002, 329008, 329010, 329020, 329030, 329040, 329041, 329042, 329050, 329060, 329062, 329063, 329065, 329066, 10329001, 10329003, 10329005, 10329007, 10329061, 10329064);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (329002, 34, 0, 0, 0, 0, 0),
-(329001, -1, 230000, 329002, 0, 0, 0),
-(329003, -1, 230000, 329004, 0, 0, 0),
-(329006, 34, 9, 4, 0, 0, 0),
-(329005, -1, 230000, 329006, 0, 0, 0),
+(10329001, -1, 230000, 329002, 0, 0, 0),
+(10329003, -1, 230000, 329004, 0, 0, 0),
+(10329005, -1, 230000, 329006, 0, 0, 0),
 (329008, 34, 9, 2, 2, 0, 0),
-(329007, -1, 230000, 329008, 0, 0, 0),
+(10329007, -1, 230000, 329008, 0, 0, 0),
 (329010, 9, 5282, 1, 0, 0, 0),
 (329020, 20, 10399, 50, 0, 0, 3),
 (329030, 38, 8, 1, 0, 0, 0),
@@ -57,10 +56,10 @@ VALUES
 (329060, 1, 12098, 0, 0, 0, 1),
 (329062, 9, 20001, 2, 0, 0, 0),
 (329063, 8, 20001, 0, 0, 0, 0),
-(329061, -2, 329062, 329063, 0, 0, 0),
+(10329061, -2, 329062, 329063, 0, 0, 0),
 (329065, 9, 20002, 1, 0, 0, 0),
 (329066, 2, 82000, 1, 0, 0, 0),
-(329064, -1, 329065, 329061, 329066, 0, 2);
+(10329064, -1, 329065, 10329061, 329066, 0, 2);
 
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
 INSERT IGNORE INTO `conditions`
@@ -68,6 +67,7 @@ INSERT IGNORE INTO `conditions`
 VALUES
 (230000, 62, 0, 0, 0, 0, 1),
 (329004, 34, 9, 3, 0, 0, 1),
+(329006, 34, 9, 4, 0, 0, 0),
 (230040, 34, 6, 3, 0, 0, 0);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (329101, 329102, 329103, 329104, 329110);
@@ -494,37 +494,37 @@ VALUES
 (3290109, 0, 0, 10, 10390, 3600000, 0, 0, 0, 0, 0, 0, 0, 0, -1, 7, 3627.975, -3089.901, 134.122, 3.784, 0, 'Balnazzar - a Skeletal Guardian at point 31'),
 (3290110, 0, 0, 10, 10391, 3600000, 0, 0, 0, 0, 0, 0, 0, 0, -1, 7, 3624.338, -3084.979, 134.122, 3.784, 0, 'Balnazzar - a Skeletal Berserker at point 32'),
 (3290111, 0, 0, 10, 10390, 3600000, 0, 0, 0, 0, 0, 0, 0, 0, -1, 7, 3624.338, -3084.979, 134.122, 3.784, 0, 'Balnazzar - a Skeletal Guardian at point 32'),
-(3290112, 0, 0, 10, 2000092, 25000, 1, 500, 0, 0, 0, 0, 4, 0, -1, 7, 3433.235107, -3049.212402, 136.506256, 4.664114, 329064, 'Balnazzar - a player on To Wake the Ashbringer: the Scarlet Citadel''s Dathrohan');
+(3290112, 0, 0, 10, 2000092, 25000, 1, 500, 0, 0, 0, 0, 4, 0, -1, 7, 3433.235107, -3049.212402, 136.506256, 4.664114, 10329064, 'Balnazzar - a player on To Wake the Ashbringer: the Scarlet Citadel''s Dathrohan');
 
 DELETE FROM `gameobject_scripts` WHERE `id` IN (20761, 20768, 45220, 47273, 47274, 47275, 47276, 47277, 49592, 399000, 399001, 399002, 399003, 399004, 399005, 399006, 399007, 399008, 399009, 399010, 399011, 399012, 399013, 399014, 399015, 399016, 399017, 399018, 399019, 399020, 399021, 399022, 399023, 399024, 399025, 399026, 399027, 399028, 399029, 399030, 399031, 399032, 399033, 399034, 399035, 399039, 399040, 399041, 399042, 399043, 399044, 399045, 399046, 399047, 399048, 399049, 399050, 399051, 399052, 399053, 399054, 399055, 399056, 399057, 399058, 399059, 399060, 399061, 399062);
 INSERT INTO `gameobject_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(49592, 0, 0, 37, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329001, 'Gauntlet Gate - opened first: the Baron run (0 = 1)'),
-(45220, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 329003, 'Postbox - opened: three postmen'),
-(45220, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the third: the player summons Postmaster Malown'),
-(45220, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the postmaster come (9 = 3)'),
-(45220, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329007, 'Postbox - one more box (9 = 1, the instance counts)'),
-(47273, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 329003, 'Postbox - opened: three postmen'),
-(47273, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the third: the player summons Postmaster Malown'),
-(47273, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the postmaster come (9 = 3)'),
-(47273, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329007, 'Postbox - one more box (9 = 1, the instance counts)'),
-(47274, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 329003, 'Postbox - opened: three postmen'),
-(47274, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the third: the player summons Postmaster Malown'),
-(47274, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the postmaster come (9 = 3)'),
-(47274, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329007, 'Postbox - one more box (9 = 1, the instance counts)'),
-(47275, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 329003, 'Postbox - opened: three postmen'),
-(47275, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the third: the player summons Postmaster Malown'),
-(47275, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the postmaster come (9 = 3)'),
-(47275, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329007, 'Postbox - one more box (9 = 1, the instance counts)'),
-(47276, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 329003, 'Postbox - opened: three postmen'),
-(47276, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the third: the player summons Postmaster Malown'),
-(47276, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the postmaster come (9 = 3)'),
-(47276, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329007, 'Postbox - one more box (9 = 1, the instance counts)'),
-(47277, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 329003, 'Postbox - opened: three postmen'),
-(47277, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the third: the player summons Postmaster Malown'),
-(47277, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329005, 'Postbox - the postmaster come (9 = 3)'),
-(47277, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329007, 'Postbox - one more box (9 = 1, the instance counts)'),
+(49592, 0, 0, 37, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10329001, 'Gauntlet Gate - opened first: the Baron run (0 = 1)'),
+(45220, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10329003, 'Postbox - opened: three postmen'),
+(45220, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 10329005, 'Postbox - the third: the player summons Postmaster Malown'),
+(45220, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10329005, 'Postbox - the postmaster come (9 = 3)'),
+(45220, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10329007, 'Postbox - one more box (9 = 1, the instance counts)'),
+(47273, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10329003, 'Postbox - opened: three postmen'),
+(47273, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 10329005, 'Postbox - the third: the player summons Postmaster Malown'),
+(47273, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10329005, 'Postbox - the postmaster come (9 = 3)'),
+(47273, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10329007, 'Postbox - one more box (9 = 1, the instance counts)'),
+(47274, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10329003, 'Postbox - opened: three postmen'),
+(47274, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 10329005, 'Postbox - the third: the player summons Postmaster Malown'),
+(47274, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10329005, 'Postbox - the postmaster come (9 = 3)'),
+(47274, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10329007, 'Postbox - one more box (9 = 1, the instance counts)'),
+(47275, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10329003, 'Postbox - opened: three postmen'),
+(47275, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 10329005, 'Postbox - the third: the player summons Postmaster Malown'),
+(47275, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10329005, 'Postbox - the postmaster come (9 = 3)'),
+(47275, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10329007, 'Postbox - one more box (9 = 1, the instance counts)'),
+(47276, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10329003, 'Postbox - opened: three postmen'),
+(47276, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 10329005, 'Postbox - the third: the player summons Postmaster Malown'),
+(47276, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10329005, 'Postbox - the postmaster come (9 = 3)'),
+(47276, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10329007, 'Postbox - one more box (9 = 1, the instance counts)'),
+(47277, 0, 0, 39, 3290001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10329003, 'Postbox - opened: three postmen'),
+(47277, 0, 1, 15, 24627, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 10329005, 'Postbox - the third: the player summons Postmaster Malown'),
+(47277, 0, 2, 37, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10329005, 'Postbox - the postmaster come (9 = 3)'),
+(47277, 0, 3, 37, 9, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10329007, 'Postbox - one more box (9 = 1, the instance counts)'),
 (399000, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
 (399001, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),
 (399002, 0, 0, 39, 3290025, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230000, 'Supply Crate - opened'),

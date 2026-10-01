@@ -2,7 +2,7 @@
 -- was written (scripts/tier2/a34_sunken_temple.py). The rows the migration added are removed.
 
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_malfurion_stormrage', `flags_extra` = 32771 WHERE `entry` = 15362;
-DELETE FROM `conditions` WHERE `condition_entry` IN (109000, 109010, 109012, 109013, 109020);
+DELETE FROM `conditions` WHERE `condition_entry` IN (109012, 109013, 109020, 10109000, 10109010);
 DELETE FROM `creature_ai_events` WHERE `id` IN (1536201, 1536202);
 DELETE FROM `creature_ai_scripts` WHERE `id` IN (1536201, 1536202);
 DELETE FROM `generic_scripts` WHERE `id` IN (1090001, 1090002);

@@ -30,7 +30,7 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62496;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62497;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62498;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (209001, 209004, 209005, 209006, 209007, 209012, 209020, 209021, 209022, 209032, 209033, 209034, 209035, 209036, 209040, 209041, 209042, 209043, 209044, 209045, 209046, 209047, 209048, 209049, 209050, 209051, 209052, 209053, 209060, 209062, 209064, 209065, 209066, 209067, 209068, 209069, 209070);
+DELETE FROM `conditions` WHERE `condition_entry` IN (209001, 209004, 209006, 209007, 209012, 209021, 209022, 209032, 209033, 209034, 209035, 209036, 209040, 209041, 209042, 209043, 209044, 209045, 209046, 209048, 209049, 209052, 209053, 209060, 209062, 209064, 209065, 209066, 209067, 209068, 209069, 209070, 10209005, 10209020, 10209047, 10209050, 10209051);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
@@ -38,11 +38,11 @@ VALUES
 (209004, 34, 1, 8, 0, 0, 0),
 (209006, 34, 1, 0, 0, 0, 1),
 (209007, 34, 1, 8, 0, 0, 1),
-(209005, -1, 209006, 209007, 0, 0, 0),
+(10209005, -1, 209006, 209007, 0, 0, 0),
 (209012, 38, 5, 1, 0, 0, 0),
 (209021, 20, 7271, 30, 0, 0, 0),
 (209022, 34, 4, 0, 0, 0, 0),
-(209020, -1, 209021, 209022, 0, 0, 0),
+(10209020, -1, 209021, 209022, 0, 0, 0),
 (209032, 34, 1, 4, 0, 0, 0),
 (209033, 34, 1, 5, 0, 0, 0),
 (209034, 34, 1, 6, 0, 0, 0),
@@ -57,9 +57,9 @@ VALUES
 (209046, 20, 7796, 150, 0, 0, 3),
 (209048, -1, 209040, 209041, 209042, 209043, 0),
 (209049, -1, 209044, 209045, 209046, 0, 0),
-(209047, -1, 209048, 209049, 0, 0, 0),
-(209050, -1, 209036, 209047, 0, 0, 0),
-(209051, -1, 818012, 209047, 0, 0, 0),
+(10209047, -1, 209048, 209049, 0, 0, 0),
+(10209050, -1, 209036, 10209047, 0, 0, 0),
+(10209051, -1, 818012, 10209047, 0, 0, 0),
 (209052, 34, 2, 1, 1, 0, 0),
 (209053, 34, 2, 0, 0, 0, 0),
 (209060, 34, 5, 0, 0, 0, 0),
@@ -101,13 +101,13 @@ VALUES
 (760713, 7607, 0, 29, 7, 100, 1, 8, 2, 0, 0, 760713, 0, 0, 'Weegli Blastfuse - gone'),
 (760401, 7604, 0, 0, 0, 100, 1, 5000, 5000, 15000, 15000, 760401, 0, 0, 'Sergeant Bly - Shield Bash'),
 (760402, 7604, 0, 0, 0, 100, 1, 8000, 8000, 10000, 10000, 760402, 0, 0, 'Sergeant Bly - Revenge'),
-(778711, 7787, 209051, 6, 0, 100, 0, 0, 0, 0, 0, 778711, 0, 0, 'Sandfury Slave - the last of a wave dead: the pyramid goes on'),
-(778811, 7788, 209051, 6, 0, 100, 0, 0, 0, 0, 0, 778811, 0, 0, 'Sandfury Drudge - the last of a wave dead: the pyramid goes on'),
-(778911, 7789, 209051, 6, 0, 100, 0, 0, 0, 0, 0, 778911, 0, 0, 'Sandfury Cretin - the last of a wave dead: the pyramid goes on'),
-(887611, 8876, 209051, 6, 0, 100, 0, 0, 0, 0, 0, 887611, 0, 0, 'Sandfury Acolyte - the last of a wave dead: the pyramid goes on'),
-(887711, 8877, 209051, 6, 0, 100, 0, 0, 0, 0, 0, 887711, 0, 0, 'Sandfury Zealot - the last of a wave dead: the pyramid goes on'),
-(727511, 7275, 209051, 6, 0, 100, 0, 0, 0, 0, 0, 727511, 0, 0, 'Shadowpriest Sezz''ziz - the last of a wave dead: the pyramid goes on'),
-(779611, 7796, 209051, 6, 0, 100, 0, 0, 0, 0, 0, 779611, 0, 0, 'Nekrum Gutchewer - the last of a wave dead: the pyramid goes on'),
+(778711, 7787, 10209051, 6, 0, 100, 0, 0, 0, 0, 0, 778711, 0, 0, 'Sandfury Slave - the last of a wave dead: the pyramid goes on'),
+(778811, 7788, 10209051, 6, 0, 100, 0, 0, 0, 0, 0, 778811, 0, 0, 'Sandfury Drudge - the last of a wave dead: the pyramid goes on'),
+(778911, 7789, 10209051, 6, 0, 100, 0, 0, 0, 0, 0, 778911, 0, 0, 'Sandfury Cretin - the last of a wave dead: the pyramid goes on'),
+(887611, 8876, 10209051, 6, 0, 100, 0, 0, 0, 0, 0, 887611, 0, 0, 'Sandfury Acolyte - the last of a wave dead: the pyramid goes on'),
+(887711, 8877, 10209051, 6, 0, 100, 0, 0, 0, 0, 0, 887711, 0, 0, 'Sandfury Zealot - the last of a wave dead: the pyramid goes on'),
+(727511, 7275, 10209051, 6, 0, 100, 0, 0, 0, 0, 0, 727511, 0, 0, 'Shadowpriest Sezz''ziz - the last of a wave dead: the pyramid goes on'),
+(779611, 7796, 10209051, 6, 0, 100, 0, 0, 0, 0, 0, 779611, 0, 0, 'Nekrum Gutchewer - the last of a wave dead: the pyramid goes on'),
 (727311, 7273, 209052, 11, 0, 100, 0, 0, 0, 0, 0, 727311, 0, 0, 'Gahz''rilla - called once already: gone'),
 (727312, 7273, 209053, 11, 0, 100, 0, 0, 0, 0, 0, 727312, 0, 0, 'Gahz''rilla - called the first time (2 = 1)'),
 (6249614, 62496, 209070, 7, 0, 100, 0, 0, 0, 0, 0, 6249614, 0, 0, 'Kath''zen the Brutal - out of the fight: the arena back'),
@@ -298,7 +298,7 @@ VALUES
 (2090014, 5, 18, 3, 0, 0, 3, 2, 81553, 0, 9, 2, 5, 0, 0, 0, 1878.02, 1227.65, 9.485, 0, 1000, 'Weegli Blastfuse - walks to the foot of the stairs (point 5)'),
 (2090014, 5, 19, 34, 0, 0, 0, 0, 81553, 0, 9, 2, 0, 0, 0, 0, 1878.02, 1227.65, 9.485, 4.78, 1000, 'Weegli Blastfuse - home to the foot of the stairs'),
 (2090014, 5, 20, 37, 1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'The pyramid - the crew at the foot of the stairs (1 = 7)'),
-(2090015, 0, 0, 32, 209050, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'The pyramid - wave 3 on and dead, or nothing'),
+(2090015, 0, 0, 32, 10209050, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'The pyramid - wave 3 on and dead, or nothing'),
 (2090015, 0, 1, 37, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'The pyramid - all the trolls dead (1 = 8)'),
 (2090015, 0, 2, 3, 0, 0, 3, 2, 81555, 0, 9, 2, 6, 0, 0, 0, 1883.82, 1200.83, 8.87, 0, 1000, 'Sergeant Bly - walks to his place below (point 6)'),
 (2090015, 0, 3, 34, 0, 0, 0, 0, 81555, 0, 9, 2, 0, 0, 0, 0, 1883.82, 1200.83, 8.87, 1.32, 1000, 'Sergeant Bly - home to his place below'),
@@ -462,7 +462,7 @@ DELETE FROM `gossip_menu` WHERE `entry` = 760700 AND `text_id` = 1513;
 INSERT INTO `gossip_menu`
 (`entry`, `text_id`, `script_id`, `condition_id`)
 VALUES
-(760700, 1513, 0, 209005);
+(760700, 1513, 0, 10209005);
 
 DELETE FROM `gossip_menu` WHERE `entry` = 760700 AND `text_id` = 1514;
 INSERT INTO `gossip_menu`
@@ -486,7 +486,7 @@ DELETE FROM `gossip_menu` WHERE `entry` = 760400 AND `text_id` = 1516;
 INSERT INTO `gossip_menu`
 (`entry`, `text_id`, `script_id`, `condition_id`)
 VALUES
-(760400, 1516, 0, 209005);
+(760400, 1516, 0, 10209005);
 
 DELETE FROM `gossip_menu` WHERE `entry` = 760400 AND `text_id` = 1517;
 INSERT INTO `gossip_menu`
@@ -504,7 +504,7 @@ DELETE FROM `areatrigger_generic_script` WHERE `trigger_id` = 962 AND `script_id
 INSERT INTO `areatrigger_generic_script`
 (`trigger_id`, `script_id`, `condition_id`, `flags`, `comment`)
 VALUES
-(962, 2090005, 209020, 1, 'Zum''rah''s sanctum: the witch doctor turns on the first player near, alive');
+(962, 2090005, 10209020, 1, 'Zum''rah''s sanctum: the witch doctor turns on the first player near, alive');
 
 -- A gameobject's state as it spawns (AC3; the table from ac3_gameobject_spawn_state_whole.sql).
 DELETE FROM `gameobject_spawn_state` WHERE `guid` = 27086 AND `ord` = 0;

@@ -35,12 +35,12 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11263;
 UPDATE `creature_template` SET `ai_name` = 'EventAI', `school_immune_mask` = 126 WHERE `entry` = 11439;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14695;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (289000, 289301);
+DELETE FROM `conditions` WHERE `condition_entry` IN (289000, 10289301);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (289000, 41, 4, 1, 0, 0, 2),
-(289301, -2, 818013, 230050, 0, 0, 0);
+(10289301, -2, 818013, 230050, 0, 0, 0);
 
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
 INSERT IGNORE INTO `conditions`
@@ -278,7 +278,7 @@ DELETE FROM `gameobject_scripts` WHERE `id` IN (43192, 43208);
 INSERT INTO `gameobject_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(43208, 0, 0, 32, 289301, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Brazier of the Herald - Kirtonos in progress or done: nothing more'),
+(43208, 0, 0, 32, 10289301, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Brazier of the Herald - Kirtonos in progress or done: nothing more'),
 (43208, 0, 1, 37, 7, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Brazier of the Herald - Kirtonos in progress (7 = 1)'),
 (43208, 0, 2, 16, 557, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Brazier of the Herald - its sound'),
 (43208, 0, 3, 10, 10506, 900000, 0, 0, 0, 0, 0, 0, 0, 0, -1, 7, 315.028, 70.53845, 102.1496, 0.3859715, 230000, 'Brazier of the Herald - Kirtonos the Herald, called by the user'),

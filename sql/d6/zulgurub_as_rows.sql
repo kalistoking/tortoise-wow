@@ -30,13 +30,12 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 15009;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 15114;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 987800;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (309001, 309004, 309010, 309011, 309310, 309311, 309312, 309330, 309331, 309332, 309350, 309351, 309352, 309353, 309354, 309355, 309356, 309357);
+DELETE FROM `conditions` WHERE `condition_entry` IN (309011, 309310, 309311, 309312, 309330, 309331, 309332, 309350, 309352, 309354, 309356, 309357, 10309001, 10309004, 10309351, 10309353, 10309355);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(309001, -2, 129001, 532001, 0, 0, 0),
-(309004, -1, 230000, 309001, 0, 0, 0),
-(309010, 34, 12, 1, 0, 0, 0),
+(10309001, -2, 129001, 532001, 0, 0, 0),
+(10309004, -1, 230000, 10309001, 0, 0, 0),
 (309011, 34, 12, 1, 0, 0, 1),
 (309310, 34, 2, 1, 0, 0, 0),
 (309311, 34, 2, 1, 0, 0, 1),
@@ -46,11 +45,11 @@ VALUES
 (309332, 12, 31, 0, 0, 0, 1),
 (309350, 12, 29, 0, 0, 0, 0),
 (309352, 12, 30, 0, 0, 0, 0),
-(309351, -1, 309352, 309330, 0, 0, 0),
+(10309351, -1, 309352, 309330, 0, 0, 0),
 (309354, 12, 31, 0, 0, 0, 0),
-(309353, -1, 309354, 309330, 309331, 0, 0),
+(10309353, -1, 309354, 309330, 309331, 0, 0),
 (309356, 12, 32, 0, 0, 0, 0),
-(309355, -1, 309356, 309330, 309331, 309332, 0),
+(10309355, -1, 309356, 309330, 309331, 309332, 0),
 (309357, -1, 351, 352, 0, 0, 2);
 
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
@@ -60,6 +59,7 @@ VALUES
 (230000, 62, 0, 0, 0, 0, 1),
 (129001, 34, 1, 1, 0, 0, 0),
 (532001, 34, 1, 3, 0, 0, 0),
+(309010, 34, 12, 1, 0, 0, 0),
 (409020, 38, 5, 2, 0, 0, 0);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (309101, 309102, 309103, 309104, 309201, 309202, 309203, 309204, 309205);
@@ -340,7 +340,7 @@ DELETE FROM `gossip_menu` WHERE `entry` = 309502 AND `text_id` = 7675;
 INSERT INTO `gossip_menu`
 (`entry`, `text_id`, `script_id`, `condition_id`)
 VALUES
-(309502, 7675, 309500, 309351);
+(309502, 7675, 309500, 10309351);
 
 DELETE FROM `gossip_menu` WHERE `entry` = 309503 AND `text_id` = 7672;
 INSERT INTO `gossip_menu`
@@ -352,7 +352,7 @@ DELETE FROM `gossip_menu` WHERE `entry` = 309503 AND `text_id` = 7673;
 INSERT INTO `gossip_menu`
 (`entry`, `text_id`, `script_id`, `condition_id`)
 VALUES
-(309503, 7673, 309500, 309353);
+(309503, 7673, 309500, 10309353);
 
 DELETE FROM `gossip_menu` WHERE `entry` = 309504 AND `text_id` = 7674;
 INSERT INTO `gossip_menu`
@@ -364,14 +364,14 @@ DELETE FROM `gossip_menu` WHERE `entry` = 309504 AND `text_id` = 7682;
 INSERT INTO `gossip_menu`
 (`entry`, `text_id`, `script_id`, `condition_id`)
 VALUES
-(309504, 7682, 309500, 309355);
+(309504, 7682, 309500, 10309355);
 
 -- Steps added to scripts the migration does not own: each found by id, command, comments.
 DELETE FROM `event_scripts` WHERE `id` = 9066 AND `command` = 32 AND `comments` = 'Gong of Bethekk - Arlokk up or done: no more';
 INSERT INTO `event_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(9066, 0, 0, 32, 309004, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Gong of Bethekk - Arlokk up or done: no more');
+(9066, 0, 0, 32, 10309004, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Gong of Bethekk - Arlokk up or done: no more');
 
 DELETE FROM `event_scripts` WHERE `id` = 9066 AND `command` = 37 AND `comments` = 'Gong of Bethekk - Arlokk called (1 = 1)';
 INSERT INTO `event_scripts`

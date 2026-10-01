@@ -31,14 +31,14 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14024;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14025;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14601;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (469000, 469100, 469101, 469103, 469104, 469105);
+DELETE FROM `conditions` WHERE `condition_entry` IN (469000, 469101, 469103, 469104, 469105, 10469100);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (469000, 34, 8, 3, 0, 0, 1),
 (469101, 38, 15, 2, 0, 0, 0),
 (469103, 1, 22436, 0, 0, 0, 3),
-(469100, -1, 469101, 1000, 469103, 0, 0),
+(10469100, -1, 469101, 1000, 469103, 0, 0),
 (469104, 38, 16, 1, 0, 0, 0),
 (469105, 1, 22436, 0, 0, 0, 1);
 
@@ -273,7 +273,7 @@ VALUES
 (4690023, 0, 0, 39, 4690020, 4690021, 0, 0, 0, 0, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 0, 'Death Talon - vulnerability, one of two'),
 (4690024, 0, 0, 37, 8, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vael room - its event done (8 = 3): the technicians run'),
 (4690025, 0, 0, 14, 22436, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Death Talon pack - Aura of Flames off'),
-(4690026, 0, 0, 74, 22436, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 469100, 'Death Talon pack - Aura of Flames, within 15 yd of the Captain'),
+(4690026, 0, 0, 74, 22436, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10469100, 'Death Talon pack - Aura of Flames, within 15 yd of the Captain'),
 (4690026, 0, 1, 14, 22436, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 469104, 'Death Talon pack - Aura of Flames off, farther than 15 yd');
 
 DELETE FROM `areatrigger_generic_script` WHERE `trigger_id` = 3626 AND `script_id` = 4690024;

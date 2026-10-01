@@ -34,14 +34,14 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000035;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000036;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000037;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (450000, 450010, 450011, 450013, 450014, 450015);
+DELETE FROM `conditions` WHERE `condition_entry` IN (450000, 450010, 450013, 450014, 450015, 10450011);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (450000, 56, 0, 35, 0, 0, 2),
 (450010, 1, 15473, 0, 0, 0, 3),
 (450013, 54, 129, -10, 16, 12, 0),
-(450011, -1, 116, 450013, 0, 0, 0),
+(10450011, -1, 116, 450013, 0, 0, 0),
 (450014, 1, 25685, 0, 0, 0, 3),
 (450015, -1, 450014, 230003, 0, 0, 0);
 
@@ -277,7 +277,7 @@ VALUES
 (450020, 0, 0, 3, 0, 14183, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 132.826, 9.47718, 15.99, 1.55, 0, 'Brother Eric Vesper''s guard - to its post 18'),
 (450020, 0, 1, 34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 132.826, 9.47718, 15.99, 1.55, 0, 'Brother Eric Vesper''s guard - home at its post 18'),
 (450020, 0, 2, 2, 148, 375, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper''s guard - ready, two-handed'),
-(450021, 0, 0, 85, 1, 0, 0, 0, 1300006, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 450011, 'a player at the hall''s middle - Brother Eric Vesper told'),
+(450021, 0, 0, 85, 1, 0, 0, 0, 1300006, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 10450011, 'a player at the hall''s middle - Brother Eric Vesper told'),
 (450022, 0, 0, 48, 100, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 116, 'Brother Eric Vesper - a player in the room killed'),
 (450023, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper''s guard - gone');
 

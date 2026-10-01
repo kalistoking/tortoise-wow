@@ -14,14 +14,14 @@
 
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 15362;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (109000, 109010, 109012, 109013, 109020);
+DELETE FROM `conditions` WHERE `condition_entry` IN (109012, 109013, 109020, 10109000, 10109010);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(109000, -1, 230000, 230064, 0, 0, 0),
+(10109000, -1, 230000, 230064, 0, 0, 0),
 (109012, 22, 8733, 0, 0, 0, 0),
 (109013, 20, 15362, 50, 0, 0, 1),
-(109010, -1, 45, 109012, 109013, 0, 0),
+(10109010, -1, 45, 109012, 109013, 0, 0),
 (109020, 33, 109, 0, 0, 0, 0);
 
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
@@ -68,22 +68,22 @@ DELETE FROM `event_scripts` WHERE `id` IN (3094, 3095, 3097, 3098, 3099, 3100);
 INSERT INTO `event_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(3094, 0, 0, 38, 148830, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 109000, 'Atal''ai Statue 148830 - the instance gets the statue'),
-(3094, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 109000, 'Atal''ai Statue 148830 - the statue event in progress (4): order, light or trap'),
-(3095, 0, 0, 38, 148831, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 109000, 'Atal''ai Statue 148831 - the instance gets the statue'),
-(3095, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 109000, 'Atal''ai Statue 148831 - the statue event in progress (4): order, light or trap'),
-(3097, 0, 0, 38, 148832, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 109000, 'Atal''ai Statue 148832 - the instance gets the statue'),
-(3097, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 109000, 'Atal''ai Statue 148832 - the statue event in progress (4): order, light or trap'),
-(3098, 0, 0, 38, 148833, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 109000, 'Atal''ai Statue 148833 - the instance gets the statue'),
-(3098, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 109000, 'Atal''ai Statue 148833 - the statue event in progress (4): order, light or trap'),
-(3099, 0, 0, 38, 148834, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 109000, 'Atal''ai Statue 148834 - the instance gets the statue'),
-(3099, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 109000, 'Atal''ai Statue 148834 - the statue event in progress (4): order, light or trap'),
-(3100, 0, 0, 38, 148835, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 109000, 'Atal''ai Statue 148835 - the instance gets the statue'),
-(3100, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 109000, 'Atal''ai Statue 148835 - the statue event in progress (4): order, light or trap');
+(3094, 0, 0, 38, 148830, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 10109000, 'Atal''ai Statue 148830 - the instance gets the statue'),
+(3094, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10109000, 'Atal''ai Statue 148830 - the statue event in progress (4): order, light or trap'),
+(3095, 0, 0, 38, 148831, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 10109000, 'Atal''ai Statue 148831 - the instance gets the statue'),
+(3095, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10109000, 'Atal''ai Statue 148831 - the statue event in progress (4): order, light or trap'),
+(3097, 0, 0, 38, 148832, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 10109000, 'Atal''ai Statue 148832 - the instance gets the statue'),
+(3097, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10109000, 'Atal''ai Statue 148832 - the statue event in progress (4): order, light or trap'),
+(3098, 0, 0, 38, 148833, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 10109000, 'Atal''ai Statue 148833 - the instance gets the statue'),
+(3098, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10109000, 'Atal''ai Statue 148833 - the statue event in progress (4): order, light or trap'),
+(3099, 0, 0, 38, 148834, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 10109000, 'Atal''ai Statue 148834 - the instance gets the statue'),
+(3099, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10109000, 'Atal''ai Statue 148834 - the statue event in progress (4): order, light or trap'),
+(3100, 0, 0, 38, 148835, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 10109000, 'Atal''ai Statue 148835 - the instance gets the statue'),
+(3100, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10109000, 'Atal''ai Statue 148835 - the statue event in progress (4): order, light or trap');
 
 DELETE FROM `areatrigger_generic_script` WHERE `trigger_id` = 4016 AND `script_id` = 1090001;
 INSERT INTO `areatrigger_generic_script`
 (`trigger_id`, `script_id`, `condition_id`, `flags`, `comment`)
 VALUES
-(4016, 1090001, 109010, 1, 'Shade of Eranikus: Malfurion Stormrage for a player on the scepter quest line, alive');
+(4016, 1090001, 10109010, 1, 'Shade of Eranikus: Malfurion Stormrage for a player on the scepter quest line, alive');
 

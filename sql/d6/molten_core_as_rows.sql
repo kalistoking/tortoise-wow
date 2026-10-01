@@ -36,7 +36,7 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 52145;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 52146;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 52147;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (409001, 409010, 409011, 409316, 409317, 409318, 409319, 409320, 409321, 409322, 409330, 409331, 409332, 409333);
+DELETE FROM `conditions` WHERE `condition_entry` IN (409001, 409010, 409011, 409316, 409317, 409318, 409319, 409321, 409322, 409330, 409332, 10409331, 10409333);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
@@ -47,13 +47,12 @@ VALUES
 (409317, 34, 17, 3, 0, 0, 0),
 (409318, 34, 18, 3, 0, 0, 0),
 (409319, 34, 19, 3, 0, 0, 0),
-(409320, 34, 20, 3, 0, 0, 0),
 (409321, 34, 21, 3, 0, 0, 0),
 (409322, 34, 22, 3, 0, 0, 0),
 (409330, -1, 409316, 409317, 409318, 409319, 0),
 (409332, 34, 23, 3, 0, 0, 1),
-(409331, -1, 409320, 409321, 409322, 409332, 0),
-(409333, -1, 409330, 409331, 329004, 230000, 0);
+(10409331, -1, 409320, 409321, 409322, 409332, 0),
+(10409333, -1, 409330, 10409331, 329004, 230000, 0);
 
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
 INSERT IGNORE INTO `conditions`
@@ -61,6 +60,7 @@ INSERT IGNORE INTO `conditions`
 VALUES
 (409020, 38, 5, 2, 0, 0, 0),
 (230000, 62, 0, 0, 0, 0, 1),
+(409320, 34, 20, 3, 0, 0, 0),
 (329004, 34, 9, 3, 0, 0, 1);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (409101, 409102, 409103, 409301);
@@ -358,32 +358,32 @@ INSERT INTO `gameobject_scripts`
 VALUES
 (232212, 0, 0, 37, 16, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Koro (Sulfuron) - doused (16 = 3)'),
 (232212, 0, 1, 81, 43157, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Koro (Sulfuron) - its circle gone'),
-(232212, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Koro (Sulfuron) - the last: Majordomo Executus called'),
-(232212, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Koro (Sulfuron) - Majordomo called (23 = 3)'),
+(232212, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 10409333, 'Rune of Koro (Sulfuron) - the last: Majordomo Executus called'),
+(232212, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10409333, 'Rune of Koro (Sulfuron) - Majordomo called (23 = 3)'),
 (232213, 0, 0, 37, 17, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Zeth (Geddon) - doused (17 = 3)'),
 (232213, 0, 1, 81, 43158, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Zeth (Geddon) - its circle gone'),
-(232213, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Zeth (Geddon) - the last: Majordomo Executus called'),
-(232213, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Zeth (Geddon) - Majordomo called (23 = 3)'),
+(232213, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 10409333, 'Rune of Zeth (Geddon) - the last: Majordomo Executus called'),
+(232213, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10409333, 'Rune of Zeth (Geddon) - Majordomo called (23 = 3)'),
 (232216, 0, 0, 37, 18, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Mazj (Shazzrah) - doused (18 = 3)'),
 (232216, 0, 1, 81, 43159, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Mazj (Shazzrah) - its circle gone'),
-(232216, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Mazj (Shazzrah) - the last: Majordomo Executus called'),
-(232216, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Mazj (Shazzrah) - Majordomo called (23 = 3)'),
+(232216, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 10409333, 'Rune of Mazj (Shazzrah) - the last: Majordomo Executus called'),
+(232216, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10409333, 'Rune of Mazj (Shazzrah) - Majordomo called (23 = 3)'),
 (232215, 0, 0, 37, 19, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Theri (Golemagg) - doused (19 = 3)'),
 (232215, 0, 1, 81, 43160, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Theri (Golemagg) - its circle gone'),
-(232215, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Theri (Golemagg) - the last: Majordomo Executus called'),
-(232215, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Theri (Golemagg) - Majordomo called (23 = 3)'),
+(232215, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 10409333, 'Rune of Theri (Golemagg) - the last: Majordomo Executus called'),
+(232215, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10409333, 'Rune of Theri (Golemagg) - Majordomo called (23 = 3)'),
 (232217, 0, 0, 37, 20, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Blaz (Garr) - doused (20 = 3)'),
 (232217, 0, 1, 81, 43165, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Blaz (Garr) - its circle gone'),
-(232217, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Blaz (Garr) - the last: Majordomo Executus called'),
-(232217, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Blaz (Garr) - Majordomo called (23 = 3)'),
+(232217, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 10409333, 'Rune of Blaz (Garr) - the last: Majordomo Executus called'),
+(232217, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10409333, 'Rune of Blaz (Garr) - Majordomo called (23 = 3)'),
 (232214, 0, 0, 37, 21, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Kress (Magmadar) - doused (21 = 3)'),
 (232214, 0, 1, 81, 43161, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Kress (Magmadar) - its circle gone'),
-(232214, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Kress (Magmadar) - the last: Majordomo Executus called'),
-(232214, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Kress (Magmadar) - Majordomo called (23 = 3)'),
+(232214, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 10409333, 'Rune of Kress (Magmadar) - the last: Majordomo Executus called'),
+(232214, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10409333, 'Rune of Kress (Magmadar) - Majordomo called (23 = 3)'),
 (232218, 0, 0, 37, 22, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Mohn (Gehennas) - doused (22 = 3)'),
 (232218, 0, 1, 81, 43163, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Mohn (Gehennas) - its circle gone'),
-(232218, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 409333, 'Rune of Mohn (Gehennas) - the last: Majordomo Executus called'),
-(232218, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 409333, 'Rune of Mohn (Gehennas) - Majordomo called (23 = 3)');
+(232218, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 10409333, 'Rune of Mohn (Gehennas) - the last: Majordomo Executus called'),
+(232218, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10409333, 'Rune of Mohn (Gehennas) - Majordomo called (23 = 3)');
 
 DELETE FROM `gameobject_requirement` WHERE `guid` = 232212;
 INSERT INTO `gameobject_requirement`

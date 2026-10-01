@@ -42,7 +42,7 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 16055;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 16058;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 16059;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (230004, 230005, 230012, 230014, 230020, 230021, 230022, 230023, 230024, 230025, 230032, 230033, 230041, 230042, 230051, 230052, 230060, 230062, 230063, 230070, 230080);
+DELETE FROM `conditions` WHERE `condition_entry` IN (230004, 230005, 230012, 230014, 230020, 230021, 230022, 230023, 230032, 230033, 230042, 230052, 230060, 230063, 230080, 10230024, 10230025, 10230041, 10230051, 10230062, 10230070);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
@@ -54,18 +54,18 @@ VALUES
 (230021, 8, 4083, 0, 0, 0, 0),
 (230022, 8, 4083, 0, 0, 0, 1),
 (230023, 7, 186, 230, 0, 0, 0),
-(230024, -1, 3600104, 230021, 230023, 230020, 0),
-(230025, -1, 3600104, 230022, 230023, 0, 0),
+(10230024, -1, 3600104, 230021, 230023, 230020, 0),
+(10230025, -1, 3600104, 230022, 230023, 0, 0),
 (230032, 9, 4001, 1, 0, 0, 0),
 (230033, 9, 4342, 1, 0, 0, 0),
 (230042, 34, 6, 0, 0, 0, 0),
-(230041, -1, 230000, 230042, 0, 0, 0),
+(10230041, -1, 230000, 230042, 0, 0, 0),
 (230052, 34, 7, 3, 0, 0, 1),
-(230051, -1, 230000, 230052, 0, 0, 0),
+(10230051, -1, 230000, 230052, 0, 0, 0),
 (230060, -1, 230000, 298, 0, 0, 0),
 (230063, 34, 4, 1, 0, 0, 1),
-(230062, -1, 230000, 230063, 230064, 0, 0),
-(230070, -1, 230000, 349003, 0, 0, 0),
+(10230062, -1, 230000, 230063, 230064, 0, 0),
+(10230070, -1, 230000, 349003, 0, 0, 0),
 (230080, 34, 33, 3, 0, 0, 1);
 
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
@@ -388,26 +388,26 @@ DELETE FROM `gameobject_scripts` WHERE `id` IN (15229, 15306, 15329, 15330, 1533
 INSERT INTO `gameobject_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(43097, 0, 0, 39, 2300010, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230041, 'Thunderbrew Lager Keg - used'),
-(43098, 0, 0, 39, 2300010, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230041, 'Thunderbrew Lager Keg - used'),
-(43099, 0, 0, 39, 2300010, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230041, 'Thunderbrew Lager Keg - used'),
-(17904, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230051, 'Relic Coffer Door - used'),
-(15329, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230051, 'Relic Coffer Door - used'),
-(15330, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230051, 'Relic Coffer Door - used'),
-(15331, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230051, 'Relic Coffer Door - used'),
-(35864, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230051, 'Relic Coffer Door - used'),
-(39924, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230051, 'Relic Coffer Door - used'),
-(15363, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230051, 'Relic Coffer Door - used'),
-(15364, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230051, 'Relic Coffer Door - used'),
-(15365, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230051, 'Relic Coffer Door - used'),
-(35801, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230051, 'Relic Coffer Door - used'),
-(15536, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230051, 'Relic Coffer Door - used'),
-(15306, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 230051, 'Relic Coffer Door - used'),
+(43097, 0, 0, 39, 2300010, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230041, 'Thunderbrew Lager Keg - used'),
+(43098, 0, 0, 39, 2300010, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230041, 'Thunderbrew Lager Keg - used'),
+(43099, 0, 0, 39, 2300010, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230041, 'Thunderbrew Lager Keg - used'),
+(17904, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230051, 'Relic Coffer Door - used'),
+(15329, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230051, 'Relic Coffer Door - used'),
+(15330, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230051, 'Relic Coffer Door - used'),
+(15331, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230051, 'Relic Coffer Door - used'),
+(35864, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230051, 'Relic Coffer Door - used'),
+(39924, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230051, 'Relic Coffer Door - used'),
+(15363, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230051, 'Relic Coffer Door - used'),
+(15364, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230051, 'Relic Coffer Door - used'),
+(15365, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230051, 'Relic Coffer Door - used'),
+(35801, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230051, 'Relic Coffer Door - used'),
+(15536, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230051, 'Relic Coffer Door - used'),
+(15306, 0, 0, 39, 2300013, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 10230051, 'Relic Coffer Door - used'),
 (15229, 0, 0, 37, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230060, 'Shadowforge Brazier - the second: the Lyceum done (4)'),
-(15229, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230062, 'Shadowforge Brazier - the first: the Lyceum in progress (4)'),
+(15229, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10230062, 'Shadowforge Brazier - the first: the Lyceum in progress (4)'),
 (15544, 0, 0, 37, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230060, 'Shadowforge Brazier - the second: the Lyceum done (4)'),
-(15544, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230062, 'Shadowforge Brazier - the first: the Lyceum in progress (4)'),
-(43130, 0, 0, 39, 2300020, 2300021, 0, 0, 0, 0, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 230070, 'Dark Keeper Portrait - one of the six keepers');
+(15544, 0, 1, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10230062, 'Shadowforge Brazier - the first: the Lyceum in progress (4)'),
+(43130, 0, 0, 39, 2300020, 2300021, 0, 0, 0, 0, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 10230070, 'Dark Keeper Portrait - one of the six keepers');
 
 DELETE FROM `gossip_scripts` WHERE `id` IN (902109, 903702, 903704, 903901);
 INSERT INTO `gossip_scripts`
@@ -437,13 +437,13 @@ DELETE FROM `gossip_menu_option` WHERE `menu_id` = 903700 AND `id` = 0;
 INSERT INTO `gossip_menu_option`
 (`menu_id`, `id`, `option_icon`, `option_text`, `option_broadcast_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `box_broadcast_text`, `condition_id`)
 VALUES
-(903700, 0, 0, 'Teach me the art of smelting dark iron', 0, 1, 1, 903701, 0, 0, 0, 0, NULL, 0, 230024);
+(903700, 0, 0, 'Teach me the art of smelting dark iron', 0, 1, 1, 903701, 0, 0, 0, 0, NULL, 0, 10230024);
 
 DELETE FROM `gossip_menu_option` WHERE `menu_id` = 903700 AND `id` = 1;
 INSERT INTO `gossip_menu_option`
 (`menu_id`, `id`, `option_icon`, `option_text`, `option_broadcast_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `box_broadcast_text`, `condition_id`)
 VALUES
-(903700, 1, 0, 'I want to pay tribute', 0, 1, 1, 903703, 0, 0, 0, 0, NULL, 0, 230025);
+(903700, 1, 0, 'I want to pay tribute', 0, 1, 1, 903703, 0, 0, 0, 0, NULL, 0, 10230025);
 
 DELETE FROM `gossip_menu` WHERE `entry` = 903701 AND `text_id` = 2606;
 INSERT INTO `gossip_menu`

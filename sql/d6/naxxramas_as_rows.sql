@@ -37,13 +37,13 @@ UPDATE `creature_template` SET `ai_name` = 'NullAI' WHERE `entry` = 533002;
 UPDATE `creature_template` SET `ai_name` = 'NullAI' WHERE `entry` = 533003;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 533004;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (533010, 533011, 533012, 533013);
+DELETE FROM `conditions` WHERE `condition_entry` IN (533011, 533012, 533013, 10533010);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (533011, 52, 88092, 88093, 88096, 88097, 0),
 (533012, 52, 88098, 88099, 0, 0, 0),
-(533010, -2, 533011, 533012, 0, 0, 0),
+(10533010, -2, 533011, 533012, 0, 0, 0),
 (533013, 52, 88095, 0, 0, 0, 1);
 
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
@@ -114,8 +114,8 @@ VALUES
 (1640012, 16400, 0, 1, 0, 100, 1, 0, 0, 5000, 5000, 1640012, 0, 0, 'Toxic Tunnel - its gas kept up'),
 (1640013, 16400, 0, 0, 0, 100, 1, 0, 0, 5000, 5000, 1640013, 0, 0, 'Toxic Tunnel - its gas kept up in a fight'),
 (1640014, 16400, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1640014, 0, 0, 'Toxic Tunnel - its gas hit someone: out of the fight 5 s on'),
-(1616811, 16168, 533010, 11, 0, 100, 0, 0, 0, 0, 0, 1616811, 0, 0, 'Stoneskin Gargoyle - standing still: stealth detection, stoneform'),
-(1616812, 16168, 533010, 21, 0, 100, 1, 0, 0, 0, 0, 1616812, 0, 0, 'Stoneskin Gargoyle - home, standing still: stoneform again'),
+(1616811, 16168, 10533010, 11, 0, 100, 0, 0, 0, 0, 0, 1616811, 0, 0, 'Stoneskin Gargoyle - standing still: stealth detection, stoneform'),
+(1616812, 16168, 10533010, 21, 0, 100, 1, 0, 0, 0, 0, 1616812, 0, 0, 'Stoneskin Gargoyle - home, standing still: stoneform again'),
 (1616813, 16168, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1616813, 0, 0, 'Stoneskin Gargoyle - aggro: out of its stoneform'),
 (1616814, 16168, 0, 2, 0, 100, 13, 29, 0, 1000, 1000, 1616814, 0, 0, 'Stoneskin Gargoyle - under 30 %: Stoneskin whenever it is gone, with its emote'),
 (1616815, 16168, 533013, 0, 0, 100, 13, 2800, 6500, 8000, 8000, 1616815, 0, 0, 'Stoneskin Gargoyle - Acid Volley'),
