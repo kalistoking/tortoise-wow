@@ -11,13 +11,19 @@
 -- Fire Nova follows the stomp by 1 s, once (the C++ retried it until it took). A rune cannot be doused before
 -- its boss is dead (gameobject_requirement: the douse fails and the Aqual Quintessence is kept -- the C++ took
 -- it and did nothing); its circle is despawned for a week (the C++ deleted it for the instance's life).
--- Map 409 keeps instance_molten_core (it douses the runes again as it loads), Majordomo, Ragnaros, Baron Geddon,
+-- Map 409 keeps instance_molten_core (it douses the runes again as it loads), Ragnaros, Baron Geddon,
 -- Sorcerer-Thane and the twin golems (the core). Lucifron's Shadow Shock keeps its timer after a failed cast (the C++ lost it
 -- for the fight). A firesworn made to explode is picked whatever it is doing (the C++ skipped a banished one);
 -- a core rager is healed every second while under half health; a core hound rises if any other hound lives
 -- within 100 yd (the C++: one in combat), and lies dead at 1 hp (the C++: at a lethal blow); the ancient core
 -- hound bites every 2 s in melee for its blows (the C++: at its own swing timer). The Firewalker's, Firelord's
 -- and Lava Surger's own EventAI rules, dead under the C++ and different from it, are taken away.
+-- Third pass: Majordomo Executus. His adds no longer hit harder as they fall (the C++ raised their base weapon
+-- damage, which no row command sets, and nothing in the core recalculated it). Their mechanic immunities are
+-- spells: polymorph's 29183 and stun's 5579, which is root and snare too; four left, every player's confusing
+-- spell is taken off by its id. His yell at a kill is for players only (EventAI's), his summoning's steps a
+-- second apart where the C++'s ticks were a little over one, and the last option's text is Blizzard's
+-- (broadcast 7675), not the C++'s "and and".
 
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11668;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11671;
@@ -25,6 +31,7 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11672;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11673;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11982;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11988;
+UPDATE `creature_template` SET `ai_name` = 'EventAI', `gossip_menu_id` = 1201800 WHERE `entry` = 12018;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12057;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12098;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12099;
@@ -61,16 +68,26 @@ VALUES
 (409020, 38, 5, 2, 0, 0, 0),
 (230000, 62, 0, 0, 0, 0, 1),
 (409320, 34, 20, 3, 0, 0, 0),
-(329004, 34, 9, 3, 0, 0, 1);
+(329004, 34, 9, 3, 0, 0, 1),
+(469000, 34, 8, 3, 0, 0, 1);
 
-DELETE FROM `broadcast_text` WHERE `entry` IN (409101, 409102, 409103, 409301);
+DELETE FROM `broadcast_text` WHERE `entry` IN (409101, 409102, 409103, 409104, 409105, 409106, 409107, 409108, 409109, 409110, 409111, 409112, 409301);
 INSERT INTO `broadcast_text`
 (`entry`, `male_text`, `female_text`, `chat_type`, `sound_id`, `language_id`, `emote_id1`, `emote_id2`, `emote_id3`, `emote_delay1`, `emote_delay2`, `emote_delay3`)
 VALUES
 (409101, '%s refuses to die while its master is in trouble.', '%s refuses to die while its master is in trouble.', 2, 0, 0, 0, 0, 0, 0, 0, 0),
 (409102, 'Core Hound reignites from the heat of another Core Hound!', 'Core Hound reignites from the heat of another Core Hound!', 2, 0, 0, 0, 0, 0, 0, 0, 0),
 (409103, 'Core Hound collapses and begins to smolder.', 'Core Hound collapses and begins to smolder.', 2, 0, 0, 0, 0, 0, 0, 0, 0),
-(409301, 'The runes of warding have been destroyed! Hunt down the infidels, my brethren!', 'The runes of warding have been destroyed! Hunt down the infidels, my brethren!', 6, 8039, 0, 0, 0, 0, 0, 0, 0);
+(409301, 'The runes of warding have been destroyed! Hunt down the infidels, my brethren!', 'The runes of warding have been destroyed! Hunt down the infidels, my brethren!', 6, 8039, 0, 0, 0, 0, 0, 0, 0),
+(409104, 'Reckless mortals, none may challenge the sons of the living flame!', 'Reckless mortals, none may challenge the sons of the living flame!', 1, 8035, 0, 0, 0, 0, 0, 0, 0),
+(409105, 'Ashes to Ashes!', 'Ashes to Ashes!', 1, 8037, 0, 0, 0, 0, 0, 0, 0),
+(409106, 'You think you''ve won already? Perhaps you''ll need another lesson in pain!', 'You think you''ve won already? Perhaps you''ll need another lesson in pain!', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+(409107, 'Impossible! Stay your attack, mortals... I submit! I submit! Brashly, you have come to wrest the secrets of the Living Flame! You will soon regret the recklessness of your quest. I go now to summon the lord whose house this is. Should you seek an audience with him, your paltry lives will surely be forfeit! Nevertheless, seek out his lair, if you dare!', 'Impossible! Stay your attack, mortals... I submit! I submit! Brashly, you have come to wrest the secrets of the Living Flame! You will soon regret the recklessness of your quest. I go now to summon the lord whose house this is. Should you seek an audience with him, your paltry lives will surely be forfeit! Nevertheless, seek out his lair, if you dare!', 1, 8038, 0, 0, 0, 0, 0, 0, 0),
+(409108, 'TOO SOON! YOU HAVE AWAKENED ME TOO SOON, EXECUTUS! WHAT IS THE MEANING OF THIS INTRUSION???', 'TOO SOON! YOU HAVE AWAKENED ME TOO SOON, EXECUTUS! WHAT IS THE MEANING OF THIS INTRUSION???', 1, 8043, 0, 0, 0, 0, 0, 0, 0),
+(409109, 'FOOL! YOU ALLOWED THESE INSECTS TO RUN RAMPANT THROUGH THE HALLOWED CORE, AND NOW YOU LEAD THEM TO MY VERY LAIR? YOU HAVE FAILED ME, EXECUTUS! JUSTICE SHALL BE MET, INDEED!', 'FOOL! YOU ALLOWED THESE INSECTS TO RUN RAMPANT THROUGH THE HALLOWED CORE, AND NOW YOU LEAD THEM TO MY VERY LAIR? YOU HAVE FAILED ME, EXECUTUS! JUSTICE SHALL BE MET, INDEED!', 1, 8044, 0, 0, 0, 0, 0, 0, 0),
+(409110, 'Imprudent whelps! You''ve rushed headlong to your own deaths! See now, the master stirs!', 'Imprudent whelps! You''ve rushed headlong to your own deaths! See now, the master stirs!', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+(409111, 'Behold Ragnaros, the Firelord! He who was ancient when this world was young! Bow before him, mortals! Bow before your ending!', 'Behold Ragnaros, the Firelord! He who was ancient when this world was young! Bow before him, mortals! Bow before your ending!', 1, 8040, 0, 0, 0, 0, 0, 0, 0),
+(409112, 'These mortal infidels, my lord! They have invaded your sanctum and seek to steal your secrets!', 'These mortal infidels, my lord! They have invaded your sanctum and seek to steal your secrets!', 1, 8041, 0, 0, 0, 0, 0, 0, 0);
 
 -- Existing rows taken away: the restore puts them back.
 DELETE FROM `creature_ai_events` WHERE `id` = 1166602;
@@ -83,7 +100,7 @@ DELETE FROM `creature_ai_events` WHERE `id` = 1166802;
 DELETE FROM `creature_ai_scripts` WHERE `id` = 1166802;
 DELETE FROM `creature_ai_events` WHERE `id` = 1210101;
 DELETE FROM `creature_ai_scripts` WHERE `id` = 1210101;
-DELETE FROM `creature_ai_events` WHERE `id` IN (1166611, 1166612, 1166613, 1166811, 1166812, 1166813, 1167101, 1167102, 1167103, 1167104, 1167201, 1167202, 1167203, 1167204, 1167301, 1167302, 1167311, 1167312, 1167313, 1167314, 1167315, 1167316, 1167321, 1167322, 1167323, 1167324, 1198201, 1198202, 1198203, 1198204, 1198211, 1198212, 1198291, 1198292, 1198293, 1198801, 1198802, 1198803, 1198804, 1198811, 1198812, 1198891, 1198892, 1198893, 1205701, 1205702, 1205703, 1205791, 1205792, 1205793, 1209801, 1209802, 1209803, 1209804, 1209805, 1209891, 1209892, 1209893, 1209901, 1209902, 1209903, 1209904, 1209905, 1210111, 1211801, 1211802, 1211803, 1211891, 1211892, 1211893, 1225901, 1225902, 1225903, 1225904, 1225991, 1225992, 1225993, 1226401, 1226402, 1226403, 1226404, 1226405, 1226491, 1226492, 1226493, 5214511, 5214512, 5214513, 5214514, 5214611, 5214612, 5214613, 5214711, 5214712, 5214713);
+DELETE FROM `creature_ai_events` WHERE `id` IN (1166611, 1166612, 1166613, 1166811, 1166812, 1166813, 1167101, 1167102, 1167103, 1167104, 1167201, 1167202, 1167203, 1167204, 1167301, 1167302, 1167311, 1167312, 1167313, 1167314, 1167315, 1167316, 1167321, 1167322, 1167323, 1167324, 1198201, 1198202, 1198203, 1198204, 1198211, 1198212, 1198291, 1198292, 1198293, 1198801, 1198802, 1198803, 1198804, 1198811, 1198812, 1198891, 1198892, 1198893, 1201801, 1201802, 1201803, 1201804, 1201805, 1201806, 1201807, 1201808, 1201809, 1201810, 1201820, 1201821, 1201822, 1201823, 1201824, 1201825, 1201826, 1201827, 1201828, 1201829, 1201830, 1201831, 1201832, 1201833, 1201834, 1201835, 1205701, 1205702, 1205703, 1205791, 1205792, 1205793, 1209801, 1209802, 1209803, 1209804, 1209805, 1209891, 1209892, 1209893, 1209901, 1209902, 1209903, 1209904, 1209905, 1210111, 1211801, 1211802, 1211803, 1211891, 1211892, 1211893, 1225901, 1225902, 1225903, 1225904, 1225991, 1225992, 1225993, 1226401, 1226402, 1226403, 1226404, 1226405, 1226491, 1226492, 1226493, 5214511, 5214512, 5214513, 5214514, 5214611, 5214612, 5214613, 5214711, 5214712, 5214713);
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
@@ -181,9 +198,35 @@ VALUES
 (5214613, 52146, 0, 0, 2, 100, 9, 0, 0, 1000, 1000, 5214613, 0, 0, 'Small Incendic Egg - hatching until it takes (phase 0, then 1)'),
 (5214711, 52147, 0, 11, 0, 100, 0, 0, 0, 0, 0, 5214711, 0, 0, 'Large Incendic Egg - laid: never fighting, never moving'),
 (5214712, 52147, 0, 1, 2, 100, 9, 0, 0, 1000, 1000, 5214712, 0, 0, 'Large Incendic Egg - hatching until it takes (phase 0, then 1)'),
-(5214713, 52147, 0, 0, 2, 100, 9, 0, 0, 1000, 1000, 5214713, 0, 0, 'Large Incendic Egg - hatching until it takes (phase 0, then 1)');
+(5214713, 52147, 0, 0, 2, 100, 9, 0, 0, 1000, 1000, 5214713, 0, 0, 'Large Incendic Egg - hatching until it takes (phase 0, then 1)'),
+(1201801, 12018, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1201801, 0, 0, 'Majordomo Executus - spawned: his adds'),
+(1201802, 12018, 0, 7, 256, 100, 0, 0, 0, 0, 0, 1201802, 0, 0, 'Majordomo Executus - evading, not yet submitted: his adds anew, not started'),
+(1201803, 12018, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1201803, 0, 0, 'Majordomo Executus - aggro: his yell, in progress'),
+(1201804, 12018, 0, 5, 0, 100, 1, 0, 0, 0, 0, 1201804, 0, 0, 'Majordomo Executus - a player killed: his yell'),
+(1201805, 12018, 0, 2, 0, 100, 1, 49, 0, 1000, 1000, 1201805, 0, 0, 'Majordomo Executus - Aegis under half health'),
+(1201806, 12018, 0, 0, 0, 100, 1, 30000, 30000, 30000, 30000, 1201806, 0, 0, 'Majordomo Executus - Magic Reflection or Damage Shield'),
+(1201807, 12018, 0, 0, 0, 100, 9, 10000, 10000, 10000, 10000, 1201807, 0, 0, 'Majordomo Executus - Blast Wave'),
+(1201808, 12018, 0, 0, 0, 100, 9, 10000, 30000, 20000, 30000, 1201808, 0, 0, 'Majordomo Executus - Teleport his victim, every threat wiped'),
+(1201809, 12018, 0, 0, 0, 100, 9, 10000, 30000, 20000, 30000, 1201809, 0, 0, 'Majordomo Executus - Teleport a random player but the top, every threat wiped'),
+(1201834, 12018, 0, 25, 510, 100, 1, 11663, 0, 0, 0, 1201834, 0, 0, 'Majordomo Executus - a healer dead, 0 before it (phase 0)'),
+(1201835, 12018, 0, 25, 510, 100, 1, 11664, 0, 0, 0, 1201835, 0, 0, 'Majordomo Executus - an elite dead, 0 before it (phase 0)'),
+(1201832, 12018, 0, 25, 509, 100, 1, 11663, 0, 0, 0, 1201832, 0, 0, 'Majordomo Executus - a healer dead, 1 before it (phase 1)'),
+(1201833, 12018, 0, 25, 509, 100, 1, 11664, 0, 0, 0, 1201833, 0, 0, 'Majordomo Executus - an elite dead, 1 before it (phase 1)'),
+(1201830, 12018, 0, 25, 507, 100, 1, 11663, 0, 0, 0, 1201830, 0, 0, 'Majordomo Executus - a healer dead, 2 before it (phase 2)'),
+(1201831, 12018, 0, 25, 507, 100, 1, 11664, 0, 0, 0, 1201831, 0, 0, 'Majordomo Executus - an elite dead, 2 before it (phase 2)'),
+(1201828, 12018, 0, 25, 503, 100, 1, 11663, 0, 0, 0, 1201828, 0, 0, 'Majordomo Executus - a healer dead, 3 before it (phase 3)'),
+(1201829, 12018, 0, 25, 503, 100, 1, 11664, 0, 0, 0, 1201829, 0, 0, 'Majordomo Executus - an elite dead, 3 before it (phase 3)'),
+(1201826, 12018, 0, 25, 495, 100, 1, 11663, 0, 0, 0, 1201826, 0, 0, 'Majordomo Executus - a healer dead, 4 before it (phase 4)'),
+(1201827, 12018, 0, 25, 495, 100, 1, 11664, 0, 0, 0, 1201827, 0, 0, 'Majordomo Executus - an elite dead, 4 before it (phase 4)'),
+(1201824, 12018, 0, 25, 479, 100, 1, 11663, 0, 0, 0, 1201824, 0, 0, 'Majordomo Executus - a healer dead, 5 before it (phase 5)'),
+(1201825, 12018, 0, 25, 479, 100, 1, 11664, 0, 0, 0, 1201825, 0, 0, 'Majordomo Executus - an elite dead, 5 before it (phase 5)'),
+(1201822, 12018, 0, 25, 447, 100, 1, 11663, 0, 0, 0, 1201822, 0, 0, 'Majordomo Executus - a healer dead, 6 before it (phase 6)'),
+(1201823, 12018, 0, 25, 447, 100, 1, 11664, 0, 0, 0, 1201823, 0, 0, 'Majordomo Executus - an elite dead, 6 before it (phase 6)'),
+(1201820, 12018, 0, 25, 383, 100, 1, 11663, 0, 0, 0, 1201820, 0, 0, 'Majordomo Executus - a healer dead, 7 before it (phase 7)'),
+(1201821, 12018, 0, 25, 383, 100, 1, 11664, 0, 0, 0, 1201821, 0, 0, 'Majordomo Executus - an elite dead, 7 before it (phase 7)'),
+(1201810, 12018, 0, 21, 255, 100, 0, 0, 0, 0, 0, 1201810, 0, 0, 'Majordomo Executus - home, submitted: to the lair 28 s on (phase 8)');
 
-DELETE FROM `creature_ai_scripts` WHERE `id` IN (1166611, 1166612, 1166613, 1166811, 1166812, 1166813, 1167101, 1167102, 1167103, 1167104, 1167201, 1167202, 1167203, 1167204, 1167301, 1167302, 1167311, 1167312, 1167313, 1167314, 1167315, 1167316, 1167321, 1167322, 1167323, 1167324, 1198201, 1198202, 1198203, 1198204, 1198211, 1198212, 1198291, 1198292, 1198293, 1198801, 1198802, 1198803, 1198804, 1198811, 1198812, 1198891, 1198892, 1198893, 1205701, 1205702, 1205703, 1205791, 1205792, 1205793, 1209801, 1209802, 1209803, 1209804, 1209805, 1209891, 1209892, 1209893, 1209901, 1209902, 1209903, 1209904, 1209905, 1210111, 1211801, 1211802, 1211803, 1211891, 1211892, 1211893, 1225901, 1225902, 1225903, 1225904, 1225991, 1225992, 1225993, 1226401, 1226402, 1226403, 1226404, 1226405, 1226491, 1226492, 1226493, 5214511, 5214512, 5214513, 5214514, 5214611, 5214612, 5214613, 5214711, 5214712, 5214713);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (1166611, 1166612, 1166613, 1166811, 1166812, 1166813, 1167101, 1167102, 1167103, 1167104, 1167201, 1167202, 1167203, 1167204, 1167301, 1167302, 1167311, 1167312, 1167313, 1167314, 1167315, 1167316, 1167321, 1167322, 1167323, 1167324, 1198201, 1198202, 1198203, 1198204, 1198211, 1198212, 1198291, 1198292, 1198293, 1198801, 1198802, 1198803, 1198804, 1198811, 1198812, 1198891, 1198892, 1198893, 1201801, 1201802, 1201803, 1201804, 1201805, 1201806, 1201807, 1201808, 1201809, 1201810, 1201820, 1201821, 1201822, 1201823, 1201824, 1201825, 1201826, 1201827, 1201828, 1201829, 1201830, 1201831, 1201832, 1201833, 1201834, 1201835, 1205701, 1205702, 1205703, 1205791, 1205792, 1205793, 1209801, 1209802, 1209803, 1209804, 1209805, 1209891, 1209892, 1209893, 1209901, 1209902, 1209903, 1209904, 1209905, 1210111, 1211801, 1211802, 1211803, 1211891, 1211892, 1211893, 1225901, 1225902, 1225903, 1225904, 1225991, 1225992, 1225993, 1226401, 1226402, 1226403, 1226404, 1226405, 1226491, 1226492, 1226493, 5214511, 5214512, 5214513, 5214514, 5214611, 5214612, 5214613, 5214711, 5214712, 5214713);
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -313,9 +356,62 @@ VALUES
 (5214712, 0, 0, 15, 42044, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Large Incendic Egg - Fiery Hatching'),
 (5214712, 0, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Large Incendic Egg - hatching (phase 1)'),
 (5214713, 0, 0, 15, 42044, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Large Incendic Egg - Fiery Hatching'),
-(5214713, 0, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Large Incendic Egg - hatching (phase 1)');
+(5214713, 0, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Large Incendic Egg - hatching (phase 1)'),
+(1201801, 0, 0, 39, 4090019, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - his adds'),
+(1201802, 0, 0, 68, 4090020, 2, 11663, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - his adds gone (11663)'),
+(1201802, 0, 1, 68, 4090020, 2, 11664, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - his adds gone (11664)'),
+(1201802, 0, 2, 39, 4090019, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - his adds anew, 1 s on'),
+(1201802, 0, 3, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - no add dead (phase 0)'),
+(1201802, 0, 4, 37, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 469000, 'Majordomo Executus - not started (8 = 0)'),
+(1201803, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 409104, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - aggro'),
+(1201803, 0, 1, 37, 8, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 469000, 'Majordomo Executus - in progress (8 = 1)'),
+(1201804, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 409105, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - a kill'),
+(1201805, 0, 0, 15, 20620, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - Aegis'),
+(1201806, 0, 0, 39, 4090023, 4090024, 0, 0, 0, 0, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - one of his reflections'),
+(1201807, 0, 0, 15, 20229, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - Blast Wave'),
+(1201808, 0, 0, 15, 20618, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 85, 'Majordomo Executus - Teleport his victim'),
+(1201808, 0, 1, 29, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -100, 0, 0, 0, 0, 'Majordomo Executus - every threat wiped'),
+(1201809, 0, 0, 15, 20618, 0, 0, 0, 2, 0, 5, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - Teleport a random player but the top'),
+(1201809, 0, 1, 29, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -100, 0, 0, 0, 0, 'Majordomo Executus - every threat wiped'),
+(1201834, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 1 dead (phase 1)'),
+(1201835, 0, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 1 dead (phase 1)'),
+(1201832, 0, 0, 44, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 2 dead (phase 2)'),
+(1201833, 0, 0, 44, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 2 dead (phase 2)'),
+(1201830, 0, 0, 44, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 3 dead (phase 3)'),
+(1201831, 0, 0, 44, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 3 dead (phase 3)'),
+(1201828, 0, 0, 44, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 4 dead (phase 4)'),
+(1201828, 0, 1, 68, 4090021, 2, 11663, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - four left: immune (11663)'),
+(1201828, 0, 2, 68, 4090021, 2, 11664, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - four left: immune (11664)'),
+(1201829, 0, 0, 44, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 4 dead (phase 4)'),
+(1201829, 0, 1, 68, 4090021, 2, 11663, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - four left: immune (11663)'),
+(1201829, 0, 2, 68, 4090021, 2, 11664, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - four left: immune (11664)'),
+(1201826, 0, 0, 44, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 5 dead (phase 5)'),
+(1201827, 0, 0, 44, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 5 dead (phase 5)'),
+(1201824, 0, 0, 44, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 6 dead (phase 6)'),
+(1201825, 0, 0, 44, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 6 dead (phase 6)'),
+(1201822, 0, 0, 44, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 7 dead (phase 7)'),
+(1201822, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 409106, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - one add left'),
+(1201822, 0, 2, 68, 4090022, 2, 11663, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - the last whole (11663)'),
+(1201822, 0, 3, 68, 4090022, 2, 11664, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - the last whole (11664)'),
+(1201823, 0, 0, 44, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 7 dead (phase 7)'),
+(1201823, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 409106, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - one add left'),
+(1201823, 0, 2, 68, 4090022, 2, 11663, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - the last whole (11663)'),
+(1201823, 0, 3, 68, 4090022, 2, 11664, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - the last whole (11664)'),
+(1201820, 0, 0, 44, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 8 dead (phase 8)'),
+(1201820, 0, 1, 4, 46, 33554432, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - not selectable'),
+(1201820, 0, 2, 22, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - friendly'),
+(1201820, 0, 3, 37, 8, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - done (8 = 3)'),
+(1201820, 0, 4, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - home'),
+(1201820, 0, 5, 0, 1, 0, 0, 0, 0, 0, 0, 0, 409107, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - defeated'),
+(1201821, 0, 0, 44, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 8 dead (phase 8)'),
+(1201821, 0, 1, 4, 46, 33554432, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - not selectable'),
+(1201821, 0, 2, 22, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - friendly'),
+(1201821, 0, 3, 37, 8, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - done (8 = 3)'),
+(1201821, 0, 4, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - home'),
+(1201821, 0, 5, 0, 1, 0, 0, 0, 0, 0, 0, 0, 409107, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - defeated'),
+(1201810, 0, 0, 39, 4090026, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - to the lair');
 
-DELETE FROM `generic_scripts` WHERE `id` IN (4090001, 4090002, 4090003, 4090004, 4090005, 4090006, 4090007, 4090008, 4090009, 4090010, 4090011, 4090012, 4090013, 4090014, 4090015, 4090016);
+DELETE FROM `generic_scripts` WHERE `id` IN (4090001, 4090002, 4090003, 4090004, 4090005, 4090006, 4090007, 4090008, 4090009, 4090010, 4090011, 4090012, 4090013, 4090014, 4090015, 4090016, 4090017, 4090018, 4090019, 4090020, 4090021, 4090022, 4090023, 4090024, 4090025, 4090026, 4090027, 4090028);
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -350,7 +446,67 @@ VALUES
 (4090013, 0, 0, 39, 4090009, 4090010, 4090011, 0, 0, 0, 0, 0, 33, 33, 34, 0, 0, 0, 0, 0, 0, 'Ancient Core Hound - one of three breaths (2 of 2)'),
 (4090014, 1, 0, 15, 42037, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Incindis - Fire Nova, 1 s after his stomp'),
 (4090015, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Incendic Egg - gone'),
-(4090016, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 409301, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - "The runes of warding have been destroyed!"');
+(4090016, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 409301, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - "The runes of warding have been destroyed!"'),
+(4090017, 0, 0, 74, 29183, 8, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker Elite - immune to polymorph'),
+(4090018, 0, 0, 74, 5579, 8, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker Healer - immune to stun'),
+(4090019, 1, 0, 10, 11664, 0, 0, 0, 0, 0, 0, 0, 0, 4090017, -1, 7, 737.945, -1156.48, -118.945, 4.46804, 469000, 'Majordomo Executus - his elite (1 of 8), unless he is done'),
+(4090019, 1, 1, 10, 11664, 0, 0, 0, 0, 0, 0, 0, 0, 4090017, -1, 7, 752.52, -1191.02, -118.218, 2.49582, 469000, 'Majordomo Executus - his elite (2 of 8), unless he is done'),
+(4090019, 1, 2, 10, 11664, 0, 0, 0, 0, 0, 0, 0, 0, 4090017, -1, 7, 752.953, -1163.94, -118.869, 3.7001, 469000, 'Majordomo Executus - his elite (3 of 8), unless he is done'),
+(4090019, 1, 3, 10, 11664, 0, 0, 0, 0, 0, 0, 0, 0, 4090017, -1, 7, 738.814, -1197.4, -118.018, 1.8326, 469000, 'Majordomo Executus - his elite (4 of 8), unless he is done'),
+(4090019, 1, 4, 10, 11663, 0, 0, 0, 0, 0, 0, 0, 0, 4090018, -1, 7, 746.939, -1194.87, -118.016, 2.21657, 469000, 'Majordomo Executus - his healer (5 of 8), unless he is done'),
+(4090019, 1, 5, 10, 11663, 0, 0, 0, 0, 0, 0, 0, 0, 4090018, -1, 7, 747.132, -1158.87, -118.897, 4.03171, 469000, 'Majordomo Executus - his healer (6 of 8), unless he is done'),
+(4090019, 1, 6, 10, 11663, 0, 0, 0, 0, 0, 0, 0, 0, 4090018, -1, 7, 757.116, -1170.12, -118.793, 3.40339, 469000, 'Majordomo Executus - his healer (7 of 8), unless he is done'),
+(4090019, 1, 7, 10, 11663, 0, 0, 0, 0, 0, 0, 0, 0, 4090018, -1, 7, 755.91, -1184.46, -118.449, 2.80998, 469000, 'Majordomo Executus - his healer (8 of 8), unless he is done'),
+(4090020, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - gone as Majordomo resets'),
+(4090021, 0, 0, 74, 29183, 8, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 'Flamewaker - immune to polymorph'),
+(4090021, 0, 1, 74, 5579, 8, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 'Flamewaker - immune to stun'),
+(4090021, 0, 2, 14, 118, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (118)'),
+(4090021, 0, 3, 14, 2094, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (2094)'),
+(4090021, 0, 4, 14, 12824, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (12824)'),
+(4090021, 0, 5, 14, 12825, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (12825)'),
+(4090021, 0, 6, 14, 12826, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (12826)'),
+(4090021, 0, 7, 14, 19501, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (19501)'),
+(4090021, 0, 8, 14, 19503, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (19503)'),
+(4090021, 0, 9, 14, 21060, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (21060)'),
+(4090021, 0, 10, 14, 23601, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (23601)'),
+(4090021, 0, 11, 14, 23603, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (23603)'),
+(4090021, 0, 12, 14, 26108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (26108)'),
+(4090021, 0, 13, 14, 28270, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (28270)'),
+(4090021, 0, 14, 14, 28271, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (28271)'),
+(4090021, 0, 15, 14, 28272, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (28272)'),
+(4090021, 0, 16, 14, 51569, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (51569)'),
+(4090021, 0, 17, 14, 52923, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (52923)'),
+(4090021, 0, 18, 14, 52937, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (52937)'),
+(4090021, 0, 19, 14, 54016, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (54016)'),
+(4090021, 0, 20, 14, 57561, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamewaker - no longer confused (57561)'),
+(4090022, 0, 0, 15, 8358, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 'Flamewaker - the last: mana whole'),
+(4090022, 0, 1, 94, 100, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 'Flamewaker - the last: health whole'),
+(4090023, 0, 0, 15, 20619, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - Magic Reflection'),
+(4090024, 0, 0, 15, 21075, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - Damage Shield'),
+(4090025, 0, 0, 4, 147, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - gossip'),
+(4090025, 0, 1, 22, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - friendly'),
+(4090025, 0, 2, 94, 35, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 35 health at most'),
+(4090025, 0, 3, 94, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - 35 health'),
+(4090026, 28, 0, 10, 12018, 7200000, 0, 0, 0, 0, 0, 0, 0, 4090025, -1, 3, 847.103, -816.153, -229.775, 4.344, 0, 'Majordomo Executus - himself again, in Ragnaros''s lair, for two hours'),
+(4090026, 28, 1, 15, 19484, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - teleport visual'),
+(4090026, 28, 2, 18, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - gone 1 s on'),
+(4090027, 0, 0, 2, 46, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ragnaros - rising (unit flags: spawning)'),
+(4090027, 0, 1, 15, 20568, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ragnaros - Ragnaros Emerge'),
+(4090027, 6, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 409108, 0, 0, 0, 0, 0, 0, 0, 0, 'Ragnaros - "TOO SOON! YOU HAVE AWAKENED ME TOO SOON, EXECUTUS!"'),
+(4090027, 6, 3, 1, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ragnaros - roar'),
+(4090027, 27, 4, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ragnaros - at Majordomo'),
+(4090027, 27, 5, 0, 1, 0, 0, 0, 0, 0, 0, 0, 409109, 0, 0, 0, 0, 0, 0, 0, 0, 'Ragnaros - his answer to Majordomo'),
+(4090027, 27, 6, 1, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ragnaros - roar'),
+(4090027, 42, 7, 15, 19773, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ragnaros - Elemental Fire at Majordomo'),
+(4090028, 6, 0, 3, 0, 0, 1, 2, 0, 0, 0, 0, 1, 0, 0, 0, 839.1729, -811.2748, -229.5895, 0, 0, 'Majordomo Executus - to the summoning (point 1)'),
+(4090028, 6, 1, 76, 178108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 842.237488, -833.683105, -231.916498, 3.0, 0, 'Majordomo Executus - the lava splash'),
+(4090028, 6, 2, 15, 19774, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - Summon Ragnaros'),
+(4090028, 6, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 409110, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - the summoning begins'),
+(4090028, 10, 4, 3, 0, 0, 1, 2, 0, 0, 0, 0, 2, 0, 0, 0, 830.484, -814.4016, -228.9452, 0, 0, 'Majordomo Executus - to the summoning (point 2)'),
+(4090028, 15, 5, 35, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5.23196, 0, 'Majordomo Executus - to the lava'),
+(4090028, 21, 6, 0, 1, 0, 0, 0, 0, 0, 0, 0, 409111, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - Ragnaros called'),
+(4090028, 28, 7, 10, 11502, 7200000, 0, 0, 0, 0, 0, 4, 0, 4090027, -1, 8, 842.237488, -833.683105, -231.916498, 2.1025, 0, 'Majordomo Executus - Ragnaros, facing him'),
+(4090028, 47, 8, 0, 1, 0, 0, 0, 0, 0, 0, 0, 409112, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - his excuse');
 
 DELETE FROM `gameobject_scripts` WHERE `id` IN (232212, 232213, 232214, 232215, 232216, 232217, 232218);
 INSERT INTO `gameobject_scripts`
@@ -384,6 +540,14 @@ VALUES
 (232218, 0, 1, 81, 43163, 604800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230000, 'Rune of Mohn (Gehennas) - its circle gone'),
 (232218, 0, 2, 10, 12018, 7200000, 1, 200, 0, 0, 0, 0, 4, 4090016, -1, 8, 758.089, -1176.71, -118.64, 3.12414, 10409333, 'Rune of Mohn (Gehennas) - the last: Majordomo Executus called'),
 (232218, 0, 3, 37, 23, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10409333, 'Rune of Mohn (Gehennas) - Majordomo called (23 = 3)');
+
+DELETE FROM `gossip_scripts` WHERE `id` IN (1201800);
+INSERT INTO `gossip_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(1201800, 0, 0, 4, 147, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - gossip off'),
+(1201800, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7649, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - "Very well, $n."'),
+(1201800, 0, 2, 39, 4090028, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Majordomo Executus - the summoning');
 
 DELETE FROM `gameobject_requirement` WHERE `guid` = 232212;
 INSERT INTO `gameobject_requirement`
@@ -426,5 +590,41 @@ INSERT INTO `gameobject_requirement`
 (`guid`, `reqType`, `reqGuid`)
 VALUES
 (232218, 0, 56737);
+
+DELETE FROM `gossip_menu` WHERE `entry` = 1201800 AND `text_id` = 4995;
+INSERT INTO `gossip_menu`
+(`entry`, `text_id`, `script_id`, `condition_id`)
+VALUES
+(1201800, 4995, 0, 0);
+
+DELETE FROM `gossip_menu` WHERE `entry` = 1201801 AND `text_id` = 5011;
+INSERT INTO `gossip_menu`
+(`entry`, `text_id`, `script_id`, `condition_id`)
+VALUES
+(1201801, 5011, 0, 0);
+
+DELETE FROM `gossip_menu` WHERE `entry` = 1201802 AND `text_id` = 5012;
+INSERT INTO `gossip_menu`
+(`entry`, `text_id`, `script_id`, `condition_id`)
+VALUES
+(1201802, 5012, 0, 0);
+
+DELETE FROM `gossip_menu_option` WHERE `menu_id` = 1201800 AND `id` = 0;
+INSERT INTO `gossip_menu_option`
+(`menu_id`, `id`, `option_icon`, `option_text`, `option_broadcast_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `box_broadcast_text`, `condition_id`)
+VALUES
+(1201800, 0, 0, 'Tell me more.', 7646, 1, 1, 1201801, 0, 0, 0, 0, NULL, 0, 0);
+
+DELETE FROM `gossip_menu_option` WHERE `menu_id` = 1201801 AND `id` = 0;
+INSERT INTO `gossip_menu_option`
+(`menu_id`, `id`, `option_icon`, `option_text`, `option_broadcast_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `box_broadcast_text`, `condition_id`)
+VALUES
+(1201801, 0, 0, 'What else do you have to say?', 7673, 1, 1, 1201802, 0, 0, 0, 0, NULL, 0, 0);
+
+DELETE FROM `gossip_menu_option` WHERE `menu_id` = 1201802 AND `id` = 0;
+INSERT INTO `gossip_menu_option`
+(`menu_id`, `id`, `option_icon`, `option_text`, `option_broadcast_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `box_broadcast_text`, `condition_id`)
+VALUES
+(1201802, 0, 0, 'You challenged us and we have come. Where is this master you speak of?', 7675, 1, 1, -1, 0, 1201800, 0, 0, NULL, 0, 0);
 
 UPDATE `spell_template` SET `maxAffectedTargets` = 1 WHERE `entry` = 42036;
