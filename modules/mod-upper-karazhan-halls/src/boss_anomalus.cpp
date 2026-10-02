@@ -1,34 +1,10 @@
 #include "scriptPCH.h"
 
-namespace
-{
-template <class T>
-AuraScript* GetAuraScript(SpellEntry const*)
-{
-    return new T();
-}
+// Its spell and aura scripts stay in the core, in
+// src/scripts/dungeons/upper_karazhan_halls/upper_karazhan_halls_spells.cpp (trt A17, AM1).
 
-void RegisterAuraScript(char const* name, AuraScript* (*getter)(SpellEntry const*))
+namespace mod_upper_karazhan_halls
 {
-    Script* script = new Script;
-    script->Name = name;
-    script->GetAuraScript = getter;
-    script->RegisterSelf();
-}
-
-struct spell_arcane_overload : public AuraScript
-{
-    void OnAfterApply(Aura* aura, bool apply) override
-    {
-        if (apply)
-            return;
-
-        Unit* target = aura->GetTarget();
-        target->CastSpell(target, 51101, true);
-        target->CastSpell(target, 51099, true, nullptr, nullptr, aura->GetCasterGuid(), aura->GetSpellProto());
-    }
-};
-}
 
 enum
 {
@@ -108,7 +84,6 @@ struct npc_anomalusAI : public ScriptedAI
         else
             m_arcanePrisonTimer -= uiDiff;
 
-
         DoMeleeAttackIfReady();
     }
 };
@@ -180,6 +155,6 @@ void AddSC_boss_anomalus()
     newscript->Name = "npc_unstable_magic_zone";
     newscript->GetAI = &GetAI_npc_unstable_magic_zone;
     newscript->RegisterSelf();
-
-    RegisterAuraScript("spell_arcane_overload", &GetAuraScript<spell_arcane_overload>);
 }
+
+} // namespace mod_upper_karazhan_halls

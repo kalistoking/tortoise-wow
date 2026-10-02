@@ -1,5 +1,11 @@
 #include "scriptPCH.h"
 
+// Its spell and aura scripts stay in the core, in
+// src/scripts/dungeons/upper_karazhan_halls/upper_karazhan_halls_spells.cpp (trt A17, AM1).
+
+namespace mod_upper_karazhan_halls
+{
+
 enum
 {
     SPELL_ENRAGE = 8269,
@@ -143,3 +149,5 @@ void AddSC_boss_echo_of_medivh()
     newscript->GetAI = &GetAI_npc_echo_of_medivh;
     newscript->RegisterSelf();
 }
+
+} // namespace mod_upper_karazhan_halls

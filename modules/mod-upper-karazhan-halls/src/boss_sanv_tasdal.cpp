@@ -1,62 +1,10 @@
 #include "scriptPCH.h"
 
-namespace
+// Its spell and aura scripts stay in the core, in
+// src/scripts/dungeons/upper_karazhan_halls/upper_karazhan_halls_spells.cpp (trt A17, AM1).
+
+namespace mod_upper_karazhan_halls
 {
-template <class T>
-SpellScript* GetSpellScript(SpellEntry const*)
-{
-    return new T();
-}
-
-void RegisterSpellScript(char const* name, SpellScript* (*getter)(SpellEntry const*))
-{
-    Script* script = new Script;
-    script->Name = name;
-    script->GetSpellScript = getter;
-    script->RegisterSelf();
-}
-
-struct spell_rift_feedback : public SpellScript
-{
-    bool OnEffectExecute(Spell* spell, SpellEffectIndex /*effIdx*/) const override
-    {
-        Unit* target = spell->GetUnitTarget();
-        if (!spell->m_casterUnit || !target || spell->m_casterUnit == target || target->HasAura(51196))
-            return false;
-
-        target->DealDamage(target, 12000, nullptr, DOT, SPELL_SCHOOL_MASK_ARCANE, spell->m_spellInfo, false, nullptr, false, false);
-        return false;
-    }
-};
-
-struct spell_overflowing_hatred : public SpellScript
-{
-    bool OnEffectExecute(Spell* spell, SpellEffectIndex /*effIdx*/) const override
-    {
-        Unit* target = spell->GetUnitTarget();
-        if (!spell->m_casterUnit || !target || spell->m_casterUnit == target || target->GetEntry() == 59974)
-            return false;
-
-        target->DealDamage(target, 6000, nullptr, DOT, SPELL_SCHOOL_MASK_FIRE, spell->m_spellInfo, false, nullptr, false, false);
-        return false;
-    }
-};
-
-struct spell_form_rift_elemental : public SpellScript
-{
-    bool OnEffectExecute(Spell* spell, SpellEffectIndex /*effIdx*/) const override
-    {
-        Unit* target = spell->GetUnitTarget();
-        if (!spell->m_casterUnit || !target || spell->m_casterUnit == target)
-            return false;
-
-        spell->m_casterUnit->SummonCreature(59974, 0, 0, 0, 0, TEMPSUMMON_TIMED_OR_CORPSE_DESPAWN, 30000);
-        target->DoKillUnit();
-        spell->m_casterUnit->DoKillUnit();
-        return false;
-    }
-};
-}
 
 enum
 {
@@ -251,7 +199,6 @@ struct boss_sanv_tasdalAI : public ScriptedAI
     }
 };
 
-
 CreatureAI* GetAI_boss_sanv_tasdal(Creature* pCreature)
 {
     return new boss_sanv_tasdalAI(pCreature);
@@ -352,8 +299,6 @@ void AddSC_boss_sanv_tasdal()
     newscript->Name = "npc_rift_portal";
     newscript->GetAI = &GetAI_rift_portal;
     newscript->RegisterSelf();
-
-    RegisterSpellScript("spell_rift_feedback", &GetSpellScript<spell_rift_feedback>);
-    RegisterSpellScript("spell_overflowing_hatred", &GetSpellScript<spell_overflowing_hatred>);
-    RegisterSpellScript("spell_form_rift_elemental", &GetSpellScript<spell_form_rift_elemental>);
 }
+
+} // namespace mod_upper_karazhan_halls

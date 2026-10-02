@@ -34,13 +34,7 @@ dungeons/gnomeregan/gnomeregan.h
 dungeons/gnomeregan/instance_gnomeregan.cpp
 dungeons/hateforge_quarry/hateforge_quarry_spells.cpp
 dungeons/karazhan_crypt/karazhan_crypt_triggers.cpp
-dungeons/upper_karazhan_halls/boss_anomalus.cpp
-dungeons/upper_karazhan_halls/boss_echo_of_medivh.cpp
-dungeons/upper_karazhan_halls/boss_incantagos.cpp
-dungeons/upper_karazhan_halls/boss_keeper_gnarlmoon.cpp
-dungeons/upper_karazhan_halls/boss_kings_council.cpp
-dungeons/upper_karazhan_halls/boss_kruul.cpp
-dungeons/upper_karazhan_halls/boss_sanv_tasdal.cpp
+dungeons/upper_karazhan_halls/upper_karazhan_halls_spells.cpp
 dungeons/maraudon/celebras_spirit.cpp
 dungeons/molten_core/boss_baron_geddon.cpp
 dungeons/molten_core/boss_ragnaros.cpp

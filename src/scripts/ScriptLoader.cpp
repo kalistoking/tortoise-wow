@@ -121,13 +121,7 @@ void AddSC_war_effort();
 void AddSC_karazhan_crypt_triggers();             // the trigger objects and the gate (trt A31)
 void AddSC_instance_emerald_sanctum();
 void AddSC_boss_solnius();
-void AddSC_boss_anomalus();
-void AddSC_boss_echo_of_medivh();
-void AddSC_boss_incantagos();
-void AddSC_boss_keeper_gnarlmoon();
-void AddSC_boss_kings_council();
-void AddSC_boss_kruul();
-void AddSC_boss_sanv_tasdal();
+void AddSC_upper_karazhan_halls_spells();         // the spell and aura scripts, stay in the core (trt A17)
 
 void AddSC_npc_j_eevee();
 void AddSC_easter_egg_loot();
@@ -286,13 +280,7 @@ void AddScripts()
     AddSC_karazhan_crypt_triggers();
     AddSC_instance_emerald_sanctum();
     AddSC_boss_solnius();
-    AddSC_boss_anomalus();
-    AddSC_boss_echo_of_medivh();
-    AddSC_boss_incantagos();
-    AddSC_boss_keeper_gnarlmoon();
-    AddSC_boss_kings_council();
-    AddSC_boss_kruul();
-    AddSC_boss_sanv_tasdal();
+    AddSC_upper_karazhan_halls_spells();
 
     // Spell and aura scripts
     AddSC_druid_spell_scripts();

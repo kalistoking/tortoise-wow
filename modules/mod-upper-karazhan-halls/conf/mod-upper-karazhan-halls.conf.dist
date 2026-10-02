@@ -1,0 +1,13 @@
+###################################################################################################
+# mod-upper-karazhan-halls module configuration
+###################################################################################################
+
+[ModuleConf]
+
+# mod-upper-karazhan-halls.Enable
+#     Register Upper Karazhan Halls' creature scripts. When 0 the module registers nothing: the world
+#     database still names the scripts, and their creatures run on what the core gives them
+#     without one -- their ai_name, their rows. The dungeon's spell and aura scripts are the core's
+#     either way.
+#     Default: 1
+mod-upper-karazhan-halls.Enable = 1
