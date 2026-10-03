@@ -1,4 +1,4 @@
--- Puts back what dragonmaw_retreat_as_rows.sql replaced, as t1_world had it when the migration
+-- Puts back what dragonmaw_retreat_as_rows.sql replaced, as d6_world had it when the migration
 -- was written (scripts/tier2/a04_dragonmaw_retreat.py). The rows the migration added are removed.
 
 UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'boss_zuluhed_the_whacked', `flags_extra` = 0 WHERE `entry` = 62037;

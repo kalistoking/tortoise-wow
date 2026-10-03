@@ -1,5 +1,5 @@
 -- Emerald Sanctum (map 807), its trash and Erennius: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a05_emerald_sanctum.py from t1_world; emerald_sanctum_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a05_emerald_sanctum.py from d6_world; emerald_sanctum_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-emerald-sanctum is the switch (AM1, handoff/manager-091).
@@ -12,17 +12,12 @@
 -- fight once under half health (the C++ counted those seconds only under half health).
 
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (807003);
-INSERT INTO `conditions`
-(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
-VALUES
-(807003, 41, 49, 2, 0, 0, 2);
-
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
 INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(129001, 34, 1, 1, 0, 0, 0);
+(129001, 34, 1, 1, 0, 0, 0),
+(807003, 41, 49, 2, 0, 0, 2);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (6074750);
 INSERT INTO `broadcast_text`
@@ -48,7 +43,7 @@ VALUES
 (6074601, 60746, 84, 0, 0, 100, 1, 1000, 1000, 1000, 1000, 6074601, 0, 0, 'Sanctum Scalebane - a victim it cannot reach summoned'),
 (6074602, 60746, 0, 0, 0, 100, 9, 6000, 6000, 6000, 6000, 6074602, 0, 0, 'Sanctum Scalebane - Cleave'),
 (6074603, 60746, 0, 0, 0, 100, 9, 25000, 25000, 25000, 25000, 6074603, 0, 0, 'Sanctum Scalebane - Scalebane Intimidation'),
-(6074505, 60745, 0, 0, 0, 100, 1, 25000, 25000, 21000, 21000, 6074505, 0, 0, 'Sanctum Wyrmkin - Wyrmkin''s Venom on the players within 5 yd'),
+(6074505, 60745, 0, 0, 0, 100, 9, 25000, 25000, 21000, 21000, 6074505, 0, 0, 'Sanctum Wyrmkin - Wyrmkin''s Venom on the players within 5 yd'),
 (6074701, 60747, 0, 4, 0, 100, 0, 0, 0, 0, 0, 6074701, 0, 0, 'Erennius - aggro: his yell, slot 8 in progress'),
 (6074702, 60747, 0, 11, 0, 100, 0, 0, 0, 0, 0, 6074702, 0, 0, 'Erennius - not started, at spawn'),
 (6074703, 60747, 0, 7, 0, 100, 0, 0, 0, 0, 0, 6074703, 0, 0, 'Erennius - not started, at evade'),
@@ -80,7 +75,8 @@ VALUES
 (6074601, 0, 0, 15, 26229, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sanctum Scalebane - Summon Player on its victim'),
 (6074602, 0, 0, 15, 19983, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sanctum Scalebane - Cleave'),
 (6074603, 0, 0, 15, 56504, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sanctum Scalebane - Scalebane Intimidation'),
-(6074505, 0, 0, 68, 6074530, 3, 0, 5, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sanctum Wyrmkin - the venom, for each player within 5 yd'),
+(6074505, 0, 0, 15, 56503, 0, 0, 0, 5, 0, 24, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sanctum Wyrmkin - the venom needs a player within 5 yd (else aborts, retried)'),
+(6074505, 0, 1, 68, 6074530, 3, 0, 5, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sanctum Wyrmkin - the venom, for each player within 5 yd'),
 (6074701, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 6074750, 0, 0, 0, 0, 0, 0, 0, 0, 'Erennius - "You will not disturb the Awakener..."'),
 (6074701, 0, 1, 37, 8, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Erennius - in progress'),
 (6074702, 0, 0, 37, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Erennius - not started'),
@@ -102,5 +98,5 @@ DELETE FROM `generic_scripts` WHERE `id` IN (6074530);
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(6074530, 0, 0, 15, 56503, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sanctum Wyrmkin - Wyrmkin''s Venom');
+(6074530, 0, 0, 15, 56503, 32, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sanctum Wyrmkin - Wyrmkin''s Venom');
 

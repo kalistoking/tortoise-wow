@@ -36,7 +36,7 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11136;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11143;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 16387;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (329008, 329010, 329020, 329030, 329040, 329041, 329042, 329050, 329060, 329062, 329063, 329065, 329066, 10329001, 10329003, 10329005, 10329007, 10329061, 10329064);
+DELETE FROM `conditions` WHERE `condition_entry` IN (329008, 329010, 329020, 329030, 329040, 329042, 329043, 329044, 329045, 329050, 329060, 329062, 329063, 329065, 329066, 10329001, 10329003, 10329005, 10329007, 10329061, 10329064);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
@@ -49,7 +49,9 @@ VALUES
 (329020, 20, 10399, 50, 0, 0, 3),
 (329030, 38, 8, 1, 0, 0, 0),
 (329040, 42, 1, 1, 0, 0, 0),
-(329041, 42, 1, 1, 0, 0, 1),
+(329043, 14, 0, 1494, 0, 0, 0),
+(329044, -1, 329043, 329040, 0, 0, 0),
+(329045, -1, 329043, 329040, 0, 0, 1),
 (329042, 41, 59, 2, 0, 0, 2),
 (329050, 52, 54070, 0, 0, 0, 0),
 (329060, 1, 12098, 0, 0, 0, 1),
@@ -144,7 +146,7 @@ VALUES
 (1043514, 10435, 0, 0, 0, 100, 1, 8000, 8000, 20000, 20000, 1043514, 0, 0, 'Magistrate Barthilas - Mighty Blow'),
 (1043811, 10438, 0, 0, 0, 100, 9, 1000, 1000, 3500, 4500, 1043811, 0, 0, 'Maleki the Pallid - Frostbolt'),
 (1043812, 10438, 0, 0, 0, 100, 9, 12000, 12000, 20000, 25000, 1043812, 0, 0, 'Maleki the Pallid - Ice Tomb, his victim''s threat dropped'),
-(1043813, 10438, 329042, 0, 0, 100, 1, 4000, 4000, 12000, 18000, 1043813, 0, 0, 'Maleki the Pallid - under 60 %: Drain Mana, or Drain Life at a victim without'),
+(1043813, 10438, 329042, 0, 0, 100, 9, 4000, 4000, 12000, 18000, 1043813, 0, 0, 'Maleki the Pallid - under 60 %: Drain Mana, or Drain Life at a victim without'),
 (1043814, 10438, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1043814, 0, 0, 'Maleki the Pallid - dead: done (3)'),
 (1043711, 10437, 0, 0, 0, 100, 9, 7000, 7000, 10000, 15000, 1043711, 0, 0, 'Nerub''enkan - Encasing Webs, his victim''s threat dropped'),
 (1043712, 10437, 0, 0, 0, 100, 9, 15000, 15000, 15000, 20000, 1043712, 0, 0, 'Nerub''enkan - Pierce Armor'),
@@ -217,10 +219,10 @@ VALUES
 (1041502, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 329110, 0, 0, 0, 0, 0, 0, 0, 0, 'Ash''ari Crystal - toppled'),
 (1041502, 0, 1, 37, 12, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ash''ari Crystal - one down (12 = 1)'),
 (1041502, 0, 2, 0, 6, 0, 0, 0, 0, 0, 0, 0, 6289, 0, 0, 0, 0, 0, 0, 0, 230040, 'Ash''ari Crystal - the slaughterhouse open'),
-(1099701, 0, 0, 11, 24059, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - the gate open'),
-(1099702, 0, 0, 11, 24059, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - the gate open'),
-(1099703, 0, 0, 12, 24059, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - the gate shut'),
-(1099704, 0, 0, 11, 24059, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - the gate open'),
+(1099701, 0, 0, 80, 0, 0, 0, 0, 24059, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - the gate open'),
+(1099702, 0, 0, 80, 0, 0, 0, 0, 24059, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - the gate open'),
+(1099703, 0, 0, 80, 1, 0, 0, 0, 24059, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - the gate shut'),
+(1099704, 0, 0, 80, 0, 0, 0, 0, 24059, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - the gate open'),
 (1099711, 0, 0, 15, 15615, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - Pummel'),
 (1099712, 0, 0, 15, 10101, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - Knock Away'),
 (1099713, 0, 0, 15, 20463, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannon Master Willey - Shoot, his victim 8 yd off or more'),
@@ -244,8 +246,8 @@ VALUES
 (1043811, 0, 0, 15, 17503, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Maleki the Pallid - Frostbolt'),
 (1043812, 0, 0, 15, 16869, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Maleki the Pallid - Ice Tomb, his victim''s threat dropped'),
 (1043812, 0, 1, 29, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -100, 0, 0, 0, 0, 'Maleki the Pallid - his victim''s threat dropped'),
-(1043813, 0, 0, 15, 17243, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329040, 'Maleki the Pallid - Drain Mana'),
-(1043813, 0, 1, 15, 17238, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329041, 'Maleki the Pallid - Drain Life'),
+(1043813, 0, 0, 15, 17243, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329044, 'Maleki the Pallid - Drain Mana'),
+(1043813, 0, 1, 15, 17238, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 329045, 'Maleki the Pallid - Drain Life'),
 (1043814, 0, 0, 37, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Maleki the Pallid - done'),
 (1043711, 0, 0, 15, 4962, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Nerub''enkan - Encasing Webs, his victim''s threat dropped'),
 (1043711, 0, 1, 29, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -100, 0, 0, 0, 0, 'Nerub''enkan - his victim''s threat dropped'),

@@ -109,7 +109,7 @@ VALUES
 (727511, 7275, 10209051, 6, 0, 100, 0, 0, 0, 0, 0, 727511, 0, 0, 'Shadowpriest Sezz''ziz - the last of a wave dead: the pyramid goes on'),
 (779611, 7796, 10209051, 6, 0, 100, 0, 0, 0, 0, 0, 779611, 0, 0, 'Nekrum Gutchewer - the last of a wave dead: the pyramid goes on'),
 (727311, 7273, 209052, 11, 0, 100, 0, 0, 0, 0, 0, 727311, 0, 0, 'Gahz''rilla - called once already: gone'),
-(727312, 7273, 209053, 11, 0, 100, 0, 0, 0, 0, 0, 727312, 0, 0, 'Gahz''rilla - called the first time (2 = 1)'),
+(727312, 7273, 209053, 11, 0, 100, 0, 0, 0, 0, 0, 727312, 0, 0, 'Gahz''rilla - called the first time (2 = 1, a second on)'),
 (6249614, 62496, 209070, 7, 0, 100, 0, 0, 0, 0, 0, 6249614, 0, 0, 'Kath''zen the Brutal - out of the fight: the arena back'),
 (6249714, 62497, 209070, 7, 0, 100, 0, 0, 0, 0, 0, 6249714, 0, 0, 'Juthza the Cunning - out of the fight: the arena back'),
 (6249814, 62498, 209070, 7, 0, 100, 0, 0, 0, 0, 0, 6249814, 0, 0, 'Champion Razjal the Quick - out of the fight: the arena back'),
@@ -176,7 +176,7 @@ VALUES
 (779611, 0, 1, 39, 2090014, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 209033, 'The pyramid - wave 2 dead'),
 (779611, 0, 2, 39, 2090015, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 209036, 'The pyramid - wave 3 dead'),
 (727311, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Gahz''rilla - gone'),
-(727312, 0, 0, 37, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Gahz''rilla - called (2 = 1)'),
+(727312, 0, 0, 39, 727313, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Gahz''rilla - 2 = 1 in a second'),
 (6249614, 0, 0, 39, 2090026, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Farraki arena - back'),
 (6249714, 0, 0, 39, 2090026, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Farraki arena - back'),
 (6249814, 0, 0, 39, 2090026, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Farraki arena - back'),
@@ -187,7 +187,7 @@ VALUES
 (6249811, 0, 0, 39, 2090023, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Farraki arena - the sands'),
 (6249812, 0, 0, 39, 2090024, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Farraki arena - his Hellfire');
 
-DELETE FROM `generic_scripts` WHERE `id` IN (2090001, 2090002, 2090003, 2090004, 2090005, 2090006, 2090007, 2090008, 2090009, 2090010, 2090011, 2090012, 2090013, 2090014, 2090015, 2090016, 2090017, 2090018, 2090019, 2090020, 2090021, 2090022, 2090023, 2090024, 2090025, 2090026);
+DELETE FROM `generic_scripts` WHERE `id` IN (727313, 2090001, 2090002, 2090003, 2090004, 2090005, 2090006, 2090007, 2090008, 2090009, 2090010, 2090011, 2090012, 2090013, 2090014, 2090015, 2090016, 2090017, 2090018, 2090019, 2090020, 2090021, 2090022, 2090023, 2090024, 2090025, 2090026);
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -310,6 +310,7 @@ VALUES
 (2090015, 0, 9, 34, 0, 0, 0, 0, 81557, 0, 9, 2, 0, 0, 0, 0, 1874.11, 1206.17, 8.87, 1.32, 1000, 'Raven - home to his place below'),
 (2090015, 0, 10, 3, 0, 0, 3, 2, 81553, 0, 9, 2, 6, 0, 0, 0, 1877.52, 1199.63, 8.87, 0, 1000, 'Weegli Blastfuse - walks to his place below (point 6)'),
 (2090015, 0, 11, 34, 0, 0, 0, 0, 81553, 0, 9, 2, 0, 0, 0, 0, 1877.52, 1199.63, 8.87, 1.32, 1000, 'Weegli Blastfuse - home to his place below'),
+(727313, 1, 0, 37, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Gahz''rilla - called (2 = 1), a second on'),
 (2090016, 0, 0, 32, 33004, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Farraki arena - Juthza on, or nothing'),
 (2090016, 0, 1, 37, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Farraki arena - Razjal (5 = 4)'),
 (2090016, 0, 2, 22, 14, 3, 0, 0, 2589526, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Champion Razjal the Quick - hostile until the fight ends'),

@@ -1,5 +1,5 @@
 -- Scholomance (map 289), Gandling and his rooms, six bosses and the corpses: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a23_scholomance.py from t1_world; scholomance_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a23_scholomance.py from d6_world; scholomance_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-scholomance is the switch (AM1, handoff/manager-091).
@@ -101,7 +101,7 @@ VALUES
 (1050511, 10505, 0, 0, 0, 100, 1, 22000, 22000, 40000, 40000, 1050511, 0, 0, 'Instructor Malicia - three Flash Heals, 5 s apart'),
 (1090111, 10901, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1090111, 0, 0, 'Lorekeeper Polkelt - aggro: his disease'),
 (1050811, 10508, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1050811, 0, 0, 'Ras Frostwhisper - Ice Armor'),
-(1050812, 10508, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1050812, 0, 0, 'Ras Frostwhisper - Ice Armor'),
+(1050812, 10508, 0, 21, 0, 100, 0, 0, 0, 0, 0, 1050812, 0, 0, 'Ras Frostwhisper - Ice Armor'),
 (185321, 1853, 0, 11, 0, 100, 0, 0, 0, 0, 0, 185321, 0, 0, 'Darkmaster Gandling - "School is in session!"'),
 (185322, 1853, 0, 6, 0, 100, 0, 0, 0, 0, 0, 185322, 0, 0, 'Darkmaster Gandling - dead: done (0), "Class...dismissed."'),
 (185323, 1853, 0, 21, 0, 100, 0, 0, 0, 0, 0, 185323, 0, 0, 'Darkmaster Gandling - home: failed (0)'),

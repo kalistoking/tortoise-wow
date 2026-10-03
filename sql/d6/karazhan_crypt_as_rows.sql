@@ -59,10 +59,10 @@ DELETE FROM `creature_ai_events` WHERE `id` IN (9192001, 9192101, 9192102, 91921
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
-(9192001, 91920, 0, 6, 0, 100, 0, 0, 0, 0, 0, 9192001, 0, 0, 'Marrowspike - dead: the Tomb of the Unrepentant open for 3 h, his emote, the music'),
-(9192801, 91928, 0, 6, 0, 100, 0, 0, 0, 0, 0, 9192801, 0, 0, 'Alarus - dead: Pauper''s Walk open for 3 h, his line, the music'),
+(9192001, 91920, 0, 6, 0, 100, 0, 0, 0, 0, 0, 9192001, 0, 0, 'Marrowspike - dead: the Tomb of the Unrepentant open for 3 h, his emote, the door-creak sound'),
+(9192801, 91928, 0, 6, 0, 100, 0, 0, 0, 0, 0, 9192801, 0, 0, 'Alarus - dead: Pauper''s Walk open for 3 h, his line, the door-creak sound'),
 (9293501, 92935, 0, 4, 0, 100, 0, 0, 0, 0, 0, 9293501, 0, 0, 'Guard Captain Gort - aggro: "You have come farther than most..."'),
-(9293502, 92935, 0, 6, 0, 100, 0, 0, 0, 0, 0, 9293502, 0, 0, 'Guard Captain Gort - dead: "His grips holds me no longer...", the music'),
+(9293502, 92935, 0, 6, 0, 100, 0, 0, 0, 0, 0, 9293502, 0, 0, 'Guard Captain Gort - dead: "His grips holds me no longer...", the door-creak sound'),
 (9193101, 91931, 800024, 1, 0, 100, 1, 1000, 1000, 1000, 1000, 9193101, 0, 0, 'Crypt Watcher - the six runes open: Alarus'),
 (9192401, 91924, 0, 11, 0, 100, 0, 0, 0, 0, 0, 9192401, 0, 0, 'Skeletal Remains - spawned: lying dead'),
 (9192402, 91924, 0, 7, 0, 100, 0, 0, 0, 0, 0, 9192402, 0, 0, 'Skeletal Remains - evading: lying dead again'),
@@ -77,13 +77,13 @@ INSERT INTO `creature_ai_scripts`
 VALUES
 (9192001, 0, 0, 11, 4013011, 10800, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Marrowspike - the Tomb of the Unrepentant (3 h), unless open'),
 (9192001, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 66108, 0, 0, 0, 0, 0, 0, 0, 0, 'Marrowspike - "A loud creaking echoes across the crypt..."'),
-(9192001, 0, 2, 16, 6762, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Marrowspike - the crypt''s music'),
+(9192001, 0, 2, 16, 6762, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Marrowspike - the door-creak sound (6762, as music)'),
 (9192801, 0, 0, 11, 4013110, 10800, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Alarus - Pauper''s Walk (3 h), unless open'),
 (9192801, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 66106, 0, 0, 0, 0, 0, 0, 0, 0, 'Alarus - "Another... corpse... to the pile."'),
-(9192801, 0, 2, 16, 6762, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Alarus - the crypt''s music'),
+(9192801, 0, 2, 16, 6762, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Alarus - the door-creak sound (6762, as music)'),
 (9293501, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 66105, 0, 0, 0, 0, 0, 0, 0, 0, 'Guard Captain Gort - "You have come farther than most..."'),
 (9293502, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 66107, 0, 0, 0, 0, 0, 0, 0, 0, 'Guard Captain Gort - "His grips holds me no longer..."'),
-(9293502, 0, 1, 16, 6762, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Guard Captain Gort - the crypt''s music'),
+(9293502, 0, 1, 16, 6762, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Guard Captain Gort - the door-creak sound (6762, as music)'),
 (9193101, 0, 0, 10, 91928, 0, 0, 0, 0, 0, 0, 0, 262144, 8000001, -1, 7, 0, 0, 0, 0, 0, 'Crypt Watcher - Alarus at the watcher'),
 (9193101, 0, 1, 76, 177304, 3600, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Crypt Watcher - the sign of Alarus summoned (1 h)'),
 (9192401, 0, 0, 4, 143, 36, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Skeletal Remains - lying dead'),

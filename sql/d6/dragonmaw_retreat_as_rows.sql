@@ -1,5 +1,5 @@
 -- Dragonmaw Retreat (map 816), instance_dragonmaw_retreat and five bosses: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a04_dragonmaw_retreat.py from t1_world; dragonmaw_retreat_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a04_dragonmaw_retreat.py from d6_world; dragonmaw_retreat_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-dragonmaw-retreat is the switch (AM1, handoff/manager-091).
@@ -126,14 +126,14 @@ VALUES
 (6203702, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 6203702, 0, 0, 0, 0, 0, 0, 0, 0, 'Zuluhed the Whacked - Soul Domination line'),
 (6203704, 0, 0, 15, 52044, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zuluhed the Whacked - Withering Soul'),
 (6203704, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 6203704, 0, 0, 0, 0, 0, 0, 0, 0, 'Zuluhed the Whacked - Withering Soul line'),
-(6203704, 0, 2, 39, 6203704, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Zuluhed the Whacked - the souls, 6 s on');
+(6203704, 0, 2, 39, 6203704, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Zuluhed the Whacked - the souls, 7-8 s on, once his 6 s channel is over');
 
 DELETE FROM `generic_scripts` WHERE `id` IN (6203704);
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(6203704, 6, 0, 15, 52045, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zuluhed the Whacked - Debilitated Soul, 6 s after Withering Soul'),
-(6203704, 6, 1, 15, 52046, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zuluhed the Whacked - Empowered Soul');
+(6203704, 8, 0, 15, 52045, 2, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zuluhed the Whacked - Debilitated Soul, 7-8 s after Withering Soul'),
+(6203704, 8, 1, 15, 52046, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zuluhed the Whacked - Empowered Soul');
 
 -- The steps that named a script_texts id: now their broadcast text.
 UPDATE `creature_ai_scripts` SET `dataint` = 6206701, `datalong` = 1 WHERE `id` = 6206701 AND `command` = 0;
