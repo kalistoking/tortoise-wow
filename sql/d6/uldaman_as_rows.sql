@@ -1,5 +1,5 @@
 -- Uldaman (map 70), Ironaya, the Jadespine Basilisk, Annora and the Lore Keeper: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a11_uldaman.py from t1_world; uldaman_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a11_uldaman.py from d6_world; uldaman_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-uldaman is the switch (AM1, handoff/manager-091).
@@ -59,6 +59,12 @@ INSERT INTO `gossip_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
 (717215, 0, 0, 7, 2278, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Lore Keeper of Norgannon - The Earthen Discs explored');
+
+DELETE FROM `gossip_menu` WHERE `entry` = 717200 AND `text_id` = 1079;
+INSERT INTO `gossip_menu`
+(`entry`, `text_id`, `script_id`, `condition_id`)
+VALUES
+(717200, 1079, 0, 0);
 
 DELETE FROM `gossip_menu_option` WHERE `menu_id` = 717200 AND `id` = 0;
 INSERT INTO `gossip_menu_option`

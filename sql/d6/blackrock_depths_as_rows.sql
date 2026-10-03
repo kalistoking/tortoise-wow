@@ -1,5 +1,5 @@
 -- Blackrock Depths (map 230), its bosses, the arena, the Tomb of Seven and its objects: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a12_blackrock_depths.py from t1_world; blackrock_depths_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a12_blackrock_depths.py from d6_world; blackrock_depths_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-blackrock-depths is the switch (AM1, handoff/manager-091).
@@ -42,23 +42,23 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 16055;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 16058;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 16059;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (230004, 230005, 230012, 230014, 230020, 230021, 230022, 230023, 230032, 230033, 230042, 230052, 230060, 230063, 230080, 10230024, 10230025, 10230041, 10230051, 10230062, 10230070);
+DELETE FROM `conditions` WHERE `condition_entry` IN (230004, 230005, 230010, 230012, 230014, 230020, 230021, 230022, 230023, 230024, 230025, 230032, 230033, 230052, 230060, 230063, 230080, 10230041, 10230051, 10230062, 10230070);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (230004, -1, 116, 230003, 0, 0, 0),
 (230005, 20, 9019, 200, 1, 0, 2),
+(230010, 34, 3, 0, 0, 0, 0),
 (230012, 34, 3, 2, 0, 0, 0),
 (230014, -1, 4623, 1000, 0, 0, 0),
 (230020, 17, 14891, 1, 0, 0, 0),
 (230021, 8, 4083, 0, 0, 0, 0),
 (230022, 8, 4083, 0, 0, 0, 1),
 (230023, 7, 186, 230, 0, 0, 0),
-(10230024, -1, 3600104, 230021, 230023, 230020, 0),
-(10230025, -1, 3600104, 230022, 230023, 0, 0),
+(230024, -1, 230010, 230021, 230023, 230020, 0),
+(230025, -1, 230010, 230022, 230023, 0, 0),
 (230032, 9, 4001, 1, 0, 0, 0),
 (230033, 9, 4342, 1, 0, 0, 0),
-(230042, 34, 6, 0, 0, 0, 0),
 (10230041, -1, 230000, 230042, 0, 0, 0),
 (230052, 34, 7, 3, 0, 0, 1),
 (10230051, -1, 230000, 230052, 0, 0, 0),
@@ -75,6 +75,7 @@ VALUES
 (230000, 62, 0, 0, 0, 0, 1),
 (230003, 41, 99, 2, 0, 0, 0),
 (230040, 34, 6, 3, 0, 0, 0),
+(230042, 34, 6, 0, 0, 0, 0),
 (230050, 34, 7, 3, 0, 0, 0),
 (230064, 34, 4, 3, 0, 0, 1),
 (349003, 34, 1, 3, 0, 0, 1);
@@ -431,19 +432,25 @@ DELETE FROM `gossip_menu_option` WHERE `menu_id` = 903900 AND `id` = 0;
 INSERT INTO `gossip_menu_option`
 (`menu_id`, `id`, `option_icon`, `option_text`, `option_broadcast_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `box_broadcast_text`, `condition_id`)
 VALUES
-(903900, 0, 0, 'Your bondage is at an end, Doom''rel. I challenge you!', 0, 1, 1, -1, 0, 903901, 0, 0, NULL, 0, 3600104);
+(903900, 0, 0, 'Your bondage is at an end, Doom''rel. I challenge you!', 0, 1, 1, -1, 0, 903901, 0, 0, NULL, 0, 230010);
+
+DELETE FROM `gossip_menu` WHERE `entry` = 903700 AND `text_id` = 2598;
+INSERT INTO `gossip_menu`
+(`entry`, `text_id`, `script_id`, `condition_id`)
+VALUES
+(903700, 2598, 0, 0);
 
 DELETE FROM `gossip_menu_option` WHERE `menu_id` = 903700 AND `id` = 0;
 INSERT INTO `gossip_menu_option`
 (`menu_id`, `id`, `option_icon`, `option_text`, `option_broadcast_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `box_broadcast_text`, `condition_id`)
 VALUES
-(903700, 0, 0, 'Teach me the art of smelting dark iron', 0, 1, 1, 903701, 0, 0, 0, 0, NULL, 0, 10230024);
+(903700, 0, 0, 'Teach me the art of smelting dark iron', 0, 1, 1, 903701, 0, 0, 0, 0, NULL, 0, 230024);
 
 DELETE FROM `gossip_menu_option` WHERE `menu_id` = 903700 AND `id` = 1;
 INSERT INTO `gossip_menu_option`
 (`menu_id`, `id`, `option_icon`, `option_text`, `option_broadcast_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `box_broadcast_text`, `condition_id`)
 VALUES
-(903700, 1, 0, 'I want to pay tribute', 0, 1, 1, 903703, 0, 0, 0, 0, NULL, 0, 10230025);
+(903700, 1, 0, 'I want to pay tribute', 0, 1, 1, 903703, 0, 0, 0, 0, NULL, 0, 230025);
 
 DELETE FROM `gossip_menu` WHERE `entry` = 903701 AND `text_id` = 2606;
 INSERT INTO `gossip_menu`

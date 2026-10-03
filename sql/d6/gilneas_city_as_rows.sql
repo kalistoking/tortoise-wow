@@ -1,5 +1,5 @@
 -- Gilneas City (map 815), instance_gilneas_city, Celia and Lord Mortimer, the Greymanes: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a10_gilneas_city.py from t1_world; gilneas_city_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a10_gilneas_city.py from d6_world; gilneas_city_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-gilneas-city is the switch (AM1, handoff/manager-091).
@@ -127,6 +127,7 @@ VALUES
 (6139002, 0, 0, 15, 17312, 0, 0, 0, 2, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Greymane Noble - Mind Flay'),
 (6126303, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Celia Harlow - the native shape'),
 (6126304, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Celia Harlow - the native shape'),
+(6126304, 0, 1, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Celia Harlow - phase 0 again'),
 (6126305, 0, 0, 23, 8249, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Celia Harlow - dragonkin (display 8249)'),
 (6126305, 0, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Celia Harlow - phase 1: Blast Wave'),
 (6126306, 0, 0, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Celia Harlow - phase 0'),
@@ -136,6 +137,7 @@ VALUES
 (6126310, 0, 0, 15, 13021, 0, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Celia Harlow - Blast Wave'),
 (6126401, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Lord Mortimer Harlow - the native shape'),
 (6126402, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Lord Mortimer Harlow - the native shape'),
+(6126402, 0, 1, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Lord Mortimer Harlow - phase 0 again'),
 (6126403, 0, 0, 23, 143, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Lord Mortimer Harlow - dragonkin (display 143)'),
 (6126403, 0, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Lord Mortimer Harlow - phase 1: Blast Wave'),
 (6126404, 0, 0, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Lord Mortimer Harlow - phase 0'),

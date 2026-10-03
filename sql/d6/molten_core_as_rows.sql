@@ -1,5 +1,5 @@
 -- Molten Core (map 409), its bosses but four, Garr and Golemagg's adds, the trash: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a27_molten_core.py from t1_world; molten_core_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a27_molten_core.py from d6_world; molten_core_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-molten-core is the switch (AM1, handoff/manager-091).
@@ -43,7 +43,7 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 52145;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 52146;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 52147;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (409001, 409010, 409011, 409316, 409317, 409318, 409319, 409321, 409322, 409330, 409332, 10409331, 10409333);
+DELETE FROM `conditions` WHERE `condition_entry` IN (409001, 409010, 409011, 409316, 409317, 409318, 409319, 409322, 409330, 409332, 10409331, 10409333);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
@@ -54,7 +54,6 @@ VALUES
 (409317, 34, 17, 3, 0, 0, 0),
 (409318, 34, 18, 3, 0, 0, 0),
 (409319, 34, 19, 3, 0, 0, 0),
-(409321, 34, 21, 3, 0, 0, 0),
 (409322, 34, 22, 3, 0, 0, 0),
 (409330, -1, 409316, 409317, 409318, 409319, 0),
 (409332, 34, 23, 3, 0, 0, 1),
@@ -68,6 +67,7 @@ VALUES
 (409020, 38, 5, 2, 0, 0, 0),
 (230000, 62, 0, 0, 0, 0, 1),
 (409320, 34, 20, 3, 0, 0, 0),
+(409321, 34, 21, 3, 0, 0, 0),
 (329004, 34, 9, 3, 0, 0, 1),
 (469000, 34, 8, 3, 0, 0, 1);
 
@@ -300,6 +300,7 @@ VALUES
 (1198803, 0, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Golemagg - enraged'),
 (1198804, 0, 0, 15, 19798, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Golemagg the Incinerator - Earthquake, enraged'),
 (1198811, 0, 0, 68, 4090002, 2, 11672, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Golemagg - the ragers back'),
+(1198811, 0, 1, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Golemagg - phase 0'),
 (1198812, 0, 0, 68, 4090003, 2, 11672, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Golemagg - the ragers die'),
 (1167201, 0, 0, 52, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Core Rager - no lower than 1 hp'),
 (1167202, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 409101, 0, 0, 0, 0, 0, 0, 0, 0, 'Core Rager - "%s refuses to die while its master is in trouble."'),

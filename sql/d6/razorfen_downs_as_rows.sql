@@ -1,5 +1,5 @@
 -- Razorfen Downs (map 129), the gong, its waves, Lady Falther'ess and Henry Stern: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a35_razorfen_downs.py from t1_world; razorfen_downs_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a35_razorfen_downs.py from d6_world; razorfen_downs_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-razorfen-downs is the switch (AM1, handoff/manager-091).
@@ -92,6 +92,12 @@ INSERT INTO `gossip_scripts`
 VALUES
 (869601, 0, 0, 15, 13029, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Henry Stern - the cooking recipe: the recipe on the player'),
 (869602, 0, 0, 15, 13030, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Henry Stern - the alchemy recipe: the recipe on the player');
+
+DELETE FROM `gossip_menu` WHERE `entry` = 869600 AND `text_id` = 2113;
+INSERT INTO `gossip_menu`
+(`entry`, `text_id`, `script_id`, `condition_id`)
+VALUES
+(869600, 2113, 0, 0);
 
 DELETE FROM `gossip_menu` WHERE `entry` = 869601 AND `text_id` = 2114;
 INSERT INTO `gossip_menu`

@@ -1,5 +1,5 @@
 -- Zul'Gurub (map 309), the gong, Gahz'ranka, Venoxis and the trash: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a25_zulgurub.py from t1_world; zulgurub_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a25_zulgurub.py from d6_world; zulgurub_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-zulgurub is the switch (AM1, handoff/manager-091).
@@ -193,6 +193,7 @@ VALUES
 (1450701, 0, 0, 37, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Venoxis - in progress'),
 (1450702, 0, 0, 68, 3090001, 2, 11373, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Venoxis - his cobras gone'),
 (1450702, 0, 1, 68, 3090001, 2, 14884, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Venoxis - his parasitic serpents gone'),
+(1450702, 0, 2, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Priest Venoxis - phase 0 again'),
 (1450703, 0, 0, 71, 0, 0, 0, 0, 49195, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Razzashi Cobra 49195 - back'),
 (1450703, 0, 1, 71, 0, 0, 0, 0, 49196, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Razzashi Cobra 49196 - back'),
 (1450703, 0, 2, 71, 0, 0, 0, 0, 49197, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Razzashi Cobra 49197 - back'),
@@ -249,7 +250,8 @@ VALUES
 (1451702, 0, 0, 15, 13540, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Priestess Jeklik - Green Channeling'),
 (1451702, 0, 1, 2, 4, 1069547520, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Priestess Jeklik - scale 1.5'),
 (1451702, 0, 2, 37, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Priestess Jeklik - failed'),
-(1451702, 0, 3, 6, 309, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -12289.7, -1382.18, 144.643, 2.31604, 0, 'High Priestess Jeklik - home at once'),
+(1451702, 0, 3, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Priestess Jeklik - phase 0 again'),
+(1451702, 0, 4, 6, 309, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -12289.7, -1382.18, 144.643, 2.31604, 0, 'High Priestess Jeklik - home at once'),
 (1451703, 0, 0, 15, 13540, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Priestess Jeklik - Green Channeling'),
 (1451703, 0, 1, 2, 4, 1065353216, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Priestess Jeklik - scale 1.0'),
 (1451704, 0, 0, 95, 1, 262144, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Priestess Jeklik - no pathfinding'),

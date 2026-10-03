@@ -1,4 +1,4 @@
--- Puts back what uldaman_as_rows.sql replaced, as t1_world had it when the migration
+-- Puts back what uldaman_as_rows.sql replaced, as d6_world had it when the migration
 -- was written (scripts/tier2/a11_uldaman.py). The rows the migration added are removed.
 
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'mob_jadespine_basilisk', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 4863;
@@ -10,6 +10,7 @@ DELETE FROM `creature_ai_events` WHERE `id` IN (486301, 707802, 722801, 722802, 
 DELETE FROM `creature_ai_scripts` WHERE `id` IN (486301, 707802, 722801, 722802, 722803, 722804, 1107301);
 DELETE FROM `gossip_scripts` WHERE `id` IN (717215);
 UPDATE `creature` SET `spawn_flags` = 0 WHERE `guid` = 52882;
+DELETE FROM `gossip_menu` WHERE `entry` = 717200 AND `text_id` = 1079;
 DELETE FROM `gossip_menu_option` WHERE `menu_id` = 717200 AND `id` = 0;
 DELETE FROM `gossip_menu` WHERE `entry` = 717201 AND `text_id` = 1080;
 DELETE FROM `gossip_menu_option` WHERE `menu_id` = 717201 AND `id` = 0;
