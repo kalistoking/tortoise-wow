@@ -1,5 +1,5 @@
 -- Stratholme (map 329), its bosses, the citizens, crystals, postboxes and crates: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a22_stratholme.py from t1_world; stratholme_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a22_stratholme.py from d6_world; stratholme_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-stratholme is the switch (AM1, handoff/manager-091).
@@ -36,11 +36,10 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11136;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11143;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 16387;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (329002, 329008, 329010, 329020, 329030, 329040, 329041, 329042, 329050, 329060, 329062, 329063, 329065, 329066, 10329001, 10329003, 10329005, 10329007, 10329061, 10329064);
+DELETE FROM `conditions` WHERE `condition_entry` IN (329008, 329010, 329020, 329030, 329040, 329041, 329042, 329050, 329060, 329062, 329063, 329065, 329066, 10329001, 10329003, 10329005, 10329007, 10329061, 10329064);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(329002, 34, 0, 0, 0, 0, 0),
 (10329001, -1, 230000, 329002, 0, 0, 0),
 (10329003, -1, 230000, 329004, 0, 0, 0),
 (10329005, -1, 230000, 329006, 0, 0, 0),
@@ -66,6 +65,7 @@ INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (230000, 62, 0, 0, 0, 0, 1),
+(329002, 34, 0, 0, 0, 0, 0),
 (329004, 34, 9, 3, 0, 0, 1),
 (329006, 34, 9, 4, 0, 0, 0),
 (230040, 34, 6, 3, 0, 0, 0);
@@ -376,7 +376,7 @@ VALUES
 (3290025, 0, 1, 81, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Supply Crate - spent'),
 (3290026, 0, 0, 15, 17278, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannonball - Cannon Fire'),
 (3290026, 0, 1, 18, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Cannonball - gone'),
-(3290027, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Crimson Rifleman - into the fight'),
+(3290027, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Crimson Rifleman - into the fight'),
 (3290028, 0, 0, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3537.2725, -2958.18, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 1, point 1)'),
 (3290028, 0, 1, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3542.206299, -2965.929932, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 1, point 2)'),
 (3290028, 0, 2, 10, 11054, 240000, 0, 0, 0, 0, 0, 0, 0, 3290027, -1, 3, 3540.651855, -2964.519043, 125.001015, 0.592007, 0, 'Cannon Master Willey - a Crimson Rifleman (set 1, point 4)'),

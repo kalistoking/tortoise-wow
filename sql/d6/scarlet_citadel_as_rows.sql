@@ -1,5 +1,5 @@
 -- Scarlet Citadel (map 45), High General Abbendis, the trash and the chaplain: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a21_scarlet_citadel.py from t1_world; scarlet_citadel_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a21_scarlet_citadel.py from d6_world; scarlet_citadel_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-scarlet-citadel is the switch (AM1, handoff/manager-091).
@@ -67,12 +67,11 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000035;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000036;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 2000037;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (450000, 450010, 450013, 450014, 450015, 450020, 450021, 450022, 450023, 450024, 450025, 450026, 450027, 450028, 450029, 450031, 450032, 450033, 450034, 450035, 450036, 450040, 450041, 450042, 10450011);
+DELETE FROM `conditions` WHERE `condition_entry` IN (450000, 450013, 450014, 450015, 450020, 450021, 450022, 450023, 450024, 450025, 450026, 450027, 450028, 450029, 450031, 450032, 450033, 450034, 450035, 450036, 450040, 450041, 450042, 10450011);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (450000, 56, 0, 35, 0, 0, 2),
-(450010, 1, 15473, 0, 0, 0, 3),
 (450013, 54, 129, -10, 16, 12, 0),
 (10450011, -1, 116, 450013, 0, 0, 0),
 (450014, 1, 25685, 0, 0, 0, 3),
@@ -101,6 +100,7 @@ VALUES
 INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
+(450010, 1, 15473, 0, 0, 0, 3),
 (230003, 41, 99, 2, 0, 0, 0),
 (409020, 38, 5, 2, 0, 0, 0);
 
@@ -254,17 +254,17 @@ INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
 (4510001, 0, 0, 37, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High General Abbendis - in progress'),
-(4510001, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High General Abbendis - the zone into the fight'),
+(4510001, 0, 1, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High General Abbendis - the zone into the fight'),
 (4510002, 0, 0, 37, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High General Abbendis - failed'),
 (4510003, 0, 0, 37, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High General Abbendis - done'),
 (4510101, 0, 0, 15, 20537, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Inquisitor - Counterspell'),
-(4510102, 0, 0, 15, 23858, 0, 0, 0, 12, 90, 15, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Inquisitor - Holy Nova'),
+(4510102, 0, 0, 15, 23858, 0, 0, 0, 12, 10, 15, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Inquisitor - Holy Nova'),
 (4510103, 0, 0, 15, 1020, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Inquisitor - Divine Shield'),
-(4510104, 0, 0, 15, 24208, 0, 0, 0, 40, 40, 15, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Inquisitor - Greater Heal'),
+(4510104, 0, 0, 15, 24208, 0, 0, 0, 40, 60, 15, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Inquisitor - Greater Heal'),
 (4510201, 0, 0, 15, 20537, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Inquisitor - Counterspell'),
-(4510202, 0, 0, 15, 23858, 0, 0, 0, 12, 90, 15, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Inquisitor - Holy Nova'),
+(4510202, 0, 0, 15, 23858, 0, 0, 0, 12, 10, 15, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Inquisitor - Holy Nova'),
 (4510203, 0, 0, 15, 1020, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Inquisitor - Divine Shield'),
-(4510204, 0, 0, 15, 24208, 0, 0, 0, 40, 40, 15, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Inquisitor - Greater Heal'),
+(4510204, 0, 0, 15, 24208, 0, 0, 0, 40, 60, 15, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Inquisitor - Greater Heal'),
 (4510301, 0, 0, 15, 26561, 0, 0, 0, 6, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Valiant - Charge'),
 (4510302, 0, 0, 15, 26350, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Valiant - Cleave'),
 (4510401, 0, 0, 15, 26561, 0, 0, 0, 6, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Citadel Valiant - Charge'),
@@ -312,7 +312,7 @@ VALUES
 (4510902, 0, 18, 22, 67, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper - hostile'),
 (4510902, 0, 19, 0, 1, 0, 0, 0, 0, 0, 0, 0, 450115, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper - "The enemy has gone past the Sacred Fist, avenge our fallen brother!"'),
 (4510902, 0, 20, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper - exclamation'),
-(4510903, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper - the zone into the fight'),
+(4510903, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper - the zone into the fight'),
 (4510903, 0, 1, 2, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper - mana emptied'),
 (4510911, 0, 0, 15, 25033, 0, 0, 0, 15, 0, 24, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper - Lightning Cloud at the nearest player within 15 yd'),
 (4510912, 0, 0, 15, 24819, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Brother Eric Vesper - Lightning Wave at his victim, hurt'),
@@ -336,7 +336,7 @@ VALUES
 (4511001, 0, 4, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - rooted: no combat movement'),
 (4511002, 0, 0, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - rooted: no combat movement'),
 (4511002, 0, 1, 15, 26156, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - Carapace of C''Thun'),
-(4511002, 0, 2, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the zone into the fight'),
+(4511002, 0, 2, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the zone into the fight'),
 (4511002, 0, 3, 37, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - in progress (0 = 1)'),
 (4511002, 0, 4, 61, 2000000, 7200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - his fight, a map event (two hours at most)'),
 (4511003, 0, 0, 68, 450024, 2, 2000013, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - his Fallen Spirits gone'),
@@ -408,7 +408,7 @@ VALUES
 (4511201, 0, 2, 22, 189, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - neutral (189)'),
 (4511201, 0, 3, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - rooted: no combat movement'),
 (4511202, 0, 0, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - rooted: no combat movement'),
-(4511202, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - the zone into the fight'),
+(4511202, 0, 1, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - the zone into the fight'),
 (4511202, 0, 2, 37, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - in progress (2 = 1)'),
 (4511202, 0, 3, 61, 2000002, 7200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her fight, a map event (two hours at most)'),
 (4511203, 0, 0, 68, 450041, 2, 2000016, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her Void Zones gone'),
@@ -612,7 +612,7 @@ VALUES
 (2000000, 7, 4, 0, 1, 0, 0, 0, 0, 0, 0, 0, 450131, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - "MY FIST FOR THE SCARLET CRUSADE!"'),
 (2000000, 9, 5, 4, 46, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - attackable'),
 (2000000, 9, 6, 22, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - hostile (67)'),
-(2000000, 9, 7, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the zone into the fight'),
+(2000000, 9, 7, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sacred Fist Daelus - the zone into the fight'),
 (2000002, 0, 0, 4, 147, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - her gossip off'),
 (2000002, 1, 1, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - exclaims'),
 (2000002, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 450132, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - "I will have you confess!"'),
@@ -625,7 +625,7 @@ VALUES
 (2000002, 8, 9, 10, 2000018, 0, 0, 0, 0, 0, 0, 0, 262144, 0, -1, 8, 0, 0, 0.25, 0, 0, 'High Inquisitor Mariella - her Kill Zone at her feet'),
 (2000002, 10, 10, 4, 46, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - attackable (still stunned, as the C++ left her)'),
 (2000002, 10, 11, 22, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - hostile (67)'),
-(2000002, 10, 12, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - the zone into the fight');
+(2000002, 10, 12, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'High Inquisitor Mariella - the zone into the fight');
 
 DELETE FROM `gossip_menu` WHERE `entry` = 2000000 AND `text_id` = 1000002;
 INSERT INTO `gossip_menu`

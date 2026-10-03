@@ -1,4 +1,4 @@
--- Puts back what ruins_of_ahnqiraj_as_rows.sql replaced, as t1_world had it when the migration
+-- Puts back what ruins_of_ahnqiraj_as_rows.sql replaced, as d6_world had it when the migration
 -- was written (scripts/tier2/a24_ruins_of_ahnqiraj.py). The rows the migration added are removed.
 
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'mob_hive_zara_soldier', `flags_extra` = 2097152 WHERE `entry` = 15320;
@@ -12,7 +12,7 @@ UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_kurinnaxx',
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'mob_anubisath_guardian', `flags_extra` = 2097152 WHERE `entry` = 15355;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_tuubid', `flags_extra` = 2162688 WHERE `entry` = 15392;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'mob_tornado_ossirian', `flags_extra` = 2097154 WHERE `entry` = 15428;
-DELETE FROM `conditions` WHERE `condition_entry` IN (509000);
+DELETE FROM `conditions` WHERE `condition_entry` IN (509000, 509001);
 DELETE FROM `broadcast_text` WHERE `entry` IN (509101, 509102, 509103);
 DELETE FROM `creature_ai_events` WHERE `id` IN (1532001, 1532002, 1532003, 1532411, 1532412, 1532413, 1532414, 1532415, 1532416, 1532417, 1532711, 1533311, 1533312, 1533313, 1533811, 1533812, 1533813, 1533814, 1534001, 1534002, 1534003, 1534004, 1534005, 1534006, 1534011, 1534012, 1534301, 1534302, 1534303, 1534411, 1534801, 1534802, 1534803, 1534804, 1534811, 1534812, 1534813, 1534814, 1535501, 1535502, 1535503, 1535504, 1535505, 1535511, 1535512, 1535513, 1535514, 1535515, 1535516, 1535517, 1538711, 1538712, 1538713, 1538714, 1539201, 1539202, 1539203, 1542801, 1542802, 1542803);
 DELETE FROM `creature_ai_scripts` WHERE `id` IN (1532001, 1532002, 1532003, 1532411, 1532412, 1532413, 1532414, 1532415, 1532416, 1532417, 1532711, 1533311, 1533312, 1533313, 1533811, 1533812, 1533813, 1533814, 1534001, 1534002, 1534003, 1534004, 1534005, 1534006, 1534011, 1534012, 1534301, 1534302, 1534303, 1534411, 1534801, 1534802, 1534803, 1534804, 1534811, 1534812, 1534813, 1534814, 1535501, 1535502, 1535503, 1535504, 1535505, 1535511, 1535512, 1535513, 1535514, 1535515, 1535516, 1535517, 1538711, 1538712, 1538713, 1538714, 1539201, 1539202, 1539203, 1542801, 1542802, 1542803);
@@ -116,6 +116,6 @@ VALUES
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1538703, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1191, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Warrior - Say Text'),
-(1538703, 0, 0, 15, 8599, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Warrior - Cast Spell Enrage');
+(1538703, 0, 0, 15, 8599, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Warrior - Cast Spell Enrage'),
+(1538703, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1191, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Warrior - Say Text');
 

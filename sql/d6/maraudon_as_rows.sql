@@ -1,5 +1,5 @@
 -- Maraudon (map 349), instance_maraudon and four bosses: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a07_maraudon.py from t1_world; maraudon_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a07_maraudon.py from d6_world; maraudon_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-maraudon is the switch (AM1, handoff/manager-091).
@@ -17,17 +17,12 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12203;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12225;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 13282;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (349002);
-INSERT INTO `conditions`
-(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
-VALUES
-(349002, 34, 0, 3, 0, 0, 1);
-
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
 INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (532000, 34, 0, 3, 0, 0, 0),
+(349002, 34, 0, 3, 0, 0, 1),
 (349003, 34, 1, 3, 0, 0, 1);
 
 DELETE FROM `creature_ai_events` WHERE `id` IN (1220101, 1220102, 1220103, 1220104, 1220105, 1220301, 1220302, 1220303, 1222501, 1222502, 1222503, 1222504, 1222505, 1328201, 1328202, 1328203, 1328204, 1353304);
@@ -58,7 +53,7 @@ INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
 (1353304, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Spewed Larva - no spewer, no larva'),
-(1222501, 0, 0, 18, 0, 0, 0, 0, 55105, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Celebras the Redeemed - not there yet'),
+(1222501, 0, 0, 39, 1222550, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Celebras the Redeemed - hidden, a second on'),
 (1222502, 0, 0, 37, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Celebras the Cursed - slot 1 done'),
 (1222502, 0, 1, 71, 0, 0, 0, 0, 55105, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Celebras the Redeemed - there now'),
 (1222503, 0, 0, 15, 21807, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Celebras the Cursed - Wrath on a random attacker'),
@@ -91,11 +86,12 @@ VALUES
 (1220104, 0, 0, 15, 3391, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Princess Theradras - Thrash'),
 (1220105, 0, 0, 10, 12238, 600000, 0, 0, 0, 0, 0, 0, 0, 0, -1, 3, 28.067, 61.875, -123.405, 4.67, 0, 'Princess Theradras - Zaetar''s Spirit for 10 min');
 
-DELETE FROM `generic_scripts` WHERE `id` IN (1328203, 1353303);
+DELETE FROM `generic_scripts` WHERE `id` IN (1222550, 1328203, 1353303);
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
 (1353303, 4, 0, 71, 0, 0, 0, 0, 54127, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Spewed Larva - spewed again, 4 s on'),
+(1222550, 1, 0, 18, 0, 604800, 0, 0, 55105, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Celebras the Redeemed - not there yet (7 days)'),
 (1328203, 15, 0, 22, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Noxxion - hostile again, 15 s on'),
 (1328203, 15, 1, 4, 46, 33554432, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Noxxion - selectable again'),
 (1328203, 15, 2, 23, 11172, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Noxxion - his own shape again'),
@@ -108,6 +104,7 @@ INSERT INTO `creature_ai_scripts`
 VALUES
 (1353302, 0, 1, 39, 1353303, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 349002, 'Spewed Larva - back in 4 s while the spewer works (A7)');
 
+UPDATE `creature_ai_scripts` SET `condition_id` = 349002 WHERE `id` = 1353302 AND `command` = 37;
 -- A gameobject's state as it spawns (AC3; the table from ac3_gameobject_spawn_state_whole.sql).
 DELETE FROM `gameobject_spawn_state` WHERE `guid` = 32892 AND `ord` = 0;
 INSERT INTO `gameobject_spawn_state`

@@ -1,5 +1,5 @@
 -- Blackwing Lair (map 469), the three drakes, Broodlord, the Death Talons and whelps: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a28_blackwing_lair.py from t1_world; blackwing_lair_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a28_blackwing_lair.py from d6_world; blackwing_lair_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-blackwing-lair is the switch (AM1, handoff/manager-091).
@@ -43,7 +43,7 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14024;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14025;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 14601;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (469101, 469103, 469104, 469105, 469110, 469113, 469115, 469118, 10469100);
+DELETE FROM `conditions` WHERE `condition_entry` IN (469101, 469103, 469104, 469105, 469113, 469115, 469118, 10469100);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
@@ -52,7 +52,6 @@ VALUES
 (10469100, -1, 469101, 1000, 469103, 0, 0),
 (469104, 38, 16, 1, 0, 0, 0),
 (469105, 1, 22436, 0, 0, 0, 1),
-(469110, 34, 8, 3, 0, 0, 0),
 (469113, 34, 1, 2, 0, 0, 1),
 (469115, -1, 469110, 209001, 0, 0, 0),
 (469118, 1, 23620, 0, 0, 0, 1);
@@ -62,6 +61,7 @@ INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (469000, 34, 8, 3, 0, 0, 1),
+(469110, 34, 8, 3, 0, 0, 0),
 (209001, 34, 1, 0, 0, 0, 0),
 (209032, 34, 1, 4, 0, 0, 0),
 (532000, 34, 0, 3, 0, 0, 0),
@@ -204,7 +204,7 @@ INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
 (1198391, 0, 0, 37, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Firemaw - in progress'),
-(1198391, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Firemaw - the zone into the fight'),
+(1198391, 0, 1, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Firemaw - the zone into the fight'),
 (1198392, 0, 0, 37, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Firemaw - failed'),
 (1198393, 0, 0, 37, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Firemaw - done'),
 (1198301, 0, 0, 15, 22539, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Firemaw - Shadow Flame'),
@@ -212,7 +212,7 @@ VALUES
 (1198303, 0, 0, 29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -50, 0, 0, 0, 0, 'Firemaw - the hit player''s threat halved'),
 (1198304, 0, 0, 15, 23341, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Firemaw - Flame Buffet'),
 (1460191, 0, 0, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ebonroc - in progress'),
-(1460191, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ebonroc - the zone into the fight'),
+(1460191, 0, 1, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ebonroc - the zone into the fight'),
 (1460192, 0, 0, 37, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ebonroc - failed'),
 (1460193, 0, 0, 37, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ebonroc - done'),
 (1460101, 0, 0, 15, 22539, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ebonroc - Shadow Flame'),
@@ -221,7 +221,7 @@ VALUES
 (1460104, 0, 0, 15, 23340, 32, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ebonroc - Shadow of Ebonroc'),
 (1460106, 0, 0, 15, 3391, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ebonroc - Thrash, one swing in three'),
 (1198191, 0, 0, 37, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamegor - in progress'),
-(1198191, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamegor - the zone into the fight'),
+(1198191, 0, 1, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamegor - the zone into the fight'),
 (1198192, 0, 0, 37, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamegor - failed'),
 (1198193, 0, 0, 37, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamegor - done'),
 (1198101, 0, 0, 15, 22539, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Flamegor - Shadow Flame'),
@@ -236,7 +236,7 @@ VALUES
 (1201791, 0, 3, 68, 4690001, 2, 12457, 300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord Lashlayer - his trash asleep (12457)'),
 (1201791, 0, 4, 68, 4690001, 2, 12461, 300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord Lashlayer - his trash asleep (12461)'),
 (1201791, 0, 5, 0, 1, 0, 0, 0, 0, 0, 0, 0, 469101, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord Lashlayer - his aggro line'),
-(1201791, 0, 6, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord - the zone'),
+(1201791, 0, 6, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord - the zone'),
 (1201792, 0, 0, 37, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord - failed'),
 (1201792, 0, 1, 68, 4690002, 2, 12459, 300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord Lashlayer - his trash awake (12459)'),
 (1201792, 0, 2, 68, 4690002, 2, 13996, 300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord Lashlayer - his trash awake (13996)'),
@@ -247,8 +247,8 @@ VALUES
 (1201793, 0, 2, 68, 4690002, 2, 13996, 300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord Lashlayer - his trash awake (13996)'),
 (1201793, 0, 3, 68, 4690002, 2, 12457, 300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord Lashlayer - his trash awake (12457)'),
 (1201793, 0, 4, 68, 4690002, 2, 12461, 300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord Lashlayer - his trash awake (12461)'),
-(1201794, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord - the zone'),
-(1201795, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord - the zone'),
+(1201794, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord - the zone'),
+(1201795, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord - the zone'),
 (1201701, 0, 0, 15, 15284, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord Lashlayer - Cleave'),
 (1201702, 0, 0, 15, 23331, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord Lashlayer - Blast Wave'),
 (1201703, 0, 0, 15, 24573, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Broodlord Lashlayer - Mortal Strike'),
@@ -302,7 +302,7 @@ VALUES
 (1302004, 0, 1, 39, 4690029, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - Nefarius''s intro'),
 (1302011, 0, 0, 37, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - in progress'),
 (1302011, 0, 1, 15, 23513, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - Essence of the Red'),
-(1302011, 0, 2, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - the zone into the fight'),
+(1302011, 0, 2, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - the zone into the fight'),
 (1302012, 0, 0, 37, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - done'),
 (1302013, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 469107, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - "Forgive me, $n!..."'),
 (1302014, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 469108, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - "Nefarius'' hate has made me stronger..."'),
@@ -366,7 +366,7 @@ VALUES
 (4690030, 26, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 469105, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - "FLAME! DEATH! DESTRUCTION!..."'),
 (4690030, 36, 2, 22, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - hostile'),
 (4690030, 36, 3, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vaelastrasz - at the one who spoke to him'),
-(4690031, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Bone Construct - the zone into the fight'),
+(4690031, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Bone Construct - the zone into the fight'),
 (4690032, 0, 0, 10, 14605, 10000, 0, 0, 0, 0, 0, 0, 262144, 4690031, -1, 4, 0, 0, 0, 0, 0, 'Drakonid Bones - a Bone Construct where they lie, gone 10 s out of combat'),
 (4690032, 0, 1, 81, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Drakonid Bones - gone'),
 (4690100, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 9883, 0, 0, 0, 0, 0, 0, 0, 0, 'Nefarian - "Impossible! Rise my minions! Serve your master once more!"'),

@@ -1,4 +1,4 @@
--- Puts back what razorfen_kraul_as_rows.sql replaced, as t1_world had it when the migration
+-- Puts back what razorfen_kraul_as_rows.sql replaced, as d6_world had it when the migration
 -- was written (scripts/tier2/a08_razorfen_kraul.py). The rows the migration added are removed.
 
 UPDATE `creature_template` SET `ai_name` = 'EventAI', `script_name` = 'razorfen_defender', `flags_extra` = 0 WHERE `entry` = 4442;

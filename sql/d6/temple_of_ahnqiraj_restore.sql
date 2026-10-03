@@ -1,4 +1,4 @@
--- Puts back what temple_of_ahnqiraj_as_rows.sql replaced, as t1_world had it when the migration
+-- Puts back what temple_of_ahnqiraj_as_rows.sql replaced, as d6_world had it when the migration
 -- was written (scripts/tier2/a29_temple_of_ahnqiraj.py). The rows the migration added are removed.
 
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'mob_qiraji_mindslayer', `flags_extra` = 2097152 WHERE `entry` = 15246;
@@ -70,8 +70,8 @@ VALUES
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1571202, 0, 0, 18, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - Despawn Self'),
-(1571202, 0, 0, 15, 26060, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - Cast Spell Summon Ouro Scarabs');
+(1571202, 0, 0, 15, 26060, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - Cast Spell Summon Ouro Scarabs'),
+(1571202, 0, 0, 18, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - Despawn Self');
 
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)

@@ -35,6 +35,8 @@ DELETE FROM `event_scripts` WHERE `id` IN (8420, 8428);
 DELETE FROM `quest_end_scripts` WHERE `id` IN (1193, 5525, 7429);
 UPDATE `creature_ai_events` SET `condition_id` = 0 WHERE `id` = 1432206;
 UPDATE `quest_template` SET `CompleteScript` = 0 WHERE `entry` = 1193;
+UPDATE `quest_template` SET `CompleteScript` = 5525 WHERE `entry` = 5525;
+UPDATE `quest_template` SET `CompleteScript` = 7429 WHERE `entry` = 7429;
 DELETE FROM `gameobject_spawn_state` WHERE `guid` = 264399 AND `ord` = 0;
 DELETE FROM `gameobject_spawn_state` WHERE `guid` = 397151 AND `ord` = 0;
 DELETE FROM `gameobject_spawn_state` WHERE `guid` = 261760 AND `ord` = 0;

@@ -1,4 +1,4 @@
--- Puts back what stormwind_vaults_as_rows.sql replaced, as t1_world had it when the migration
+-- Puts back what stormwind_vaults_as_rows.sql replaced, as d6_world had it when the migration
 -- was written (scripts/tier2/a16_stormwind_vaults.py). The rows the migration added are removed.
 
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_nazorna', `flags_extra` = 0, `mana_max` = 8343, `mana_min` = 8343 WHERE `entry` = 80830;

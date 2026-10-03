@@ -1,5 +1,5 @@
 -- Temple of Ahn'Qiraj (map 531), Huhuran, the mindslayers and Ouro's and Viscidus's helpers: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a29_temple_of_ahnqiraj.py from t1_world; temple_of_ahnqiraj_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a29_temple_of_ahnqiraj.py from d6_world; temple_of_ahnqiraj_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-temple-of-ahnqiraj is the switch (AM1, handoff/manager-091).
@@ -105,17 +105,17 @@ VALUES
 (1524612, 0, 0, 15, 26048, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Mindslayer - Mind Blast at its victim'),
 (1524613, 0, 0, 15, 26079, 0, 0, 0, 3, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Mindslayer - Cause Insanity at a random player in sight'),
 (1524614, 0, 0, 15, 26049, 3, 0, 0, 1000, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Mindslayer - Mana Burn'),
-(1596201, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vekniss Hatchling - passive'),
-(1596202, 0, 0, 59, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vekniss Hatchling - aggressive'),
-(1596202, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vekniss Hatchling - the zone into the fight'),
+(1596201, 0, 0, 4, 46, 512, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vekniss Hatchling - starts no fight (immune to creatures)'),
+(1596202, 0, 0, 4, 46, 512, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vekniss Hatchling - let go'),
+(1596202, 0, 1, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vekniss Hatchling - the zone into the fight'),
 (1596202, 0, 2, 26, 0, 0, 0, 0, 200, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vekniss Hatchling - at the nearest player'),
-(1596203, 0, 0, 59, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vekniss Hatchling - aggressive'),
-(1596203, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vekniss Hatchling - the zone into the fight'),
+(1596203, 0, 0, 4, 46, 512, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vekniss Hatchling - let go'),
+(1596203, 0, 1, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vekniss Hatchling - the zone into the fight'),
 (1596203, 0, 2, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Vekniss Hatchling - at its attacker'),
 (1595701, 0, 0, 15, 26092, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ouro Spawner - Dirtmound Passive'),
 (1595702, 0, 0, 15, 26061, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ouro Spawner - Summon Ouro'),
 (1595703, 0, 0, 15, 26262, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ouro - Birth, on himself'),
-(1595703, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ouro - the zone into the fight'),
+(1595703, 0, 1, 49, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ouro - the zone into the fight'),
 (1595703, 0, 2, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ouro Spawner - gone'),
 (1571211, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - passive'),
 (1571211, 0, 1, 15, 26092, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Dirt Mound - Dirtmound Passive'),
@@ -125,7 +125,9 @@ VALUES
 (1571811, 0, 0, 39, 5310002, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Ouro Scarab - what comes later'),
 (1571812, 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ouro Scarab - at the player seen'),
 (1566701, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Glob of Viscidus - passive'),
-(1566701, 0, 1, 39, 5310003, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Glob of Viscidus - what comes later'),
+(1566701, 0, 1, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Glob of Viscidus - no chase'),
+(1566701, 0, 2, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Glob of Viscidus - no melee'),
+(1566701, 0, 3, 39, 5310003, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Glob of Viscidus - what comes later'),
 (1592201, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Viscidus Trigger - passive'),
 (1592201, 0, 1, 39, 5310004, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Viscidus Trigger - what comes later');
 

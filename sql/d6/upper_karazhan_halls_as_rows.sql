@@ -471,7 +471,7 @@ VALUES
 (8140016, 0, 0, 74, 51081, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'a player - the Red Moon, from Keeper Gnarlmoon'),
 (8140017, 0, 0, 74, 51080, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'a player - the Blue Moon, from Keeper Gnarlmoon'),
 (8140018, 0, 0, 39, 8140016, 8140017, 0, 0, 0, 0, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 1000, 'a living player - the Red Moon or the Blue Moon, a coin each'),
-(8140019, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'an owl - into the fight with the zone'),
+(8140019, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'an owl - into the fight with the zone'),
 (8140020, 0, 0, 32, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'a Pawn - alive: no Redemption'),
 (8140020, 0, 1, 15, 51216, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'the Bishop - Redemption for a dead Pawn'),
 (8140021, 0, 0, 26, 0, 0, 0, 0, 50, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'a rift draenei - at the nearest hostile player within 50 yd'),

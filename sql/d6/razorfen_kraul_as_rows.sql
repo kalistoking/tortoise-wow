@@ -1,5 +1,5 @@
 -- Razorfen Kraul (map 47), instance_razorfen_kraul and razorfen_defender: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a08_razorfen_kraul.py from t1_world; razorfen_kraul_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a08_razorfen_kraul.py from d6_world; razorfen_kraul_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-razorfen-kraul is the switch (AM1, handoff/manager-091).
@@ -33,7 +33,7 @@ INSERT INTO `creature_ai_scripts`
 VALUES
 (444201, 0, 0, 15, 7164, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Razorfen Defender - Defensive Stance'),
 (444206, 0, 0, 15, 7164, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Razorfen Defender - Defensive Stance'),
-(444203, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Razorfen Defender - SetInCombatWithZone'),
+(444203, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Razorfen Defender - SetInCombatWithZone'),
 (444205, 0, 0, 15, 3248, 2, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Razorfen Defender - Improved Blocking');
 
 -- Steps added to scripts the migration does not own: each found by id, command, comments.

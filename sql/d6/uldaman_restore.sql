@@ -5,11 +5,10 @@ UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'mob_jadespine_ba
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'npc_lore_keeper_of_norgannon', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 7172;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'boss_ironaya', `flags_extra` = 0, `gossip_menu_id` = 0 WHERE `entry` = 7228;
 UPDATE `creature_template` SET `ai_name` = '', `script_name` = 'mob_annora', `flags_extra` = 2, `gossip_menu_id` = 0 WHERE `entry` = 11073;
-DELETE FROM `conditions` WHERE `condition_entry` IN (70001, 70002, 70003, 70004, 70005);
-DELETE FROM `creature_ai_events` WHERE `id` IN (486301, 707802, 722801, 722802, 722803, 722804, 1107301);
-DELETE FROM `creature_ai_scripts` WHERE `id` IN (486301, 707802, 722801, 722802, 722803, 722804, 1107301);
+DELETE FROM `conditions` WHERE `condition_entry` IN (70003, 70005);
+DELETE FROM `creature_ai_events` WHERE `id` IN (486301, 722801, 722802, 722803, 722804, 1107301, 1107302);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (486301, 722801, 722802, 722803, 722804, 1107301, 1107302);
 DELETE FROM `gossip_scripts` WHERE `id` IN (717215);
-UPDATE `creature` SET `spawn_flags` = 0 WHERE `guid` = 52882;
 DELETE FROM `gossip_menu` WHERE `entry` = 717200 AND `text_id` = 1079;
 DELETE FROM `gossip_menu_option` WHERE `menu_id` = 717200 AND `id` = 0;
 DELETE FROM `gossip_menu` WHERE `entry` = 717201 AND `text_id` = 1080;

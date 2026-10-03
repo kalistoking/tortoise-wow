@@ -766,7 +766,7 @@ DELETE FROM `generic_scripts` WHERE `id` IN (1148950, 1148951, 1149650, 1432451,
 INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1148950, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ironbark Protector - into the fight'),
+(1148950, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ironbark Protector - into the fight'),
 (1148951, 0, 0, 6, 429, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 'Tendris Warpwood - the player pulled to him'),
 (1148951, 0, 1, 15, 22994, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Tendris Warpwood - Entangle at the player'),
 (1149650, 0, 0, 6, 429, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 'Immol''thar - the player pulled to him'),
@@ -1554,6 +1554,8 @@ VALUES
 
 UPDATE `creature_ai_events` SET `condition_id` = 429055 WHERE `id` = 1432206;
 UPDATE `quest_template` SET `CompleteScript` = 1193 WHERE `entry` = 1193;
+UPDATE `quest_template` SET `CompleteScript` = 5525 WHERE `entry` = 5525;
+UPDATE `quest_template` SET `CompleteScript` = 7429 WHERE `entry` = 7429;
 -- A gameobject's state as it spawns (AC3; the table from ac3_gameobject_spawn_state_whole.sql).
 DELETE FROM `gameobject_spawn_state` WHERE `guid` = 264399 AND `ord` = 0;
 DELETE FROM `gameobject_spawn_state` WHERE `guid` = 397151 AND `ord` = 0;

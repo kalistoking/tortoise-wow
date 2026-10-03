@@ -1,5 +1,5 @@
 -- Ruins of Ahn'Qiraj (map 509), Kurinnaxx, Moam and the trash: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a24_ruins_of_ahnqiraj.py from t1_world; ruins_of_ahnqiraj_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a24_ruins_of_ahnqiraj.py from d6_world; ruins_of_ahnqiraj_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-ruins-of-ahnqiraj is the switch (AM1, handoff/manager-091).
@@ -14,7 +14,8 @@
 -- Map 509 keeps instance_ruins_of_ahnqiraj, Ayamiss, Buru, Ossirian, the Flesh Hunter and the two spell
 -- scripts (the core). Ossirian's yell as Kurinnaxx dies comes from Ossirian only
 -- when he is loaded (the C++ said it in his name regardless). Moam's mana empties at every aggro (the C++: the
--- first). Tuubid's soldiers go at the mark while they fight, whoever leads them; Tuubid's Sunder Armor goes at
+-- first); his stone is phase 1, where his timers stand still. Tuubid's soldiers go at the mark while they fight
+-- (an in-combat condition on the soldier), whoever leads them; Tuubid's Sunder Armor goes at
 -- his victim (the C++ aimed it at himself). The trash's own EventAI rules that differ from the C++ are taken
 -- away; the Obsidian Destroyer's mana emptying and the Silicate Feeder's death cloud stay, being the C++'s own.
 
@@ -30,11 +31,12 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 15355;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 15392;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 15428;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (509000);
+DELETE FROM `conditions` WHERE `condition_entry` IN (509000, 509001);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(509000, 34, 8, 1, 1, 0, 0);
+(509000, 34, 8, 1, 1, 0, 0),
+(509001, 43, 0, 0, 0, 0, 2);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (509101, 509102, 509103);
 INSERT INTO `broadcast_text`
@@ -77,14 +79,14 @@ VALUES
 (1534812, 15348, 0, 0, 0, 100, 9, 10000, 15000, 12000, 15000, 1534812, 0, 0, 'Kurinnaxx - Wide Slash'),
 (1534813, 15348, 0, 0, 0, 100, 9, 1000, 5000, 12000, 17000, 1534813, 0, 0, 'Kurinnaxx - Thrash'),
 (1534814, 15348, 0, 0, 0, 100, 1, 7000, 7000, 5100, 7000, 1534814, 0, 0, 'Kurinnaxx - a Sand Trap at a random player, cleared 5 s on'),
-(1534001, 15340, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1534001, 0, 0, 'Moam - evading: not started (4)'),
+(1534001, 15340, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1534001, 0, 0, 'Moam - evading: not started (4), out of the stone phase'),
 (1534002, 15340, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1534002, 0, 0, 'Moam - aggro: in progress (4), his mana emptied, his emote'),
 (1534003, 15340, 0, 6, 0, 100, 0, 0, 0, 0, 0, 1534003, 0, 0, 'Moam - dead: done (4), his spoils'),
 (1534004, 15340, 0, 10, 0, 100, 1, 1, 60, 1000, 1000, 1534004, 0, 0, 'Moam - a player within 60 yd: the fight'),
-(1534005, 15340, 0, 0, 0, 100, 9, 90000, 90000, 90000, 90000, 1534005, 0, 0, 'Moam - every 90 s: stone, three Mana Fiends, his emote'),
+(1534005, 15340, 0, 0, 2, 100, 9, 90000, 90000, 90000, 90000, 1534005, 0, 0, 'Moam - every 90 s: stone, three Mana Fiends, his emote'),
 (1534006, 15340, 0, 3, 0, 100, 1, 100, 100, 1000, 1000, 1534006, 0, 0, 'Moam - full of mana: out of the stone, Arcane Eruption, his emote'),
-(1534011, 15340, 0, 0, 0, 100, 9, 6000, 6000, 15000, 15000, 1534011, 0, 0, 'Moam - Trample'),
-(1534012, 15340, 0, 0, 0, 100, 1, 5000, 5000, 7000, 7000, 1534012, 0, 0, 'Moam - Drain Mana'),
+(1534011, 15340, 0, 0, 2, 100, 9, 6000, 6000, 15000, 15000, 1534011, 0, 0, 'Moam - Trample'),
+(1534012, 15340, 0, 0, 2, 100, 1, 5000, 5000, 7000, 7000, 1534012, 0, 0, 'Moam - Drain Mana'),
 (1533811, 15338, 0, 4, 0, 100, 0, 0, 0, 0, 0, 1533811, 0, 0, 'Obsidian Destroyer - aggro: the zone'),
 (1533812, 15338, 0, 3, 0, 100, 1, 100, 100, 1000, 1000, 1533812, 0, 0, 'Obsidian Destroyer - full of mana: Purge'),
 (1533813, 15338, 0, 0, 0, 100, 1, 7000, 7000, 7000, 7000, 1533813, 0, 0, 'Obsidian Destroyer - Drain Mana'),
@@ -135,7 +137,7 @@ INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
 (1534801, 0, 0, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kurinnaxx - not started'),
-(1534802, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kurinnaxx - the zone into the fight'),
+(1534802, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kurinnaxx - the zone into the fight'),
 (1534802, 0, 1, 37, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kurinnaxx - in progress'),
 (1534803, 0, 0, 0, 6, 0, 0, 0, 90893, 0, 9, 2, 11720, 0, 0, 0, 0, 0, 0, 0, 0, 'Ossirian the Unscarred - "The walls have been breached!"'),
 (1534803, 0, 1, 37, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kurinnaxx - done'),
@@ -147,36 +149,39 @@ VALUES
 (1534814, 0, 0, 76, 180647, 10, 1, 0, 2, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kurinnaxx - a sand trap at the player'),
 (1534814, 0, 1, 39, 5090001, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Kurinnaxx - the trap cleared later'),
 (1534001, 0, 0, 37, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - not started'),
-(1534002, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - the zone into the fight'),
+(1534001, 0, 1, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - out of the stone phase'),
+(1534002, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - the zone into the fight'),
 (1534002, 0, 1, 2, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - mana emptied'),
 (1534002, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 509101, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - his aggro emote'),
 (1534002, 0, 3, 37, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - in progress'),
 (1534003, 0, 0, 76, 181069, 345600, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - his spoils'),
 (1534003, 0, 1, 37, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - done'),
-(1534004, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - the zone into the fight'),
+(1534004, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - the zone into the fight'),
 (1534005, 0, 0, 15, 25685, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - Energize (stone)'),
-(1534005, 0, 1, 10, 15527, 10000, 0, 0, 0, 0, 0, 0, 262144, 0, 1, 4, 2, 0, 0, 0, 0, 'Moam - a Mana Fiend (1 of 3)'),
-(1534005, 0, 2, 10, 15527, 10000, 0, 0, 0, 0, 0, 0, 262144, 0, 1, 4, 2, 0, 0, 0, 0, 'Moam - a Mana Fiend (2 of 3)'),
-(1534005, 0, 3, 10, 15527, 10000, 0, 0, 0, 0, 0, 0, 262144, 0, 1, 4, 2, 0, 0, 0, 0, 'Moam - a Mana Fiend (3 of 3)'),
-(1534005, 0, 4, 0, 2, 0, 0, 0, 0, 0, 0, 0, 509102, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - his stone emote'),
+(1534005, 0, 1, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - the stone phase: his timers stand still'),
+(1534005, 0, 2, 10, 15527, 10000, 0, 0, 0, 0, 0, 0, 262144, 0, 1, 4, 2, 0, 0, 0, 0, 'Moam - a Mana Fiend (1 of 3)'),
+(1534005, 0, 3, 10, 15527, 10000, 0, 0, 0, 0, 0, 0, 262144, 0, 1, 4, 2, 0, 0, 0, 0, 'Moam - a Mana Fiend (2 of 3)'),
+(1534005, 0, 4, 10, 15527, 10000, 0, 0, 0, 0, 0, 0, 262144, 0, 1, 4, 2, 0, 0, 0, 0, 'Moam - a Mana Fiend (3 of 3)'),
+(1534005, 0, 5, 0, 2, 0, 0, 0, 0, 0, 0, 0, 509102, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - his stone emote'),
 (1534006, 0, 0, 14, 25685, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - out of the stone'),
-(1534006, 0, 1, 15, 25672, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - Arcane Eruption'),
-(1534006, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 509103, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - his eruption emote'),
+(1534006, 0, 1, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - out of the stone phase: his timers run again'),
+(1534006, 0, 2, 15, 25672, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - Arcane Eruption'),
+(1534006, 0, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 509103, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - his eruption emote'),
 (1534011, 0, 0, 15, 15550, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - Trample'),
 (1534012, 0, 0, 15, 25676, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moam - Drain Mana'),
-(1533811, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Obsidian Destroyer - the zone into the fight'),
+(1533811, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Obsidian Destroyer - the zone into the fight'),
 (1533812, 0, 0, 15, 25756, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Obsidian Destroyer - Purge'),
 (1533813, 0, 0, 15, 25754, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Obsidian Destroyer - Drain Mana'),
 (1533814, 0, 0, 76, 181068, 345600, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Obsidian Destroyer - its obsidian'),
-(1532001, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Hive''Zara Soldier - the zone into the fight'),
+(1532001, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Hive''Zara Soldier - the zone into the fight'),
 (1532002, 0, 0, 15, 25497, 0, 0, 0, 0, 0, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Hive''Zara Soldier - Venom Spit at a random attacker'),
 (1532003, 0, 0, 15, 22857, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Hive''Zara Soldier - Retaliation'),
 (1533311, 0, 0, 22, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Silicate Feeder - faction 7'),
 (1533312, 0, 0, 22, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Silicate Feeder - faction 7'),
 (1533313, 0, 0, 22, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Silicate Feeder - hostile'),
-(1533313, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Silicate Feeder - the zone into the fight'),
+(1533313, 0, 1, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Silicate Feeder - the zone into the fight'),
 (1534301, 0, 0, 25, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Swarmguard - runs'),
-(1534302, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Swarmguard - the zone into the fight'),
+(1534302, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Swarmguard - the zone into the fight'),
 (1534303, 0, 0, 15, 25174, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Swarmguard - Sundering Cleave'),
 (1532411, 0, 0, 37, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Gladiator - the count reset'),
 (1532412, 0, 0, 37, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Gladiator - the count reset'),
@@ -189,7 +194,7 @@ VALUES
 (1539201, 0, 0, 39, 5090003, 0, 0, 0, 2, 0, 4, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Captain Tuubid - a random player marked'),
 (1539202, 0, 0, 15, 26350, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Captain Tuubid - Cleave'),
 (1539203, 0, 0, 15, 24317, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Captain Tuubid - Sunder Armor'),
-(1538711, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Warrior - the zone into the fight'),
+(1538711, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Warrior - the zone into the fight'),
 (1538712, 0, 0, 15, 8599, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Warrior - Enrage'),
 (1538713, 0, 0, 15, 15588, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Warrior - Thunderclap'),
 (1538714, 0, 0, 15, 10966, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Qiraji Warrior - Uppercut'),
@@ -217,7 +222,7 @@ VALUES
 (1542801, 0, 1, 15, 25160, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sand Vortex - Sand Storm'),
 (1542801, 0, 2, 15, 10092, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sand Vortex - Sand Storm'),
 (1542801, 0, 3, 20, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 55, 0, 0, 0, 0, 'Sand Vortex - wandering within 55 yd'),
-(1542802, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sand Vortex - the zone into the fight'),
+(1542802, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sand Vortex - the zone into the fight'),
 (1542803, 0, 0, 20, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 55, 0, 0, 0, 0, 'Sand Vortex - wandering within 55 yd');
 
 DELETE FROM `generic_scripts` WHERE `id` IN (5090001, 5090002, 5090003, 5090004, 5090005, 5090006, 5090007, 5090008, 5090009, 5090010);
@@ -225,7 +230,7 @@ INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
 (5090001, 5, 0, 81, 0, 0, 0, 0, 180647, 100, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Kurinnaxx - the sand trap cleared'),
-(5090002, 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Tuubid''s soldier - at the marked player'),
+(5090002, 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 509001, 'Tuubid''s soldier - at the marked player, if it fights'),
 (5090003, 0, 0, 15, 25471, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Captain Tuubid - Attack Order at the marked player'),
 (5090003, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11009, 0, 0, 0, 0, 0, 0, 0, 0, 'Captain Tuubid - "Kill $n!"'),
 (5090003, 0, 2, 68, 5090002, 2, 15387, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Captain Tuubid - his warriors at the mark'),

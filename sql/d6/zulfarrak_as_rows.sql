@@ -1,5 +1,5 @@
 -- Zul'Farrak (map 209), the pyramid's crew, the graves and Zum'rah: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a37_zulfarrak.py from t1_world; zulfarrak_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a37_zulfarrak.py from d6_world; zulfarrak_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-zulfarrak is the switch (AM1, handoff/manager-091).
@@ -30,20 +30,16 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62496;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62497;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62498;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (209001, 209004, 209006, 209007, 209012, 209021, 209022, 209032, 209033, 209034, 209035, 209036, 209040, 209041, 209042, 209043, 209044, 209045, 209046, 209048, 209049, 209052, 209053, 209060, 209062, 209064, 209065, 209066, 209067, 209068, 209069, 209070, 10209005, 10209020, 10209047, 10209050, 10209051);
+DELETE FROM `conditions` WHERE `condition_entry` IN (209004, 209006, 209007, 209021, 209033, 209034, 209035, 209036, 209040, 209041, 209042, 209043, 209044, 209045, 209046, 209048, 209049, 209052, 209053, 209060, 209062, 209064, 209065, 209066, 209067, 209068, 209069, 209070, 10209005, 10209020, 10209047, 10209050, 10209051);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(209001, 34, 1, 0, 0, 0, 0),
 (209004, 34, 1, 8, 0, 0, 0),
 (209006, 34, 1, 0, 0, 0, 1),
 (209007, 34, 1, 8, 0, 0, 1),
 (10209005, -1, 209006, 209007, 0, 0, 0),
-(209012, 38, 5, 1, 0, 0, 0),
 (209021, 20, 7271, 30, 0, 0, 0),
-(209022, 34, 4, 0, 0, 0, 0),
 (10209020, -1, 209021, 209022, 0, 0, 0),
-(209032, 34, 1, 4, 0, 0, 0),
 (209033, 34, 1, 5, 0, 0, 0),
 (209034, 34, 1, 6, 0, 0, 0),
 (209035, 34, 1, 6, 1, 0, 0),
@@ -77,10 +73,14 @@ INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (230000, 62, 0, 0, 0, 0, 1),
+(209001, 34, 1, 0, 0, 0, 0),
 (129001, 34, 1, 1, 0, 0, 0),
 (532001, 34, 1, 3, 0, 0, 0),
 (209009, -1, 1000, 999, 0, 0, 0),
+(209012, 38, 5, 1, 0, 0, 0),
+(209022, 34, 4, 0, 0, 0, 0),
 (532003, 34, 3, 3, 0, 0, 0),
+(209032, 34, 1, 4, 0, 0, 0),
 (818012, 34, 6, 1, 0, 0, 0),
 (33004, 34, 5, 3, 0, 0, 0);
 
@@ -314,17 +314,17 @@ VALUES
 (2090016, 0, 1, 37, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Farraki arena - Razjal (5 = 4)'),
 (2090016, 0, 2, 22, 14, 3, 0, 0, 2589526, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Champion Razjal the Quick - hostile until the fight ends'),
 (2090016, 0, 3, 0, 1, 0, 0, 0, 2589526, 0, 9, 2, 6249804, 0, 0, 0, 0, 0, 0, 0, 0, 'Champion Razjal the Quick - his line'),
-(2090016, 0, 4, 49, 0, 0, 0, 0, 2589526, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Champion Razjal the Quick - the zone into the fight'),
+(2090016, 0, 4, 49, 1, 0, 0, 0, 2589526, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Champion Razjal the Quick - the zone into the fight'),
 (2090016, 0, 5, 26, 0, 0, 0, 0, 2589526, 0, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Champion Razjal the Quick - at the challenger'),
 (2090017, 0, 0, 32, 209062, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Farraki arena - Kath''zen on, or nothing'),
 (2090017, 0, 1, 37, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Farraki arena - Juthza (5 = 3)'),
 (2090017, 0, 2, 22, 14, 3, 0, 0, 2589527, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Juthza the Cunning - hostile until the fight ends'),
 (2090017, 0, 3, 0, 1, 0, 0, 0, 2589527, 0, 9, 2, 6249701, 0, 0, 0, 0, 0, 0, 0, 0, 'Juthza the Cunning - his line'),
-(2090017, 0, 4, 49, 0, 0, 0, 0, 2589527, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Juthza the Cunning - the zone into the fight'),
+(2090017, 0, 4, 49, 1, 0, 0, 0, 2589527, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Juthza the Cunning - the zone into the fight'),
 (2090017, 0, 5, 26, 0, 0, 0, 0, 2589527, 0, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Juthza the Cunning - at the challenger'),
 (2090017, 30, 6, 39, 2090016, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 33004, 'Farraki arena - Razjal, 30 s on'),
 (2090018, 0, 0, 22, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sandfury Scorpid - hostile'),
-(2090018, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sandfury Scorpid - the zone into the fight'),
+(2090018, 0, 1, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Sandfury Scorpid - the zone into the fight'),
 (2090019, 0, 0, 10, 62499, 120000, 0, 0, 0, 0, 0, 0, 0, 2090018, 1, 1, 1498.65, 1030.937, 11.6, 0, 0, 'Champion Razjal the Quick - a Sandfury Scorpid (1 of 4 places)'),
 (2090020, 0, 0, 10, 62499, 120000, 0, 0, 0, 0, 0, 0, 0, 2090018, 1, 1, 1534.144, 1030.718, 11.826, 0, 0, 'Champion Razjal the Quick - a Sandfury Scorpid (2 of 4 places)'),
 (2090021, 0, 0, 10, 62499, 120000, 0, 0, 0, 0, 0, 0, 0, 2090018, 1, 1, 1536.583, 1005.965, 11.6277, 0, 0, 'Champion Razjal the Quick - a Sandfury Scorpid (3 of 4 places)'),
@@ -448,7 +448,7 @@ VALUES
 (6249801, 5, 4, 37, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9938, 'Farraki arena - Kath''zen (5 = 2)'),
 (6249801, 13, 5, 22, 14, 3, 0, 0, 2589528, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 209062, 'Kath''zen the Brutal - hostile until the fight ends'),
 (6249801, 13, 6, 0, 1, 0, 0, 0, 2589528, 0, 9, 2, 6249601, 0, 0, 0, 0, 0, 0, 0, 209062, 'Kath''zen the Brutal - his line'),
-(6249801, 13, 7, 49, 0, 0, 0, 0, 2589528, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 209062, 'Kath''zen the Brutal - the zone into the fight'),
+(6249801, 13, 7, 49, 1, 0, 0, 0, 2589528, 0, 9, 2, 0, 0, 0, 0, 0, 0, 0, 0, 209062, 'Kath''zen the Brutal - the zone into the fight'),
 (6249801, 13, 8, 26, 0, 0, 0, 0, 2589528, 0, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 209062, 'Kath''zen the Brutal - at the challenger'),
 (6249801, 43, 9, 39, 2090017, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 209062, 'Farraki arena - Juthza, 30 s on');
 

@@ -17,17 +17,14 @@ UPDATE `creature_template` SET `gossip_menu_id` = 717200 WHERE `entry` = 7172;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 7228;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 11073;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (70001, 70002, 70003, 70004, 70005);
+DELETE FROM `conditions` WHERE `condition_entry` IN (70003, 70005);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(70001, 33, 70, 0, 0, 0, 0),
-(70002, 54, -160, 196, -50, 30, 0),
-(70003, 20, 7078, 30, 0, 1, 1),
-(70004, -1, 70001, 70002, 70003, 0, 0),
+(70003, 20, 7078, 30, 0, 0, 3),
 (70005, 9, 2278, 1, 0, 0, 0);
 
-DELETE FROM `creature_ai_events` WHERE `id` IN (486301, 707802, 722801, 722802, 722803, 722804, 1107301);
+DELETE FROM `creature_ai_events` WHERE `id` IN (486301, 722801, 722802, 722803, 722804, 1107301, 1107302);
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
@@ -36,23 +33,27 @@ VALUES
 (722803, 7228, 0, 0, 0, 100, 9, 3000, 13000, 13000, 13000, 722803, 0, 0, 'Ironaya - Arcing Smash'),
 (722804, 7228, 0, 2, 0, 100, 0, 24, 0, 0, 0, 722804, 0, 0, 'Ironaya - War Stomp once, under a quarter'),
 (486301, 4863, 0, 0, 0, 100, 1, 2000, 2000, 28000, 28000, 486301, 0, 0, 'Jadespine Basilisk - Crystalline Slumber'),
-(707802, 7078, 0, 6, 0, 100, 0, 0, 0, 0, 0, 707802, 0, 0, 'Cleft Scorpid - the last by Annora dead: Annora comes'),
-(1107301, 11073, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1107301, 0, 0, 'Annora - out from her hiding place');
+(1107301, 11073, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1107301, 0, 0, 'Annora - hidden in her hiding place'),
+(1107302, 11073, 70003, 1, 2, 100, 1, 1000, 1000, 1000, 1000, 1107302, 0, 0, 'Annora - no scorpid by her alive: out from her hiding place');
 
-DELETE FROM `creature_ai_scripts` WHERE `id` IN (486301, 707802, 722801, 722802, 722803, 722804, 1107301);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (486301, 722801, 722802, 722803, 722804, 1107301, 1107302);
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
 (722801, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 3261, 0, 0, 0, 0, 0, 0, 0, 0, 'Ironaya - aggro yell'),
-(722801, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ironaya - SetInCombatWithZone'),
+(722801, 0, 1, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ironaya - SetInCombatWithZone'),
 (722802, 0, 0, 15, 10101, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ironaya - Knock Away'),
 (722802, 0, 1, 29, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -100, 0, 0, 0, 0, 'Ironaya - her victim''s threat gone'),
 (722803, 0, 0, 15, 8374, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ironaya - Arcing Smash'),
 (722804, 0, 0, 15, 11876, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ironaya - War Stomp'),
 (486301, 0, 0, 15, 3636, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Jadespine Basilisk - Crystalline Slumber'),
 (486301, 0, 1, 29, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -100, 0, 0, 0, 0, 'Jadespine Basilisk - the sleeper''s threat gone'),
-(707802, 0, 0, 91, 52882, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 70004, 'Cleft Scorpid - Annora spawned (the last by her dead)'),
-(1107301, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -164.3657, 210.7687, -49.572, 0, 0, 'Annora - out from her hiding place');
+(1107301, 0, 0, 23, 11686, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Annora - unseen (an invisible model)'),
+(1107301, 0, 1, 4, 46, 33554432, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Annora - not selectable'),
+(1107302, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Annora - seen'),
+(1107302, 0, 1, 4, 46, 33554432, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Annora - selectable'),
+(1107302, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -164.3657, 210.7687, -49.572, 0, 0, 'Annora - out from her hiding place'),
+(1107302, 0, 3, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Annora - out (phase 1)');
 
 DELETE FROM `gossip_scripts` WHERE `id` IN (717215);
 INSERT INTO `gossip_scripts`
@@ -252,4 +253,3 @@ INSERT INTO `gossip_menu_option`
 VALUES
 (717215, 0, 0, 'I will access the discs now.', 0, 1, 1, -1, 0, 717215, 0, 0, NULL, 0, 0);
 
-UPDATE `creature` SET `spawn_flags` = 2 WHERE `guid` = 52882;

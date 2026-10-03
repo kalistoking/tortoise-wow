@@ -9,8 +9,8 @@ DELETE FROM `conditions` WHERE `condition_entry` IN (129009, 129010, 129014, 129
 DELETE FROM `creature_ai_events` WHERE `id` IN (734901, 735101, 1468601);
 DELETE FROM `creature_ai_scripts` WHERE `id` IN (734901, 735101, 1468601);
 DELETE FROM `generic_scripts` WHERE `id` IN (734950, 734951);
-DELETE FROM `gameobject_scripts` WHERE `id` IN (32045);
 DELETE FROM `gossip_scripts` WHERE `id` IN (869601, 869602);
+DELETE FROM `event_scripts` WHERE `id` IN (3130);
 DELETE FROM `instance_data_slot` WHERE `map` = 129 AND `slot` = 1;
 DELETE FROM `gossip_menu` WHERE `entry` = 869600 AND `text_id` = 2113;
 DELETE FROM `gossip_menu` WHERE `entry` = 869601 AND `text_id` = 2114;

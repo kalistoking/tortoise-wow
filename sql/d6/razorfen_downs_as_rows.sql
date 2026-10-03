@@ -9,7 +9,8 @@
 --
 -- Map 129 keeps instance_razorfen_downs's numbers in the generic store: slot 1 the gong count. The gong
 -- shows its own use too (the C++ held it back); the summons spread in a circle round each point, where the
--- C++ added a whole-yard square. Belnistrasz stays C++ (razorfen_downs_escort.cpp).
+-- C++ added a whole-yard square. The gong's two steps are its event's (event_scripts 3130), the one a goober
+-- with an event runs. Belnistrasz stays C++ (razorfen_downs_escort.cpp).
 
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 7349;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 7351;
@@ -79,19 +80,19 @@ VALUES
 (734950, 0, 17, 10, 7355, 0, 0, 0, 0, 0, 0, 0, 1, 734951, -1, 7, 2502.635, 844.14, 46.896, 0.633, 129015, 'Gong waves - Tuten''kash at (2503, 844)'),
 (734951, 0, 0, 3, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2533.479, 870.02, 47.678, 5, 0, 'Gong wave - runs to the gong');
 
-DELETE FROM `gameobject_scripts` WHERE `id` IN (32045);
-INSERT INTO `gameobject_scripts`
-(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
-VALUES
-(32045, 0, 0, 37, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Gong - one more (slot 1)'),
-(32045, 0, 1, 39, 734950, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Gong - the gong waves read the count');
-
 DELETE FROM `gossip_scripts` WHERE `id` IN (869601, 869602);
 INSERT INTO `gossip_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
 (869601, 0, 0, 15, 13029, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Henry Stern - the cooking recipe: the recipe on the player'),
 (869602, 0, 0, 15, 13030, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Henry Stern - the alchemy recipe: the recipe on the player');
+
+DELETE FROM `event_scripts` WHERE `id` IN (3130);
+INSERT INTO `event_scripts`
+(`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
+VALUES
+(3130, 0, 0, 37, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Gong - one more (slot 1)'),
+(3130, 0, 1, 39, 734950, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Gong - the gong waves read the count');
 
 DELETE FROM `gossip_menu` WHERE `entry` = 869600 AND `text_id` = 2113;
 INSERT INTO `gossip_menu`

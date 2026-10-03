@@ -1,5 +1,5 @@
 -- Blackfathom Deeps (map 48), instance_blackfathom_deeps, its objects and Velthelaxx: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a09_blackfathom_deeps.py from t1_world; blackfathom_deeps_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a09_blackfathom_deeps.py from d6_world; blackfathom_deeps_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-blackfathom-deeps is the switch (AM1, handoff/manager-091).
@@ -15,17 +15,22 @@
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 12876;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62530;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (48002, 48003, 48004, 48005, 48007, 48008, 48009);
+DELETE FROM `conditions` WHERE `condition_entry` IN (48003, 48004, 48005, 48007, 48008, 48009);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(48002, 34, 11, 3, 0, 0, 0),
 (48003, -1, 8506, 48002, 0, 0, 0),
 (48004, 34, 12, 0, 0, 0, 0),
 (48005, 34, 14, 18, 1, 0, 0),
 (48007, 34, 13, 2, 0, 0, 0),
 (48008, 34, 13, 3, 0, 0, 0),
 (48009, 34, 13, 4, 0, 0, 0);
+
+-- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
+INSERT IGNORE INTO `conditions`
+(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
+VALUES
+(48002, 34, 11, 3, 0, 0, 0);
 
 DELETE FROM `creature_ai_events` WHERE `id` IN (483207, 483208, 483209, 483210, 1287601, 6253001, 6253002, 6253003, 6253004, 6253005, 6253006, 6253007);
 INSERT INTO `creature_ai_events`
@@ -67,7 +72,7 @@ INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
 (483220, 0, 0, 15, 7741, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackfathom wave - Summoned Demon (visual)'),
-(483220, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackfathom wave - SetInCombatWithZone'),
+(483220, 0, 1, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Blackfathom wave - SetInCombatWithZone'),
 (483210, 3, 0, 10, 4825, 0, 0, 0, 27424, 0, 9, 2, 0, 483220, 0, 7, -768.949, -174.413, -25.87, 3.09, 0, 'Twilight Lord Kelris - wave 1: Aku''mai Snapjaw at 0'),
 (483210, 3, 1, 10, 4825, 0, 0, 0, 27424, 0, 9, 2, 0, 483220, 0, 7, -768.888, -164.238, -25.87, 3.09, 0, 'Twilight Lord Kelris - wave 1: Aku''mai Snapjaw at 1'),
 (483210, 3, 2, 10, 4825, 0, 0, 0, 27424, 0, 9, 2, 0, 483220, 0, 7, -867.859, -153.927, -25.88, 6.27, 0, 'Twilight Lord Kelris - wave 1: Aku''mai Snapjaw at 5'),

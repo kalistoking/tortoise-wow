@@ -1,5 +1,5 @@
 -- Naxxramas (map 533), the creatures around its bosses: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a30_naxxramas.py from t1_world; naxxramas_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a30_naxxramas.py from d6_world; naxxramas_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-naxxramas is the switch (AM1, handoff/manager-091).
@@ -155,7 +155,7 @@ VALUES
 (5339003, 533004, 0, 1, 27, 100, 1, 1000, 1000, 1000, 1000, 5339003, 0, 0, 'Faerlina RP - they stand (phase 2 to 3)'),
 (5339004, 533004, 0, 1, 23, 100, 1, 10000, 30000, 10000, 30000, 5339004, 0, 0, 'Faerlina RP - they stop channelling (phase 3 to 4)'),
 (5339005, 533004, 0, 1, 15, 100, 1, 2000, 10000, 2000, 10000, 5339005, 0, 0, 'Faerlina RP - they kneel again (phase 4 to 1)'),
-(1636011, 16360, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1636011, 0, 0, 'Zombie Chow - reset: Infected Wound'),
+(1636011, 16360, 0, 7, 0, 100, 0, 0, 0, 0, 0, 1636011, 0, 0, 'Zombie Chow - reset: Infected Wound, fighting again'),
 (1636012, 16360, 0, 8, 0, 100, 0, 28374, 0, 0, 0, 1636012, 0, 0, 'Zombie Chow - hit by Gluth''s Decimate: no more fighting, after Gluth'),
 (1612901, 16129, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1612901, 0, 0, 'Shadow Fissure - never fighting; Void Blast at 3 s, gone 2.25 s later'),
 (1616411, 16164, 0, 11, 0, 100, 0, 0, 0, 0, 0, 1616411, 0, 0, 'Shade of Naxxramas - stealth detection'),
@@ -253,10 +253,14 @@ VALUES
 (5339005, 0, 1, 68, 5330004, 2, 15980, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Faerlina RP - the cultists kneel'),
 (5339005, 0, 2, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Faerlina RP - phase 1'),
 (1636011, 0, 0, 15, 29307, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zombie Chow - Infected Wound'),
+(1636011, 0, 1, 43, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zombie Chow - chasing again'),
+(1636011, 0, 2, 42, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zombie Chow - melee again'),
 (1636012, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zombie Chow - passive'),
-(1636012, 0, 1, 73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zombie Chow - out of the fight'),
-(1636012, 0, 2, 20, 14, 0, 0, 0, 15932, 200, 8, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 'Zombie Chow - following Gluth'),
-(1636012, 0, 3, 15, 28375, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zombie Chow - Decimate, on itself'),
+(1636012, 0, 1, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zombie Chow - no chase'),
+(1636012, 0, 2, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zombie Chow - no melee'),
+(1636012, 0, 3, 73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zombie Chow - out of the fight'),
+(1636012, 0, 4, 20, 14, 0, 0, 0, 15932, 200, 8, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 'Zombie Chow - following Gluth'),
+(1636012, 0, 5, 15, 28375, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Zombie Chow - Decimate, on itself'),
 (1612901, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Shadow Fissure - passive'),
 (1612901, 0, 1, 39, 5330008, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 'Shadow Fissure - what comes later'),
 (1616411, 0, 0, 15, 18950, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Shade of Naxxramas - Detect Invisibility'),
@@ -391,7 +395,7 @@ VALUES
 (5330013, 0, 0, 39, 5330009, 5330010, 0, 0, 0, 0, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 0, 'Plague Slime - one of two colours (1 of 2)'),
 (5330014, 0, 0, 39, 5330011, 5330012, 0, 0, 0, 0, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 0, 'Plague Slime - one of two colours (2 of 2)'),
 (5330015, 5, 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Toxic Tunnel - out of the fight'),
-(5330016, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Fallout Slime - the zone into the fight'),
+(5330016, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Fallout Slime - the zone into the fight'),
 (5330017, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Faerlina - a follower or worshipper gone'),
 (5330018, 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Faerlina - a follower or worshipper at her puller'),
 (5330019, 0, 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Faerlina - a follower or worshipper out of the fight');

@@ -1,5 +1,5 @@
 -- Karazhan Crypt (map 800), its instance, runes, the Crypt Watcher and the remains: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a31_karazhan_crypt.py from t1_world; karazhan_crypt_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a31_karazhan_crypt.py from d6_world; karazhan_crypt_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-karazhan-crypt is the switch (AM1, handoff/manager-091).
@@ -8,8 +8,9 @@
 -- the names find no script and the creatures run these rows (their ai_name).
 --
 -- Map 800's instance script goes; the generic store keeps nothing, as the C++ saved nothing. The triggers'
--- objects and the crypt gate stay C++ (karazhan_crypt_triggers.cpp). A used rune opens for its own 3 s first,
--- then for 3 h (the rows close it and open it again). The remains' 30 min respawn stays their spawn's own time.
+-- objects and the crypt gate stay C++ (karazhan_crypt_triggers.cpp). The six runes' autoclose (data2) is 3 h
+-- under the rows, the restore puts the 3 s back: a rune used in combat also stays open 3 h (the C++ left that
+-- one at 3 s), as it does with the module loaded. The remains' 30 min respawn stays their spawn's own time.
 
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 91920;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 91921;
@@ -114,25 +115,19 @@ DELETE FROM `gameobject_scripts` WHERE `id` IN (4013143, 4013144, 4013145, 40131
 INSERT INTO `gameobject_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(4013143, 0, 0, 87, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177302 - closed, to open for longer'),
-(4013143, 0, 1, 11, 4013143, 10800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177302 - open for 3 h'),
-(4013143, 0, 2, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177302 - the user kneels'),
-(4013143, 0, 3, 0, 1, 0, 0, 0, 91931, 300, 8, 2, 800101, 0, 0, 0, 0, 0, 0, 0, 800002, 'Crypt Watcher - "Those runes hold the remains of heroes o..."'),
-(4013144, 0, 0, 87, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177305 - closed, to open for longer'),
-(4013144, 0, 1, 11, 4013144, 10800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177305 - open for 3 h'),
-(4013144, 0, 2, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177305 - the user kneels'),
-(4013145, 0, 0, 87, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177306 - closed, to open for longer'),
-(4013145, 0, 1, 11, 4013145, 10800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177306 - open for 3 h'),
-(4013145, 0, 2, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177306 - the user kneels'),
-(4013145, 0, 3, 0, 1, 0, 0, 0, 91931, 300, 8, 2, 800102, 0, 0, 0, 0, 0, 0, 0, 800002, 'Crypt Watcher - "Do my words fall on deaf ears? Or are yo..."'),
-(4013147, 0, 0, 87, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177307 - closed, to open for longer'),
-(4013147, 0, 1, 11, 4013147, 10800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177307 - open for 3 h'),
-(4013147, 0, 2, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177307 - the user kneels'),
-(4013148, 0, 0, 87, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177308 - closed, to open for longer'),
-(4013148, 0, 1, 11, 4013148, 10800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177308 - open for 3 h'),
-(4013148, 0, 2, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177308 - the user kneels'),
-(4013148, 0, 3, 0, 1, 0, 0, 0, 91931, 300, 8, 2, 800103, 0, 0, 0, 0, 0, 0, 0, 800002, 'Crypt Watcher - "Is this why you''ve come here, to defile ..."'),
-(4013149, 0, 0, 87, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177309 - closed, to open for longer'),
-(4013149, 0, 1, 11, 4013149, 10800, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177309 - open for 3 h'),
-(4013149, 0, 2, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177309 - the user kneels');
+(4013143, 0, 0, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177302 - the user kneels'),
+(4013143, 0, 1, 0, 1, 0, 0, 0, 91931, 300, 8, 2, 800101, 0, 0, 0, 0, 0, 0, 0, 800002, 'Crypt Watcher - "Those runes hold the remains of heroes o..."'),
+(4013144, 0, 0, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177305 - the user kneels'),
+(4013145, 0, 0, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177306 - the user kneels'),
+(4013145, 0, 1, 0, 1, 0, 0, 0, 91931, 300, 8, 2, 800102, 0, 0, 0, 0, 0, 0, 0, 800002, 'Crypt Watcher - "Do my words fall on deaf ears? Or are yo..."'),
+(4013147, 0, 0, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177307 - the user kneels'),
+(4013148, 0, 0, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177308 - the user kneels'),
+(4013148, 0, 1, 0, 1, 0, 0, 0, 91931, 300, 8, 2, 800103, 0, 0, 0, 0, 0, 0, 0, 800002, 'Crypt Watcher - "Is this why you''ve come here, to defile ..."'),
+(4013149, 0, 0, 1, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800002, 'Necrotic Rune 177309 - the user kneels');
 
+UPDATE `gameobject_template` SET `data2` = 707788800 WHERE `entry` = 177302;
+UPDATE `gameobject_template` SET `data2` = 707788800 WHERE `entry` = 177305;
+UPDATE `gameobject_template` SET `data2` = 707788800 WHERE `entry` = 177306;
+UPDATE `gameobject_template` SET `data2` = 707788800 WHERE `entry` = 177307;
+UPDATE `gameobject_template` SET `data2` = 707788800 WHERE `entry` = 177308;
+UPDATE `gameobject_template` SET `data2` = 707788800 WHERE `entry` = 177309;

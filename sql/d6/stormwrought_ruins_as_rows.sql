@@ -1,5 +1,5 @@
 -- Stormwrought Ruins (map 818), eleven bosses, the secret door and its instance: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a19_stormwrought_ruins.py from t1_world; stormwrought_ruins_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a19_stormwrought_ruins.py from d6_world; stormwrought_ruins_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-stormwrought-ruins is the switch (AM1, handoff/manager-091).
@@ -27,17 +27,17 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62671;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62673;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 62731;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (818012, 818014);
+DELETE FROM `conditions` WHERE `condition_entry` IN (818014);
 INSERT INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
-(818012, 34, 6, 1, 0, 0, 0),
 (818014, -1, 298, 9938, 818012, 818013, 0);
 
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
 INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
+(818012, 34, 6, 1, 0, 0, 0),
 (818013, 34, 7, 1, 0, 0, 0);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (818062, 818063, 818064, 818065, 818066, 818067, 818068, 818069, 818070, 818071, 818072, 818073, 818074, 818075, 818076, 818077, 818078, 818079, 818080, 818081, 818082, 818083, 818084, 818085, 818086, 818087, 818088);
@@ -183,9 +183,9 @@ VALUES
 (6266102, 0, 1, 15, 44042, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Eldermaw the Primordial - Primordial Regeneration'),
 (6266102, 0, 2, 10, 62674, 60000, 0, 0, 0, 0, 0, 0, 327680, 0, -1, 2, 2, 0, 0, 1.0, 0, 'Eldermaw the Primordial - an Eldermaw Crocolisk 2 yd off at +1 rad'),
 (6266102, 0, 3, 10, 62674, 60000, 0, 0, 0, 0, 0, 0, 327680, 0, -1, 2, 2, 0, 0, -1.0, 0, 'Eldermaw the Primordial - an Eldermaw Crocolisk 2 yd off at -1 rad'),
-(6267401, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Eldermaw Crocolisk - SetInCombatWithZone'),
-(6267501, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Growth of Mycellekos - SetInCombatWithZone'),
-(6267201, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Rifttorn Nether Imp - SetInCombatWithZone'),
+(6267401, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Eldermaw Crocolisk - SetInCombatWithZone'),
+(6267501, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Growth of Mycellekos - SetInCombatWithZone'),
+(6267201, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Rifttorn Nether Imp - SetInCombatWithZone'),
 (6266401, 0, 0, 15, 44050, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Mycellakos - Decaying Mold'),
 (6266402, 0, 0, 76, 300420, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Mycellakos - the Volatile Fungus under it, for 3 s'),
 (6266402, 0, 1, 10, 62731, 10000, 0, 0, 0, 0, 0, 0, 262144, 6266430, -1, 3, 0, 0, 0, 0, 0, 'Mycellakos - the spot kept (invisible helper, 10 s)'),
@@ -213,16 +213,22 @@ VALUES
 (6267107, 0, 1, 14, 8734, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - no channel'),
 (6267107, 0, 2, 4, 46, 65664, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - attackable'),
 (6267107, 0, 3, 59, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - aggressive'),
-(6267107, 0, 4, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - phase 0'),
-(6267107, 0, 5, 68, 6267132, 2, 62672, 100, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - every Rifttorn Nether Imp within 100 yd gone'),
+(6267107, 0, 4, 42, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - melee'),
+(6267107, 0, 5, 43, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - combat movement'),
+(6267107, 0, 6, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - phase 0'),
+(6267107, 0, 7, 68, 6267132, 2, 62672, 100, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - every Rifttorn Nether Imp within 100 yd gone'),
 (6267108, 0, 0, 37, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - the channel over (slot 8)'),
 (6267108, 0, 1, 14, 8734, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - no channel'),
 (6267108, 0, 2, 4, 46, 65664, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - attackable'),
 (6267108, 0, 3, 59, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - aggressive'),
-(6267108, 0, 4, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - phase 0'),
-(6267108, 0, 5, 68, 6267132, 2, 62672, 100, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - every Rifttorn Nether Imp within 100 yd gone'),
+(6267108, 0, 4, 42, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - melee'),
+(6267108, 0, 5, 43, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - combat movement'),
+(6267108, 0, 6, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - phase 0'),
+(6267108, 0, 7, 68, 6267132, 2, 62672, 100, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Ighal''for - every Rifttorn Nether Imp within 100 yd gone'),
 (6267301, 0, 0, 4, 46, 65664, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Mergothid - unattackable'),
 (6267301, 0, 1, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Mergothid - passive'),
+(6267301, 0, 2, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Mergothid - no melee'),
+(6267301, 0, 3, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Mergothid - no combat movement'),
 (6267302, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 818087, 0, 0, 0, 0, 0, 0, 0, 0, 'Mergothid - half health line'),
 (6267303, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 818088, 0, 0, 0, 0, 0, 0, 0, 0, 'Mergothid - death line');
 
@@ -252,12 +258,14 @@ VALUES
 (6267130, 48, 3, 42, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8503, 'Ighal''for - melee'),
 (6267130, 48, 4, 43, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8503, 'Ighal''for - combat movement'),
 (6267130, 48, 5, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8503, 'Ighal''for - phase 0'),
-(6267130, 48, 6, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8503, 'Ighal''for - back at the zone'),
+(6267130, 48, 6, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8503, 'Ighal''for - back at the zone'),
 (6267130, 48, 7, 0, 1, 0, 0, 0, 62673, 60, 8, 2, 818086, 0, 0, 0, 0, 0, 0, 0, 8503, 'Mergothid - "Too soon, incessant weakling."'),
 (6267130, 48, 8, 4, 46, 65664, 2, 0, 62673, 60, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 8503, 'Mergothid - attackable'),
 (6267130, 48, 9, 59, 2, 0, 0, 0, 62673, 60, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 8503, 'Mergothid - aggressive'),
-(6267130, 48, 10, 49, 0, 0, 0, 0, 62673, 60, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 8503, 'Mergothid - at the zone'),
-(6267130, 48, 11, 37, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8503, 'Ighal''for - the channel over (slot 8)'),
+(6267130, 48, 10, 42, 1, 0, 0, 0, 62673, 60, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 8503, 'Mergothid - melee'),
+(6267130, 48, 11, 43, 1, 0, 0, 0, 62673, 60, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 8503, 'Mergothid - combat movement'),
+(6267130, 48, 12, 49, 1, 0, 0, 0, 62673, 60, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 8503, 'Mergothid - at the zone'),
+(6267130, 48, 13, 37, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8503, 'Ighal''for - the channel over (slot 8)'),
 (6267132, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Rifttorn Nether Imp - gone, Ighal''for''s channel over');
 
 DELETE FROM `gameobject_scripts` WHERE `id` IN (5025429, 5025430, 5025431, 5025432);

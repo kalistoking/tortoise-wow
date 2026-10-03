@@ -1,5 +1,5 @@
 -- Lower Karazhan Halls (map 532), its instance, trash and five bosses: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a14_lower_karazhan_halls.py from t1_world; lower_karazhan_halls_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a14_lower_karazhan_halls.py from d6_world; lower_karazhan_halls_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-lower-karazhan-halls is the switch (AM1, handoff/manager-091).
@@ -40,19 +40,14 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 61223;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 61224;
 UPDATE `creature_template` SET `ai_name` = 'EventAI', `gossip_menu_id` = 6122500 WHERE `entry` = 61225;
 
-DELETE FROM `conditions` WHERE `condition_entry` IN (532004);
-INSERT INTO `conditions`
-(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
-VALUES
-(532004, -1, 532000, 532001, 3704, 532003, 0);
-
 -- Conditions another tier-2 migration writes too, under the same entry: whichever comes first.
 INSERT IGNORE INTO `conditions`
 (`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
 VALUES
 (532000, 34, 0, 3, 0, 0, 0),
 (532001, 34, 1, 3, 0, 0, 0),
-(532003, 34, 3, 3, 0, 0, 0);
+(532003, 34, 3, 3, 0, 0, 0),
+(532004, -1, 532000, 532001, 3704, 532003, 0);
 
 DELETE FROM `broadcast_text` WHERE `entry` IN (532101, 532102, 532103, 532104, 532105, 532106, 532107, 532108, 532109, 532110, 532111, 532112, 532113, 532114, 532115, 532116);
 INSERT INTO `broadcast_text`
@@ -259,7 +254,7 @@ VALUES
 (6122502, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 532114, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - death yell'),
 (6122502, 0, 1, 37, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - done (slot 4)'),
 (6122503, 0, 0, 37, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - not started (slot 4)'),
-(6122501, 0, 1, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - SetInCombatWithZone'),
+(6122501, 0, 1, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - SetInCombatWithZone'),
 (6122510, 0, 0, 74, 9617, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - Ghost Visual'),
 (6122510, 0, 1, 4, 147, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - gossip on'),
 (6122511, 0, 0, 74, 9617, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - Ghost Visual'),
@@ -291,12 +286,12 @@ VALUES
 (3000831, 0, 0, 10, 61206, 5000, 0, 0, 0, 0, 0, 0, 262144, 3000834, -1, 4, 0, 0, 0, 0, 0, 'Skitterweb Egg - a Skitterweb Crawler'),
 (3000832, 0, 0, 10, 61207, 5000, 0, 0, 0, 0, 0, 0, 262144, 3000834, -1, 4, 0, 0, 0, 0, 0, 'Skitterweb Egg - a Skitterweb Darkfang'),
 (3000833, 0, 0, 10, 61209, 5000, 0, 0, 0, 0, 0, 0, 262144, 3000834, -1, 4, 0, 0, 0, 0, 0, 'Skitterweb Egg - a Skitterweb Leaper'),
-(3000834, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Skitterweb spider - hatched into the fight'),
+(3000834, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Skitterweb spider - hatched into the fight'),
 (6122230, 0, 0, 10, 61192, 5000, 0, 0, 0, 0, 0, 0, 589824, 3000834, -1, 4, 15, 0, 0, 0, 0, 'Lord Blackwald II - a helper within 15 yd (61192)'),
 (6122231, 0, 0, 10, 61193, 5000, 0, 0, 0, 0, 0, 0, 589824, 3000834, -1, 4, 15, 0, 0, 0, 0, 'Lord Blackwald II - a helper within 15 yd (61193)'),
 (6122232, 0, 0, 10, 61194, 5000, 0, 0, 0, 0, 0, 0, 589824, 3000834, -1, 4, 15, 0, 0, 0, 0, 'Lord Blackwald II - a helper within 15 yd (61194)'),
 (6122233, 0, 0, 10, 61211, 5000, 0, 0, 0, 0, 0, 0, 589824, 3000834, -1, 4, 15, 0, 0, 0, 0, 'Lord Blackwald II - a helper within 15 yd (61211)'),
-(6122430, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 116, 'Grellkin - pulled by Grizikil''s call');
+(6122430, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 116, 'Grellkin - pulled by Grizikil''s call');
 
 DELETE FROM `gossip_scripts` WHERE `id` IN (6122530);
 INSERT INTO `gossip_scripts`
@@ -305,7 +300,7 @@ VALUES
 (6122530, 0, 0, 4, 147, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - gossip off'),
 (6122530, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 532115, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - the challenge accepted'),
 (6122530, 0, 2, 22, 14, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - hostile until combat stops'),
-(6122530, 0, 3, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - SetInCombatWithZone'),
+(6122530, 0, 3, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - SetInCombatWithZone'),
 (6122530, 0, 4, 16, 60418, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Moroes - his music');
 
 DELETE FROM `gossip_menu` WHERE `entry` = 6122500 AND `text_id` = 61225;

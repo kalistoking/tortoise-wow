@@ -1,5 +1,5 @@
 -- Hateforge Quarry (map 808), four bosses and three trash: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a06_hateforge_quarry.py from t1_world; hateforge_quarry_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a06_hateforge_quarry.py from d6_world; hateforge_quarry_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-hateforge-quarry is the switch (AM1, handoff/manager-091).
@@ -18,6 +18,12 @@ UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 60735;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 60736;
 UPDATE `creature_template` SET `ai_name` = 'EventAI' WHERE `entry` = 60737;
 
+DELETE FROM `conditions` WHERE `condition_entry` IN (808001);
+INSERT INTO `conditions`
+(`condition_entry`, `type`, `value1`, `value2`, `value3`, `value4`, `flags`)
+VALUES
+(808001, 20, 60738, 200, 0, 1, 1);
+
 DELETE FROM `broadcast_text` WHERE `entry` IN (6073401, 6073403, 6073501, 6073503, 6073506, 6073507, 6073508, 6073601, 6073603, 6073701, 6073703, 6073706);
 INSERT INTO `broadcast_text`
 (`entry`, `male_text`, `female_text`, `chat_type`, `sound_id`, `language_id`, `emote_id1`, `emote_id2`, `emote_id3`, `emote_delay1`, `emote_delay2`, `emote_delay3`)
@@ -35,7 +41,7 @@ VALUES
 (6073703, 'Stronger than I have anticipated... I have served my masters, till the end.', 'Stronger than I have anticipated... I have served my masters, till the end.', 0, 60361, 0, 0, 0, 0, 0, 0, 0),
 (6073706, 'The Void hungers for more souls, let it consume you...', 'The Void hungers for more souls, let it consume you...', 0, 60362, 0, 0, 0, 0, 0, 0, 0);
 
-DELETE FROM `creature_ai_events` WHERE `id` IN (6071801, 6071802, 6072301, 6072302, 6072501, 6073401, 6073402, 6073403, 6073404, 6073405, 6073501, 6073502, 6073503, 6073504, 6073505, 6073506, 6073601, 6073602, 6073603, 6073701, 6073702, 6073703, 6073704, 6073705, 6073706, 6073707, 6073708, 6073709);
+DELETE FROM `creature_ai_events` WHERE `id` IN (6071801, 6071802, 6072301, 6072302, 6072501, 6073401, 6073402, 6073403, 6073404, 6073405, 6073501, 6073502, 6073503, 6073504, 6073505, 6073506, 6073601, 6073602, 6073603, 6073701, 6073702, 6073703, 6073704, 6073705, 6073706, 6073708, 6073709);
 INSERT INTO `creature_ai_events`
 (`id`, `creature_id`, `condition_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_script`, `action2_script`, `action3_script`, `comment`)
 VALUES
@@ -59,8 +65,7 @@ VALUES
 (6073704, 60737, 0, 0, 6, 100, 9, 60000, 60000, 90000, 90000, 6073704, 0, 0, 'Har''gesh Doomcaller - Shadow Bolt Volley'),
 (6073705, 60737, 0, 0, 6, 100, 9, 10000, 10000, 10000, 10000, 6073705, 0, 0, 'Har''gesh Doomcaller - Shadow Bolt on its victim'),
 (6073706, 60737, 0, 2, 0, 100, 0, 59, 0, 0, 0, 6073706, 0, 0, 'Har''gesh Doomcaller - the void, under 60 %'),
-(6073707, 60737, 0, 25, -3, 100, 1, 60738, 0, 0, 0, 6073707, 0, 0, 'Har''gesh Doomcaller - the first terror dead'),
-(6073708, 60737, 0, 25, -5, 100, 1, 60738, 0, 0, 0, 6073708, 0, 0, 'Har''gesh Doomcaller - the second terror dead: the void ends'),
+(6073708, 60737, 808001, 25, -3, 100, 1, 60738, 0, 0, 0, 6073708, 0, 0, 'Har''gesh Doomcaller - the last terror dead: the void ends'),
 (6073709, 60737, 0, 7, 0, 100, 0, 0, 0, 0, 0, 6073709, 0, 0, 'Har''gesh Doomcaller - evade: the void undone'),
 (6071801, 60718, 0, 0, 0, 100, 8, 0, 0, 0, 0, 6071801, 0, 0, 'Hateforge Cleric - Immolate on its victim, once'),
 (6071802, 60718, 0, 0, 0, 100, 9, 4000, 4000, 8000, 10000, 6071802, 0, 0, 'Hateforge Cleric - Greater Heal on the friend missing most health'),
@@ -68,7 +73,7 @@ VALUES
 (6072302, 60723, 0, 0, 0, 100, 9, 1000, 1000, 35000, 35000, 6072302, 0, 0, 'Hateforge Taskmaster - its spell on its victim'),
 (6072501, 60725, 0, 0, 0, 100, 8, 1000, 1000, 0, 0, 6072501, 0, 0, 'Twilight Fireblade - its spell on a friend within 10 yd, once');
 
-DELETE FROM `creature_ai_scripts` WHERE `id` IN (6071801, 6071802, 6072301, 6072302, 6072501, 6073401, 6073402, 6073403, 6073404, 6073405, 6073501, 6073502, 6073503, 6073504, 6073505, 6073506, 6073601, 6073602, 6073603, 6073701, 6073702, 6073703, 6073704, 6073705, 6073706, 6073707, 6073708, 6073709);
+DELETE FROM `creature_ai_scripts` WHERE `id` IN (6071801, 6071802, 6072301, 6072302, 6072501, 6073401, 6073402, 6073403, 6073404, 6073405, 6073501, 6073502, 6073503, 6073504, 6073505, 6073506, 6073601, 6073602, 6073603, 6073701, 6073702, 6073703, 6073704, 6073705, 6073706, 6073708, 6073709);
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
@@ -98,7 +103,6 @@ VALUES
 (6073706, 0, 4, 10, 60738, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 8, -8300.825195, -3735.292725, 138.12, 6.020778, 0, 'Har''gesh Doomcaller - a Faceless Terror (1 of 2)'),
 (6073706, 0, 5, 10, 60738, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 8, -8300.825195, -3735.292725, 138.12, 6.020778, 0, 'Har''gesh Doomcaller - a Faceless Terror (2 of 2)'),
 (6073706, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6073706, 0, 0, 0, 0, 0, 0, 0, 0, 'Har''gesh Doomcaller - the void line'),
-(6073707, 0, 0, 44, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Har''gesh Doomcaller - one terror left (phase 2)'),
 (6073708, 0, 0, 14, 12380, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Har''gesh Doomcaller - Shadow Channeling off'),
 (6073708, 0, 1, 14, 29230, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Har''gesh Doomcaller - immunity off'),
 (6073708, 0, 2, 14, 17507, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Har''gesh Doomcaller - root off'),

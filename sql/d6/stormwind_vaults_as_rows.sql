@@ -1,5 +1,5 @@
 -- Stormwind Vaults (map 35), five of its bosses: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a16_stormwind_vaults.py from t1_world; stormwind_vaults_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a16_stormwind_vaults.py from d6_world; stormwind_vaults_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-stormwind-vaults is the switch (AM1, handoff/manager-091).
@@ -244,7 +244,7 @@ INSERT INTO `generic_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
 (9310730, 0, 0, 0, 4, 0, 0, 0, 93107, 200, 8, 2, 9310751, 0, 0, 0, 0, 0, 0, 0, 0, 'Arc''tiras - the aggro whisper'),
-(9310731, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Frigid Guardian - SetInCombatWithZone'),
+(9310731, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Frigid Guardian - SetInCombatWithZone'),
 (8085330, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 8085360, 0, 0, 0, 0, 0, 0, 0, 0, 'Aszosh Grimflame - "Feel your blood boil."'),
 (8085331, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 8085364, 0, 0, 0, 0, 0, 0, 0, 0, 'Aszosh Grimflame - "Your own mind shall become your enemy."'),
 (8085332, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 8085365, 0, 0, 0, 0, 0, 0, 0, 0, 'Aszosh Grimflame - "Rise bones of misery and serve your new master!"'),

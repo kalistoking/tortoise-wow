@@ -1,5 +1,5 @@
 -- Onyxia's Lair (map 249), its instance and the Onyxian Whelp: its C++ as rows -- EPIC10 tier 2.
--- Written by the trt repo's scripts/tier2/a33_onyxias_lair.py from t1_world; onyxias_lair_restore.sql puts
+-- Written by the trt repo's scripts/tier2/a33_onyxias_lair.py from d6_world; onyxias_lair_restore.sql puts
 -- back what this replaces. R8: a person applies it, into the world database.
 --
 -- The C++ keeps its script names: mod-onyxias-lair is the switch (AM1, handoff/manager-091).
@@ -21,7 +21,7 @@ DELETE FROM `creature_ai_scripts` WHERE `id` IN (1126201);
 INSERT INTO `creature_ai_scripts`
 (`id`, `delay`, `priority`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `target_param1`, `target_param2`, `target_type`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `condition_id`, `comments`)
 VALUES
-(1126201, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Onyxian Whelp - SetInCombatWithZone');
+(1126201, 0, 0, 49, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Onyxian Whelp - SetInCombatWithZone');
 
 -- The generic store's slots (AC7; the table from ac7_instance_data_slot.sql).
 DELETE FROM `instance_data_slot` WHERE `map` = 249 AND `slot` = 0;
